@@ -52,7 +52,6 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'then running the cloneForEachLocale transform': {
             topic: function (assetGraph) {
                 assetGraph.queue(
-                    transforms.injectOneBootstrapper({type: 'Html'}),
                     transforms.cloneForEachLocale({type: 'Html'}, ['en_US', 'da'])
                 ).run(this.callback);
             },
