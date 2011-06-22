@@ -3,7 +3,7 @@
 var AssetGraph = require('assetgraph'),
     transforms = require('../lib/transforms'),
     query = AssetGraph.query,
-    urlTools = require('../lib/util/urlTools'),
+    urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist').
         usage('$0 --root <inputRootDirectory> --outroot <outputRootDirectory> --cdnroot <url> <htmlFile>...').
         demand(['root', 'outroot', 'cdnroot']).

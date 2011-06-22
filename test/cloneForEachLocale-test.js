@@ -1,11 +1,11 @@
 var vows = require('vows'),
     assert = require('assert'),
     vm = require('vm'),
-    passError = require('assetgraph/lib/util/passError'),
     AssetGraph = require('assetgraph'),
+    passError = require('assetgraph/lib/util/passError'),
     transforms = require('../lib/transforms'),
-    query = AssetGraph.query,
-    i18nTools = require('assetgraph/lib/util/i18nTools');
+    query = require('assetgraph').query,
+    i18nTools = require('../lib/util/i18nTools');
 
 function getJavaScriptTextAndBootstrappedContext(assetGraph, htmlQueryObj, cb) {
     var htmlAsset = assetGraph.findAssets(htmlQueryObj)[0],

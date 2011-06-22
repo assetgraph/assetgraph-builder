@@ -4,10 +4,10 @@ var _ = require('underscore'),
     seq = require('seq'),
     AssetGraph = require('assetgraph'),
     transforms = require('../lib/transforms'),
-    passError = require('../lib/util/passError'),
+    passError = require('assetgraph/lib/util/passError'),
     i18nTools = require('../lib/util/i18nTools'),
-    uglifyAst = require('../lib/util/uglifyAst'),
-    urlTools = require('../lib/util/urlTools'),
+    uglifyAst = require('assetgraph/lib/util/uglifyAst'),
+    urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist').
         usage('$0 [--label <labelName>=<dir> ...] --root <inputRootDirectory> --locale <localeId>,... <htmlFile>...').
         demand(['root', 'locale']).
