@@ -33,7 +33,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     transforms.removeEmptyAssets({type: ['Css', 'JavaScript']}),
     transforms.externalizeRelations({type: ['HtmlStyle', 'HtmlScript']}),
     transforms.mergeIdenticalAssets({type: ['JavaScript', 'Css']}),
-    transforms.spriteBackgroundImages(),
+    require('assetgraph-sprite')(),
     transforms.postProcessBackgroundImages(),
     transforms.bundleAssets({type: 'Css', incoming: {type: 'HtmlStyle', node: function (node) {return !node.getAttribute('media');}}}),
     transforms.bundleAssets({type: 'JavaScript', incoming: {type: 'HtmlScript'}}),
