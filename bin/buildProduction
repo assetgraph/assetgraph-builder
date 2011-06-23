@@ -24,6 +24,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     transforms.loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl)),
     transforms.populate({
         followRelations: query.or({to: {type: 'I18n'}},
+                                  {type: 'HtmlAnchor', to: {type: query.not('Html')}},
                                   {type: query.not(['JavaScriptOneInclude', 'JavaScriptExtJsRequire', 'HtmlAnchor']), to: {url: query.not(/^https?:/)}})
     }),
     transforms.stripDevelopmentModeFromOneBootstrapper({type: 'Html', isInitial: true}),
