@@ -6,7 +6,7 @@ var _ = require('underscore'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist').
-        usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] --outroot <outputRootDirectory> [--locale <localeId>,...] [--cdnroot <url>] [--manifest] <htmlFile>...').
+        usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] --outroot <outputRootDirectory> [--locale <localeId>,...] [--cdnroot <url>] [--manifest] [--nocompress] <htmlFile>...').
         boolean('manifest').
         demand(['root', 'outroot']).
         argv,
@@ -38,7 +38,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     transforms.postProcessBackgroundImages(),
     transforms.bundleAssets({type: 'Css', incoming: {type: 'HtmlStyle', node: function (node) {return !node.getAttribute('media');}}}),
     transforms.bundleAssets({type: 'JavaScript', incoming: {type: 'HtmlScript'}}),
-    transforms.compressJavaScript({type: 'JavaScript'}),
+    !commandLineOptions.nocompress && transforms.compressJavaScript({type: 'JavaScript'}),
     localeIds && transforms.cloneForEachLocale({type: 'Html', isInitial: true}, localeIds),
     localeIds && transforms.runJavaScriptConditionalBlocks({isInitial: true}, 'localize', true),
     transforms.removeAssets({type: 'I18n'}, true),
@@ -52,6 +52,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     }),
     transforms.moveAssetsToDirectory({isInitial: query.not(true), type: query.not('CacheManifest')}, '/static'),
     cdnroot && transforms.moveAssetsToNewRoot({type: ['Png', 'Gif', 'Jpeg', 'Ico', 'Css', 'JavaScript', 'CacheManifest']}, cdnroot),
+    commandLineOptions.nocompress && transforms.prettyPrintAssets({type: ['Html', 'JavaScript', 'Css']}),
     transforms.renameAssetsToMd5Prefix({isInitial: query.not(true), type: query.not('CacheManifest')}),
     transforms.parallel(
         transforms.writeAssetsToDisc({url: /^file:/}, outroot),
