@@ -4,6 +4,12 @@ AssetGraph-builder
 AssetGraph-based build system for web apps and web applications. Comes
 with its own localization system.
 
+
+Installation
+------------
+See https://gist.github.com/1079141
+
+
 License
 -------
 
