@@ -31,43 +31,44 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
         var existingI18nRelations = assetGraph.findRelations({to: {type: 'I18n'}, from: {type: 'JavaScript'}});
 
         i18nTools.findOneTrOccurrences(assetGraph, assetGraph.findAssets({type: 'Html', isInitial: true}), passError(cb, function (oneTrOccurrencesByKey) {
-            seq(assetGraph.findAssets({type: 'I18n'}))
-                .parEach(function (i18nAsset) {
-                    i18nAsset.getParseTree(this);
-                })
-                .unflatten()
-                .seq(function (i18nAssets) {
-                    _.keys(oneTrOccurrencesByKey).forEach(function (key) {
-                        var occurrences = oneTrOccurrencesByKey[key];
-                        if (occurrences.length > 1) {
-                            for (var i = 1 ; i < occurrences.length ; i += 1) {
-                                if (!_.isEqual(occurrences[0].defaultValueAst, occurrences[1].defaultValueAst)) {
-                                    console.warn("Default values for " + key + " are different");
-                                }
+            seq(_.keys(oneTrOccurrencesByKey))
+                .seqEach(function (key) {
+                    var occurrences = oneTrOccurrencesByKey[key];
+                    if (occurrences.length > 1) {
+                        for (var i = 1 ; i < occurrences.length ; i += 1) {
+                            if (!_.isEqual(occurrences[0].defaultValueAst, occurrences[1].defaultValueAst)) {
+                                console.warn("Default values for " + key + " are different");
                             }
                         }
-                        var i18nAsset = i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, oneTrOccurrencesByKey);
-                        localeIds.forEach(function (localeId) {
-                            var prioritizedLocaleIds = i18nTools.expandLocaleIdToPrioritizedList(localeId);
-                            if (key in i18nAsset.parseTree) {
-                                for (var i = 0 ; i < prioritizedLocaleIds.length ; i += 1) {
-                                    if (prioritizedLocaleIds[i] in i18nAsset.parseTree[key]) {
-                                        return; // Already found, don't do anything
-                                    }
+                    }
+                    i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, oneTrOccurrencesByKey, this.into(key));
+                })
+                .seqEach(function (key) {
+                    var i18nAsset = this.vars[key],
+                        occurrences = oneTrOccurrencesByKey[key];
+                    localeIds.forEach(function (localeId) {
+                        var prioritizedLocaleIds = i18nTools.expandLocaleIdToPrioritizedList(localeId);
+                        if (key in i18nAsset.parseTree) {
+                            for (var i = 0 ; i < prioritizedLocaleIds.length ; i += 1) {
+                                if (prioritizedLocaleIds[i] in i18nAsset.parseTree[key]) {
+                                    return; // Already found, don't do anything
                                 }
-                            } else {
-                                i18nAsset.parseTree[key] = {};
                             }
-                            var leastSpecificLocaleId = prioritizedLocaleIds[prioritizedLocaleIds.length - 1],
-                                value = null;
-                            if (leastSpecificLocaleId === 'en' && occurrences[0].defaultValueAst) {
-                                value = uglifyAst.astToObj(occurrences[0].defaultValueAst);
-                            }
-                            i18nAsset.parseTree[key][leastSpecificLocaleId] = value;
-                            console.log(i18nAsset.url + ": " + key + " already found, added entry for " + leastSpecificLocaleId);
-                            assetGraph.markAssetDirty(i18nAsset);
-                        });
+                        } else {
+                            i18nAsset.parseTree[key] = {};
+                        }
+                        var leastSpecificLocaleId = prioritizedLocaleIds[prioritizedLocaleIds.length - 1],
+                            value = null;
+                        if (leastSpecificLocaleId === 'en' && occurrences[0].defaultValueAst) {
+                            value = uglifyAst.astToObj(occurrences[0].defaultValueAst);
+                        }
+                        i18nAsset.parseTree[key][leastSpecificLocaleId] = value;
+                        console.log(i18nAsset.url + ": " + key + " already found, added entry for " + leastSpecificLocaleId);
+                        assetGraph.markAssetDirty(i18nAsset);
                     });
+                    this();
+                })
+                .seq(function () {
                     // Find the JavaScript => I18n relations that didn't exist when we started:
                     var newI18nRelationsByJavaScriptId = {};
                     assetGraph.findRelations({to: {type: 'I18n'}, from: {type: 'JavaScript'}}).forEach(function (i18nRelation) {
