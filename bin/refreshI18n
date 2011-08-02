@@ -51,8 +51,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
                                 }
                             }
                         }
-                        var numFound = 0,
-                            foundByLocaleId = {};
+                        var numFound = 0;
                         i18nAssets.forEach(function (i18nAsset) {
                             if (key in i18nAsset.parseTree) {
                                 numFound += 1;
