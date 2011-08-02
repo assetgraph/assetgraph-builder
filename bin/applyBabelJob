@@ -1,0 +1,128 @@
+#!/usr/bin/env node
+
+var path = require('path'),
+    fs = require('fs'),
+    _ = require('underscore'),
+    seq = require('seq'),
+    AssetGraph = require('assetgraph'),
+    transforms = require('../lib/transforms'),
+    passError = require('assetgraph/lib/util/passError'),
+    i18nTools = require('../lib/util/i18nTools'),
+    uglifyAst = require('assetgraph/lib/util/uglifyAst'),
+    urlTools = require('assetgraph/lib/util/urlTools'),
+    mkpathSync = require('../lib/util/mkpathSync'),
+    commandLineOptions = require('optimist')
+        .usage('$0 [--label <labelName>=<dir> ...] --babeldir=<dirContainingTheBabelFilesToApply> --root <inputRootDirectory> <htmlFile>...')
+        .demand(['root', 'babeldir'])
+        .argv;
+
+mkpathSync(commandLineOptions.outdir);
+
+new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (transform, elapsedTime) {
+    console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
+}).on('error', function (err) {
+    console.error(err.stack);
+    process.exit(1);
+}).queue(
+    transforms.registerLabelsAsCustomProtocols(commandLineOptions.label),
+    transforms.loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl)),
+    transforms.populate({followRelations: {type: ['HtmlScript', 'JavaScriptOneInclude'], to: {url: AssetGraph.query.not(/^https?:/)}}}),
+    function (assetGraph, cb) {
+        var translationsByKeyAndLocaleId = {},
+            i18nAssets = assetGraph.findAssets({type: 'I18n'});
+        seq(i18nAssets)
+            // First load all existing I18n assets so i18nTools.getOrCreateI18nAssetForKey will work
+            .parEach(function (i18nAsset) {
+                i18nAsset.getParseTree(this);
+            })
+            .empty()
+            .seq(function () {
+                fs.readdir(commandLineOptions.babeldir, this);
+            })
+            .flatten()
+            .parEach(function (fileName) {
+                if (fileName === 'SOURCE.txt') {
+                    console.warn("Skipping " + fileName);
+                    return this();
+                }
+                var matchLocaleId = fileName.match(/^([a-zA-Z0-9\-\_]+)\.(?:txt|babel)$/);
+                if (matchLocaleId) {
+                    var localeId = matchLocaleId[1].replace(/-/g, "_");
+                    fs.readFile(path.resolve(commandLineOptions.babeldir, fileName), 'utf-8', this.into(localeId));
+                } else {
+                    this(new Error("Couldn't parse babel file name: " + fileName));
+                }
+            })
+            .seq(function () {
+                var existingI18nRelations = assetGraph.findRelations({to: {type: 'I18n'}, from: {type: 'JavaScript'}});
+                // this.vars is (localeId => file contents) object
+                _.each(this.vars, function (babelBody, localeId) {
+                    babelBody.split(/\r?\n|\r\n?/).forEach(function (line, lineNumber) {
+                        if (!/^\s*\#|^\s*$/.test(line)) { // Skip comments and empty lines
+                            var matchKeyValue = line.match(/^([^=]+)=(.*)$/);
+                            if (matchKeyValue) {
+                                var key = matchKeyValue[1].trim(),
+                                    value = matchKeyValue[2].trim();
+                                if (!(key in translationsByKeyAndLocaleId)) {
+                                    translationsByKeyAndLocaleId[key] = {};
+                                }
+                                translationsByKeyAndLocaleId[key][localeId] = value.replace(/\\([n\\])/, function ($0, ch) {
+                                    return ch === "n" ? "\n" : ch;
+                                });
+                            } else {
+                                console.warn("Couldn't parse line " + (lineNumber + 1) + " of the " + localeId + " file: " + line);
+                            }
+                        }
+                    });
+                });
+                i18nTools.findOneTrOccurrences(assetGraph, assetGraph.findAssets({type: 'Html', isInitial: true}), passError(cb, function (oneTrOccurrencesByKey) {
+                    _.each(translationsByKeyAndLocaleId, function (translationsByLocaleId, key) {
+                        var i18nAsset = i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, i18nAssets, oneTrOccurrencesByKey);
+                        if (!(key in i18nAsset.parseTree)) {
+                            i18nAsset.parseTree[key] = {};
+                            assetGraph.markAssetDirty(i18nAsset);
+                        }
+                        _.each(translationsByLocaleId, function (translation, localeId) {
+                            if (!(localeId in i18nAsset.parseTree[key]) || translation !== i18nAsset.parseTree[key][localeId]) {
+                                i18nAsset.parseTree[key][localeId] = translation;
+                                assetGraph.markAssetDirty(i18nAsset);
+                            }
+                        });
+                    });
+
+                    // Find the JavaScript => I18n relations that didn't exist when we started:
+                    var newI18nRelationsByJavaScriptId = {};
+                    assetGraph.findRelations({to: {type: 'I18n'}, from: {type: 'JavaScript'}}).forEach(function (i18nRelation) {
+                        if (existingI18nRelations.indexOf(i18nRelation) === -1) {
+                            (newI18nRelationsByJavaScriptId[i18nRelation.from.id] = newI18nRelationsByJavaScriptId[i18nRelation.from.id] || []).push(i18nRelation);
+                        }
+                    });
+                    // Hack: Inject the new relations at the top of the file
+                    _.each(newI18nRelationsByJavaScriptId, function (i18nRelations, javaScriptId) {
+                        var javaScript = assetGraph.idIndex[javaScriptId];
+                        assetGraph.markAssetDirty(javaScript);
+                        javaScript.getText = function (cb) {
+                            javaScript.getDecodedSrc(passError(cb, function (decodedSrc) {
+                                var oneIncludeStatements = i18nRelations.map(function (i18nRelation) {
+                                    return "one.include('" +
+                                        urlTools.buildRelativeUrl(i18nRelation.from.url || assetGraph.findBaseAssetForRelation(i18nRelation).url, i18nRelation.to.url) +
+                                        "');\n";
+                                }).join("");
+                                var matchSplitAfterLastOneIncludeLine = decodedSrc.match(/^([\s\S]*one\.include[^\n]*\n)([\s\S]*)$/);
+                                if (matchSplitAfterLastOneIncludeLine) {
+                                    cb(null, matchSplitAfterLastOneIncludeLine[1] + "\n" + oneIncludeStatements + matchSplitAfterLastOneIncludeLine[2]);
+                                } else {
+                                    cb(null, oneIncludeStatements + decodedSrc);
+                                }
+                            }));
+                        };
+                    });
+                    cb();
+                }));
+            })
+            ['catch'](cb);
+    },
+    transforms.prettyPrintAssets({type: 'I18n', isDirty: true}),
+    transforms.stats(),
+    transforms.writeAssetsToDisc({type: ['I18n', 'JavaScript'], isDirty: true})
+).run();
