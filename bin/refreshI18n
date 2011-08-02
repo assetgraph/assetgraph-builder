@@ -28,12 +28,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
         assetGraph.findAssets({isDirty: true}).forEach(function (dirtyAsset) {
             dirtyAsset.isDirty = false;
         });
-        var prioritizedLocaleIdsByLocaleId = {},
-            newI18nRelationsByJavaScriptId = {};
-
-        localeIds.forEach(function (localeId) {
-            prioritizedLocaleIdsByLocaleId[localeId] = i18nTools.expandLocaleIdToPrioritizedList(localeId);
-        });
+        var newI18nRelationsByJavaScriptId = {};
 
         i18nTools.findOneTrOccurrences(assetGraph, assetGraph.findAssets({type: 'Html', isInitial: true}), passError(cb, function (oneTrOccurrencesByKey) {
             seq(assetGraph.findAssets({type: 'I18n'}))
@@ -56,7 +51,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
                             if (key in i18nAsset.parseTree) {
                                 numFound += 1;
                                 localeIds.forEach(function (localeId) {
-                                    var prioritizedLocaleIds = prioritizedLocaleIdsByLocaleId[localeId];
+                                    var prioritizedLocaleIds = i18nTools.expandLocaleIdToPrioritizedList(localeId);
                                     for (var i = 0 ; i < prioritizedLocaleIds.length ; i += 1) {
                                         if (prioritizedLocaleIds[i] in i18nAsset.parseTree[key]) {
                                             return; // Found
@@ -112,8 +107,8 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
                             }
                             i18nAsset.parseTree[key] = {};
                             localeIds.forEach(function (localeId) {
-                                var prioritizedList = prioritizedLocaleIdsByLocaleId[localeId],
-                                    leastSpecificLocaleId = prioritizedList[prioritizedList.length - 1],
+                                var prioritizedLocaleIds = i18nTools.expandLocaleIdToPrioritizedList(localeId),
+                                    leastSpecificLocaleId = prioritizedLocaleIds[prioritizedLocaleIds.length - 1],
                                     value = null;
                                 if (leastSpecificLocaleId === 'en' && occurrences[0].defaultValueAst) {
                                     value = uglifyAst.astToObj(occurrences[0].defaultValueAst);
