@@ -46,7 +46,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
                                 }
                             }
                         }
-                        var i18nAsset = i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, i18nAssets, oneTrOccurrencesByKey);
+                        var i18nAsset = i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, oneTrOccurrencesByKey);
                         localeIds.forEach(function (localeId) {
                             var prioritizedLocaleIds = i18nTools.expandLocaleIdToPrioritizedList(localeId);
                             if (key in i18nAsset.parseTree) {

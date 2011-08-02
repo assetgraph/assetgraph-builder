@@ -28,9 +28,8 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     transforms.loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl)),
     transforms.populate({followRelations: {type: ['HtmlScript', 'JavaScriptOneInclude'], to: {url: AssetGraph.query.not(/^https?:/)}}}),
     function (assetGraph, cb) {
-        var translationsByKeyAndLocaleId = {},
-            i18nAssets = assetGraph.findAssets({type: 'I18n'});
-        seq(i18nAssets)
+        var translationsByKeyAndLocaleId = {};
+        seq(assetGraph.findAssets({type: 'I18n'}))
             // First load all existing I18n assets so i18nTools.getOrCreateI18nAssetForKey will work
             .parEach(function (i18nAsset) {
                 i18nAsset.getParseTree(this);
@@ -77,7 +76,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
                 });
                 i18nTools.findOneTrOccurrences(assetGraph, assetGraph.findAssets({type: 'Html', isInitial: true}), passError(cb, function (oneTrOccurrencesByKey) {
                     _.each(translationsByKeyAndLocaleId, function (translationsByLocaleId, key) {
-                        var i18nAsset = i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, i18nAssets, oneTrOccurrencesByKey);
+                        var i18nAsset = i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, oneTrOccurrencesByKey);
                         if (!(key in i18nAsset.parseTree)) {
                             i18nAsset.parseTree[key] = {};
                             assetGraph.markAssetDirty(i18nAsset);
