@@ -12,12 +12,12 @@ var path = require('path'),
     urlTools = require('assetgraph/lib/util/urlTools'),
     mkpathSync = require('../lib/util/mkpathSync'),
     commandLineOptions = require('optimist')
-        .usage('$0 [--label <labelName>=<dir> ...] --outdir=<dirForBabelFiles> --root <inputRootDirectory> --locale <localeId>,... <htmlFile>...')
-        .demand(['root', 'locale', 'outdir'])
+        .usage('$0 [--label <labelName>=<dir> ...] --babeldir=<dirForBabelFiles> --root <inputRootDirectory> --locale <localeId>,... <htmlFile>...')
+        .demand(['root', 'locale', 'babeldir'])
         .argv,
     localeIds = _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");}));
 
-mkpathSync(commandLineOptions.outdir);
+mkpathSync(commandLineOptions.babeldir);
 
 new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (transform, elapsedTime) {
     console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
@@ -39,7 +39,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
                             babelSrc += key + "=" + allKeys[key][localeId].replace(/\\/g, "\\\\").replace(/\n/g, "\\n") + "\n";
                         }
                     });
-                    var targetBabelFileName = path.resolve(commandLineOptions.outdir, localeId + '.txt');
+                    var targetBabelFileName = path.resolve(commandLineOptions.babeldir, localeId + '.txt');
                     if (babelSrc.length) {
                         console.warn("Writing " + targetBabelFileName);
                         fs.writeFileSync(targetBabelFileName, babelSrc, 'utf-8');
