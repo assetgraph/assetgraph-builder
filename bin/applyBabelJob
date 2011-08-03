@@ -74,6 +74,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
                 });
                 this(null, _.keys(translationsByKeyAndLocaleId));
             })
+            .flatten()
             .seqEach(function (key) {
                 i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, oneTrOccurrencesByKey, this.into(key));
             })
