@@ -16,8 +16,6 @@ var path = require('path'),
         .demand(['root', 'babeldir'])
         .argv;
 
-mkpathSync(commandLineOptions.outdir);
-
 new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (transform, elapsedTime) {
     console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
 }).on('error', function (err) {
