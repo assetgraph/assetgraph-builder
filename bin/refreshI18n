@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 
 var _ = require('underscore'),
-    seq = require('seq'),
     AssetGraph = require('assetgraph'),
     transforms = require('../lib/transforms'),
-    passError = require('assetgraph/lib/util/passError'),
     i18nTools = require('../lib/util/i18nTools'),
     uglifyAst = require('assetgraph/lib/util/uglifyAst'),
     urlTools = require('assetgraph/lib/util/urlTools'),
@@ -23,83 +21,68 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     transforms.registerLabelsAsCustomProtocols(commandLineOptions.label),
     transforms.loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl)),
     transforms.populate({followRelations: {type: ['HtmlScript', 'JavaScriptOneInclude'], to: {url: AssetGraph.query.not(/^https?:/)}}}),
-    function (assetGraph, cb) {
+    function (assetGraph) {
         // We don't want to overwrite the "initially dirty" assets, such as ext-base.js.
         assetGraph.findAssets({isDirty: true}).forEach(function (dirtyAsset) {
             dirtyAsset.isDirty = false;
         });
-        var existingI18nRelations = assetGraph.findRelations({to: {type: 'I18n'}, from: {type: 'JavaScript'}});
+        var existingI18nRelations = assetGraph.findRelations({to: {type: 'I18n'}, from: {type: 'JavaScript'}}),
+            oneTrOccurrencesByKey = i18nTools.findOneTrOccurrences(assetGraph, assetGraph.findAssets({type: 'Html', isInitial: true}));
 
-        i18nTools.findOneTrOccurrences(assetGraph, assetGraph.findAssets({type: 'Html', isInitial: true}), passError(cb, function (oneTrOccurrencesByKey) {
-            seq(_.keys(oneTrOccurrencesByKey))
-                .seqEach(function (key) {
-                    var occurrences = oneTrOccurrencesByKey[key];
-                    if (occurrences.length > 1) {
-                        for (var i = 1 ; i < occurrences.length ; i += 1) {
-                            if (!_.isEqual(occurrences[0].defaultValueAst, occurrences[1].defaultValueAst)) {
-                                console.warn("Default values for " + key + " are different");
-                            }
+        _.keys(oneTrOccurrencesByKey).forEach(function (key) {
+            var occurrences = oneTrOccurrencesByKey[key];
+            if (occurrences.length > 1) {
+                for (var i = 1 ; i < occurrences.length ; i += 1) {
+                    if (!_.isEqual(occurrences[0].defaultValueAst, occurrences[1].defaultValueAst)) {
+                        console.warn("Default values for " + key + " are different");
+                    }
+                }
+            }
+            var i18nAsset = i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, oneTrOccurrencesByKey);
+            localeIds.forEach(function (localeId) {
+                var prioritizedLocaleIds = i18nTools.expandLocaleIdToPrioritizedList(localeId);
+                if (key in i18nAsset.parseTree) {
+                    for (var i = 0 ; i < prioritizedLocaleIds.length ; i += 1) {
+                        if (prioritizedLocaleIds[i] in i18nAsset.parseTree[key]) {
+                            return; // Already found, don't do anything
                         }
                     }
-                    i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, oneTrOccurrencesByKey, this.into(key));
-                })
-                .seqEach(function (key) {
-                    var i18nAsset = this.vars[key],
-                        occurrences = oneTrOccurrencesByKey[key];
-                    localeIds.forEach(function (localeId) {
-                        var prioritizedLocaleIds = i18nTools.expandLocaleIdToPrioritizedList(localeId);
-                        if (key in i18nAsset.parseTree) {
-                            for (var i = 0 ; i < prioritizedLocaleIds.length ; i += 1) {
-                                if (prioritizedLocaleIds[i] in i18nAsset.parseTree[key]) {
-                                    return; // Already found, don't do anything
-                                }
-                            }
-                        } else {
-                            i18nAsset.parseTree[key] = {};
-                        }
-                        var leastSpecificLocaleId = prioritizedLocaleIds[prioritizedLocaleIds.length - 1],
-                            value = null;
-                        if (leastSpecificLocaleId === 'en' && occurrences[0].defaultValueAst) {
-                            value = uglifyAst.astToObj(occurrences[0].defaultValueAst);
-                        }
-                        i18nAsset.parseTree[key][leastSpecificLocaleId] = value;
-                        console.log(i18nAsset.url + ": " + key + " already found, added entry for " + leastSpecificLocaleId);
-                        assetGraph.markAssetDirty(i18nAsset);
-                    });
-                    this();
-                })
-                .seq(function () {
-                    // Find the JavaScript => I18n relations that didn't exist when we started:
-                    var newI18nRelationsByJavaScriptId = {};
-                    assetGraph.findRelations({to: {type: 'I18n'}, from: {type: 'JavaScript'}}).forEach(function (i18nRelation) {
-                        if (existingI18nRelations.indexOf(i18nRelation) === -1) {
-                            (newI18nRelationsByJavaScriptId[i18nRelation.from.id] = newI18nRelationsByJavaScriptId[i18nRelation.from.id] || []).push(i18nRelation);
-                        }
-                    });
-                    // Hack: Inject the new relations at the top of the file
-                    _.each(newI18nRelationsByJavaScriptId, function (i18nRelations, javaScriptId) {
-                        var javaScript = assetGraph.idIndex[javaScriptId];
-                        assetGraph.markAssetDirty(javaScript);
-                        javaScript.getText = function (cb) {
-                            javaScript.getDecodedSrc(passError(cb, function (decodedSrc) {
-                                var oneIncludeStatements = i18nRelations.map(function (i18nRelation) {
-                                    return "one.include('" +
-                                        urlTools.buildRelativeUrl(i18nRelation.from.url || assetGraph.findBaseAssetForRelation(i18nRelation).url, i18nRelation.to.url) +
-                                        "');\n";
-                                }).join("");
-                                var matchSplitAfterLastOneIncludeLine = decodedSrc.match(/^([\s\S]*one\.include[^\n]*\n)([\s\S]*)$/);
-                                if (matchSplitAfterLastOneIncludeLine) {
-                                    cb(null, matchSplitAfterLastOneIncludeLine[1] + "\n" + oneIncludeStatements + matchSplitAfterLastOneIncludeLine[2]);
-                                } else {
-                                    cb(null, oneIncludeStatements + decodedSrc);
-                                }
-                            }));
-                        };
-                    });
-                    cb();
-                })
-                ['catch'](cb);
-        }));
+                } else {
+                    i18nAsset.parseTree[key] = {};
+                }
+                var leastSpecificLocaleId = prioritizedLocaleIds[prioritizedLocaleIds.length - 1],
+                    value = null;
+                if (leastSpecificLocaleId === 'en' && occurrences[0].defaultValueAst) {
+                    value = uglifyAst.astToObj(occurrences[0].defaultValueAst);
+                }
+                i18nAsset.parseTree[key][leastSpecificLocaleId] = value;
+                console.log(i18nAsset.url + ": " + key + " already found, added entry for " + leastSpecificLocaleId);
+                i18nAsset.markDirty();
+            });
+        });
+
+        // Find the JavaScript => I18n relations that didn't exist when we started:
+        var newI18nRelationsByJavaScriptId = {};
+        assetGraph.findRelations({to: {type: 'I18n'}, from: {type: 'JavaScript'}}).forEach(function (i18nRelation) {
+            if (existingI18nRelations.indexOf(i18nRelation) === -1) {
+                (newI18nRelationsByJavaScriptId[i18nRelation.from.id] = newI18nRelationsByJavaScriptId[i18nRelation.from.id] || []).push(i18nRelation);
+            }
+        });
+        // Hack: Inject the new relations at the top of the file
+        _.each(newI18nRelationsByJavaScriptId, function (i18nRelations, javaScriptId) {
+            var javaScript = assetGraph.idIndex[javaScriptId],
+                oneIncludeStatements = i18nRelations.map(function (i18nRelation) {
+                    return "one.include('" +
+                        urlTools.buildRelativeUrl(i18nRelation.from.url || assetGraph.findBaseAssetForRelation(i18nRelation).url, i18nRelation.to.url) +
+                        "');\n";
+                }).join(""),
+                matchSplitAfterLastOneIncludeLine = javaScript.text.match(/^([\s\S]*one\.include[^\n]*\n)([\s\S]*)$/);
+            if (matchSplitAfterLastOneIncludeLine) {
+                javaScript.text = matchSplitAfterLastOneIncludeLine[1] + "\n" + oneIncludeStatements + matchSplitAfterLastOneIncludeLine[2];
+            } else {
+                javaScript.text = oneIncludeStatements + javaScript.text;
+            }
+        });
     },
     transforms.prettyPrintAssets({type: 'I18n', isDirty: true}),
     transforms.stats(),
