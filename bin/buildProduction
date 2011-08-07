@@ -44,11 +44,10 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     transforms.removeAssets({type: 'I18n'}, true),
     commandLineOptions.manifest && transforms.addCacheManifestSinglePage({isInitial: true}),
     transforms.minifyAssets(),
-    transforms.computeSerializedSize({type: ['JavaScript', 'Css']}),
     transforms.inlineRelations({
         type: ['HtmlStyle', 'HtmlScript'],
         from: {url: query.isDefined}, // Excludes relations occurring in conditional comments
-        to: function (asset) {return asset.serializedSize < 4096;}
+        to: function (asset) {return asset.rawSrc.length < 4096;}
     }),
     transforms.moveAssetsToDirectory({isInitial: query.not(true), type: query.not('CacheManifest')}, '/static'),
     cdnroot && transforms.moveAssetsToNewRoot({type: ['Png', 'Gif', 'Jpeg', 'Ico', 'Css', 'JavaScript', 'CacheManifest']}, cdnroot),

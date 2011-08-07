@@ -2,7 +2,6 @@
 
 var fs = require('fs'),
     _ = require('underscore'),
-    seq = require('seq'),
     AssetGraph = require('assetgraph'),
     transforms = require('../lib/transforms'),
     urlTools = require('assetgraph/lib/util/urlTools'),
@@ -26,31 +25,21 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     transforms.registerLabelsAsCustomProtocols(commandLineOptions.label),
     transforms.loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl)),
     transforms.populate({followRelations: {type: 'JavaScriptOneInclude'}}),
-    function (err, assetGraph, cb) {
-        seq()
-            .extend(assetGraph.findAssets({isInitial: true}))
-            .seq(function (initialAsset) {
-                this(null, assetGraph.collectAssetsPostOrder(initialAsset, {to: {type: 'JavaScript'}}));
-            })
-            .flatten()
-            .parMap(function (asset) {
+    function (assetGraph) {
+        assetGraph.findAssets({isInitial: true}).forEach(function (initialAsset) {
+            var texts = [];
+            assetGraph.collectAssetsPostOrder(initialAsset, {to: {type: 'JavaScript'}}).forEach(function (asset) {
                 assetGraph.findRelations({from: asset}).forEach(function (outgoingRelation) {
                     assetGraph.detachAndRemoveRelation(outgoingRelation);
                 });
-                asset.getDecodedSrc(this);
-            })
-            .unflatten()
-            .seq(function (decodedSrcs) {
-                var flattenedSrc = decodedSrcs.join("\n").replace(/one\.include\(([^\)]*)\);?\n?/g, "");
-                if ('o' in commandLineOptions) {
-                    fs.writeFile(commandLineOptions.o, flattenedSrc, AssetGraph.assets.JavaScript.prototype.encoding, cb);
-                } else {
-                    console.log(flattenedSrc);
-                }
-            })
-            .seq(function () {
-                cb();
-            })
-            ['catch'](cb);
+                texts.push(asset.text);
+            });
+            var flattenedText = texts.join("\n").replace(/one\.include\(([^\)]*)\);?\n?/g, "");
+            if ('o' in commandLineOptions) {
+                fs.writeFileSync(commandLineOptions.o, flattenedText, AssetGraph.assets.JavaScript.prototype.encoding);
+            } else {
+                console.log(flattenedText);
+            }
+        });
     }
 ).run();

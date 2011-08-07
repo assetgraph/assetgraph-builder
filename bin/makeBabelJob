@@ -3,10 +3,8 @@
 var path = require('path'),
     fs = require('fs'),
     _ = require('underscore'),
-    seq = require('seq'),
     AssetGraph = require('assetgraph'),
     transforms = require('../lib/transforms'),
-    passError = require('assetgraph/lib/util/passError'),
     i18nTools = require('../lib/util/i18nTools'),
     uglifyAst = require('assetgraph/lib/util/uglifyAst'),
     urlTools = require('assetgraph/lib/util/urlTools'),
@@ -28,26 +26,24 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     transforms.registerLabelsAsCustomProtocols(commandLineOptions.label),
     transforms.loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl)),
     transforms.populate({followRelations: {type: ['HtmlScript', 'JavaScriptOneInclude'], to: {url: AssetGraph.query.not(/^https?:/)}}}),
-    function (assetGraph, cb) {
-        var initialHtmlAssets = assetGraph.findAssets({type: 'Html', isInitial: true});
-        i18nTools.findOneTrOccurrences(assetGraph, initialHtmlAssets, passError(cb, function (oneTrOccurrencesByKey) {
-            i18nTools.extractAllReachableKeys(assetGraph, initialHtmlAssets, passError(cb, function (allKeys) {
-                localeIds.forEach(function (localeId) {
-                    var babelSrc = '';
-                    _.each(oneTrOccurrencesByKey, function (occurrences, key) {
-                        if (key in allKeys && localeId in allKeys[key] && allKeys[key][localeId] !== null) {
-                            babelSrc += key + "=" + allKeys[key][localeId].replace(/\\/g, "\\\\").replace(/\n/g, "\\n") + "\n";
-                        }
-                    });
-                    var targetBabelFileName = path.resolve(commandLineOptions.babeldir, localeId + '.txt');
-                    if (babelSrc.length) {
-                        console.warn("Writing " + targetBabelFileName);
-                        fs.writeFileSync(targetBabelFileName, babelSrc, 'utf-8');
-                    } else {
-                        console.warn("No existing keys for " + localeId + ", not writing " + targetBabelFileName);
-                    }
-                });
-            }));
-        }));
+    function (assetGraph) {
+        var initialHtmlAssets = assetGraph.findAssets({type: 'Html', isInitial: true}),
+            oneTrOccurrencesByKey = i18nTools.findOneTrOccurrences(assetGraph, initialHtmlAssets),
+            allKeys = i18nTools.extractAllReachableKeys(assetGraph, initialHtmlAssets);
+        localeIds.forEach(function (localeId) {
+            var babelSrc = '';
+            _.each(oneTrOccurrencesByKey, function (occurrences, key) {
+                if (key in allKeys && localeId in allKeys[key] && allKeys[key][localeId] !== null) {
+                    babelSrc += key + "=" + allKeys[key][localeId].replace(/\\/g, "\\\\").replace(/\n/g, "\\n") + "\n";
+                }
+            });
+            var targetBabelFileName = path.resolve(commandLineOptions.babeldir, localeId + '.txt');
+            if (babelSrc.length) {
+                console.warn("Writing " + targetBabelFileName);
+                fs.writeFileSync(targetBabelFileName, babelSrc, 'utf-8');
+            } else {
+                console.warn("No existing keys for " + localeId + ", not writing " + targetBabelFileName);
+            }
+        });
     }
 ).run();
