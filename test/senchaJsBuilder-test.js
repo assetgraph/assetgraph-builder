@@ -96,9 +96,8 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
                     assert.equal(assetGraph.findRelations({type: 'HtmlScript'}).length, 4);
                 },
                 'the order should be A1.js, B1.js, C1.js, inline script': function (assetGraph) {
-                    assert.deepEqual(assetGraph.findRelations({type: 'HtmlScript'}).map(function (htmlScript) {
-                        return htmlScript._getRawUrlString();
-                    }), ['js/A1.js', 'js/B1.js', 'js/C1.js', undefined]);
+                    assert.deepEqual(_.pluck(assetGraph.findRelations({type: 'HtmlScript'}), 'href'),
+                                     ['js/A1.js', 'js/B1.js', 'js/C1.js', undefined]);
                 }
             }
         }
@@ -137,9 +136,8 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
                     assert.equal(assetGraph.findRelations({type: 'HtmlScript'}).length, 4);
                 },
                 'The order should be A1.js, B1.js, C1.js, inline script': function (assetGraph) {
-                    assert.deepEqual(assetGraph.findRelations({type: 'HtmlScript'}).map(function (htmlScript) {
-                        return htmlScript._getRawUrlString();
-                    }), ['js/A1.js', 'js/B1.js', 'js/C1.js', undefined]);
+                    assert.deepEqual(_.pluck(assetGraph.findRelations({type: 'HtmlScript'}), 'href'),
+                                     ['js/A1.js', 'js/B1.js', 'js/C1.js', undefined]);
                 }
             }
         }
