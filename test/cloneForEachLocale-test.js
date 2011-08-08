@@ -7,7 +7,7 @@ var vows = require('vows'),
     query = require('assetgraph').query,
     i18nTools = require('../lib/util/i18nTools');
 
-function getJavaScriptTextAndBootstrappedContext(assetGraph, htmlQueryObj, cb) {
+function getJavaScriptTextAndBootstrappedContext(assetGraph, htmlQueryObj) {
     var htmlAsset = assetGraph.findAssets(htmlQueryObj)[0],
         htmlScriptRelations = assetGraph.findRelations({from: htmlAsset, to: {type: 'JavaScript'}}),
         inlineJavaScript;
@@ -17,14 +17,11 @@ function getJavaScriptTextAndBootstrappedContext(assetGraph, htmlQueryObj, cb) {
     } else {
         inlineJavaScript = htmlScriptRelations[0].to;
     }
-    assetGraph.getAssetText(inlineJavaScript, function (err, text) {
-        if (err) {
-            return cb(err);
-        }
-        i18nTools.getBootstrappedContext(assetGraph, assetGraph.findAssets(htmlQueryObj)[0], passError(cb, function (context) {
-            cb(null, text, context);
-        }));
-    });
+
+    return {
+        text: assetGraph.getAssetText(inlineJavaScript),
+        context: i18nTools.getBootstrappedContext(assetGraph, assetGraph.findAssets(htmlQueryObj)[0])
+    };
 }
 
 function evaluateInContext(src, context) {
@@ -51,16 +48,14 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         },
         'then running the cloneForEachLocale transform': {
             topic: function (assetGraph) {
-                assetGraph.queue(
-                    transforms.cloneForEachLocale({type: 'Html'}, ['en_US', 'da'])
-                ).run(this.callback);
+                assetGraph.runTransform(transforms.cloneForEachLocale({type: 'Html'}, ['en_US', 'da']), this.callback);
             },
             'the graph should contain 2 Html assets': function (assetGraph) {
                 assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
             },
             'then getting the text of the American English version of the Html asset': {
                 topic: function (assetGraph) {
-                    assetGraph.getAssetText(assetGraph.findAssets({url: /\/index\.en_US\.html$/})[0], this.callback);
+                    return assetGraph.getAssetText(assetGraph.findAssets({url: /\/index\.en_US\.html$/})[0]);
                 },
                 'the html tag should have a lang attribute with a value of "en_US"': function (text) {
                     assert.isTrue(/<html[^>]+lang=([\'\"])en_US\1/.test(text));
@@ -68,7 +63,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             },
             'then getting the text of the Danish version of the Html asset': {
                 topic: function (assetGraph) {
-                    assetGraph.getAssetText(assetGraph.findAssets({url: /\/index\.da\.html$/})[0], this.callback);
+                    return assetGraph.getAssetText(assetGraph.findAssets({url: /\/index\.da\.html$/})[0]);
                 },
                 'the html tag should have a lang attribute with a value of "da"': function (text) {
                     assert.isTrue(/<html[^>]+lang=([\'\"])da\1/.test(text));
@@ -76,7 +71,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             },
             'then getting the text of the American English Html asset': {
                 topic: function (assetGraph) {
-                    assetGraph.getAssetText(assetGraph.findAssets({url: /\/index\.en_US\.html$/})[0], this.callback);
+                    return assetGraph.getAssetText(assetGraph.findAssets({url: /\/index\.en_US\.html$/})[0]);
                 },
                 'the one.tr expression in the inline script should be replaced with the American English text': function (text) {
                     assert.isTrue(/var localizedString\s*=\s*([\'\"])The American English text\1/.test(text));
@@ -84,7 +79,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             },
             'then getting the text of the Danish Html asset': {
                 topic: function (assetGraph) {
-                    assetGraph.getAssetText(assetGraph.findAssets({url: /\/index\.da\.html$/})[0], this.callback);
+                    return assetGraph.getAssetText(assetGraph.findAssets({url: /\/index\.da\.html$/})[0]);
                 },
                 'the one.tr expression in the inline script should be replaced with the Danish text': function (text) {
                     assert.isTrue(/var localizedString\s*=\s*([\'\"])The Danish text\1/.test(text));
@@ -108,16 +103,16 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         },
         'then get the inline JavaScript asset as text': {
             topic: function (assetGraph) {
-                getJavaScriptTextAndBootstrappedContext(assetGraph, {type: 'Html'}, this.callback);
+                return getJavaScriptTextAndBootstrappedContext(assetGraph, {type: 'Html'});
             },
-            'the plainOneTr function should use the default pattern': function (err, text, context) {
-                assert.equal(evaluateInContext(text + "; return plainOneTr()", context), 'Plain default');
+            'the plainOneTr function should use the default pattern': function (obj) {
+                assert.equal(evaluateInContext(obj.text + "; return plainOneTr()", obj.context), 'Plain default');
             },
-            'the callOneTrPattern function should use the default pattern': function (err, text, context) {
-                assert.equal(evaluateInContext(text + "; return callOneTrPattern()", context), 'Boring and stupid default pattern');
+            'the callOneTrPattern function should use the default pattern': function (obj) {
+                assert.equal(evaluateInContext(obj.text + "; return callOneTrPattern()", obj.context), 'Boring and stupid default pattern');
             },
-            'the nonInvokedTrPattern should use the default pattern': function (err, text, context) {
-                assert.equal(evaluateInContext(text + "; return nonInvokedTrPattern('X')", context), 'Welcome to Default Country, Mr. X');
+            'the nonInvokedTrPattern should use the default pattern': function (obj) {
+                assert.equal(evaluateInContext(obj.text + "; return nonInvokedTrPattern('X')", obj.context), 'Welcome to Default Country, Mr. X');
             }
         },
         'then run the cloneForEachLocale transform': {
@@ -135,30 +130,30 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             },
             'then get the American English JavaScript as text along with the bootstrapped context': {
                 topic: function (assetGraph) {
-                    getJavaScriptTextAndBootstrappedContext(assetGraph, {type: 'Html', url: /\/index\.en_US\.html$/}, this.callback);
+                    return getJavaScriptTextAndBootstrappedContext(assetGraph, {type: 'Html', url: /\/index\.en_US\.html$/});
                 },
-                'the plainOneTr function should use the "en" pattern': function (err, text, context) {
-                    assert.equal(evaluateInContext(text + "; return plainOneTr()", context), 'Plain English');
+                'the plainOneTr function should use the "en" pattern': function (obj) {
+                    assert.equal(evaluateInContext(obj.text + "; return plainOneTr()", obj.context), 'Plain English');
                 },
-                'the callOneTrPattern function should use the "en" pattern': function (err, text, context) {
-                    assert.equal(evaluateInContext(text + "; return callOneTrPattern();", context), "Boring and stupid English pattern");
+                'the callOneTrPattern function should use the "en" pattern': function (obj) {
+                    assert.equal(evaluateInContext(obj.text + "; return callOneTrPattern();", obj.context), "Boring and stupid English pattern");
                 },
-                'the nonInvokedTrPattern should use the "en_US" pattern': function (err, text, context) {
-                    assert.equal(evaluateInContext(text + "; return nonInvokedTrPattern('X');", context), "Welcome to America, Mr. X");
+                'the nonInvokedTrPattern should use the "en_US" pattern': function (obj) {
+                    assert.equal(evaluateInContext(obj.text + "; return nonInvokedTrPattern('X');", obj.context), "Welcome to America, Mr. X");
                 }
             },
             'then get the Danish JavaScript as text': {
                 topic: function (assetGraph) {
-                    getJavaScriptTextAndBootstrappedContext(assetGraph, {type: 'Html', url: /\/index\.da\.html$/}, this.callback);
+                    return getJavaScriptTextAndBootstrappedContext(assetGraph, {type: 'Html', url: /\/index\.da\.html$/});
                 },
-                'the plainOneTr function should use the "en" pattern': function (err, text, context) {
-                    assert.equal(evaluateInContext(text + "; return plainOneTr()", context), 'Jævnt dansk');
+                'the plainOneTr function should use the "en" pattern': function (obj) {
+                    assert.equal(evaluateInContext(obj.text + "; return plainOneTr()", obj.context), 'Jævnt dansk');
                 },
-                'the callOneTrPattern function should use the "en" pattern': function (err, text, context) {
-                    assert.equal(evaluateInContext(text + "; return callOneTrPattern();", context), "Kedeligt and stupid dansk mønster");
+                'the callOneTrPattern function should use the "en" pattern': function (obj) {
+                    assert.equal(evaluateInContext(obj.text + "; return callOneTrPattern();", obj.context), "Kedeligt and stupid dansk mønster");
                 },
-                'the nonInvokedTrPattern should use the "en_US" pattern': function (err, text, context) {
-                    assert.equal(evaluateInContext(text + "; return nonInvokedTrPattern('X');", context), "Velkommen til Danmark, hr. X");
+                'the nonInvokedTrPattern should use the "en_US" pattern': function (obj) {
+                    assert.equal(evaluateInContext(obj.text + "; return nonInvokedTrPattern('X');", obj.context), "Velkommen til Danmark, hr. X");
                 }
             },
             'the run the buildDevelopment conditional blocks': {

@@ -28,7 +28,7 @@ vows.describe('one.getText').addBatch({
             },
             'then get the JavaScript asset as text': {
                 topic: function (assetGraph) {
-                    assetGraph.getAssetText(assetGraph.findAssets({type: 'JavaScript'})[0], this.callback);
+                    return assetGraph.getAssetText(assetGraph.findAssets({type: 'JavaScript'})[0]);
                 },
                 'the contents of name.txt should have replaced the one.getText expression': function (text) {
                     assert.isTrue(/\"Hello, my name is \"\s*\+\s*\"Foobar/.test(text));
