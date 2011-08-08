@@ -35,7 +35,7 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
         },
         'then get the Css as text': {
             topic: function (assetGraph) {
-                assetGraph.getAssetText(assetGraph.findAssets({type: 'Css'})[0], this.callback);
+                return assetGraph.getAssetText(assetGraph.findAssets({type: 'Css'})[0]);
             },
             'the src should contain four occurrences of the corrected url': function (src) {
                 var matches = src.match(/url\(\.\.\/\.\.\/images\/foo\/bar\/foo\.png\)/g);
@@ -52,7 +52,7 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
                 },
                 'then get the Html as text': {
                     topic: function (assetGraph) {
-                        assetGraph.getAssetText(assetGraph.findAssets({type: 'Html'})[0], this.callback);
+                        return assetGraph.getAssetText(assetGraph.findAssets({type: 'Html'})[0]);
                     },
                     'there should be four occurrences of the corrected background-image url': function (src) {
                         var matches = src.match(/url\(resources\/images\/foo\/bar\/foo\.png\)/g);
@@ -83,7 +83,7 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
         },
         'then get the inline JavaScript as text': {
             topic: function (assetGraph) {
-                assetGraph.getAssetText(assetGraph.findAssets({type: 'JavaScript', url: query.isUndefined})[0], this.callback);
+                return assetGraph.getAssetText(assetGraph.findAssets({type: 'JavaScript', url: query.isUndefined})[0]);
             },
             'it should contain 3 one.include statements': function (text) {
                 assert.equal(text.match(/one.include/g).length, 3);
@@ -95,7 +95,7 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
                 'the graph should contain 4 HtmlScript relations': function (assetGraph) {
                     assert.equal(assetGraph.findRelations({type: 'HtmlScript'}).length, 4);
                 },
-                'The order should be A1.js, B1.js, C1.js, inline script': function (assetGraph) {
+                'the order should be A1.js, B1.js, C1.js, inline script': function (assetGraph) {
                     assert.deepEqual(assetGraph.findRelations({type: 'HtmlScript'}).map(function (htmlScript) {
                         return htmlScript._getRawUrlString();
                     }), ['js/A1.js', 'js/B1.js', 'js/C1.js', undefined]);
@@ -124,7 +124,7 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
         },
         'then get the inline JavaScript as text': {
             topic: function (assetGraph) {
-                assetGraph.getAssetText(assetGraph.findAssets({type: 'JavaScript', url: query.isUndefined})[0], this.callback);
+                return assetGraph.getAssetText(assetGraph.findAssets({type: 'JavaScript', url: query.isUndefined})[0]);
             },
             'it should contain 4 one.include statements': function (text) {
                 assert.equal(text.match(/one.include/g).length, 4);
