@@ -19,7 +19,7 @@ function getJavaScriptTextAndBootstrappedContext(assetGraph, htmlQueryObj) {
     }
 
     return {
-        text: assetGraph.getAssetText(inlineJavaScript),
+        text: inlineJavaScript.text,
         context: i18nTools.getBootstrappedContext(assetGraph, assetGraph.findAssets(htmlQueryObj)[0])
     };
 }
@@ -55,7 +55,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             },
             'then getting the text of the American English version of the Html asset': {
                 topic: function (assetGraph) {
-                    return assetGraph.getAssetText(assetGraph.findAssets({url: /\/index\.en_US\.html$/})[0]);
+                    return assetGraph.findAssets({url: /\/index\.en_US\.html$/})[0].text;
                 },
                 'the html tag should have a lang attribute with a value of "en_US"': function (text) {
                     assert.isTrue(/<html[^>]+lang=([\'\"])en_US\1/.test(text));
@@ -63,7 +63,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             },
             'then getting the text of the Danish version of the Html asset': {
                 topic: function (assetGraph) {
-                    return assetGraph.getAssetText(assetGraph.findAssets({url: /\/index\.da\.html$/})[0]);
+                    return assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text;
                 },
                 'the html tag should have a lang attribute with a value of "da"': function (text) {
                     assert.isTrue(/<html[^>]+lang=([\'\"])da\1/.test(text));
@@ -71,7 +71,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             },
             'then getting the text of the American English Html asset': {
                 topic: function (assetGraph) {
-                    return assetGraph.getAssetText(assetGraph.findAssets({url: /\/index\.en_US\.html$/})[0]);
+                    return assetGraph.findAssets({url: /\/index\.en_US\.html$/})[0].text;
                 },
                 'the one.tr expression in the inline script should be replaced with the American English text': function (text) {
                     assert.isTrue(/var localizedString\s*=\s*([\'\"])The American English text\1/.test(text));
@@ -79,7 +79,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             },
             'then getting the text of the Danish Html asset': {
                 topic: function (assetGraph) {
-                    return assetGraph.getAssetText(assetGraph.findAssets({url: /\/index\.da\.html$/})[0]);
+                    return assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text;
                 },
                 'the one.tr expression in the inline script should be replaced with the Danish text': function (text) {
                     assert.isTrue(/var localizedString\s*=\s*([\'\"])The Danish text\1/.test(text));
