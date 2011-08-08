@@ -35,7 +35,7 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
         },
         'then get the Css as text': {
             topic: function (assetGraph) {
-                return assetGraph.getAssetText(assetGraph.findAssets({type: 'Css'})[0]);
+                return assetGraph.findAssets({type: 'Css'})[0].text;
             },
             'the src should contain four occurrences of the corrected url': function (src) {
                 var matches = src.match(/url\(\.\.\/\.\.\/images\/foo\/bar\/foo\.png\)/g);
@@ -52,7 +52,7 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
                 },
                 'then get the Html as text': {
                     topic: function (assetGraph) {
-                        return assetGraph.getAssetText(assetGraph.findAssets({type: 'Html'})[0]);
+                        return assetGraph.findAssets({type: 'Html'})[0].text;
                     },
                     'there should be four occurrences of the corrected background-image url': function (src) {
                         var matches = src.match(/url\(resources\/images\/foo\/bar\/foo\.png\)/g);
@@ -83,7 +83,7 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
         },
         'then get the inline JavaScript as text': {
             topic: function (assetGraph) {
-                return assetGraph.getAssetText(assetGraph.findAssets({type: 'JavaScript', url: query.isUndefined})[0]);
+                return assetGraph.findAssets({type: 'JavaScript', url: query.isUndefined})[0].text;
             },
             'it should contain 3 one.include statements': function (text) {
                 assert.equal(text.match(/one.include/g).length, 3);
@@ -123,7 +123,7 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
         },
         'then get the inline JavaScript as text': {
             topic: function (assetGraph) {
-                return assetGraph.getAssetText(assetGraph.findAssets({type: 'JavaScript', url: query.isUndefined})[0]);
+                return assetGraph.findAssets({type: 'JavaScript', url: query.isUndefined})[0].text;
             },
             'it should contain 4 one.include statements': function (text) {
                 assert.equal(text.match(/one.include/g).length, 4);
