@@ -23,7 +23,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     transforms.populate({followRelations: {type: ['HtmlScript', 'JavaScriptOneInclude', 'JavaScriptExtJsRequire'], to: {url: query.not(/^https?:/)}}}),
     transforms.injectOneBootstrapper({isInitial: true}),
     transforms.flattenStaticIncludes({isInitial: true}),
-    transforms.removeEmptyAssets({type: 'JavaScript'}),
+    transforms.removeAssets({isEmpty: true, type: 'JavaScript'}),
     transforms.inlineRelations({type: 'HtmlStyle', from: {isInitial: true, type: 'Html'}, to: {fixedUpExtJS: true}}),
     commandLineOptions.cssimports && transforms.convertHtmlStylesToInlineCssImports(),
     transforms.inlineRelations({type: 'HtmlScript', from: {isInitial: true, type: 'Html'}, to: {fixedUpExtJS: true}}),
