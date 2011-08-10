@@ -1,8 +1,7 @@
 var vows = require('vows'),
     assert = require('assert'),
     AssetGraph = require('assetgraph'),
-    transforms = require('../lib/transforms'),
-    query = AssetGraph.query;
+    transforms = require('../lib/transforms');
 
 vows.describe('resolvers.senchaJsBuilder test').addBatch({
     'After loading a test case with three assets': {
@@ -20,7 +19,7 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
             assert.equal(assetGraph.findAssets({type: 'Html'}).length, 1);
         },
         'the graph should contain one Css asset': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({type: 'Css', url: query.isDefined}).length, 1);
+            assert.equal(assetGraph.findAssets({type: 'Css', isInline: false}).length, 1);
         },
         'the graph should contain one Png asset': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'Png'}).length, 1);
@@ -76,14 +75,14 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
             assert.equal(assetGraph.findAssets({type: 'Html'}).length, 1);
         },
         'the graph should contain a single inline JavaScript asset': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({type: 'JavaScript', url: query.isUndefined}).length, 1);
+            assert.equal(assetGraph.findAssets({type: 'JavaScript', isInline: true}).length, 1);
         },
         'the graph should contain 3 JavaScriptOneInclude relations': function (assetGraph) {
             assert.equal(assetGraph.findRelations({type: 'JavaScriptOneInclude'}).length, 3);
         },
         'then get the inline JavaScript as text': {
             topic: function (assetGraph) {
-                return assetGraph.findAssets({type: 'JavaScript', url: query.isUndefined})[0].text;
+                return assetGraph.findAssets({type: 'JavaScript', isInline: true})[0].text;
             },
             'it should contain 3 one.include statements': function (text) {
                 assert.equal(text.match(/one.include/g).length, 3);
@@ -116,14 +115,14 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
             assert.equal(assetGraph.findAssets({type: 'Html'}).length, 1);
         },
         'the graph should contain a single inline JavaScript asset': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({type: 'JavaScript', url: query.isUndefined}).length, 1);
+            assert.equal(assetGraph.findAssets({type: 'JavaScript', isInline: true}).length, 1);
         },
         'the graph should contain 4 JavaScriptOneInclude relations': function (assetGraph) {
             assert.equal(assetGraph.findRelations({type: 'JavaScriptOneInclude'}).length, 4);
         },
         'then get the inline JavaScript as text': {
             topic: function (assetGraph) {
-                return assetGraph.findAssets({type: 'JavaScript', url: query.isUndefined})[0].text;
+                return assetGraph.findAssets({type: 'JavaScript', isInline: true})[0].text;
             },
             'it should contain 4 one.include statements': function (text) {
                 assert.equal(text.match(/one.include/g).length, 4);

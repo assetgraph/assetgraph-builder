@@ -46,7 +46,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     transforms.minifyAssets(),
     transforms.inlineRelations({
         type: ['HtmlStyle', 'HtmlScript'],
-        from: {url: query.isDefined}, // Excludes relations occurring in conditional comments
+        from: {isInline: false}, // Excludes relations occurring in conditional comments
         to: function (asset) {return asset.rawSrc.length < 4096;}
     }),
     transforms.moveAssetsToDirectory({isInitial: query.not(true), type: query.not('CacheManifest')}, '/static'),
