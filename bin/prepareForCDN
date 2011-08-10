@@ -23,7 +23,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
         followRelations: {type: query.not('HtmlAnchor'), to: {url: query.not(/^https?:/)}}
     }),
     transforms.moveAssetsToNewRoot({type: ['Png', 'Gif', 'Jpeg', 'Ico', 'Css', 'JavaScript', 'CacheManifest']}, cdnroot),
-    transforms.renameAssetsToMd5Prefix({type: query.not(['Html', 'CacheManifest']), url: query.isDefined}),
+    transforms.renameAssetsToMd5Prefix({type: query.not(['Html', 'CacheManifest']), isInline: false}),
     transforms.parallel(
         transforms.writeAssetsToDisc({url: /^file:/}, outroot),
         transforms.writeAssetsToDisc({url: query.createPrefixMatcher(cdnroot)}, outroot, cdnroot)

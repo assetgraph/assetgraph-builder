@@ -4,7 +4,6 @@ var vows = require('vows'),
     AssetGraph = require('assetgraph'),
     passError = require('assetgraph/lib/util/passError'),
     transforms = require('../lib/transforms'),
-    query = require('assetgraph').query,
     i18nTools = require('../lib/util/i18nTools');
 
 function getJavaScriptTextAndBootstrappedContext(assetGraph, htmlQueryObj) {
@@ -41,7 +40,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             assert.equal(assetGraph.findAssets({type: 'Html'}).length, 1);
         },
         'the graph should contain one inline JavaScript asset': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({type: 'JavaScript', url: query.isUndefined}).length, 1);
+            assert.equal(assetGraph.findAssets({type: 'JavaScript', isInline: true}).length, 1);
         },
         'the graph should contain one I18n asset': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'I18n'}).length, 1);
@@ -98,7 +97,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'the graph should contain 4 assets': function (assetGraph) {
             assert.equal(assetGraph.findAssets().length, 4);
             assert.equal(assetGraph.findAssets({type: 'Html'}).length, 1);
-            assert.equal(assetGraph.findAssets({type: 'JavaScript', url: query.isUndefined}).length, 2);
+            assert.equal(assetGraph.findAssets({type: 'JavaScript', isInline: true}).length, 2);
             assert.equal(assetGraph.findAssets({type: 'I18n'}).length, 1);
         },
         'then get the inline JavaScript asset as text': {
