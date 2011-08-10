@@ -1,5 +1,6 @@
 var vows = require('vows'),
     assert = require('assert'),
+    _ = require('underscore'),
     AssetGraph = require('assetgraph'),
     transforms = require('../lib/transforms');
 
