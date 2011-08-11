@@ -27,5 +27,8 @@
     "directories": {
         "lib": "./lib",
         "bin": "./bin"
+    },
+    "publicationConfig": {
+        "registry": "http://registry.npmjs.org/"
     }
 }
