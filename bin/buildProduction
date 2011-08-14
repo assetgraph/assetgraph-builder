@@ -31,7 +31,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     transforms.removeRelations({type: 'JavaScriptOneInclude', to: {type: ['Css', 'JavaScript']}}, {detach: true, unresolved: true}),
     transforms.inlineJavaScriptOneGetText(),
     transforms.convertCssImportsToHtmlStyles(),
-    transforms.removeAssets({isEmpty: true, type: ['Css', 'JavaScript']}),
+    transforms.removeAssets({isEmpty: true, type: ['Css', 'JavaScript']}, true),
     transforms.externalizeRelations({type: ['HtmlStyle', 'HtmlScript']}),
     transforms.mergeIdenticalAssets({type: ['JavaScript', 'Css']}),
     require('assetgraph-sprite')(),
