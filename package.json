@@ -9,6 +9,9 @@
             "email": "andreas@one.com"
         }
     ],
+    "publicationConfig": {
+        "registry": "http://registry.npmjs.org/"
+    },
     "dependencies": {
         "assetgraph": "~ 0.1.4",
         "assetgraph-sprite": ">= 0.0.4",
