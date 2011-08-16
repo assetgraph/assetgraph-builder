@@ -2,7 +2,7 @@
     "name": "assetgraph-builder",
     "description": "Build system for web apps and applications",
     "repository": "git://github.com/One-com/assetgraph-builder.git",
-    "version": "0.1.2-pre",
+    "version": "0.1.2",
     "maintainers": [
         {
             "name": "Andreas Lind Petersen",
