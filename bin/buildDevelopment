@@ -6,7 +6,7 @@ var _ = require('underscore'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist')
-        .usage('$0 [--label <labelName>=<dir> ...] [--cssimports] [--inline <wildCard>] --root <inputRootDirectory> <htmlFile> ...')
+        .usage('$0 [--label <labelName>=<dir> ...] [--cssimports] [--inline <wildCard>] [--watch] --root <inputRootDirectory> <htmlFile> ...')
         .boolean('cssimports')
         .demand(['root'])
         .argv;
@@ -17,6 +17,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     console.error(err.stack);
     process.exit(1);
 }).queue(
+    commandLineOptions.watch && transforms.startOverIfAssetSourceFilesChange(),
     transforms.registerLabelsAsCustomProtocols(commandLineOptions.label),
     transforms.loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl)),
     transforms.moveAssets({isInitial: true}, function (asset) {return asset.url.replace(/\.template$/, "");}),
