@@ -13,7 +13,7 @@
         "registry": "http://registry.npmjs.org/"
     },
     "dependencies": {
-        "assetgraph": "= 0.2.5",
+        "assetgraph": "= 0.2.6",
         "assetgraph-sprite": "= 0.1.1",
         "uglify-js": "~ 1.0.1",
         "underscore": "~ 1.1.3",
