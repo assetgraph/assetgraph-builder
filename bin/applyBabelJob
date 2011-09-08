@@ -28,7 +28,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
             existingI18nRelations = assetGraph.findRelations({to: {type: 'I18n'}, from: {type: 'JavaScript'}}),
             oneTrOccurrencesByKey = i18nTools.findOneTrOccurrences(assetGraph, assetGraph.findAssets({type: 'Html', isInitial: true}));
 
-        fs.readDirSync(commandLineOptions.babeldir).forEach(function (fileName) {
+        fs.readdirSync(commandLineOptions.babeldir).forEach(function (fileName) {
             if (fileName === 'SOURCE.txt') {
                 console.warn("Skipping " + fileName);
             } else {
