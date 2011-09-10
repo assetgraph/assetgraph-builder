@@ -4,7 +4,8 @@ var vows = require('vows'),
     AssetGraph = require('assetgraph'),
     passError = require('assetgraph/lib/util/passError'),
     transforms = require('../lib/transforms'),
-    i18nTools = require('../lib/util/i18nTools');
+    i18nTools = require('../lib/util/i18nTools'),
+    oneBootstrapper = require('../lib/util/oneBootstrapper');
 
 function getJavaScriptTextAndBootstrappedContext(assetGraph, htmlQueryObj) {
     var htmlAsset = assetGraph.findAssets(htmlQueryObj)[0],
@@ -19,7 +20,7 @@ function getJavaScriptTextAndBootstrappedContext(assetGraph, htmlQueryObj) {
 
     return {
         text: inlineJavaScript.text,
-        context: i18nTools.getBootstrappedContext(assetGraph, assetGraph.findAssets(htmlQueryObj)[0])
+        context: oneBootstrapper.createContext(assetGraph.findAssets(htmlQueryObj)[0], assetGraph)
     };
 }
 
