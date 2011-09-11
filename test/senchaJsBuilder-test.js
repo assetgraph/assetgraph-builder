@@ -30,7 +30,7 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
                 cssBackgroundImageRelations = assetGraph.findRelations({type: 'CssImage', to: assetGraph.findAssets({type: 'Png'})[0]});
             assert.equal(cssBackgroundImageRelations.length, 4);
             cssBackgroundImageRelations.forEach(function (cssBackgroundImageRelation) {
-                assert.equal(assetGraph.getBaseAssetForRelation(cssBackgroundImageRelation), cssAsset);
+                assert.equal(cssBackgroundImageRelation.baseAsset, cssAsset);
             });
         },
         'then get the Css as text': {
