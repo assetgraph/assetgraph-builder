@@ -51,6 +51,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     }),
     transforms.moveAssetsToDirectory({isInitial: query.not(true), type: query.not('CacheManifest')}, '/static'),
     cdnroot && transforms.moveAssetsToNewRoot({type: ['Png', 'Gif', 'Jpeg', 'Ico', 'Css', 'JavaScript', 'CacheManifest']}, cdnroot),
+    transforms.inlineCssImagesWithLegacyFallback({type: 'Html'}, 8192),
     commandLineOptions.nocompress && transforms.prettyPrintAssets({type: ['Html', 'JavaScript', 'Css']}),
     transforms.renameAssetsToMd5Prefix({isInitial: query.not(true), type: query.not('CacheManifest')}),
     transforms.parallel(
