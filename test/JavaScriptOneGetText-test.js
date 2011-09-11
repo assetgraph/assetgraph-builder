@@ -19,9 +19,12 @@ vows.describe('one.getText').addBatch({
         'the graph should contain one JavaScriptOneGetText relation': function (assetGraph) {
             assert.equal(assetGraph.findRelations({type: 'JavaScriptOneGetText'}).length, 1);
         },
-        'then run the inlineJavaScriptOneGetText transform': {
+        'then inline and remove the JavaScriptOneGetText relations': {
             topic: function (assetGraph) {
-                assetGraph.runTransform(transforms.inlineJavaScriptOneGetText(), this.callback);
+                assetGraph.queue(
+                    transforms.inlineRelations({type: 'JavaScriptOneGetText'}),
+                    transforms.removeRelations({type: 'JavaScriptOneGetText'}, {removeOrphan: true})
+                ).run(this.callback);
             },
             'the graph should be down to 3 assets': function (assetGraph) {
                 assert.equal(assetGraph.findAssets().length, 3);
