@@ -43,7 +43,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     localeIds && transforms.cloneForEachLocale({type: 'Html', isInitial: true}, localeIds),
     localeIds && transforms.runJavaScriptConditionalBlocks({isInitial: true}, 'localize', true),
     transforms.removeAssets({type: 'I18n'}, true),
-    commandLineOptions.manifest && transforms.addCacheManifestSinglePage({isInitial: true}),
+    commandLineOptions.manifest && transforms.addCacheManifest({isInitial: true}),
     transforms.minifyAssets(),
     transforms.inlineRelations({
         type: ['HtmlStyle', 'HtmlScript'],
