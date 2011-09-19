@@ -39,6 +39,14 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     transforms.postProcessBackgroundImages(),
     transforms.bundleAssets({type: 'Css', incoming: {type: 'HtmlStyle', node: function (node) {return !node.getAttribute('nobundle') && !node.getAttribute('media');}}}),
     transforms.bundleAssets({type: 'JavaScript', incoming: {type: 'HtmlScript', node: function (node) {return !node.getAttribute('nobundle');}}}),
+    function (assetGraph) {
+        assetGraph.findRelations({type: ['HtmlScript', 'HtmlStyle']}).forEach(function (relation) {
+            if (relation.node.hasAttribute('nobundle')) {
+                relation.node.removeAttribute('nobundle');
+                relation.from.markDirty();
+            }
+        });
+    },
     !commandLineOptions.nocompress && transforms.compressJavaScript({type: 'JavaScript'}),
     localeIds && transforms.cloneForEachLocale({type: 'Html', isInitial: true}, localeIds),
     localeIds && transforms.runJavaScriptConditionalBlocks({isInitial: true}, 'localize', true),
