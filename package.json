@@ -2,7 +2,7 @@
     "name": "assetgraph-builder",
     "description": "Build system for web apps and applications",
     "repository": "git://github.com/One-com/assetgraph-builder.git",
-    "version": "0.1.9",
+    "version": "0.1.10",
     "maintainers": [
         {
             "name": "Andreas Lind Petersen",
@@ -31,7 +31,7 @@
         "lib": "./lib",
         "bin": "./bin"
     },
-    "publicationConfig": {
+    "publishConfig": {
         "registry": "http://registry.npmjs.org/"
     }
 }
