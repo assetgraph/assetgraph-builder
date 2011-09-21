@@ -46,12 +46,30 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'the graph should contain one I18n asset': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'I18n'}).length, 1);
         },
+        'the graph should contain one HtmlStyle relation': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({type: 'HtmlStyle'}).length, 1);
+        },
+        'the graph should contain one Css asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Css'}).length, 1);
+        },
+        'the graph should contain one CssImage relation': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({type: 'CssImage'}).length, 1);
+        },
+        'the graph should contain one Png asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Png'}).length, 1);
+        },
         'then running the cloneForEachLocale transform': {
             topic: function (assetGraph) {
                 assetGraph.runTransform(transforms.cloneForEachLocale({type: 'Html'}, ['en_US', 'da']), this.callback);
             },
             'the graph should contain 2 Html assets': function (assetGraph) {
                 assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
+            },
+            'the graph should contain 2 HtmlStyle relations pointing at style.css': function (assetGraph) {
+                assert.equal(assetGraph.findRelations({type: 'HtmlStyle', to: {url: /\/style\.css$/}}).length, 2);
+            },
+            'the graph should still contain one CssImage relation': function (assetGraph) {
+                assert.equal(assetGraph.findRelations({type: 'CssImage'}).length, 1);
             },
             'then getting the text of the American English version of the Html asset': {
                 topic: function (assetGraph) {
