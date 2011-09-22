@@ -56,7 +56,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     transforms.inlineRelations({
         type: ['HtmlStyle', 'HtmlScript'],
         from: {isInline: false}, // Excludes relations occurring in conditional comments
-        to: function (asset) {return asset.rawSrc.length < 4096;}
+        to: function (asset) {return asset.isAsset && asset.rawSrc.length < 4096;}
     }),
     cdnroot && transforms.moveAssetsToNewRoot({type: ['Png', 'Gif', 'Jpeg', 'Ico', 'Css', 'JavaScript', 'CacheManifest']}, cdnroot),
     transforms.inlineCssImagesWithLegacyFallback({type: 'Html'}, 8192),
