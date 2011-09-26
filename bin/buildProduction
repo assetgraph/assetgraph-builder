@@ -51,13 +51,13 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     localeIds && transforms.cloneForEachLocale({type: 'Html', isInitial: true}, localeIds),
     localeIds && transforms.runJavaScriptConditionalBlocks({isInitial: true}, 'localize', true),
     transforms.removeAssets({type: 'I18n'}, true),
-    commandLineOptions.manifest && transforms.addCacheManifest({isInitial: true}),
     transforms.minifyAssets(),
     transforms.inlineRelations({
         type: ['HtmlStyle', 'HtmlScript'],
         from: {isInline: false}, // Excludes relations occurring in conditional comments
         to: function (asset) {return asset.isAsset && asset.rawSrc.length < 4096;}
     }),
+    commandLineOptions.manifest && transforms.addCacheManifest({isInitial: true}),
     cdnroot && transforms.moveAssetsToNewRoot({type: ['Png', 'Gif', 'Jpeg', 'Ico', 'Css', 'JavaScript', 'CacheManifest']}, cdnroot),
     transforms.inlineCssImagesWithLegacyFallback({type: 'Html'}, 8192),
     commandLineOptions.nocompress && transforms.prettyPrintAssets({type: ['Html', 'JavaScript', 'Css']}),
