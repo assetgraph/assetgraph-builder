@@ -186,5 +186,26 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 }
             }
         }
+    },
+    'After loading test case with an Html asset with an inline HtmlStyle, then externalize the HtmlStyle and run cloneForEachLocale and inlineCssImagesWithLegacyFallback': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/inlineCssCombo/'}).queue(
+                transforms.loadAssets('index.html'),
+                transforms.populate(),
+                transforms.externalizeRelations({type: 'HtmlStyle'}),
+                transforms.cloneForEachLocale({type: 'Html'}, ['en_US', 'da']),
+                transforms.inlineCssImagesWithLegacyFallback({type: 'Html'})
+            ).run(this.callback);
+        },
+        'there should be 2 non-inline Html assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html', isInline: false}).length, 2);
+        },
+        'the American English Html should contain two HtmlConditionalComment relations': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({from: {url: /\/index\.en_US\.html$/}, type: 'HtmlConditionalComment'}).length, 2);
+        },
+        'the Danish Html should contain two HtmlConditionalComment relations': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({from: {url: /\/index\.da\.html$/}, type: 'HtmlConditionalComment'}).length, 2);
+        }
+
     }
 })['export'](module);
