@@ -47,6 +47,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
             }
         });
     },
+    transforms.inlineCssImagesWithLegacyFallback({type: 'Html'}, 8192),
     !commandLineOptions.nocompress && transforms.compressJavaScript({type: 'JavaScript'}),
     localeIds && transforms.cloneForEachLocale({type: 'Html', isInitial: true}, localeIds),
     localeIds && transforms.runJavaScriptConditionalBlocks({isInitial: true}, 'localize', true),
@@ -59,7 +60,6 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     }),
     commandLineOptions.manifest && transforms.addCacheManifest({isInitial: true}),
     cdnroot && transforms.moveAssetsToNewRoot({type: ['Png', 'Gif', 'Jpeg', 'Ico', 'Css', 'JavaScript', 'CacheManifest']}, cdnroot),
-    transforms.inlineCssImagesWithLegacyFallback({type: 'Html'}, 8192),
     commandLineOptions.nocompress && transforms.prettyPrintAssets({type: ['Html', 'JavaScript', 'Css']}),
     transforms.moveAssetsInOrder({isInitial: query.not(true), type: query.not('CacheManifest')}, function (asset) {
         return '/static/' + asset.md5Hex.substr(0, 10) + asset.extension;
