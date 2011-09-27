@@ -47,7 +47,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
             }
         });
     },
-    transforms.inlineCssImagesWithLegacyFallback({type: 'Html'}, 8192),
+    transforms.inlineCssImagesWithLegacyFallback({type: 'Html', isInline: false}, 8192),
     !commandLineOptions.nocompress && transforms.compressJavaScript({type: 'JavaScript'}),
     localeIds && transforms.cloneForEachLocale({type: 'Html', isInitial: true}, localeIds),
     localeIds && transforms.runJavaScriptConditionalBlocks({isInitial: true}, 'localize', true),
