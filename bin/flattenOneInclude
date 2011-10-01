@@ -26,7 +26,7 @@ new AssetGraph({root: commandLineOptions.root}).on('error', function (err) {
             var texts = [];
             assetGraph.collectAssetsPostOrder(initialAsset, {to: {type: 'JavaScript'}}).forEach(function (asset) {
                 assetGraph.findRelations({from: asset}).forEach(function (outgoingRelation) {
-                    assetGraph.detachAndRemoveRelation(outgoingRelation);
+                    outgoingRelation.detach();
                 });
                 texts.push(asset.text);
             });
