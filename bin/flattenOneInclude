@@ -14,9 +14,7 @@ var fs = require('fs'),
         }).
         argv;
 
-new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (transform, elapsedTime) {
-    console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
-}).on('error', function (err) {
+new AssetGraph({root: commandLineOptions.root}).on('error', function (err) {
     console.error(err.stack);
     process.exit(1);
 }).queue(
