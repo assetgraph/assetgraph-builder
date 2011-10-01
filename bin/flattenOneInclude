@@ -6,7 +6,7 @@ var fs = require('fs'),
     transforms = require('../lib/transforms'),
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist').
-        usage('$0 [--root <dir>] [-o <outputJavaScriptFile>] <inputJavaScriptFile>').
+        usage('$0 [--label <labelName>=<dir> ...] [--root <dir>] [-o <outputJavaScriptFile>] <inputJavaScriptFile>').
         check(function (argv) {
             if (argv._.length !== 1 || !/\.js$/.test(argv._[0])) {
                 throw "Please specify a single JavaScript file on the command line";
