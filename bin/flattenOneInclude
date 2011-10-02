@@ -2,6 +2,7 @@
 
 var fs = require('fs'),
     _ = require('underscore'),
+    seq = require('seq'),
     AssetGraph = require('assetgraph'),
     transforms = require('../lib/transforms'),
     urlTools = require('assetgraph/lib/util/urlTools'),
@@ -23,19 +24,20 @@ new AssetGraph({root: commandLineOptions.root}).on('error', function (err) {
     transforms.populate({followRelations: {type: 'JavaScriptOneInclude'}}),
     function (assetGraph) {
         assetGraph.findAssets({isInitial: true}).forEach(function (initialAsset) {
-            var texts = [];
-            assetGraph.collectAssetsPostOrder(initialAsset, {to: {type: 'JavaScript'}}).forEach(function (asset) {
-                assetGraph.findRelations({from: asset}).forEach(function (outgoingRelation) {
-                    outgoingRelation.detach();
+            // Get the original text including comments etc.:
+            seq(assetGraph.collectAssetsPostOrder(initialAsset, {to: {type: 'JavaScript'}}).filter(function(asset) {return !asset.isInline;}))
+                .parMap(function (asset) {
+                    fs.readFile(urlTools.fileUrlToFsPath(asset.url), 'utf-8', this);
+                })
+                .unflatten()
+                .seq(function (texts) {
+                    var flattenedText = texts.join("\n").replace(/one\.include\(([^\)]*)\);?\n?/g, "");
+                    if ('o' in commandLineOptions) {
+                        fs.writeFileSync(commandLineOptions.o, flattenedText, AssetGraph.assets.JavaScript.prototype.encoding);
+                    } else {
+                        console.log(flattenedText);
+                    }
                 });
-                texts.push(asset.text);
-            });
-            var flattenedText = texts.join("\n").replace(/one\.include\(([^\)]*)\);?\n?/g, "");
-            if ('o' in commandLineOptions) {
-                fs.writeFileSync(commandLineOptions.o, flattenedText, AssetGraph.assets.JavaScript.prototype.encoding);
-            } else {
-                console.log(flattenedText);
-            }
         });
     }
 ).run();
