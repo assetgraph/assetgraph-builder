@@ -6,12 +6,13 @@ var _ = require('underscore'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist').
-        usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] --outroot <outputRootDirectory> [--locale <localeId>,...] [--cdnroot <url>] [--manifest] [--nocompress] <htmlFile>...').
+        usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] --outroot <dir> [--locale <localeId>,...] [--cdnroot <url>] [--cdnoutroot <dir>] [--manifest] [--nocompress] <htmlFile>...').
         boolean('manifest').
         demand(['root', 'outroot']).
         argv,
     outroot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
     cdnroot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
+    cdnoutroot = urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
     localeIds = commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");}));
 
 new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (transform, elapsedTime) {
@@ -61,12 +62,16 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     commandLineOptions.manifest && transforms.addCacheManifest({isInitial: true}),
     cdnroot && transforms.moveAssetsToNewRoot({type: ['Png', 'Gif', 'Jpeg', 'Ico', 'Css', 'JavaScript', 'CacheManifest']}, cdnroot),
     commandLineOptions.nocompress && transforms.prettyPrintAssets({type: ['Html', 'JavaScript', 'Css']}),
-    transforms.moveAssetsInOrder({isInitial: query.not(true), type: query.not('CacheManifest')}, function (asset) {
-        return '/static/' + asset.md5Hex.substr(0, 10) + asset.extension;
+    transforms.moveAssetsInOrder({isInitial: query.not(true)}, function (asset, assetGraph) {
+        if (cdnroot && asset.type !== 'CacheManifest' && assetGraph.findRelations({to: asset, type: 'StaticUrlMapEntry'}).length === 0) {
+            return cdnroot + asset.md5Hex.substr(0, 10) + asset.extension;
+        } else {
+            return "/static/" + asset.md5Hex.substr(0, 10) + asset.extension;
+        }
     }),
     transforms.parallel(
         transforms.writeAssetsToDisc({url: /^file:/}, outroot),
-        cdnroot && transforms.writeAssetsToDisc({url: query.createPrefixMatcher(cdnroot)}, outroot, cdnroot)
+        cdnroot && transforms.writeAssetsToDisc({url: query.createPrefixMatcher(cdnroot)}, cdnoutroot || outroot, cdnroot)
     ),
     transforms.stats()
 ).run();
