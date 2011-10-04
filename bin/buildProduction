@@ -63,7 +63,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     cdnroot && transforms.moveAssetsToNewRoot({type: ['Png', 'Gif', 'Jpeg', 'Ico', 'Css', 'JavaScript', 'CacheManifest']}, cdnroot),
     commandLineOptions.nocompress && transforms.prettyPrintAssets({type: ['Html', 'JavaScript', 'Css']}),
     transforms.moveAssetsInOrder({isInitial: query.not(true)}, function (asset, assetGraph) {
-        if (cdnroot && asset.type !== 'CacheManifest' && assetGraph.findRelations({to: asset, type: 'StaticUrlMapEntry'}).length === 0) {
+        if (cdnroot && asset.type !== 'CacheManifest' && (asset.isImage || assetGraph.findRelations({to: asset, type: 'StaticUrlMapEntry'}).length === 0)) {
             return cdnroot + asset.md5Hex.substr(0, 10) + asset.extension;
         } else {
             return "/static/" + asset.md5Hex.substr(0, 10) + asset.extension;
