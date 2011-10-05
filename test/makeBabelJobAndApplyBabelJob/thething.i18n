@@ -1,0 +1,19 @@
+{
+    "stringvalue": {
+        "en": "value"
+    },
+    "arrayvalue": {
+        "en": [5, "items", "in", "an", "array"]
+    },
+    "objectvalue": {
+        "en": {
+            "key1": "value1",
+            "key2": "value2"
+        }
+    },
+    "withexistingkeys": {
+        "en": "the English value",
+        "da": "the Danish value",
+        "de": "the German value"
+    }
+}

@@ -34,7 +34,28 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
             var babelSrc = '';
             _.each(oneTrOccurrencesByKey, function (occurrences, key) {
                 if (key in allKeys && localeId in allKeys[key] && allKeys[key][localeId] !== null) {
-                    babelSrc += key + "=" + allKeys[key][localeId].replace(/\\/g, "\\\\").replace(/\n/g, "\\n") + "\n";
+                    var value = allKeys[key][localeId],
+                        path = [];
+                    (function serialize (obj) {
+                        if (_.isArray(obj)) {
+                            for (var i = 0 ; i < obj.length ; i += 1) {
+                                path.push(i);
+                                serialize(obj[i]);
+                                path.pop();
+                            }
+                        } else if (typeof obj === 'object' && obj !== null) {
+                            for (var propertyName in obj) {
+                                path.push(propertyName);
+                                serialize(obj[propertyName]);
+                                path.pop();
+                            }
+                        } else {
+                            // Assume a type that can be stringified using String(obj):
+                            babelSrc += key + path.map(function (pathComponent) {
+                                return '[' + pathComponent + ']';
+                            }).join("") + "=" + String(obj).replace(/\\/g, "\\\\").replace(/\n/g, "\\n") + "\n";
+                        }
+                    }(value));
                 }
             });
             var targetBabelFileName = path.resolve(commandLineOptions.babeldir, localeId + '.txt');
