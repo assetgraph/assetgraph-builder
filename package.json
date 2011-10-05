@@ -31,7 +31,7 @@
         "lib": "./lib",
         "bin": "./bin"
     },
-    "publicationConfig": {
+    "publishConfig": {
         "registry": "http://registry.npmjs.org/"
     }
 }
