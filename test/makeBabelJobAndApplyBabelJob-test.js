@@ -67,7 +67,7 @@ vows.describe('bin/makeBabelJob test').addBatch({
                         'arrayvalue[3]=et',
                         'arrayvalue[4]=array',
                         'objectvalue[key1]=værdi1',
-                        'objectvalue[key1]=værdi2',
+                        'objectvalue[key2]=værdi2',
                         'withexistingkeys=den opdaterede danske værdi'
                     ],
                     copyCommand = "cp '" + __dirname + "/makeBabelJobAndApplyBabelJob'/* " + tmpTestCaseCopyDir;
@@ -82,8 +82,6 @@ vows.describe('bin/makeBabelJob test').addBatch({
                         '--locale', 'en,da,de',
                         tmpTestCaseCopyDir + '/index.html'
                     ]);
-applyBabelJobProcess.stdout.pipe(process.stdout, {end: false});
-applyBabelJobProcess.stderr.pipe(process.stdout, {end: false});
                     applyBabelJobProcess.on('exit', function (exitCode) {
                         if (exitCode) {
                             cb(new Error("The applyBabelJob process ended with a non-zero exit code: " + exitCode));

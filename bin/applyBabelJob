@@ -42,13 +42,48 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
                             var matchKeyValue = line.match(/^([^=]+)=(.*)$/);
                             if (matchKeyValue) {
                                 var key = matchKeyValue[1].trim(),
-                                    value = matchKeyValue[2].trim();
+                                    value = matchKeyValue[2].trim().replace(/\\([n\\])/, function ($0, ch) {
+                                        return ch === "n" ? "\n" : ch;
+                                    }),
+                                    path = [];
+                                // If the value looks like a number, we want it to be a number in our JSON representation
+                                if (/^(?:[1-9][0-9]*(?:\.[0-9]*)?)$/.test(value)) { // Doesn't match ".nnn", "n." or exponential notation (on purpose)
+                                    value = parseFloat(value);
+                                }
+                                // Chop off [x][y]... suffix and note the components in the 'path' array
+                                key = key.replace(/\[(\w+)\]/g, function ($0, pathComponent) {
+                                    path.push(pathComponent);
+                                    return "";
+                                });
                                 if (!(key in translationsByKeyAndLocaleId)) {
                                     translationsByKeyAndLocaleId[key] = {};
                                 }
-                                translationsByKeyAndLocaleId[key][localeId] = value.replace(/\\([n\\])/, function ($0, ch) {
-                                    return ch === "n" ? "\n" : ch;
-                                });
+                                path.unshift(localeId);
+                                var cursor = translationsByKeyAndLocaleId[key];
+                                while (path.length > 1) {
+                                    if (/^(?:[0-9]|[1-9][0-9]*)$/.test(path[1])) {
+                                        // Integer path component, assume that cursor[nextIndex] should be an array
+                                        if (typeof cursor[path[0]] === 'undefined') {
+                                            cursor[path[0]] = [];
+                                        } else if (!_.isArray(cursor[path[0]])) {
+                                            throw new Error("Error: Expected " + JSON.stringify(cursor) + "['" + path[0] + "'] " +
+                                                            "to be undefined or an array while processing line " + lineNumber + " of " + fileName + ":\n" + line);
+                                        }
+                                    } else {
+                                        // typeof path[1] === 'string', assume that cursor[path[0]] should be an object
+                                        if (typeof cursor[path[0]] === 'undefined') {
+                                            cursor[path[0]] = {};
+                                        } else if (typeof cursor[path[0]] !== 'object' || cursor[path[0]] === null) {
+                                            throw new Error("Error: Expected " + JSON.stringify(cursor) + "['" + path[0] + "'] " +
+                                                            "to be undefined or an object while processing line " + lineNumber + " of " + fileName + ":\n" + line);
+                                        }
+                                    }
+                                    cursor = cursor[path.shift()];
+                                }
+                                if (path[0] in cursor) {
+                                    throw new Error("Error: Found double declaration of key in line " + lineNumber + " of " + fileName + ":\n" + line);
+                                }
+                                cursor[path[0]] = value;
                             } else {
                                 console.warn("Couldn't parse line " + (lineNumber + 1) + " of the " + localeId + " file: " + line);
                             }
