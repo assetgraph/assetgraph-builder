@@ -117,20 +117,23 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
         // Hack: Inject the new relations at the top of the file
         _.each(newI18nRelationsByJavaScriptId, function (i18nRelations, javaScriptId) {
             var javaScript = assetGraph.idIndex[javaScriptId],
+                originalText = fs.readFileSync(urlTools.fileUrlToFsPath(javaScript.url), javaScript.encoding),
                 oneIncludeStatements = i18nRelations.map(function (i18nRelation) {
                     return "one.include('" +
                         urlTools.buildRelativeUrl(i18nRelation.from.url || assetGraph.findBaseAssetForRelation(i18nRelation).url, i18nRelation.to.url) +
                         "');\n";
                 }).join(""),
-                matchSplitAfterLastOneIncludeLine = javaScript.text.match(/^([\s\S]*one\.include[^\n]*\n)([\s\S]*)$/);
+                matchSplitAfterLastOneIncludeLine = originalText.match(/^([\s\S]*one\.include[^\n]*\n)([\s\S]*)$/),
+                patchedText;
             if (matchSplitAfterLastOneIncludeLine) {
-                javaScript.text = matchSplitAfterLastOneIncludeLine[1] + "\n" + oneIncludeStatements + matchSplitAfterLastOneIncludeLine[2];
+                patchedText = matchSplitAfterLastOneIncludeLine[1] + "\n" + oneIncludeStatements + matchSplitAfterLastOneIncludeLine[2];
             } else {
-                javaScript.text = oneIncludeStatements + javaScript.text;
+                patchedText = oneIncludeStatements + javaScript.text;
             }
+            fs.writeFileSync(urlTools.fileUrlToFsPath(javaScript.url), patchedText, javaScript.encoding);
         });
     },
     transforms.prettyPrintAssets({type: 'I18n', isDirty: true}),
     transforms.stats(),
-    transforms.writeAssetsToDisc({type: ['I18n', 'JavaScript'], isDirty: true})
+    transforms.writeAssetsToDisc({type: 'I18n', isDirty: true})
 ).run();
