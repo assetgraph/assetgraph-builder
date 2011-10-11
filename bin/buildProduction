@@ -60,14 +60,16 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
         to: function (asset) {return asset.isAsset && asset.rawSrc.length < 4096;}
     }),
     commandLineOptions.manifest && transforms.addCacheManifest({isInitial: true}),
-    cdnroot && transforms.moveAssetsToNewRoot({type: ['Png', 'Gif', 'Jpeg', 'Ico', 'Css', 'JavaScript']}, cdnroot),
     commandLineOptions.nocompress && transforms.prettyPrintAssets({type: ['Html', 'JavaScript', 'Css']}),
     transforms.moveAssetsInOrder({isInitial: query.not(true), type: query.not('CacheManifest')}, function (asset, assetGraph) {
+        var targetUrl = "/static/";
+        // Conservatively assume that all one.getStaticUrl relations pointing at non-images are intended to be fetched via XHR
+        // and thus cannot be put on a CDN because of same origin restrictions:
         if (cdnroot && (asset.isImage || assetGraph.findRelations({to: asset, type: 'StaticUrlMapEntry'}).length === 0)) {
-            return cdnroot + asset.md5Hex.substr(0, 10) + asset.extension;
-        } else {
-            return "/static/" + asset.md5Hex.substr(0, 10) + asset.extension;
+            targetUrl = cdnroot;
         }
+        return targetUrl + asset.md5Hex.substr(0, 10) + asset.extension;
+
     }),
     transforms.parallel(
         transforms.writeAssetsToDisc({url: /^file:/}, outroot),
