@@ -29,34 +29,62 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     function (assetGraph) {
         var initialHtmlAssets = assetGraph.findAssets({type: 'Html', isInitial: true}),
             oneTrOccurrencesByKey = i18nTools.findOneTrOccurrences(assetGraph, initialHtmlAssets),
-            allKeys = i18nTools.extractAllReachableKeys(assetGraph, initialHtmlAssets);
+            allKeys = i18nTools.extractAllReachableKeys(assetGraph, initialHtmlAssets),
+            alreadyTranslatedByKey = {};
+
+        // Note which keys have already been translated to all the locales we've been asked to process:
+        Object.keys(allKeys).forEach(function (key) {
+            alreadyTranslatedByKey[key] = true;
+            localeIds.forEach(function (localeId) {
+                var prioritizedLocaleIds = i18nTools.expandLocaleIdToPrioritizedList(localeId);
+                for (var i = 0 ; i < prioritizedLocaleIds.length ; i += 1) {
+                    if (prioritizedLocaleIds[i] in allKeys[key]) {
+                        return;
+                    }
+                }
+                alreadyTranslatedByKey[key] = false;
+            });
+        });
+
         localeIds.forEach(function (localeId) {
             var babelSrc = '';
             _.each(oneTrOccurrencesByKey, function (occurrences, key) {
-                if (key in allKeys && localeId in allKeys[key] && allKeys[key][localeId] !== null) {
-                    var value = allKeys[key][localeId],
-                        path = [];
-                    (function serialize (obj) {
-                        if (_.isArray(obj)) {
-                            for (var i = 0 ; i < obj.length ; i += 1) {
-                                path.push(i);
-                                serialize(obj[i]);
-                                path.pop();
-                            }
-                        } else if (typeof obj === 'object' && obj !== null) {
-                            for (var propertyName in obj) {
-                                path.push(propertyName);
-                                serialize(obj[propertyName]);
-                                path.pop();
-                            }
-                        } else {
-                            // Assume a type that can be stringified using String(obj):
-                            babelSrc += key + path.map(function (pathComponent) {
-                                return '[' + pathComponent + ']';
-                            }).join("") + "=" + String(obj).replace(/\\/g, "\\\\").replace(/\n/g, "\\n") + "\n";
-                        }
-                    }(value));
+                if (alreadyTranslatedByKey[key]) {
+                    return;
                 }
+                var value;
+                if (key in allKeys && localeId in allKeys[key]) {
+                    value = allKeys[key][localeId];
+                } else if (/^en(?:$|_|-)/i.test(localeId)) {
+                    // Look for a default value in the one.tr|one.trPattern occurrences:
+                    occurrences.forEach(function (occurrence) {
+                        if (occurrence.defaultValueAst && typeof value === 'undefined') {
+                            value = uglifyAst.astToObj(occurrence.defaultValueAst);
+                        }
+                    });
+                }
+                value = value || '';
+                var path = [];
+                (function serialize (obj) {
+                    if (_.isArray(obj)) {
+                        for (var i = 0 ; i < obj.length ; i += 1) {
+                            path.push(i);
+                            serialize(obj[i]);
+                            path.pop();
+                        }
+                    } else if (typeof obj === 'object' && obj !== null) {
+                        for (var propertyName in obj) {
+                            path.push(propertyName);
+                            serialize(obj[propertyName]);
+                            path.pop();
+                        }
+                    } else {
+                        // Assume a type that can be stringified using String(obj):
+                        babelSrc += key + path.map(function (pathComponent) {
+                            return '[' + pathComponent + ']';
+                        }).join("") + "=" + String(obj).replace(/\\/g, "\\\\").replace(/\n/g, "\\n") + "\n";
+                    }
+                }(value));
             });
             var targetBabelFileName = path.resolve(commandLineOptions.babeldir, localeId + '.txt');
             if (babelSrc.length) {

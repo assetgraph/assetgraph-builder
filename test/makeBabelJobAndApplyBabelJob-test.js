@@ -45,14 +45,30 @@ vows.describe('bin/makeBabelJob test').addBatch({
         },
         'da.txt should have the correct contents': function (babelDir) {
             var lines = fs.readFileSync(babelDir + '/da.txt', 'utf-8').split(/\n/);
-            assert.equal(lines.length, 2);
+            assert.equal(lines.length, 10);
+            assert.equal(lines.shift(), 'stringvalue=');
+            assert.equal(lines.shift(), 'arrayvalue[0]=');
+            assert.equal(lines.shift(), 'arrayvalue[1]=');
+            assert.equal(lines.shift(), 'arrayvalue[2]=');
+            assert.equal(lines.shift(), 'arrayvalue[3]=');
+            assert.equal(lines.shift(), 'arrayvalue[4]=');
+            assert.equal(lines.shift(), 'objectvalue[key1]=');
+            assert.equal(lines.shift(), 'objectvalue[key2]=');
             assert.equal(lines.shift(), 'withexistingkeys=the Danish value');
             assert.equal(lines.shift(), '');
         },
         'de.txt should have the correct contents': function (babelDir) {
             var lines = fs.readFileSync(babelDir + '/de.txt', 'utf-8').split(/\n/);
-            assert.equal(lines.length, 2);
-            assert.equal(lines.shift(), 'withexistingkeys=the German value');
+            assert.equal(lines.length, 10);
+            assert.equal(lines.shift(), 'stringvalue=');
+            assert.equal(lines.shift(), 'arrayvalue[0]=');
+            assert.equal(lines.shift(), 'arrayvalue[1]=');
+            assert.equal(lines.shift(), 'arrayvalue[2]=');
+            assert.equal(lines.shift(), 'arrayvalue[3]=');
+            assert.equal(lines.shift(), 'arrayvalue[4]=');
+            assert.equal(lines.shift(), 'objectvalue[key1]=');
+            assert.equal(lines.shift(), 'objectvalue[key2]=');
+            assert.equal(lines.shift(), 'withexistingkeys=');
             assert.equal(lines.shift(), '');
         },
         'then add translations to da.txt, duplicate the test case and run applyBabelJob on it': {
@@ -96,11 +112,13 @@ vows.describe('bin/makeBabelJob test').addBatch({
                 assert.deepEqual(i18n, {
                     stringvalue: {
                         en: 'value',
-                        da: 'the Danish stringvalue'
+                        da: 'the Danish stringvalue',
+                        de: ''
                     },
                     arrayvalue: {
                         en: [5, 'items', 'in', 'an', 'array'],
-                        da: [5, 'elementer', 'i', 'et', 'array']
+                        da: [5, 'elementer', 'i', 'et', 'array'],
+                        de: ['', '', '', '', '']
                     },
                     objectvalue: {
                         en: {
@@ -110,12 +128,16 @@ vows.describe('bin/makeBabelJob test').addBatch({
                         da: {
                             key1: 'værdi1',
                             key2: 'værdi2'
+                        },
+                        de: {
+                            key1: '',
+                            key2: ''
                         }
                     },
                     withexistingkeys: {
                         en: 'the English value',
                         da: 'den opdaterede danske værdi',
-                        de: 'the German value'
+                        de: ''
                     }
                 });
             }

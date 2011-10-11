@@ -13,7 +13,6 @@
     },
     "withexistingkeys": {
         "en": "the English value",
-        "da": "the Danish value",
-        "de": "the German value"
+        "da": "the Danish value"
     }
 }
