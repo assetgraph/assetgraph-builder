@@ -52,18 +52,34 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
                 if (alreadyTranslatedByKey[key]) {
                     return;
                 }
-                var value;
-                if (key in allKeys && localeId in allKeys[key]) {
-                    value = allKeys[key][localeId];
-                } else if (/^en(?:$|_|-)/i.test(localeId)) {
+                var value,
+                    defaultValue,
+                    omitExistingValues = false;
+
+                if (key in allKeys && 'en' in allKeys[key]) {
+                    defaultValue = allKeys[key].en;
+                } else {
                     // Look for a default value in the one.tr|one.trPattern occurrences:
                     occurrences.forEach(function (occurrence) {
-                        if (occurrence.defaultValueAst && typeof value === 'undefined') {
-                            value = uglifyAst.astToObj(occurrence.defaultValueAst);
+                        // FIXME: Warn about multiple different default values?
+                        if (occurrence.defaultValueAst && typeof defaultValue === 'undefined') {
+                            defaultValue = uglifyAst.astToObj(occurrence.defaultValueAst);
                         }
                     });
                 }
-                value = value || '';
+
+                if (key in allKeys && localeId in allKeys[key]) {
+                    value = allKeys[key][localeId];
+                } else if (defaultValue && /^en(?:$|_|-)/i.test(localeId)) {
+                    value = defaultValue;
+                } else if (defaultValue) {
+                    value = defaultValue;
+                    // Use the defaultValue to figure out which babel keys to explode it to (only relevant for structured values):
+                    omitExistingValues = true;
+                } else {
+                    value = '';
+                }
+
                 var path = [];
                 (function serialize (obj) {
                     if (_.isArray(obj)) {
@@ -82,7 +98,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
                         // Assume a type that can be stringified using String(obj):
                         babelSrc += key + path.map(function (pathComponent) {
                             return '[' + pathComponent + ']';
-                        }).join("") + "=" + String(obj).replace(/\\/g, "\\\\").replace(/\n/g, "\\n") + "\n";
+                        }).join("") + "=" + (omitExistingValues ? '' : String(obj).replace(/\\/g, "\\\\").replace(/\n/g, "\\n")) + "\n";
                     }
                 }(value));
             });
