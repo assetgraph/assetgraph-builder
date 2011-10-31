@@ -10,7 +10,7 @@
         }
     ],
     "dependencies": {
-        "assetgraph": "= 0.3.13",
+        "assetgraph": "= 0.3.14",
         "assetgraph-sprite": "= 0.2.1",
         "uglify-js": "= 1.1.0",
         "underscore": "= 1.2.0",
