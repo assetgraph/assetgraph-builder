@@ -6,7 +6,7 @@ var _ = require('underscore'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist')
-        .usage('$0 [--label <labelName>=<dir> ...] [--cssimports] [--inline <wildCard>] [--watch] --root <inputRootDirectory> [--version <versionTag>] <htmlFile> ...')
+        .usage('$0 [--label <labelName>=<dir> ...] [--cssimports] [--livecss] [--inline <wildCard>] [--watch] --root <inputRootDirectory> [--version <versionTag>] <htmlFile> ...')
         .boolean('cssimports')
         .demand(['root'])
         .argv;
@@ -24,6 +24,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     commandLineOptions.version && transforms.addContentVersionMetaElement({type: 'Html'}, commandLineOptions.version),
     transforms.populate({followRelations: {type: ['HtmlScript', 'JavaScriptOneInclude', 'JavaScriptExtJsRequire'], to: {url: query.not(/^https?:/)}}}),
     transforms.injectOneBootstrapper({isInitial: true}),
+    commandLineOptions.livecss && transforms.addLiveCssToOneBootstrapper({isInitial: true}),
     transforms.flattenStaticIncludes({isInitial: true}),
     transforms.removeAssets({isEmpty: true, type: 'JavaScript'}),
     transforms.inlineRelations({type: 'HtmlStyle', from: {isInitial: true, type: 'Html'}, to: {fixedUpExtJS: true}}),
