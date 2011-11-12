@@ -37,7 +37,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     transforms.externalizeRelations({from: {type: query.not('Htc')}, type: ['HtmlStyle', 'HtmlScript'], node: function (node) {return !node.getAttribute('nobundle');}}),
     transforms.mergeIdenticalAssets({type: ['JavaScript', 'Css']}),
     require('assetgraph-sprite')(),
-    transforms.postProcessBackgroundImages(),
+    transforms.postProcessCssImages(),
     transforms.bundleAssets({type: 'Css', incoming: {type: 'HtmlStyle', node: function (node) {return !node.getAttribute('nobundle') && !node.getAttribute('media');}}}),
     transforms.bundleAssets({type: 'JavaScript', incoming: {type: 'HtmlScript', node: function (node) {return !node.getAttribute('nobundle');}}}),
     function removeNobundleAttribute(assetGraph) {
