@@ -3,12 +3,12 @@ var vows = require('vows'),
     _ = require('underscore'),
     seq = require('seq'),
     AssetGraph = require('assetgraph'),
-    transforms = AssetGraph.transforms;
+    transforms = require('../lib/transforms');
 
 vows.describe('Postprocess images').addBatch({
     'After loading the test case': {
         topic: function () {
-            new AssetGraph({root: __dirname + '/postProcessBackgroundImages/'}).queue(
+            new AssetGraph({root: __dirname + '/postProcessCssImages/'}).queue(
                 transforms.loadAssets('style.css'),
                 transforms.populate()
             ).run(this.callback);
@@ -19,9 +19,9 @@ vows.describe('Postprocess images').addBatch({
             assert.equal(assetGraph.findAssets({type: 'Css'}).length, 1);
             assert.equal(assetGraph.findRelations({type: 'CssImage'}).length, 2);
         },
-        'then running the postProcessBackgroundImages transform': {
+        'then running the postProcessCssImages transform': {
             topic: function (assetGraph) {
-                assetGraph.queue(transforms.postProcessBackgroundImages()).run(this.callback);
+                assetGraph.queue(transforms.postProcessCssImages()).run(this.callback);
             },
             'the number of Png assets should be 3': function (assetGraph) {
                 assert.equal(assetGraph.findAssets({type: 'Png'}).length, 3);
