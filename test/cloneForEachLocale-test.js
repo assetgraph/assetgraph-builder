@@ -129,14 +129,14 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             topic: function (assetGraph) {
                 return getJavaScriptTextAndBootstrappedContext(assetGraph, {type: 'Html'});
             },
-            'the plainOneTr function should use the default pattern': function (obj) {
-                assert.equal(evaluateInContext(obj.text + "; return plainOneTr()", obj.context), 'Plain default');
+            'the plainOneTr function should use the American English (default) pattern': function (obj) {
+                assert.equal(evaluateInContext(obj.text + "; return plainOneTr()", obj.context), 'Plain English');
             },
-            'the callOneTrPattern function should use the default pattern': function (obj) {
-                assert.equal(evaluateInContext(obj.text + "; return callOneTrPattern()", obj.context), 'Boring and stupid default pattern');
+            'the callOneTrPattern function should use the American English (default) pattern': function (obj) {
+                assert.equal(evaluateInContext(obj.text + "; return callOneTrPattern()", obj.context), 'Boring and stupid English pattern');
             },
-            'the nonInvokedTrPattern should use the default pattern': function (obj) {
-                assert.equal(evaluateInContext(obj.text + "; return nonInvokedTrPattern('X')", obj.context), 'Welcome to Default Country, Mr. X');
+            'the nonInvokedTrPattern should use the American English (default) pattern': function (obj) {
+                assert.equal(evaluateInContext(obj.text + "; return nonInvokedTrPattern('X')", obj.context), 'Welcome to America, Mr. X');
             }
         },
         'then run the cloneForEachLocale transform': {
