@@ -10,7 +10,7 @@
         }
     ],
     "dependencies": {
-        "assetgraph": "= 0.3.26",
+        "assetgraph": "= 0.3.27",
         "assetgraph-sprite": "= 0.2.5",
         "bufferjs": "= 1.0.2",
         "memoizer": "= 0.0.4",
