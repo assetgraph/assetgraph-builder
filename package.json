@@ -32,5 +32,8 @@
     },
     "publishConfig": {
         "registry": "http://registry.npmjs.org/"
+    },
+    "scripts": {
+        "prepublish": "vows"
     }
 }
