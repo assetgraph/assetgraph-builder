@@ -6,10 +6,11 @@ var _ = require('underscore'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist')
-        .usage('$0 [--label <labelName>=<dir> ...] [--cssimports] [--inline <wildCard>] [--watch] --root <inputRootDirectory> [--version <versionTag>] <htmlFile> ...')
+        .usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] [--locale <localeId>,...] [--cssimports] [--inline <wildCard>] [--watch] [--version <versionTag>] <htmlFile> ...')
         .boolean('cssimports')
         .demand(['root'])
-        .argv;
+        .argv,
+    supportedLocaleIds = commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");}));
 
 new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (transform, elapsedTime) {
     console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
@@ -23,7 +24,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     transforms.moveAssets({isInitial: true}, function (asset) {return asset.url.replace(/\.template$/, "");}),
     commandLineOptions.version && transforms.addContentVersionMetaElement({type: 'Html'}, commandLineOptions.version),
     transforms.populate({followRelations: {type: ['HtmlScript', 'JavaScriptOneInclude', 'JavaScriptExtJsRequire'], to: {url: query.not(/^https?:/)}}}),
-    transforms.injectOneBootstrapper({isInitial: true}),
+    transforms.injectOneBootstrapper({isInitial: true}, supportedLocaleIds),
     transforms.flattenStaticIncludes({isInitial: true}),
     transforms.removeAssets({isEmpty: true, type: 'JavaScript'}),
     transforms.inlineRelations({type: 'HtmlStyle', from: {isInitial: true, type: 'Html'}, to: {fixedUpExtJS: true}}),
