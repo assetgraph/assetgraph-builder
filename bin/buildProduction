@@ -34,12 +34,11 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     transforms.removeRelations({type: 'JavaScriptOneGetText'}, {removeOrphan: true}),
     transforms.convertCssImportsToHtmlStyles(),
     transforms.removeAssets({isEmpty: true, type: ['Css', 'JavaScript']}, true),
-    transforms.externalizeRelations({from: {type: query.not('Htc')}, type: ['HtmlStyle', 'HtmlScript'], node: function (node) {return !node.getAttribute('nobundle');}}),
+    transforms.externalizeRelations({from: {type: query.not('Htc')}, type: ['HtmlStyle', 'HtmlScript'], node: function (node) {return !node.hasAttribute('nobundle');}}),
     transforms.mergeIdenticalAssets(query.or({isImage: true}, {type: ['JavaScript', 'Css']})),
     require('assetgraph-sprite')(),
     transforms.postProcessCssImages(),
-    transforms.bundleAssets({type: 'Css', incoming: {type: 'HtmlStyle', node: function (node) {return !node.getAttribute('nobundle') && !node.getAttribute('media');}}}),
-    transforms.bundleAssets({type: 'JavaScript', incoming: {type: 'HtmlScript', node: function (node) {return !node.getAttribute('nobundle');}}}),
+    transforms.bundleRelations({type: ['HtmlStyle', 'HtmlScript'], node: function (node) {return !node.hasAttribute('nobundle') && !node.hasAttribute('media');}}),
     function removeNobundleAttribute(assetGraph) {
         assetGraph.findRelations({type: ['HtmlScript', 'HtmlStyle']}).forEach(function (relation) {
             if (relation.node.hasAttribute('nobundle')) {
