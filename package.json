@@ -34,6 +34,6 @@
         "registry": "http://registry.npmjs.org/"
     },
     "scripts": {
-        "prepublish": "vows"
+        "prepublish": "npm install && vows"
     }
 }
