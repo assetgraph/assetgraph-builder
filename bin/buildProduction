@@ -6,8 +6,8 @@ var _ = require('underscore'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist').
-        usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] --outroot <dir> [--deferscripts] [--asyncscripts] [--locale <localeId>,...] [--cdnroot <url>] [--cdnoutroot <dir>] [--manifest] [--nocompress] <htmlFile>...').
-        boolean('manifest').
+        usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] --outroot <dir> [--deferscripts] [--asyncscripts] [--locale <localeId>,...] [--cdnroot <url>] [--cdnoutroot <dir>] [--manifest] [--nocompress] [--mangletoplevel] <htmlFile>...').
+        boolean('manifest', 'mangletoplevel').
         demand(['root', 'outroot']).
         argv,
     outroot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
@@ -48,7 +48,8 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
         });
     },
     transforms.inlineCssImagesWithLegacyFallback({type: 'Html', isInline: false}, 8192),
-    !commandLineOptions.nocompress && transforms.compressJavaScript({type: 'JavaScript'}),
+    commandLineOptions.mangletoplevel && transforms.pullGlobalsIntoVariables({type: 'JavaScript'}),
+    !commandLineOptions.nocompress && transforms.compressJavaScript({type: 'JavaScript'}, 'uglifyJs', {toplevel: commandLineOptions.mangletoplevel}),
     localeIds && transforms.cloneForEachLocale({type: 'Html', isInitial: true}, localeIds),
     localeIds && transforms.runJavaScriptConditionalBlocks({isInitial: true}, 'localize', true),
     transforms.removeAssets({type: 'I18n'}, true),
