@@ -23,7 +23,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     transforms.loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl)),
     transforms.moveAssets({isInitial: true}, function (asset) {return asset.url.replace(/\.template$/, "");}),
     commandLineOptions.version && transforms.addContentVersionMetaElement({type: 'Html'}, commandLineOptions.version),
-    transforms.populate({followRelations: {type: ['HtmlScript', 'JavaScriptOneInclude', 'JavaScriptExtJsRequire'], to: {url: query.not(/^https?:/)}}}),
+    transforms.populate({followRelations: {type: ['HtmlScript', 'HtmlRequireJsMain', 'JavaScriptAmdRequire', 'JavaScriptAmdDefine', 'JavaScriptOneInclude', 'JavaScriptExtJsRequire'], to: {url: query.not(/^https?:/)}}}),
     transforms.injectOneBootstrapper({isInitial: true}, supportedLocaleIds),
     transforms.flattenStaticIncludes({isInitial: true}),
     transforms.removeAssets({isEmpty: true, type: 'JavaScript'}),
