@@ -38,6 +38,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     transforms.mergeIdenticalAssets(query.or({isImage: true}, {type: ['JavaScript', 'Css']})),
     require('assetgraph-sprite')(),
     transforms.postProcessCssImages(),
+    transforms.bundleRequireJs({type: 'Html'}),
     transforms.bundleRelations({type: ['HtmlStyle', 'HtmlScript'], node: function (node) {return !node.hasAttribute('nobundle');}}),
     function removeNobundleAttribute(assetGraph) {
         assetGraph.findRelations({type: ['HtmlScript', 'HtmlStyle']}).forEach(function (relation) {
