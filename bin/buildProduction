@@ -30,8 +30,6 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     }),
     localeIds && transforms.stripDevelopmentModeFromOneBootstrapper({type: 'Html', isInitial: true}),
     transforms.removeRelations({type: 'JavaScriptOneInclude', to: {type: ['Css', 'JavaScript']}}, {detach: true, unresolved: true}),
-    transforms.inlineRelations({type: 'JavaScriptOneGetText'}),
-    transforms.removeRelations({type: 'JavaScriptOneGetText'}, {removeOrphan: true}),
     transforms.convertCssImportsToHtmlStyles(),
     transforms.removeAssets({isEmpty: true, type: ['Css', 'JavaScript']}, true),
     transforms.externalizeRelations({from: {type: query.not('Htc')}, type: ['HtmlStyle', 'HtmlScript'], node: function (node) {return !node.hasAttribute('nobundle');}}),
@@ -65,6 +63,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     commandLineOptions.nocompress && transforms.prettyPrintAssets({type: ['Html', 'JavaScript', 'Css']}),
     transforms.setAsyncOrDeferOnHtmlScripts({to: {isInline: false, url: /^file:/}}, commandLineOptions.asyncscripts, commandLineOptions.deferscripts),
     transforms.omitGetStaticUrlFunctionCall(),
+    transforms.inlineRelations({type: 'JavaScriptOneGetText'}),
     transforms.moveAssetsInOrder({isInitial: query.not(true), type: query.not('CacheManifest')}, function (asset, assetGraph) {
         var targetUrl = "/static/";
         // Conservatively assume that all one.getStaticUrl relations pointing at non-images are intended to be fetched via XHR
