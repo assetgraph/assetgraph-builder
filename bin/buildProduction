@@ -37,7 +37,6 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     require('assetgraph-sprite')(),
     transforms.postProcessCssImages(),
     transforms.bundleRequireJs({type: 'Html'}),
-    transforms.minifyAssets({type: 'KnockoutJsTemplate'}),
     transforms.bundleRelations({type: ['HtmlStyle', 'HtmlScript'], node: function (node) {return !node.hasAttribute('nobundle');}}),
     function removeNobundleAttribute(assetGraph) {
         assetGraph.findRelations({type: ['HtmlScript', 'HtmlStyle']}).forEach(function (relation) {
@@ -53,7 +52,7 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
     localeIds && transforms.cloneForEachLocale({type: 'Html', isInitial: true}, localeIds),
     localeIds && transforms.runJavaScriptConditionalBlocks({isInitial: true}, 'localize', true),
     transforms.removeAssets({type: 'I18n'}, true),
-    transforms.minifyAssets({type: ['Json', 'Html', 'JavaScript', 'Css']}),
+    transforms.minifyAssets(),
     transforms.inlineRelations({
         type: ['HtmlStyle', 'HtmlScript'],
         from: {isInline: false}, // Excludes relations occurring in conditional comments
