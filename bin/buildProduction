@@ -29,6 +29,16 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
                                   {type: query.not(['JavaScriptOneInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']), to: {url: query.not(/^https?:/)}})
     }),
     localeIds && transforms.stripDevelopmentModeFromOneBootstrapper({type: 'Html', isInitial: true}),
+
+    // Replace Less assets with their Css counterparts:
+    transforms.compileLessToCss({type: 'Less'}),
+
+    // Kill in-browser less compiler and remove its incoming relations:
+    transforms.removeAssets({url: /\/less\.js$/}, true),
+
+    // Find and populate CssImage relations from the compiled Less assets:
+    transforms.populate({from: {type: 'Css'}}),
+
     transforms.removeRelations({type: 'JavaScriptOneInclude', to: {type: ['Css', 'JavaScript']}}, {detach: true, unresolved: true}),
     transforms.convertCssImportsToHtmlStyles(),
     transforms.removeAssets({isEmpty: true, type: ['Css', 'JavaScript']}, true),
