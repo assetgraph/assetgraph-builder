@@ -13,6 +13,7 @@
         "assetgraph": "= 0.3.42",
         "assetgraph-sprite": "= 0.2.7",
         "bufferjs": "= 1.0.2",
+        "less": "= 1.2.1",
         "memoizer": "= 0.0.4",
         "optimist": "= 0.2.6",
         "seq": "= 0.3.5",
