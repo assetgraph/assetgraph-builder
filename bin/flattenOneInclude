@@ -4,7 +4,6 @@ var fs = require('fs'),
     _ = require('underscore'),
     seq = require('seq'),
     AssetGraph = require('assetgraph'),
-    transforms = require('../lib/transforms'),
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist').
         usage('$0 [--label <labelName>=<dir> ...] [--root <dir>] [-o <outputJavaScriptFile>] <inputJavaScriptFile>').
@@ -15,14 +14,17 @@ var fs = require('fs'),
         }).
         argv;
 
-new AssetGraph({root: commandLineOptions.root}).on('error', function (err) {
-    console.error(err.stack);
-    process.exit(1);
-}).queue(
-    transforms.registerLabelsAsCustomProtocols(commandLineOptions.label),
-    transforms.loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl)),
-    transforms.populate({followRelations: {type: 'JavaScriptOneInclude'}}),
-    function (assetGraph) {
+require('../lib/registerTransforms');
+
+new AssetGraph({root: commandLineOptions.root})
+    .on('error', function (err) {
+        console.error(err.stack);
+        process.exit(1);
+    })
+    .registerLabelsAsCustomProtocols(commandLineOptions.label)
+    .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
+    .populate({followRelations: {type: 'JavaScriptOneInclude'}})
+    .queue(function (assetGraph) {
         assetGraph.findAssets({isInitial: true}).forEach(function (initialAsset) {
             // Get the original text including comments etc.:
             seq(assetGraph.collectAssetsPostOrder(initialAsset, {to: {type: 'JavaScript'}}).filter(function(asset) {return !asset.isInline;}))
@@ -39,5 +41,5 @@ new AssetGraph({root: commandLineOptions.root}).on('error', function (err) {
                     }
                 });
         });
-    }
-).run();
+    })
+    .run();

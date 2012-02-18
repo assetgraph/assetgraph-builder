@@ -1,17 +1,18 @@
 var vows = require('vows'),
     assert = require('assert'),
     AssetGraph = require('assetgraph'),
-    transforms = require('../lib/transforms'),
     query = AssetGraph.query;
+
+require('../lib/registerTransforms');
 
 vows.describe('one.getText').addBatch({
     'After loading test case': {
         topic: function () {
-            new AssetGraph({root: __dirname + '/JavaScriptOneGetText/'}).queue(
-                transforms.loadAssets('index.html.template'),
-                transforms.populate(),
-                transforms.injectOneBootstrapper({isInitial: true})
-            ).run(this.callback);
+            new AssetGraph({root: __dirname + '/JavaScriptOneGetText/'})
+                .loadAssets('index.html.template')
+                .populate()
+                .injectOneBootstrapper({isInitial: true})
+                .run(this.callback);
         },
         'the graph should contain 4 assets': function (assetGraph) {
             assert.equal(assetGraph.findAssets().length, 4);
@@ -21,10 +22,10 @@ vows.describe('one.getText').addBatch({
         },
         'then inline and remove the JavaScriptOneGetText relations': {
             topic: function (assetGraph) {
-                assetGraph.queue(
-                    transforms.inlineRelations({type: 'JavaScriptOneGetText'}),
-                    transforms.removeRelations({type: 'JavaScriptOneGetText'}, {removeOrphan: true})
-                ).run(this.callback);
+                assetGraph
+                    .inlineRelations({type: 'JavaScriptOneGetText'})
+                    .removeRelations({type: 'JavaScriptOneGetText'}, {removeOrphan: true})
+                    .run(this.callback);
             },
             'the graph should be down to 3 assets': function (assetGraph) {
                 assert.equal(assetGraph.findAssets().length, 3);

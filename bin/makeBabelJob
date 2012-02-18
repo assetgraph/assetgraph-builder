@@ -4,7 +4,6 @@ var path = require('path'),
     fs = require('fs'),
     _ = require('underscore'),
     AssetGraph = require('assetgraph'),
-    transforms = require('../lib/transforms'),
     i18nTools = require('../lib/util/i18nTools'),
     uglifyAst = require('assetgraph/lib/util/uglifyAst'),
     urlTools = require('assetgraph/lib/util/urlTools'),
@@ -15,18 +14,24 @@ var path = require('path'),
         .argv,
     localeIds = _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");}));
 
+require('../lib/registerTransforms');
+
 mkpathSync(commandLineOptions.babeldir);
 
-new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (transform, elapsedTime) {
-    console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
-}).on('error', function (err) {
-    console.error(err.stack);
-    process.exit(1);
-}).queue(
-    transforms.registerLabelsAsCustomProtocols(commandLineOptions.label),
-    transforms.loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl)),
-    transforms.populate({followRelations: {type: ['HtmlScript', 'JavaScriptOneInclude'], to: {url: AssetGraph.query.not(/^https?:/)}}}),
-    function (assetGraph) {
+new AssetGraph({root: commandLineOptions.root})
+    .on('afterTransform', function (transform, elapsedTime) {
+        console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
+    }).on('error', function (err) {
+        console.error(err.stack);
+        process.exit(1);
+    })
+    .registerLabelsAsCustomProtocols(commandLineOptions.label)
+    .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
+    .populate({
+        followRelations: {type: ['HtmlScript', 'JavaScriptOneInclude'],
+        to: {url: AssetGraph.query.not(/^https?:/)}}
+    })
+    .queue(function (assetGraph) {
         var initialHtmlAssets = assetGraph.findAssets({type: 'Html', isInitial: true}),
             oneTrOccurrencesByKey = i18nTools.findOneTrOccurrences(assetGraph, initialHtmlAssets),
             allKeys = i18nTools.extractAllReachableKeys(assetGraph, initialHtmlAssets),
@@ -110,5 +115,5 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
                 console.warn("No existing keys for " + localeId + ", not writing " + targetBabelFileName);
             }
         });
-    }
-).run();
+    })
+    .run();

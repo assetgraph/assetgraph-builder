@@ -2,16 +2,17 @@ var vows = require('vows'),
     assert = require('assert'),
     _ = require('underscore'),
     seq = require('seq'),
-    AssetGraph = require('assetgraph'),
-    transforms = require('../lib/transforms');
+    AssetGraph = require('assetgraph');
+
+require('../lib/registerTransforms');
 
 vows.describe('Postprocess images').addBatch({
     'After loading the test case': {
         topic: function () {
-            new AssetGraph({root: __dirname + '/postProcessCssImages/'}).queue(
-                transforms.loadAssets('style.css'),
-                transforms.populate()
-            ).run(this.callback);
+            new AssetGraph({root: __dirname + '/postProcessCssImages/'})
+                .loadAssets('style.css')
+                .populate()
+                .run(this.callback);
         },
         'the graph contains the expected assets and relations': function (assetGraph) {
             assert.equal(assetGraph.findAssets().length, 3);
@@ -21,7 +22,9 @@ vows.describe('Postprocess images').addBatch({
         },
         'then running the postProcessCssImages transform': {
             topic: function (assetGraph) {
-                assetGraph.queue(transforms.postProcessCssImages()).run(this.callback);
+                assetGraph
+                    .postProcessCssImages()
+                    .run(this.callback);
             },
             'the number of Png assets should be 3': function (assetGraph) {
                 assert.equal(assetGraph.findAssets({type: 'Png'}).length, 3);

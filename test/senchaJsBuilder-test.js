@@ -1,20 +1,21 @@
 var vows = require('vows'),
     assert = require('assert'),
     _ = require('underscore'),
-    AssetGraph = require('assetgraph'),
-    transforms = require('../lib/transforms');
+    AssetGraph = require('assetgraph');
+
+require('../lib/registerTransforms');
 
 vows.describe('resolvers.senchaJsBuilder test').addBatch({
     'After loading a test case with three assets': {
         topic: function () {
-            new AssetGraph({root: __dirname + '/senchaJsBuilder/rewriteBackgroundImageUrls/'}).queue(
-                transforms.registerLabelsAsCustomProtocols([
+            new AssetGraph({root: __dirname + '/senchaJsBuilder/rewriteBackgroundImageUrls/'})
+                .registerLabelsAsCustomProtocols([
                     {name: 'mylabel', url: __dirname + '/senchaJsBuilder/rewriteBackgroundImageUrls/foo.jsb2'}
-                ]),
-                transforms.loadAssets('index.html'),
-                transforms.populate(),
-                transforms.flattenStaticIncludes({isInitial: true})
-            ).run(this.callback);
+                ])
+                .loadAssets('index.html')
+                .populate()
+                .flattenStaticIncludes({isInitial: true})
+                .run(this.callback);
         },
         'the graph should contain one Html asset': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'Html'}).length, 1);
@@ -43,7 +44,7 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
             },
             'then inlining the HtmlStyle relations': {
                 topic: function (_, assetGraph) {
-                    assetGraph.queue(transforms.inlineRelations({type: 'HtmlStyle'})).run(this.callback);
+                    assetGraph.inlineRelations({type: 'HtmlStyle'}).run(this.callback);
                 },
                 'all the background-image urls should be relative to the Html': function (assetGraph) {
                     assetGraph.findRelations({type: 'CssImage'}).forEach(function (relation) {
@@ -64,13 +65,13 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
     },
     'After loading a test case with an Html asset and a jsb2 describing packages that depend on each other': {
         topic: function () {
-            new AssetGraph({root: __dirname + '/senchaJsBuilder/dependentPackages/'}).queue(
-                transforms.registerLabelsAsCustomProtocols([
+            new AssetGraph({root: __dirname + '/senchaJsBuilder/dependentPackages/'})
+                .registerLabelsAsCustomProtocols([
                     {name: 'mylabel', url: __dirname + '/senchaJsBuilder/dependentPackages/foo.jsb2'}
-                ]),
-                transforms.loadAssets('index.html'),
-                transforms.populate()
-            ).run(this.callback);
+                ])
+                .loadAssets('index.html')
+                .populate()
+                .run(this.callback);
         },
         'the graph should contain a single Html asset': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'Html'}).length, 1);
@@ -90,7 +91,7 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
             },
             'then running transforms.flattenStaticIncludes': {
                 topic: function (text, assetGraph) {
-                    assetGraph.queue(transforms.flattenStaticIncludes({isInitial: true})).run(this.callback);
+                    assetGraph.flattenStaticIncludes({isInitial: true}).run(this.callback);
                 },
                 'the graph should contain 4 HtmlScript relations': function (assetGraph) {
                     assert.equal(assetGraph.findRelations({type: 'HtmlScript'}).length, 4);
@@ -104,13 +105,13 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
     },
     'After loading a test case with includes of overlapping jsb2 packages': {
         topic: function () {
-            new AssetGraph({root: __dirname + '/senchaJsBuilder/dependentPackages/'}).queue(
-                transforms.registerLabelsAsCustomProtocols([
+            new AssetGraph({root: __dirname + '/senchaJsBuilder/dependentPackages/'})
+                .registerLabelsAsCustomProtocols([
                     {name: 'mylabel', url: __dirname + '/senchaJsBuilder/dependentPackages/foo.jsb2'}
-                ]),
-                transforms.loadAssets('overlappingIncludes.html'),
-                transforms.populate()
-            ).run(this.callback);
+                ])
+                .loadAssets('overlappingIncludes.html')
+                .populate()
+                .run(this.callback);
         },
         'the graph should contain a single Html asset': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'Html'}).length, 1);
@@ -130,7 +131,9 @@ vows.describe('resolvers.senchaJsBuilder test').addBatch({
             },
             'then running transforms.flattenStaticIncludes': {
                 topic: function (text, assetGraph) {
-                    assetGraph.queue(transforms.flattenStaticIncludes({isInitial: true})).run(this.callback);
+                    assetGraph
+                        .flattenStaticIncludes({isInitial: true})
+                        .run(this.callback);
                 },
                 'the graph should contain 4 HtmlScript relations': function (assetGraph) {
                     assert.equal(assetGraph.findRelations({type: 'HtmlScript'}).length, 4);

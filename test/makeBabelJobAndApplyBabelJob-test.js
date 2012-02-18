@@ -2,9 +2,7 @@ var childProcess = require('child_process'),
     fs = require('fs'),
     vows = require('vows'),
     assert = require('assert'),
-    temp = require('temp'),
-    AssetGraph = require('assetgraph'),
-    transforms = require('../lib/transforms');
+    temp = require('temp');
 
 vows.describe('bin/makeBabelJob test').addBatch({
     'After running makeBabelJob on the test case': {

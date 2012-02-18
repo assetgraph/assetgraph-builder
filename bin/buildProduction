@@ -2,7 +2,6 @@
 
 var _ = require('underscore'),
     AssetGraph = require('assetgraph'),
-    transforms = require('../lib/transforms'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist').
@@ -15,65 +14,74 @@ var _ = require('underscore'),
     cdnoutroot = urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
     localeIds = commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");}));
 
-new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (transform, elapsedTime) {
-    console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
-}).on('error', function (err) {
-    console.error(err.stack);
-    process.exit(1);
-}).queue(
-    transforms.registerLabelsAsCustomProtocols(commandLineOptions.label),
-    transforms.loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl)),
-    transforms.populate({
+require('../lib/registerTransforms');
+
+new AssetGraph({root: commandLineOptions.root})
+    .on('afterTransform', function (transform, elapsedTime) {
+        console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
+    })
+    .on('error', function (err) {
+        console.error(err.stack);
+        process.exit(1);
+    })
+    .registerLabelsAsCustomProtocols(commandLineOptions.label)
+    .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
+    .populate({
         followRelations: query.or({to: {type: 'I18n'}},
                                   {type: 'HtmlAnchor', to: {type: query.not('Html'), url: query.not(/^https?:/)}},
                                   {type: query.not(['JavaScriptOneInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']), to: {url: query.not(/^https?:/)}})
-    }),
-    localeIds && transforms.stripDevelopmentModeFromOneBootstrapper({type: 'Html', isInitial: true}),
+    })
+    .if(localeIds)
+        .stripDevelopmentModeFromOneBootstrapper({type: 'Html', isInitial: true})
+    .endif()
 
     // Replace Less assets with their Css counterparts:
-    transforms.compileLessToCss({type: 'Less'}),
+    .compileLessToCss({type: 'Less'})
 
     // Kill in-browser less compiler and remove its incoming relations:
-    transforms.removeAssets({url: /\/less\.js$/}, true),
+    .removeAssets({url: /\/less\.js$/}, true)
 
     // Find and populate CssImage relations from the compiled Less assets:
-    transforms.populate({from: {type: 'Css'}}),
+    .populate({from: {type: 'Css'}})
 
-    transforms.removeRelations({type: 'JavaScriptOneInclude', to: {type: ['Css', 'JavaScript']}}, {detach: true, unresolved: true}),
-    transforms.convertCssImportsToHtmlStyles(),
-    transforms.removeAssets({isEmpty: true, type: ['Css', 'JavaScript']}, true),
-    transforms.externalizeRelations({from: {type: query.not('Htc')}, type: ['HtmlStyle', 'HtmlScript'], node: function (node) {return !node.hasAttribute('nobundle');}}),
-    transforms.mergeIdenticalAssets(query.or({isImage: true}, {type: ['JavaScript', 'Css']})),
-    require('assetgraph-sprite')(),
-    transforms.postProcessCssImages(),
-    transforms.bundleRequireJs({type: 'Html'}),
-    transforms.bundleRelations({type: ['HtmlStyle', 'HtmlScript'], node: function (node) {return !node.hasAttribute('nobundle');}}),
-    function removeNobundleAttribute(assetGraph) {
-        assetGraph.findRelations({type: ['HtmlScript', 'HtmlStyle']}).forEach(function (relation) {
-            if (relation.node.hasAttribute('nobundle')) {
-                relation.node.removeAttribute('nobundle');
-                relation.from.markDirty();
-            }
-        });
-    },
-    transforms.inlineCssImagesWithLegacyFallback({type: 'Html', isInline: false}, 8192),
-    commandLineOptions.mangletoplevel && transforms.pullGlobalsIntoVariables({type: 'JavaScript'}),
-    !commandLineOptions.nocompress && transforms.compressJavaScript({type: 'JavaScript'}, 'uglifyJs', {toplevel: commandLineOptions.mangletoplevel}),
-    localeIds && transforms.cloneForEachLocale({type: 'Html', isInitial: true}, localeIds),
-    localeIds && transforms.runJavaScriptConditionalBlocks({isInitial: true}, 'localize', true),
-    transforms.removeAssets({type: 'I18n'}, true),
-    transforms.minifyAssets(),
-    transforms.inlineRelations({
+    .removeRelations({type: 'JavaScriptOneInclude', to: {type: ['Css', 'JavaScript']}}, {detach: true, unresolved: true})
+    .convertCssImportsToHtmlStyles()
+    .removeAssets({isEmpty: true, type: ['Css', 'JavaScript']}, true)
+    .externalizeRelations({from: {type: query.not('Htc')}, type: ['HtmlStyle', 'HtmlScript'], node: function (node) {return !node.hasAttribute('nobundle');}})
+    .mergeIdenticalAssets(query.or({isImage: true}, {type: ['JavaScript', 'Css']}))
+    .spriteBackgroundImages()
+    .postProcessCssImages()
+    .bundleRequireJs({type: 'Html'})
+    .bundleRelations({type: ['HtmlStyle', 'HtmlScript'], node: function (node) {return !node.hasAttribute('nobundle');}})
+    .removeNobundleAttribute({type: ['HtmlScript', 'HtmlStyle']})
+    .inlineCssImagesWithLegacyFallback({type: 'Html', isInline: false}, 8192)
+    .if(commandLineOptions.mangletoplevel)
+        .pullGlobalsIntoVariables({type: 'JavaScript'})
+    .endif()
+    .if(!commandLineOptions.nocompress)
+        .compressJavaScript({type: 'JavaScript'}, 'uglifyJs', {toplevel: commandLineOptions.mangletoplevel})
+    .endif()
+    .if(localeIds)
+        .cloneForEachLocale({type: 'Html', isInitial: true}, localeIds)
+        .runJavaScriptConditionalBlocks({isInitial: true}, 'localize', true)
+    .endif()
+    .removeAssets({type: 'I18n'}, true)
+    .minifyAssets()
+    .inlineRelations({
         type: ['HtmlStyle', 'HtmlScript'],
         from: {isInline: false}, // Excludes relations occurring in conditional comments
         to: function (asset) {return asset.isAsset && asset.rawSrc.length < 4096;}
-    }),
-    commandLineOptions.manifest && transforms.addCacheManifest({isInitial: true}),
-    commandLineOptions.nocompress && transforms.prettyPrintAssets({type: ['Html', 'JavaScript', 'Css']}),
-    transforms.setAsyncOrDeferOnHtmlScripts({to: {isInline: false, url: /^file:/}}, commandLineOptions.asyncscripts, commandLineOptions.deferscripts),
-    transforms.omitGetStaticUrlFunctionCall(),
-    transforms.inlineRelations({type: 'JavaScriptOneGetText'}),
-    transforms.moveAssetsInOrder({isInitial: query.not(true), type: query.not('CacheManifest')}, function (asset, assetGraph) {
+    })
+    .if(commandLineOptions.manifest)
+        .addCacheManifest({isInitial: true})
+    .endif()
+    .if(commandLineOptions.nocompress)
+        .prettyPrintAssets({type: ['Html', 'JavaScript', 'Css']})
+    .endif()
+    .setAsyncOrDeferOnHtmlScripts({to: {isInline: false, url: /^file:/}}, commandLineOptions.asyncscripts, commandLineOptions.deferscripts)
+    .omitGetStaticUrlFunctionCall()
+    .inlineRelations({type: 'JavaScriptOneGetText'})
+    .moveAssetsInOrder({isInitial: query.not(true), type: query.not('CacheManifest')}, function (asset, assetGraph) {
         var targetUrl = "/static/";
         // Conservatively assume that all one.getStaticUrl relations pointing at non-images are intended to be fetched via XHR
         // and thus cannot be put on a CDN because of same origin restrictions:
@@ -81,11 +89,10 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
             targetUrl = cdnroot;
         }
         return targetUrl + asset.md5Hex.substr(0, 10) + asset.extension;
-
-    }),
-    transforms.parallel(
-        transforms.writeAssetsToDisc({url: /^file:/}, outroot),
-        cdnroot && transforms.writeAssetsToDisc({url: query.createPrefixMatcher(cdnroot)}, cdnoutroot || outroot, cdnroot)
-    ),
-    transforms.stats()
-).run();
+    })
+    .writeAssetsToDisc({url: /^file:/}, outroot)
+    .if(cdnroot)
+        .writeAssetsToDisc({url: query.createPrefixMatcher(cdnroot)}, cdnoutroot || outroot, cdnroot)
+    .endif()
+    .writeStatsToStderr()
+    .run();

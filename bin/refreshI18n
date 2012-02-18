@@ -12,16 +12,23 @@ var _ = require('underscore'),
         argv,
     localeIds = _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");}));
 
-new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (transform, elapsedTime) {
-    console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
-}).on('error', function (err) {
-    console.error(err.stack);
-    process.exit(1);
-}).queue(
-    transforms.registerLabelsAsCustomProtocols(commandLineOptions.label),
-    transforms.loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl)),
-    transforms.populate({followRelations: {type: ['HtmlScript', 'JavaScriptOneInclude'], to: {url: AssetGraph.query.not(/^https?:/)}}}),
-    function (assetGraph) {
+require('../lib/registerTransforms');
+
+new AssetGraph({root: commandLineOptions.root})
+    .on('afterTransform', function (transform, elapsedTime) {
+        console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
+    })
+    .on('error', function (err) {
+        console.error(err.stack);
+        process.exit(1);
+    })
+    .registerLabelsAsCustomProtocols(commandLineOptions.label)
+    .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
+    .populate({
+        followRelations: {type: ['HtmlScript', 'JavaScriptOneInclude'],
+        to: {url: AssetGraph.query.not(/^https?:/)}}
+    })
+    .queue(function (assetGraph) {
         // We don't want to overwrite the "initially dirty" assets, such as ext-base.js.
         assetGraph.findAssets({isDirty: true}).forEach(function (dirtyAsset) {
             dirtyAsset.isDirty = false;
@@ -87,8 +94,8 @@ new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (t
             }
             fs.writeFileSync(urlTools.fileUrlToFsPath(javaScript.url), patchedText, javaScript.encoding);
         });
-    },
-    transforms.prettyPrintAssets({type: 'I18n', isDirty: true}),
-    transforms.stats(),
-    transforms.writeAssetsToDisc({type: 'I18n', isDirty: true})
-).run();
+    })
+    .prettyPrintAssets({type: 'I18n', isDirty: true})
+    .writeStatsToStderr()
+    .writeAssetsToDisc({type: 'I18n', isDirty: true})
+    .run();

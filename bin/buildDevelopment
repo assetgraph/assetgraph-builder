@@ -2,7 +2,6 @@
 
 var _ = require('underscore'),
     AssetGraph = require('assetgraph'),
-    transforms = require('../lib/transforms'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist')
@@ -12,28 +11,46 @@ var _ = require('underscore'),
         .argv,
     supportedLocaleIds = commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");}));
 
-new AssetGraph({root: commandLineOptions.root}).on('afterTransform', function (transform, elapsedTime) {
-    console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
-}).on('error', function (err) {
-    console.error(err.stack);
-    process.exit(1);
-}).queue(
-    commandLineOptions.watch && transforms.startOverIfAssetSourceFilesChange(),
-    transforms.registerLabelsAsCustomProtocols(commandLineOptions.label),
-    transforms.loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl)),
-    transforms.moveAssets({isInitial: true}, function (asset) {return asset.url.replace(/\.template$/, "");}),
-    commandLineOptions.version && transforms.addContentVersionMetaElement({type: 'Html'}, commandLineOptions.version),
-    transforms.populate({followRelations: {type: ['HtmlScript', 'HtmlRequireJsMain', 'JavaScriptAmdRequire', 'JavaScriptAmdDefine', 'JavaScriptOneInclude', 'JavaScriptExtJsRequire'], to: {url: query.not(/^https?:/)}}}),
-    transforms.injectOneBootstrapper({isInitial: true}, supportedLocaleIds),
-    transforms.flattenStaticIncludes({isInitial: true}),
-    transforms.removeAssets({isEmpty: true, type: 'JavaScript'}),
-    transforms.inlineRelations({type: 'HtmlStyle', from: {isInitial: true, type: 'Html'}, to: {fixedUpExtJS: true}}),
-    commandLineOptions.cssimports && transforms.convertHtmlStylesToInlineCssImports(),
-    transforms.inlineRelations({type: 'HtmlScript', from: {isInitial: true, type: 'Html'}, to: {fixedUpExtJS: true}}),
-    transforms.prettyPrintAssets({type: 'JavaScript', incoming: {type: 'HtmlScript', from: {isInitial: true, type: 'Html'}}}),
-    transforms.prettyPrintAssets({type: 'Css', incoming: {type: 'HtmlStyle', from: {isInitial: true, type: 'Html'}}}),
-    transforms.runJavaScriptConditionalBlocks({type: 'Html'}, 'buildDevelopment'),
-    commandLineOptions.inline && transforms.inlineRelations({to: {url: urlTools.makeFileUrlMatcher(commandLineOptions.inline)}}),
-    transforms.prettyPrintAssets({isInitial: true}),
-    transforms.writeAssetsToDisc({isInitial: true})
-).run();
+require('../lib/registerTransforms');
+
+new AssetGraph({root: commandLineOptions.root})
+    .on('afterTransform', function (transform, elapsedTime) {
+        console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
+    })
+    .on('error', function (err) {
+        console.error(err.stack);
+        process.exit(1);
+    })
+    // Transform:
+    .if(commandLineOptions.watch)
+        .startOverIfAssetSourceFilesChange()
+    .endif()
+    .registerLabelsAsCustomProtocols(commandLineOptions.label)
+    .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
+    .moveAssets({isInitial: true}, function (asset) {return asset.url.replace(/\.template$/, "");})
+    .if(commandLineOptions.version)
+        .addContentVersionMetaElement({type: 'Html'}, commandLineOptions.version)
+    .endif()
+    .populate({
+        followRelations: {
+            type: ['HtmlScript', 'HtmlRequireJsMain', 'JavaScriptAmdRequire', 'JavaScriptAmdDefine', 'JavaScriptOneInclude', 'JavaScriptExtJsRequire'],
+            to: {url: query.not(/^https?:/)}
+        }
+    })
+    .injectOneBootstrapper({isInitial: true}, supportedLocaleIds)
+    .flattenStaticIncludes({isInitial: true})
+    .removeAssets({isEmpty: true, type: 'JavaScript'})
+    .inlineRelations({type: 'HtmlStyle', from: {isInitial: true, type: 'Html'}, to: {fixedUpExtJS: true}})
+    .if(commandLineOptions.cssimports)
+        .convertHtmlStylesToInlineCssImports()
+    .endif()
+    .inlineRelations({type: 'HtmlScript', from: {isInitial: true, type: 'Html'}, to: {fixedUpExtJS: true}})
+    .prettyPrintAssets({type: 'JavaScript', incoming: {type: 'HtmlScript', from: {isInitial: true, type: 'Html'}}})
+    .prettyPrintAssets({type: 'Css', incoming: {type: 'HtmlStyle', from: {isInitial: true, type: 'Html'}}})
+    .runJavaScriptConditionalBlocks({type: 'Html'}, 'buildDevelopment')
+    .if(commandLineOptions.inline)
+        .inlineRelations({to: {url: urlTools.makeFileUrlMatcher(commandLineOptions.inline)}})
+    .endif()
+    .prettyPrintAssets({isInitial: true})
+    .writeAssetsToDisc({isInitial: true})
+    .run();

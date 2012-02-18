@@ -3,9 +3,10 @@ var vows = require('vows'),
     vm = require('vm'),
     AssetGraph = require('assetgraph'),
     passError = require('assetgraph/lib/util/passError'),
-    transforms = require('../lib/transforms'),
     i18nTools = require('../lib/util/i18nTools'),
     oneBootstrapper = require('../lib/util/oneBootstrapper');
+
+require('../lib/registerTransforms');
 
 function getJavaScriptTextAndBootstrappedContext(assetGraph, htmlQueryObj) {
     var htmlAsset = assetGraph.findAssets(htmlQueryObj)[0],
@@ -32,10 +33,10 @@ function evaluateInContext(src, context) {
 vows.describe('Make a clone of each Html file for each language').addBatch({
     'After loading simple test case': {
         topic: function () {
-            new AssetGraph({root: __dirname + '/cloneForEachLocale/simple/'}).queue(
-                transforms.loadAssets('index.html'),
-                transforms.populate()
-            ).run(this.callback);
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/simple/'})
+                .loadAssets('index.html')
+                .populate()
+                .run(this.callback);
         },
         'the graph should contain one Html asset': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'Html'}).length, 1);
@@ -63,7 +64,9 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         },
         'then running the cloneForEachLocale transform': {
             topic: function (assetGraph) {
-                assetGraph.runTransform(transforms.cloneForEachLocale({type: 'Html'}, ['en_US', 'da']), this.callback);
+                assetGraph
+                    .cloneForEachLocale({type: 'Html'}, ['en_US', 'da'])
+                    .run(this.callback);
             },
             'the graph should contain 2 Html assets': function (assetGraph) {
                 assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
@@ -113,11 +116,11 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
     },
     'After loading test case with multiple locales': {
         topic: function () {
-            new AssetGraph({root: __dirname + '/cloneForEachLocale/multipleLocales/'}).queue(
-                transforms.loadAssets('index.html'),
-                transforms.populate(),
-                transforms.injectOneBootstrapper({type: 'Html', isInitial: true})
-            ).run(this.callback);
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/multipleLocales/'})
+                .loadAssets('index.html')
+                .populate()
+                .injectOneBootstrapper({type: 'Html', isInitial: true})
+                .run(this.callback);
         },
         'the graph should contain 4 assets': function (assetGraph) {
             assert.equal(assetGraph.findAssets().length, 4);
@@ -141,10 +144,10 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         },
         'then run the cloneForEachLocale transform': {
             topic: function (assetGraph) {
-                assetGraph.queue(
-                    transforms.cloneForEachLocale({isInitial: true}, ['da', 'en_US']),
-                    transforms.prettyPrintAssets({type: 'JavaScript'})
-                ).run(this.callback);
+                assetGraph
+                    .cloneForEachLocale({isInitial: true}, ['da', 'en_US'])
+                    .prettyPrintAssets({type: 'JavaScript'})
+                    .run(this.callback);
             },
             'the graph should contain 2 Html assets': function (assetGraph) {
                 assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
@@ -182,7 +185,9 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             },
             'the run the buildDevelopment conditional blocks': {
                 topic: function (assetGraph) {
-                    assetGraph.queue(transforms.runJavaScriptConditionalBlocks({isInitial: true}, 'buildDevelopment')).run(this.callback);
+                    assetGraph
+                        .runJavaScriptConditionalBlocks({isInitial: true}, 'buildDevelopment')
+                        .run(this.callback);
                 },
                 'the American English Html asset should contain the American English title': function (assetGraph) {
                     assert.equal(assetGraph.findAssets({type: 'Html', url: /\/index\.en_US\.html$/})[0].parseTree.title, "The awesome document title");
@@ -195,13 +200,13 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
     },
     'After loading test case with an Html asset with an inline HtmlStyle, then externalize the HtmlStyle and run cloneForEachLocale and inlineCssImagesWithLegacyFallback': {
         topic: function () {
-            new AssetGraph({root: __dirname + '/cloneForEachLocale/inlineCssCombo/'}).queue(
-                transforms.loadAssets('index.html'),
-                transforms.populate(),
-                transforms.externalizeRelations({type: 'HtmlStyle'}),
-                transforms.cloneForEachLocale({type: 'Html'}, ['en_US', 'da']),
-                transforms.inlineCssImagesWithLegacyFallback({type: 'Html'})
-            ).run(this.callback);
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/inlineCssCombo/'})
+                .loadAssets('index.html')
+                .populate()
+                .externalizeRelations({type: 'HtmlStyle'})
+                .cloneForEachLocale({type: 'Html'}, ['en_US', 'da'])
+                .inlineCssImagesWithLegacyFallback({type: 'Html'})
+                .run(this.callback);
         },
         'there should be 2 non-inline Html assets': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'Html', isInline: false}).length, 2);
