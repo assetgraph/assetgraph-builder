@@ -5,7 +5,7 @@ var _ = require('underscore'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist').
-        usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] --outroot <dir> [--deferscripts] [--asyncscripts] [--locale <localeId>,...] [--cdnroot <url>] [--cdnoutroot <dir>] [--manifest] [--nocompress] [--mangletoplevel] <htmlFile>...').
+        usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] --outroot <dir> [--less] [--deferscripts] [--asyncscripts] [--locale <localeId>,...] [--cdnroot <url>] [--cdnoutroot <dir>] [--manifest] [--nocompress] [--mangletoplevel] <htmlFile>...').
         boolean('manifest', 'mangletoplevel').
         demand(['root', 'outroot']).
         argv,
@@ -35,14 +35,16 @@ new AssetGraph({root: commandLineOptions.root})
         .stripDevelopmentModeFromOneBootstrapper({type: 'Html', isInitial: true})
     .endif()
 
-    // Replace Less assets with their Css counterparts:
-    .compileLessToCss({type: 'Less'})
+    .if(commandLineOptions.less)
+        // Replace Less assets with their Css counterparts:
+        .compileLessToCss({type: 'Less'})
 
-    // Kill in-browser less compiler and remove its incoming relations:
-    .removeAssets({url: /\/less\.js$/}, true)
+        // Kill in-browser less compiler and remove its incoming relations:
+        .removeAssets({url: /\/less\.js$/}, true)
 
-    // Find and populate CssImage relations from the compiled Less assets:
-    .populate({from: {type: 'Css'}})
+        // Find and populate CssImage relations from the compiled Less assets:
+        .populate({from: {type: 'Css'}})
+    .endif()
 
     .removeRelations({type: 'JavaScriptOneInclude', to: {type: ['Css', 'JavaScript']}}, {detach: true, unresolved: true})
     .convertCssImportsToHtmlStyles()
