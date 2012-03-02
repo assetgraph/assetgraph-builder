@@ -28,7 +28,6 @@ new AssetGraph({root: commandLineOptions.root})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .populate({
         followRelations: query.or({to: {type: 'I18n'}},
-                                  {type: 'HtmlAnchor', to: {type: query.not('Html'), url: query.not(/^https?:/)}},
                                   {type: query.not(['JavaScriptOneInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']), to: {url: query.not(/^https?:/)}})
     })
     .if(localeIds)
