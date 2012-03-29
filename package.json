@@ -10,21 +10,21 @@
         }
     ],
     "dependencies": {
-        "assetgraph": "= 0.4.7",
-        "assetgraph-sprite": "= 0.2.8",
-        "bufferjs": "= 1.0.2",
-        "memoizer": "= 0.0.4",
-        "optimist": "= 0.2.6",
-        "seq": "= 0.3.5",
-        "temp": "= 0.2.0",
-        "uglify-js": "= 1.2.5",
-        "underscore": "= 1.2.0"
+        "assetgraph": "=0.4.7",
+        "assetgraph-sprite": "=0.2.8",
+        "bufferjs": "=1.0.2",
+        "memoizer": "=0.0.4",
+        "optimist": "=0.2.6",
+        "seq": "=0.3.5",
+        "temp": "=0.2.0",
+        "uglify-js": "=1.2.5",
+        "underscore": "=1.2.0"
     },
     "devDependencies": {
-        "vows": ">= 0.5.6"
+        "vows": ">=0.5.6"
     },
     "engines": {
-        "node": ">= 0.4.8"
+        "node": ">=0.4.8"
     },
     "directories": {
         "lib": "./lib",
