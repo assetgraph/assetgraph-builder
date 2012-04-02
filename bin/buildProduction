@@ -6,7 +6,7 @@ var _ = require('underscore'),
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist').
         usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] --outroot <dir> [--less] [--deferscripts] [--asyncscripts] [--locale <localeId>,...] [--cdnroot <url>] [--cdnoutroot <dir>] [--manifest] [--nocompress] [--mangletoplevel] <htmlFile>...').
-        boolean('manifest', 'mangletoplevel').
+        boolean('less', 'deferscripts', 'asyncscripts', 'manifest', 'nocompress', 'mangletoplevel').
         demand(['root', 'outroot']).
         argv,
     outroot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
@@ -52,7 +52,9 @@ new AssetGraph({root: commandLineOptions.root})
     .mergeIdenticalAssets(query.or({isImage: true}, {type: ['JavaScript', 'Css']}))
     .spriteBackgroundImages()
     .postProcessCssImages()
-    .bundleRequireJs({type: 'Html'})
+    .if(commandLineOptions.requirejs)
+        .bundleRequireJs({type: 'Html'})
+    .endif()
     .bundleRelations({type: ['HtmlStyle', 'HtmlScript'], node: function (node) {return !node.hasAttribute('nobundle');}})
     .removeNobundleAttribute({type: ['HtmlScript', 'HtmlStyle']})
     .inlineCssImagesWithLegacyFallback({type: 'Html', isInline: false}, 8192)
