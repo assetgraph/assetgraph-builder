@@ -16,7 +16,7 @@
         "memoizer": "=0.0.4",
         "optimist": "=0.2.6",
         "seq": "=0.3.5",
-        "temp": "=0.2.0",
+        "temp": "=0.4.0",
         "uglify-js": "=1.2.5",
         "underscore": "=1.2.0"
     },
