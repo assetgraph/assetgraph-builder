@@ -33,7 +33,7 @@ new AssetGraph({root: commandLineOptions.root})
     .if(localeIds)
         .stripDevelopmentModeFromOneBootstrapper({type: 'Html', isInitial: true})
     .endif()
-
+    .addContentVersionMetaElement({type: 'Html'}, '{0}/production', true)
     .if(commandLineOptions.less)
         // Replace Less assets with their Css counterparts:
         .compileLessToCss({type: 'Less'})
