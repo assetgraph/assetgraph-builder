@@ -28,12 +28,12 @@ new AssetGraph({root: commandLineOptions.root})
     .registerLabelsAsCustomProtocols(commandLineOptions.label)
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .populate({
-        followRelations: {type: ['HtmlScript', 'JavaScriptOneInclude'],
+        followRelations: {type: ['HtmlScript', 'HtmlRequireJsMain', 'JavaScriptOneInclude', 'JavaScriptAmdDefine', 'JavaScriptAmdRequire', 'JavaScriptOneGetText'],
         to: {url: AssetGraph.query.not(/^https?:/)}}
     })
     .queue(function (assetGraph) {
         var initialHtmlAssets = assetGraph.findAssets({type: 'Html', isInitial: true}),
-            oneTrOccurrencesByKey = i18nTools.findOneTrOccurrences(assetGraph, initialHtmlAssets),
+            occurrencesByKey = i18nTools.findOccurrences(assetGraph, initialHtmlAssets),
             allKeys = i18nTools.extractAllReachableKeys(assetGraph, initialHtmlAssets),
             alreadyTranslatedByKey = {};
 
@@ -53,7 +53,7 @@ new AssetGraph({root: commandLineOptions.root})
 
         localeIds.forEach(function (localeId) {
             var babelSrc = '';
-            _.each(oneTrOccurrencesByKey, function (occurrences, key) {
+            _.each(occurrencesByKey, function (occurrences, key) {
                 if (alreadyTranslatedByKey[key]) {
                     return;
                 }
@@ -64,11 +64,15 @@ new AssetGraph({root: commandLineOptions.root})
                 if (key in allKeys && 'en' in allKeys[key]) {
                     defaultValue = allKeys[key].en;
                 } else {
-                    // Look for a default value in the one.tr|one.trPattern occurrences:
+                    // Look for a default value in the occurrences:
                     occurrences.forEach(function (occurrence) {
                         // FIXME: Warn about multiple different default values?
-                        if (occurrence.defaultValueAst && typeof defaultValue === 'undefined') {
-                            defaultValue = uglifyAst.astToObj(occurrence.defaultValueAst);
+                        if (typeof defaultValue === 'undefined') {
+                            if (occurrence.type === 'i18nTag') {
+                                defaultValue = occurrence.defaultValue;
+                            } else if (occurrence.defaultValueAst) {
+                                defaultValue = uglifyAst.astToObj(occurrence.defaultValue);
+                            }
                         }
                     });
                 }

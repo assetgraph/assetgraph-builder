@@ -1,0 +1,4 @@
+<div>
+    <span data-i18n="MyLanguageKey">foo</span>
+    <span data-i18n="MyNestedLanguageKey">Here is a <span data-i18n="Nice">Nice and <span data-i18n="Beautiful">beautiful</span></span> nested i18n construct</span>
+</div>

@@ -29,7 +29,8 @@ vows.describe('bin/makeBabelJob test').addBatch({
         },
         'en.txt should have the correct contents': function (babelDir) {
             var lines = fs.readFileSync(babelDir + '/en.txt', 'utf-8').split(/\n/);
-            assert.equal(lines.length, 10);
+            assert.equal(lines.length, 13);
+            assert.equal(lines.shift(), 'simplekeyinknockoutjstemplate=Simple key in a Knockout.js template');
             assert.equal(lines.shift(), 'stringvalue=value');
             assert.equal(lines.shift(), 'arrayvalue[0]=5');
             assert.equal(lines.shift(), 'arrayvalue[1]=items');
@@ -39,11 +40,14 @@ vows.describe('bin/makeBabelJob test').addBatch({
             assert.equal(lines.shift(), 'objectvalue[key1]=value1');
             assert.equal(lines.shift(), 'objectvalue[key2]=value2');
             assert.equal(lines.shift(), 'withexistingkeys=the English value');
+            assert.equal(lines.shift(), 'simplekeyinhtml=Simple key in HTML, English');
+            assert.equal(lines.shift(), 'keywithplaceholdersinhtml=Key with {0} placeholders in HTML, English');
             assert.equal(lines.shift(), '');
         },
         'da.txt should have the correct contents': function (babelDir) {
             var lines = fs.readFileSync(babelDir + '/da.txt', 'utf-8').split(/\n/);
-            assert.equal(lines.length, 10);
+            assert.equal(lines.length, 13);
+            assert.equal(lines.shift(), 'simplekeyinknockoutjstemplate=');
             assert.equal(lines.shift(), 'stringvalue=');
             assert.equal(lines.shift(), 'arrayvalue[0]=');
             assert.equal(lines.shift(), 'arrayvalue[1]=');
@@ -53,11 +57,14 @@ vows.describe('bin/makeBabelJob test').addBatch({
             assert.equal(lines.shift(), 'objectvalue[key1]=');
             assert.equal(lines.shift(), 'objectvalue[key2]=');
             assert.equal(lines.shift(), 'withexistingkeys=the Danish value');
+            assert.equal(lines.shift(), 'simplekeyinhtml=');
+            assert.equal(lines.shift(), 'keywithplaceholdersinhtml=');
             assert.equal(lines.shift(), '');
         },
         'de.txt should have the correct contents': function (babelDir) {
             var lines = fs.readFileSync(babelDir + '/de.txt', 'utf-8').split(/\n/);
-            assert.equal(lines.length, 10);
+            assert.equal(lines.length, 13);
+            assert.equal(lines.shift(), 'simplekeyinknockoutjstemplate=');
             assert.equal(lines.shift(), 'stringvalue=');
             assert.equal(lines.shift(), 'arrayvalue[0]=');
             assert.equal(lines.shift(), 'arrayvalue[1]=');
@@ -67,6 +74,8 @@ vows.describe('bin/makeBabelJob test').addBatch({
             assert.equal(lines.shift(), 'objectvalue[key1]=');
             assert.equal(lines.shift(), 'objectvalue[key2]=');
             assert.equal(lines.shift(), 'withexistingkeys=');
+            assert.equal(lines.shift(), 'simplekeyinhtml=');
+            assert.equal(lines.shift(), 'keywithplaceholdersinhtml=');
             assert.equal(lines.shift(), '');
         },
         'then add translations to da.txt, duplicate the test case and run applyBabelJob on it': {
@@ -74,6 +83,7 @@ vows.describe('bin/makeBabelJob test').addBatch({
                 var cb = this.callback,
                     tmpTestCaseCopyDir = temp.mkdirSync(),
                     daTxtLines = [
+                        'simplekeyinknockoutjstemplate=Simpel nøgle i en Knockout.js-skabelon',
                         'stringvalue=the Danish stringvalue',
                         'arrayvalue[0]=5',
                         'arrayvalue[1]=elementer',
@@ -82,7 +92,9 @@ vows.describe('bin/makeBabelJob test').addBatch({
                         'arrayvalue[4]=array',
                         'objectvalue[key1]=værdi1',
                         'objectvalue[key2]=værdi2',
-                        'withexistingkeys=den opdaterede danske værdi'
+                        'withexistingkeys=den opdaterede danske værdi',
+                        'simplekeyinhtml=Simpel nøgle på dansk',
+                        'keywithplaceholdersinhtml=Nøgle med pladsholdere på dansk'
                     ],
                     copyCommand = "cp '" + __dirname + "/makeBabelJobAndApplyBabelJob'/* " + tmpTestCaseCopyDir;
                 fs.writeFileSync(babelDir + '/da.txt', daTxtLines.join("\n"), 'utf-8');
@@ -106,8 +118,7 @@ vows.describe('bin/makeBabelJob test').addBatch({
                 });
             },
             'thething.i18n should be updated with the translations': function (tmpTestCaseCopyDir) {
-                var i18n = JSON.parse(fs.readFileSync(tmpTestCaseCopyDir + '/thething.i18n'));
-                assert.deepEqual(i18n, {
+                assert.deepEqual(JSON.parse(fs.readFileSync(tmpTestCaseCopyDir + '/thething.i18n')), {
                     stringvalue: {
                         en: 'value',
                         da: 'the Danish stringvalue',
@@ -135,6 +146,25 @@ vows.describe('bin/makeBabelJob test').addBatch({
                     withexistingkeys: {
                         en: 'the English value',
                         da: 'den opdaterede danske værdi',
+                        de: ''
+                    },
+                    simplekeyinhtml: {
+                        en: 'Simple key in HTML, English',
+                        da: 'Simpel nøgle på dansk',
+                        de: ''
+                    },
+                    keywithplaceholdersinhtml: {
+                        en: 'Key with {0} placeholders in HTML, English',
+                        da: 'Nøgle med pladsholdere på dansk',
+                        de: ''
+                    }
+                });
+            },
+            'a new file called template.ko.i18n should be created thething.i18n should created and contain the single language key found in the template': function (tmpTestCaseCopyDir) {
+                assert.deepEqual(JSON.parse(fs.readFileSync(tmpTestCaseCopyDir + '/template.ko.i18n')), {
+                    simplekeyinknockoutjstemplate: {
+                        en: 'Simple key in a Knockout.js template',
+                        da: 'Simpel nøgle i en Knockout.js-skabelon',
                         de: ''
                     }
                 });

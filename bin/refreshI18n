@@ -25,8 +25,10 @@ new AssetGraph({root: commandLineOptions.root})
     .registerLabelsAsCustomProtocols(commandLineOptions.label)
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .populate({
-        followRelations: {type: ['HtmlScript', 'JavaScriptOneInclude'],
-        to: {url: AssetGraph.query.not(/^https?:/)}}
+        followRelations: {
+            type: ['HtmlScript', 'HtmlRequireJsMain', 'JavaScriptOneInclude', 'JavaScriptAmdDefine', 'JavaScriptAmdRequire', 'JavaScriptOneGetText'],
+            to: {url: AssetGraph.query.not(/^https?:/)}
+        }
     })
     .queue(function (assetGraph) {
         // We don't want to overwrite the "initially dirty" assets, such as ext-base.js.
@@ -34,18 +36,18 @@ new AssetGraph({root: commandLineOptions.root})
             dirtyAsset.isDirty = false;
         });
         var existingI18nRelations = assetGraph.findRelations({to: {type: 'I18n'}, from: {type: 'JavaScript'}}),
-            oneTrOccurrencesByKey = i18nTools.findOneTrOccurrences(assetGraph, assetGraph.findAssets({type: 'Html', isInitial: true}));
+            occurrencesByKey = i18nTools.findOccurrences(assetGraph, assetGraph.findAssets({type: 'Html', isInitial: true}));
 
-        _.keys(oneTrOccurrencesByKey).forEach(function (key) {
-            var occurrences = oneTrOccurrencesByKey[key];
+        _.keys(occurrencesByKey).forEach(function (key) {
+            var occurrences = occurrencesByKey[key];
             if (occurrences.length > 1) {
                 for (var i = 1 ; i < occurrences.length ; i += 1) {
-                    if (!_.isEqual(occurrences[0].defaultValueAst, occurrences[1].defaultValueAst)) {
+                    if (!_.isEqual(occurrences[0].defaultValue, occurrences[1].defaultValue)) {
                         console.warn("Default values for " + key + " are different");
                     }
                 }
             }
-            var i18nAsset = i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, oneTrOccurrencesByKey);
+            var i18nAsset = i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, occurrencesByKey);
             localeIds.forEach(function (localeId) {
                 var prioritizedLocaleIds = i18nTools.expandLocaleIdToPrioritizedList(localeId);
                 if (key in i18nAsset.parseTree) {
@@ -59,8 +61,8 @@ new AssetGraph({root: commandLineOptions.root})
                 }
                 var leastSpecificLocaleId = prioritizedLocaleIds[prioritizedLocaleIds.length - 1],
                     value = null;
-                if (leastSpecificLocaleId === 'en' && occurrences[0].defaultValueAst) {
-                    value = uglifyAst.astToObj(occurrences[0].defaultValueAst);
+                if (leastSpecificLocaleId === 'en' && occurrences[0].defaultValue) {
+                    value = occurrences[0].type === 'i18nTag' ? occurrences[0].defaultValue : uglifyAst.astToObj(occurrences[0].defaultValue);
                 }
                 i18nAsset.parseTree[key][leastSpecificLocaleId] = value;
                 console.log(i18nAsset.url + ": " + key + " already found, added entry for " + leastSpecificLocaleId);

@@ -145,15 +145,30 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'then run the cloneForEachLocale transform': {
             topic: function (assetGraph) {
                 assetGraph
-                    .cloneForEachLocale({isInitial: true}, ['da', 'en_US'])
+                    .cloneForEachLocale({isInitial: true}, ['da', 'en_US', 'en_GB'])
                     .prettyPrintAssets({type: 'JavaScript'})
                     .run(this.callback);
             },
-            'the graph should contain 2 Html assets': function (assetGraph) {
-                assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
+            'the graph should contain 3 Html assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Html'}).length, 3);
             },
-            'the graph should contain 4 JavaScript assets': function (assetGraph) {
-                assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 4);
+            'the graph should contain 6 JavaScript assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 6);
+            },
+            'the Danish Html asset should contain the Danish texts': function (assetGraph) {
+                var paragraphs = assetGraph.findAssets({url: /\/index\.da\.html$/})[0].parseTree.getElementsByTagName('p');
+                assert.equal(paragraphs[0].firstChild.nodeValue, 'Kropstekst');
+                assert.equal(paragraphs[1].innerHTML, 'En <span>beautiful</span> tekst med <span>lovely</span> pladsholdere i sig');
+            },
+            'the British English Html asset should contain the British English texts': function (assetGraph) {
+                var paragraphs = assetGraph.findAssets({url: /\/index\.en_GB\.html$/})[0].parseTree.getElementsByTagName('p');
+                assert.equal(paragraphs[0].firstChild.nodeValue, 'Some text in body');
+                assert.equal(paragraphs[1].innerHTML, 'A <span>beautiful</span> text with oh so <span>lovely</span> placeholders in it');
+            },
+            'the American English Html asset should contain the American English texts': function (assetGraph) {
+                var paragraphs = assetGraph.findAssets({url: /\/index\.en_US\.html$/})[0].parseTree.getElementsByTagName('p');
+                assert.equal(paragraphs[0].firstChild.nodeValue, 'Some text in body');
+                assert.equal(paragraphs[1].innerHTML, 'A <span>beautiful</span> text with <span>lovely</span> placeholders in it');
             },
             'then get the American English JavaScript as text along with the bootstrapped context': {
                 topic: function (assetGraph) {
@@ -218,5 +233,68 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             assert.equal(assetGraph.findRelations({from: {url: /\/index\.da\.html$/}, type: 'HtmlConditionalComment'}).length, 2);
         }
 
+    },
+    'After loading test case with a couple of Knockout templates': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/knockoutTemplate/'})
+                .loadAssets('index.html')
+                .populate()
+                .run(this.callback);
+        },
+        'the graph should contain 5 assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets().length, 5);
+        },
+        'the graph should contain 1 Html asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 1);
+        },
+        'the graph should contain 1 JavaScript asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 1);
+        },
+        'the graph should contain 1 I18n assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'I18n'}).length, 1);
+        },
+        'the graph should contain 2 KnockoutJsTemplate assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'KnockoutJsTemplate'}).length, 2);
+        },
+        'then run the cloneForEachLocale transform': {
+            topic: function (assetGraph) {
+                assetGraph
+                    .cloneForEachLocale({type: 'Html'}, ['en_US', 'da'])
+                    .run(this.callback);
+            },
+            'the graph should contain 8 assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets().length, 8);
+            },
+            'the graph should contain 2 Html assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
+            },
+            'the graph should contain 2 JavaScript assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 2);
+            },
+            'the graph should contain 1 I18n assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'I18n'}).length, 1);
+            },
+            'the graph should contain 3 KnockoutJsTemplate assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'KnockoutJsTemplate'}).length, 3);
+            },
+            'the first template used by Danish and American English JavaScript asset should be the same asset': function (assetGraph) {
+                var danishJavaScript = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to,
+                    americanEnglishJavaScript = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en_US\.html$/}})[0].to;
+                assert.ok(danishJavaScript);
+                assert.ok(americanEnglishJavaScript);
+                assert.equal(assetGraph.findRelations({from: danishJavaScript})[0].to,
+                             assetGraph.findRelations({from: americanEnglishJavaScript})[0].to);
+            },
+            'the second template used by the Danish JavaScript should be cloned and translated': function (assetGraph) {
+                var danishJavaScript = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to;
+                assert.equal(assetGraph.findRelations({from: danishJavaScript, type: 'JavaScriptOneGetText'})[1].to.parseTree.firstChild.innerHTML,
+                             '\n    Min sprognøgle\n    Her er en rar dyb i18n-struktur på dansk\n');
+            },
+            'the second template used by the American English JavaScript should be cloned and translated': function (assetGraph) {
+                var americanEnglishJavaScript = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en_US\.html$/}})[0].to;
+                assert.equal(assetGraph.findRelations({from: americanEnglishJavaScript, type: 'JavaScriptOneGetText'})[1].to.parseTree.firstChild.innerHTML,
+                             '\n    My language key\n    Here is a nice and English nested i18n construct in English\n');
+            }
+        }
     }
 })['export'](module);

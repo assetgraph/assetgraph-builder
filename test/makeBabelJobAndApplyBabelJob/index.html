@@ -2,6 +2,8 @@
 <html>
 <head></head>
 <body>
+<p><span data-i18n="simplekeyinhtml">Simple key in HTML</span></p>
+<p><span data-i18n="keywithplaceholdersinhtml">Key with <span>nice</span> placeholders</span></p>
 <script>
 one.include('thething.i18n');
 
@@ -10,6 +12,8 @@ alert(one.tr('stringvalue'));
 alert(one.tr('arrayvalue'));
 alert(one.tr('objectvalue'));
 alert(one.tr('withexistingkeys'));
+
+var knockoutTemplate = one.getText('template.ko');
 </script>
 </body>
 </html>

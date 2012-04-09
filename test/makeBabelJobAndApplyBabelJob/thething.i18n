@@ -14,5 +14,11 @@
     "withexistingkeys": {
         "en": "the English value",
         "da": "the Danish value"
+    },
+    "simplekeyinhtml": {
+        "en": "Simple key in HTML, English"
+    },
+    "keywithplaceholdersinhtml": {
+        "en": "Key with {0} placeholders in HTML, English"
     }
 }
