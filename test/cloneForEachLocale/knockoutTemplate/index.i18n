@@ -3,6 +3,10 @@
         "da": "Min sprognøgle",
         "en": "My language key"
     },
+    "MyOtherLanguageKey": {
+        "da": "Min anden sprognøgle",
+        "en": "My other language key"
+    },
     "MyNestedLanguageKey": {
          "en": "Here is a {0} nested i18n construct in English",
          "da": "Her er en {0} dyb i18n-struktur på dansk"
