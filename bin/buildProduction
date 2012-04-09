@@ -2,6 +2,7 @@
 
 var _ = require('underscore'),
     AssetGraph = require('assetgraph'),
+    oneBootstrapper = require('../lib/util/oneBootstrapper'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist').
@@ -32,6 +33,13 @@ new AssetGraph({root: commandLineOptions.root})
     })
     .if(localeIds)
         .stripDevelopmentModeFromOneBootstrapper({type: 'Html', isInitial: true})
+    .endif()
+    .if(cdnroot)
+        .queue(function addCdnRootToOneBootstrapper(assetGraph) {
+            oneBootstrapper.findOneBootstrappersInGraph(assetGraph).forEach(function (javaScript) {
+                javaScript.parseTree[1].splice(1, 0, ['stat', ['assign', true, ['dot', ['name', 'one'], 'cdnRoot'], ['string', cdnroot]]]);
+            });
+        })
     .endif()
     .addContentVersionMetaElement({type: 'Html'}, '{0}/production', true)
     .if(commandLineOptions.less)
