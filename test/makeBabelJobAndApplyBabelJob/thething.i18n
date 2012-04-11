@@ -18,6 +18,9 @@
     "simplekeyinhtml": {
         "en": "Simple key in HTML, English"
     },
+    "simplekeyinhtmlattribute": {
+        "en": "Simple key in HTML attribute, English"
+    },
     "keywithplaceholdersinhtml": {
         "en": "Key with {0} placeholders in HTML, English"
     }

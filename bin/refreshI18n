@@ -62,7 +62,7 @@ new AssetGraph({root: commandLineOptions.root})
                 var leastSpecificLocaleId = prioritizedLocaleIds[prioritizedLocaleIds.length - 1],
                     value = null;
                 if (leastSpecificLocaleId === 'en' && occurrences[0].defaultValue) {
-                    value = occurrences[0].type === 'i18nTag' ? occurrences[0].defaultValue : uglifyAst.astToObj(occurrences[0].defaultValue);
+                    value = /^i18nTag/.test(occurrences[0].type) ? occurrences[0].defaultValue : uglifyAst.astToObj(occurrences[0].defaultValue);
                 }
                 i18nAsset.parseTree[key][leastSpecificLocaleId] = value;
                 console.log(i18nAsset.url + ": " + key + " already found, added entry for " + leastSpecificLocaleId);

@@ -15,6 +15,7 @@ vows.describe('bin/makeBabelJob test').addBatch({
                     __dirname + '/makeBabelJobAndApplyBabelJob/index.html',
                     '--locale', 'en,da,de'
                 ]);
+
             makeBabelJobProcess.on('exit', function (exitCode) {
                 if (exitCode) {
                     cb(new Error("The makeBabelJob process ended with a non-zero exit code: " + exitCode));
@@ -29,7 +30,7 @@ vows.describe('bin/makeBabelJob test').addBatch({
         },
         'en.txt should have the correct contents': function (babelDir) {
             var lines = fs.readFileSync(babelDir + '/en.txt', 'utf-8').split(/\n/);
-            assert.equal(lines.length, 13);
+            assert.equal(lines.length, 14);
             assert.equal(lines.shift(), 'simplekeyinknockoutjstemplate=Simple key in a Knockout.js template');
             assert.equal(lines.shift(), 'stringvalue=value');
             assert.equal(lines.shift(), 'arrayvalue[0]=5');
@@ -41,12 +42,13 @@ vows.describe('bin/makeBabelJob test').addBatch({
             assert.equal(lines.shift(), 'objectvalue[key2]=value2');
             assert.equal(lines.shift(), 'withexistingkeys=the English value');
             assert.equal(lines.shift(), 'simplekeyinhtml=Simple key in HTML, English');
+            assert.equal(lines.shift(), 'simplekeyinhtmlattribute=Simple key in HTML attribute, English');
             assert.equal(lines.shift(), 'keywithplaceholdersinhtml=Key with {0} placeholders in HTML, English');
             assert.equal(lines.shift(), '');
         },
         'da.txt should have the correct contents': function (babelDir) {
             var lines = fs.readFileSync(babelDir + '/da.txt', 'utf-8').split(/\n/);
-            assert.equal(lines.length, 13);
+            assert.equal(lines.length, 14);
             assert.equal(lines.shift(), 'simplekeyinknockoutjstemplate=');
             assert.equal(lines.shift(), 'stringvalue=');
             assert.equal(lines.shift(), 'arrayvalue[0]=');
@@ -58,12 +60,13 @@ vows.describe('bin/makeBabelJob test').addBatch({
             assert.equal(lines.shift(), 'objectvalue[key2]=');
             assert.equal(lines.shift(), 'withexistingkeys=the Danish value');
             assert.equal(lines.shift(), 'simplekeyinhtml=');
+            assert.equal(lines.shift(), 'simplekeyinhtmlattribute=');
             assert.equal(lines.shift(), 'keywithplaceholdersinhtml=');
             assert.equal(lines.shift(), '');
         },
         'de.txt should have the correct contents': function (babelDir) {
             var lines = fs.readFileSync(babelDir + '/de.txt', 'utf-8').split(/\n/);
-            assert.equal(lines.length, 13);
+            assert.equal(lines.length, 14);
             assert.equal(lines.shift(), 'simplekeyinknockoutjstemplate=');
             assert.equal(lines.shift(), 'stringvalue=');
             assert.equal(lines.shift(), 'arrayvalue[0]=');
@@ -75,6 +78,7 @@ vows.describe('bin/makeBabelJob test').addBatch({
             assert.equal(lines.shift(), 'objectvalue[key2]=');
             assert.equal(lines.shift(), 'withexistingkeys=');
             assert.equal(lines.shift(), 'simplekeyinhtml=');
+            assert.equal(lines.shift(), 'simplekeyinhtmlattribute=');
             assert.equal(lines.shift(), 'keywithplaceholdersinhtml=');
             assert.equal(lines.shift(), '');
         },
@@ -94,6 +98,7 @@ vows.describe('bin/makeBabelJob test').addBatch({
                         'objectvalue[key2]=værdi2',
                         'withexistingkeys=den opdaterede danske værdi',
                         'simplekeyinhtml=Simpel nøgle på dansk',
+                        'simplekeyinhtmlattribute=Simpel nøgle i HTML-attribut på dansk',
                         'keywithplaceholdersinhtml=Nøgle med pladsholdere på dansk'
                     ],
                     copyCommand = "cp '" + __dirname + "/makeBabelJobAndApplyBabelJob'/* " + tmpTestCaseCopyDir;
@@ -151,6 +156,11 @@ vows.describe('bin/makeBabelJob test').addBatch({
                     simplekeyinhtml: {
                         en: 'Simple key in HTML, English',
                         da: 'Simpel nøgle på dansk',
+                        de: ''
+                    },
+                    simplekeyinhtmlattribute: {
+                        en: 'Simple key in HTML attribute, English',
+                        da: 'Simpel nøgle i HTML-attribut på dansk',
                         de: ''
                     },
                     keywithplaceholdersinhtml: {

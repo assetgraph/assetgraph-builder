@@ -288,12 +288,22 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             'the second template used by the Danish JavaScript should be cloned and translated': function (assetGraph) {
                 var danishJavaScript = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to;
                 assert.equal(assetGraph.findRelations({from: danishJavaScript, type: 'JavaScriptOneGetText'})[1].to.parseTree.firstChild.innerHTML,
-                             '\n    <div>Min sprognøgle</div>\n    <span id="bar">Min anden sprognøgle</span>\n    Her er en rar dyb i18n-struktur på dansk\n');
+                             '\n' +
+                             '    <div>Min sprognøgle</div>\n' +
+                             '    <span id="bar">Min anden sprognøgle</span>\n'+
+                             '    quux på dansk\n' +
+                             '    <span title="blah på dansk">baz på dansk</span>\n' +
+                             '    Her er en rar dyb i18n-struktur på dansk\n');
             },
             'the second template used by the American English JavaScript should be cloned and translated': function (assetGraph) {
                 var americanEnglishJavaScript = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en_US\.html$/}})[0].to;
                 assert.equal(assetGraph.findRelations({from: americanEnglishJavaScript, type: 'JavaScriptOneGetText'})[1].to.parseTree.firstChild.innerHTML,
-                             '\n    <div>My language key</div>\n    <span id="bar">My other language key</span>\n    Here is a nice and English nested i18n construct in English\n');
+                             '\n' +
+                             '    <div>My language key</div>\n' +
+                             '    <span id="bar">My other language key</span>\n' +
+                             '    quux in English\n' +
+                             '    <span title="blah in English">baz in English</span>\n' +
+                             '    Here is a nice and English nested i18n construct in English\n');
             }
         }
     }

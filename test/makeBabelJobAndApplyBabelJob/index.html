@@ -3,11 +3,12 @@
 <head></head>
 <body>
 <p><span data-i18n="simplekeyinhtml">Simple key in HTML</span></p>
+<p><span data-i18n="attr: {foo: 'simplekeyinhtmlattribute'}" foo="Simple key in HTML attribute">...</span></p>
 <p><span data-i18n="keywithplaceholdersinhtml">Key with <span>nice</span> placeholders</span></p>
 <script>
 one.include('thething.i18n');
 
-// Use the keys so that makeBabelJob notices the keys:
+// Use the keys so that makeBabelJob notices them:
 alert(one.tr('stringvalue'));
 alert(one.tr('arrayvalue'));
 alert(one.tr('objectvalue'));
