@@ -31,9 +31,7 @@ new AssetGraph({root: commandLineOptions.root})
         followRelations: query.or({to: {type: 'I18n'}},
                                   {type: query.not(['JavaScriptOneInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']), to: {url: query.not(/^https?:/)}})
     })
-    .if(localeIds)
-        .stripDevelopmentModeFromOneBootstrapper({type: 'Html', isInitial: true})
-    .endif()
+    .stripDevelopmentModeFromOneBootstrapper({type: 'Html', isInitial: true})
     .if(cdnroot)
         .queue(function addCdnRootToOneBootstrapper(assetGraph) {
             oneBootstrapper.findOneBootstrappersInGraph(assetGraph).forEach(function (javaScript) {
