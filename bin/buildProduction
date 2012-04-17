@@ -47,7 +47,7 @@ new AssetGraph({root: commandLineOptions.root})
         .compileLessToCss({type: 'Less'})
 
         // Kill in-browser less compiler and remove its incoming relations:
-        .removeAssets({url: /\/less\.js$/}, true)
+        .removeAssets({url: /\/less(?:-\d+\.\d+\.\d+)?(?:\.min)?\.js$/}, true)
 
         // Find and populate CssImage relations from the compiled Less assets:
         .populate({from: {type: 'Css'}})
