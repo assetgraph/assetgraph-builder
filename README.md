@@ -49,7 +49,7 @@ Installation
 ------------
 
 Make sure you have node.js and <a href="http://npmjs.org/">npm</a> installed,
-then run::
+then run:
 
     $ npm install -g assetgraph-builder
 
