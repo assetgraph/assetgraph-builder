@@ -6,8 +6,8 @@ var _ = require('underscore'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist').
-        usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] --outroot <dir> [--less] [--deferscripts] [--asyncscripts] [--locale <localeId>,...] [--cdnroot <url>] [--cdnoutroot <dir>] [--manifest] [--nocompress] [--mangletoplevel] <htmlFile>...').
-        boolean('less', 'deferscripts', 'asyncscripts', 'manifest', 'nocompress', 'mangletoplevel').
+        usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] --outroot <dir> [--less] [--deferscripts] [--asyncscripts] [--locale <localeId>,...] [--cdnroot <url>] [--cdnoutroot <dir>] [--manifest] [--nocompress] [--mangletoplevel] [--optimizepngs] <htmlFile>...').
+        boolean('less', 'deferscripts', 'asyncscripts', 'manifest', 'nocompress', 'mangletoplevel', 'optimizepngs').
         demand(['root', 'outroot']).
         argv,
     outroot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
@@ -59,6 +59,9 @@ new AssetGraph({root: commandLineOptions.root})
     .mergeIdenticalAssets(query.or({isImage: true}, {type: ['JavaScript', 'Css']}))
     .spriteBackgroundImages()
     .postProcessCssImages()
+    .if(commandLineOptions.optimizepngs)
+        .optimizePngs()
+    .endif()
     .bundleRequireJs({type: 'Html'})
     .bundleRelations({type: ['HtmlStyle', 'HtmlScript'], node: function (node) {return !node.hasAttribute('nobundle');}})
     .removeNobundleAttribute({type: ['HtmlScript', 'HtmlStyle']})
