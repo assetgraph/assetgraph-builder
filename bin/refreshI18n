@@ -22,6 +22,7 @@ new AssetGraph({root: commandLineOptions.root})
         console.error(err.stack);
         process.exit(1);
     })
+    .registerRequireJsConfig()
     .registerLabelsAsCustomProtocols(commandLineOptions.label)
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .populate({
