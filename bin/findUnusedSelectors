@@ -25,7 +25,7 @@ new AssetGraph({root: commandLineOptions.root})
                 if (cssRule.type === 1) { // STYLE_RULE
                     if (isSelectorUsed(cssRule.selectorText)) {
                         //console.warn("IN USE: " + cssRule.cssText);
-                        if (cssRule.selectorText.indexOf(',')) {
+                        if (cssRule.selectorText.indexOf(',') !== -1) {
                             cssRule.selectorText.split(',').forEach(function (subSelector) {
                                 subSelector = subSelector.replace(/^\s+|\s+$/g, ''); // Trim
                                 if (!isSelectorUsed(subSelector)) {
