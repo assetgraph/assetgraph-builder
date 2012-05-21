@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+
+var AssetGraph = require('assetgraph'),
+    _ = require('underscore'),
+    urlTools = require('assetgraph/lib/util/urlTools'),
+    commandLineOptions = require('optimist')
+        .usage('$0 [--root <inputRootDirectory>] <htmlFile>...')
+        .demand(1)
+        .argv;
+
+new AssetGraph({root: commandLineOptions.root})
+    .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
+    .populate({
+        followRelations: {type: ['HtmlStyle', 'CssImport'], to: {url: /^file:/}}
+    })
+    .queue(function (assetGraph) {
+        var documents = _.pluck(assetGraph.findAssets({type: 'Html'}), 'parseTree');
+        function isSelectorUsed(selector) {
+            return documents.some(function (document) {
+                return document.querySelectorAll(selector).length > 0;
+            });
+        }
+        assetGraph.findAssets({type: 'Css'}).forEach(function (cssAsset) {
+            cssAsset.constructor.eachRuleInParseTree(cssAsset.parseTree, function (cssRule) {
+                if (cssRule.type === 1) { // STYLE_RULE
+                    if (isSelectorUsed(cssRule.selectorText)) {
+                        //console.warn("IN USE: " + cssRule.cssText);
+                        if (cssRule.selectorText.indexOf(',')) {
+                            cssRule.selectorText.split(',').forEach(function (subSelector) {
+                                subSelector = subSelector.replace(/^\s+|\s+$/g, ''); // Trim
+                                if (!isSelectorUsed(subSelector)) {
+                                    console.warn('Unused selector fragment "' + subSelector + '" in rule: ' + cssRule.cssText);
+                                }
+                            });
+                        }
+                    } else {
+                        console.warn("NOT IN USE: " + cssRule.selectorText);
+                    }
+                }
+            });
+        });
+    })
+    .run(function (err) {
+        if (err) {
+            throw err;
+        }
+    });
