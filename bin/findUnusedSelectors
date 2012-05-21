@@ -34,7 +34,7 @@ new AssetGraph({root: commandLineOptions.root})
                             });
                         }
                     } else {
-                        console.warn("NOT IN USE: " + cssRule.selectorText);
+                        console.warn("NOT IN USE: " + cssRule.cssText);
                     }
                 }
             });
