@@ -51,7 +51,6 @@ new AssetGraph({root: commandLineOptions.root})
         // Find and populate CssImage relations from the compiled Less assets:
         .populate({from: {type: 'Css'}})
     .endif()
-
     .removeRelations({type: 'JavaScriptOneInclude', to: {type: ['Css', 'JavaScript']}}, {detach: true, unresolved: true})
     .convertCssImportsToHtmlStyles()
     .removeAssets({isEmpty: true, type: ['Css', 'JavaScript']}, true)

@@ -35,7 +35,7 @@ new AssetGraph({root: commandLineOptions.root})
     .queue(function (assetGraph) {
         var initialHtmlAssets = assetGraph.findAssets({type: 'Html', isInitial: true}),
             occurrencesByKey = i18nTools.findOccurrences(assetGraph, initialHtmlAssets),
-            allKeys = i18nTools.extractAllReachableKeys(assetGraph, initialHtmlAssets),
+            allKeys = i18nTools.extractAllKeys(assetGraph),
             alreadyTranslatedByKey = {};
 
         // Note which keys have already been translated to all the locales we've been asked to process:
