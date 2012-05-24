@@ -11,7 +11,6 @@
     ],
     "dependencies": {
         "assetgraph": "=0.4.26",
-        "assetgraph-sprite": "=0.2.8",
         "bufferjs": "=1.0.2",
         "memoizer": "=0.0.4",
         "optimist": "=0.2.6",
@@ -19,6 +18,9 @@
         "temp": "=0.4.0",
         "uglify-js": "=1.2.5",
         "underscore": "=1.2.0"
+    },
+    "optionalDependencies": {
+        "assetgraph-sprite": "=0.2.8"
     },
     "devDependencies": {
         "vows": ">=0.5.6"
