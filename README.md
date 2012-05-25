@@ -23,7 +23,8 @@ applications.
  * Supports require.js `define` and `require` statements, rolls up the
    dependency graph like <a
    href="http://requirejs.org/docs/optimization.html">the require.js
-   optimizer</a> does (still missing some features though)
+   optimizer</a> does (still missing some features though). Understands
+   the require.js config options `baseUrl` and `paths`.
  * Sprites background images (see <a
    href="https://github.com/One-com/assetgraph-sprite">assetgraph-sprite</a>).
  * Inlines CSS `background-image`s less than 8192 bytes and provides an
@@ -34,6 +35,10 @@ applications.
    out the in-browser less compiler.
  * Renames all static to a 10-char MD5 prefix + the original extension
    so they can be served with a far-future expiry time.
+ * Supports a special syntax for getting the url of static assets from
+   JavaScript code (`one.getStaticUrl`). These are also modelled as
+   relations so the target files will be included in the build and thus
+   renamed so they can be served with a far-future expiry time.
  * Helps getting your static assets on a CDN by rewriting the
    references to them (controlled by the `--cdnroot` and
    `--cdnoutroot` switches).
@@ -81,7 +86,7 @@ strings within JavaScript, `buildProduction` will also output multiple
 versions of your JavaScript, one per language, and it will be wired up
 so that eg. `index.da.html` will refer to the Danish JavaScript file.
 
-The i18n feature optional. Enable it by specifying the `--locale`
+The i18n feature is optional. Enable it by specifying the `--locale`
 switch with a comma-separated list of locale ids to compile, for
 example `--locale en_US,da,fr,de`.
 
