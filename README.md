@@ -76,7 +76,7 @@ output the result to the directory `path/to/production`.
 Internationalization
 --------------------
 
-AssetGraph-builder's supports internationalization of strings in your
+AssetGraph-builder supports internationalization of strings in your
 HTML and JavaScript code via a custom syntax. The approach is to do as
 much as possible at "compile time". For each language you want to
 support, `buildProduction` outputs a separate html file,
