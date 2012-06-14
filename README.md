@@ -16,6 +16,7 @@ applications.
    `@font-face { src: url(...) }`, .htc files linked via CSS
    `behavior` properties.
  * Bundles JavaScript and CSS.
+ * Removes duplicate images, JavaScript, Css, etc.
  * Minifies/packs JavaScript, CSS, and HTML (uses <a
    href="https://github.com/mishoo/UglifyJS">UglifyJS</a> and <a
    href="https://github.com/jbleuzen/node-cssmin">cssmin</a>, and <a
@@ -28,13 +29,13 @@ applications.
  * Sprites background images (see <a
    href="https://github.com/One-com/assetgraph-sprite">assetgraph-sprite</a>).
  * Inlines CSS `background-image`s less than 8192 bytes and provides an
-   alternative stylesheet for IE via a conditional comment.
+   alternative stylesheet for older IE versions via conditional comments.
  * Adds a cache manifest to each HTML page if `--manifest` is
    specified.
  * Compiles <a href="http://lesscss.org/">less</a> to CSS and strips
    out the in-browser less compiler.
- * Renames all static to a 10-char MD5 prefix + the original extension
-   so they can be served with a far-future expiry time.
+ * Renames JavaScript, CSS, images etc. to a 10-char MD5 prefix + the
+   original extension so they can be served with a far-future expiry time.
  * Supports a special syntax for getting the url of static assets from
    JavaScript code (`one.getStaticUrl`). These are also modelled as
    relations so the target files will be included in the build and thus
@@ -90,8 +91,8 @@ The i18n feature is optional. Enable it by specifying the `--locale`
 switch with a comma-separated list of locale ids to compile, for
 example `--locale en_US,da,fr,de`.
 
-The translations themselves reside in separate JSON files with a
-`.i18n` extension. Example syntax (`foo.i18n`):
+The translations themselves reside in separate JSON files with an
+`i18n` extension. Example syntax (`foo.i18n`):
 
     {
         "myKeyName": {
