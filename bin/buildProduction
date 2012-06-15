@@ -5,11 +5,78 @@ var _ = require('underscore'),
     oneBootstrapper = require('../lib/util/oneBootstrapper'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
-    commandLineOptions = require('optimist').
-        usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] --outroot <dir> [--less] [--deferscripts] [--asyncscripts] [--locale <localeId>,...] [--cdnroot <url>] [--cdnoutroot <dir>] [--manifest] [--nocompress] [--mangletoplevel] [--optimizepngs] <htmlFile>...').
-        boolean('less', 'deferscripts', 'asyncscripts', 'manifest', 'nocompress', 'mangletoplevel', 'optimizepngs').
-        demand(['root', 'outroot']).
-        argv,
+    commandLineOptions = require('optimist')
+        .usage('$0 --root <inputRootDirectory> --outroot <dir> [options] <htmlFile(s)>')
+        .options('root', {
+            describe: 'Path to your web root',
+            type: 'string',
+            demand: true
+        })
+        .options('outroot', {
+            describe: 'Path to the output folder. Will be generated if non-existing',
+            type: 'string',
+            demand: true
+        })
+        .options('cdnroot', {
+            describe: 'URI root where the static assets will be deployed',
+            type: 'string',
+            demand: false
+        })
+        .options('cdnoutroot', {
+            describe: 'Path to the CDN output folder. Will be generated if non-existing',
+            type: 'string',
+            demand: false
+        })
+        .options('label', {
+            describe: 'Registers labels as custom protocols for path resolving. You can create multiple of these: <labelName>=<dir>',
+            type: 'string',
+            demand: false
+        })
+        .options('locale', {
+            describe: 'Comma seperated list of locales to build seperate versions for',
+            type: 'string',
+            demand: false
+        })
+        .options('optimizepngs', {
+            describe: 'Tries optimal pallette reduction, removes ancillary chunks and tries for better compression',
+            type: 'boolean',
+            default: false
+        })
+        .options('deferscripts', {
+            describe: 'Sets the "defer" attribute on all script tags',
+            type: 'boolean',
+            default: false
+        })
+        .options('asyncscripts', {
+            describe: 'Sets the "async" attribute on all script tags',
+            type: 'boolean',
+            default: false
+        })
+        .options('nocompress', {
+            describe: 'Prettifies HTML, CSS and Javascript for easier debugging',
+            type: 'boolean',
+            default: false
+        })
+        .options('mangletoplevel', {
+            describe: 'Wraps your javascript code in a function literal that pulls global variables into local variables for better minification. WARNING: This may break your JS',
+            type: 'boolean',
+            default: false
+        })
+        .options('manifest', {
+            describe: 'Generates an appcache manifest file with all static assets included',
+            type: 'boolean',
+            default: false
+        })
+        .options('less', {
+            describe: 'Translates .less files to CSS',
+            type: 'boolean',
+            default: false
+        })
+        .check(function (argv) {
+            return typeof argv.inlinesize === 'number';
+        })
+        .wrap(72)
+        .argv,
     outroot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
     cdnroot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
     cdnoutroot = urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),

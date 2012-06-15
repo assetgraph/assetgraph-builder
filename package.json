@@ -24,7 +24,7 @@
         "assetgraph-sprite": "=0.2.10"
     },
     "devDependencies": {
-        "vows": ">=0.5.6"
+        "vows": ">=0.6.2"
     },
     "engines": {
         "node": ">=0.4.8"
