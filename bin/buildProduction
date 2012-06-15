@@ -42,6 +42,10 @@ var _ = require('underscore'),
             type: 'boolean',
             default: false
         })
+        .options('inlinesize', {
+            describe: 'Inline CSS backgrounds below this threshold as data-uris',
+            default: 8192
+        })
         .options('deferscripts', {
             describe: 'Sets the "defer" attribute on all script tags',
             type: 'boolean',
@@ -132,7 +136,7 @@ new AssetGraph({root: commandLineOptions.root})
     .bundleRelations({type: 'HtmlStyle', to: {type: 'Css'}, node: function (node) {return !node.hasAttribute('nobundle');}})
     .bundleRelations({type: 'HtmlScript', to: {type: 'JavaScript'}, node: function (node) {return !node.hasAttribute('nobundle');}})
     .removeNobundleAttribute({type: ['HtmlScript', 'HtmlStyle']})
-    .inlineCssImagesWithLegacyFallback({type: 'Html', isInline: false}, 8192)
+    .inlineCssImagesWithLegacyFallback({type: 'Html', isInline: false}, commandLineOptions.inlinesize)
     .if(commandLineOptions.mangletoplevel)
         .pullGlobalsIntoVariables({type: 'JavaScript'})
     .endif()
