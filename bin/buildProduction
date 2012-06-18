@@ -83,7 +83,7 @@ var _ = require('underscore'),
         .argv,
     outroot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
     cdnroot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
-    cdnoutroot = urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
+    cdnoutroot = commandLineOptions.cdnoutroot && urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
     localeIds = commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");}));
 
 require('../lib/registerTransforms');
