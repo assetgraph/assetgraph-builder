@@ -81,10 +81,10 @@ Create a CDN-enabled build:
 
 This will produce a build that assumes that the contents of `path/to/production/static/cdn`
 are available at `http://xxxxxx.cloudfront.net/static/cdn`. We recommend putting the entire
-contents of `path/to/production` online and pointing your CloudFront distribution at the root
-of your origin server. As long as you serve `/static` and everything below it with a far-future
-expires, you won't need to touch your CDN config or manually upload anything to your CDN
-provider.
+contents of `path/to/production` online and pointing your CloudFront (or other CDN provider)
+distribution at the root of your origin server. As long as you serve `/static` and everything
+below it with a far-future expires, you won't need to touch your CDN config or manually
+upload anything to your CDN provider.
 
 Internationalization
 --------------------
