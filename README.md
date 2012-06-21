@@ -67,12 +67,24 @@ Example usage
 
 Build a single page application:
 
-    buildProduction --outroot path/to/production --root /path/to/dev path/to/dev/index.html
+    buildProduction --outroot path/to/production --root path/to/dev path/to/dev/index.html
 
 This will load path/to/dev/index.html, follow all local relations to
 JavaScript, CSS, etc., perform the above mentioned optimizations, then
 output the result to the directory `path/to/production`.
 
+Create a CDN-enabled build:
+
+    buildProduction --outroot path/to/production --root path/to/dev path/to/dev/index.html \
+                    --cdnroot http://xxxxxx.cloudfront.net/static/cdn \
+                    --cdnoutroot path/to/production/static/cdn
+
+This will produce a build that assumes that the contents of `path/to/production/static/cdn`
+are available at `http://xxxxxx.cloudfront.net/static/cdn`. We recommend putting the entire
+contents of `path/to/production` online and pointing your CloudFront distribution at the root
+of your origin server. As long as you serve `/static` and everything below it with a far-future
+expires, you won't need to touch your CDN config or manually upload anything to your CDN
+provider.
 
 Internationalization
 --------------------
