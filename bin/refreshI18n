@@ -93,7 +93,7 @@ new AssetGraph({root: commandLineOptions.root})
             if (matchSplitAfterLastOneIncludeLine) {
                 patchedText = matchSplitAfterLastOneIncludeLine[1] + "\n" + oneIncludeStatements + matchSplitAfterLastOneIncludeLine[2];
             } else {
-                patchedText = oneIncludeStatements + javaScript.text;
+                patchedText = oneIncludeStatements + originalText;
             }
             fs.writeFileSync(urlTools.fileUrlToFsPath(javaScript.url), patchedText, javaScript.encoding);
         });
