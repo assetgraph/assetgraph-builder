@@ -167,11 +167,7 @@ vows.describe('bin/makeBabelJob test').addBatch({
                         en: 'Key with {0} placeholders in HTML, English',
                         da: 'Nøgle med pladsholdere på dansk',
                         de: ''
-                    }
-                });
-            },
-            'a new file called template.ko.i18n should be created thething.i18n should created and contain the single language key found in the template': function (tmpTestCaseCopyDir) {
-                assert.deepEqual(JSON.parse(fs.readFileSync(tmpTestCaseCopyDir + '/template.ko.i18n')), {
+                    },
                     simplekeyinknockoutjstemplate: {
                         en: 'Simple key in a Knockout.js template',
                         da: 'Simpel nøgle i en Knockout.js-skabelon',
