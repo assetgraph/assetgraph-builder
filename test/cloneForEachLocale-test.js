@@ -2,7 +2,7 @@ var vows = require('vows'),
     assert = require('assert'),
     vm = require('vm'),
     AssetGraph = require('assetgraph'),
-    passError = require('assetgraph/lib/util/passError'),
+    passError = require('passerror'),
     i18nTools = require('../lib/util/i18nTools'),
     oneBootstrapper = require('../lib/util/oneBootstrapper');
 
