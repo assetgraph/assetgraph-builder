@@ -27,8 +27,13 @@ var _ = require('underscore'),
             type: 'string',
             demand: false
         })
+        .options('exclude', {
+            describe: 'Url pattern to exclude from the build. Supports * wildcards. You can create multiple of these: --exclude *.php --exclude http://example.com/*.gif',
+            type: 'string',
+            demand: false
+        })
         .options('label', {
-            describe: 'Registers labels as custom protocols for path resolving. You can create multiple of these: <labelName>=<dir>',
+            describe: 'Registers labels as custom protocols for path resolving. You can create multiple of these: --label <labelName>=<dir> --label <otherLabelName>=<otherDir>',
             type: 'string',
             demand: false
         })
@@ -84,7 +89,16 @@ var _ = require('underscore'),
     outroot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
     cdnroot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
     cdnoutroot = commandLineOptions.cdnoutroot && urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
-    localeIds = commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");}));
+    localeIds = commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");})),
+    blacklistUrlRegExp = /^$/;
+
+if (commandLineOptions.exclude) {
+    blacklistUrlRegExp = new RegExp('(?:' +
+        _.flatten(_.flatten([commandLineOptions.exclude])).map(function (wildcard) {
+            return wildcard.replace(/[\.\+\{\}\[\]\(\)\?\^\$]/g, '\\$&').replace(/\*/g, '.*?');
+        }).join('|') +
+        ')');
+}
 
 require('../lib/registerTransforms');
 
@@ -101,7 +115,7 @@ new AssetGraph({root: commandLineOptions.root})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .populate({
         followRelations: query.or({to: {type: 'I18n'}},
-                                  {type: query.not(['JavaScriptOneInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']), to: {url: query.not(/^https?:/)}})
+                                  {type: query.not(['JavaScriptOneInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']), to: query.and({url: query.not(/^https?:/)}, {url: query.not(blacklistUrlRegExp)})})
     })
     .stripDevelopmentModeFromOneBootstrapper({type: 'Html', isInitial: true})
     .if(cdnroot)
