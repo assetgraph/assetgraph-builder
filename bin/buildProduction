@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
-var _ = require('underscore'),
-    AssetGraph = require('assetgraph'),
-    oneBootstrapper = require('../lib/util/oneBootstrapper'),
-    query = AssetGraph.query,
-    urlTools = require('assetgraph/lib/util/urlTools'),
-    commandLineOptions = require('optimist')
+var optimist = require('optimist'),
+    commandLineOptions = optimist
         .usage('$0 --root <inputRootDirectory> --outroot <dir> [options] <htmlFile(s)>')
+        .options('h', {
+            alias: 'help',
+            describe: 'Show this help',
+            type: 'boolean',
+            default: false
+        })
         .options('root', {
             describe: 'Path to your web root',
             type: 'string',
@@ -85,7 +87,18 @@ var _ = require('underscore'),
             return typeof argv.inlinesize === 'number';
         })
         .wrap(72)
-        .argv,
+        .argv;
+
+if (commandLineOptions.h) {
+    optimist.showHelp();
+    process.exit(1);
+}
+
+var _ = require('underscore'),
+    AssetGraph = require('assetgraph'),
+    oneBootstrapper = require('../lib/util/oneBootstrapper'),
+    query = AssetGraph.query,
+    urlTools = require('assetgraph/lib/util/urlTools'),
     outroot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
     cdnroot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
     cdnoutroot = commandLineOptions.cdnoutroot && urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
