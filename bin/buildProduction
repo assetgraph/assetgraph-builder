@@ -86,6 +86,7 @@ var optimist = require('optimist'),
         .check(function (argv) {
             return typeof argv.inlinesize === 'number';
         })
+        .demand(1)
         .wrap(72)
         .argv;
 
