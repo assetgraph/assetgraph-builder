@@ -38,7 +38,7 @@ new AssetGraph({root: commandLineOptions.root})
             to: {url: query.not(/^https?:/)}
         }
     })
-    .injectOneBootstrapper({isInitial: true}, supportedLocaleIds)
+    .injectOneBootstrapper({isInitial: true}, {supportedLocaleIds: supportedLocaleIds, localeCookieName: commandLineOptions.localecookiename})
     .flattenStaticIncludes({isInitial: true})
     .removeAssets({isEmpty: true, type: 'JavaScript'})
     .inlineRelations({type: 'HtmlStyle', from: {isInitial: true, type: 'Html'}, to: {fixedUpExtJS: true}})
