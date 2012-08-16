@@ -9,7 +9,8 @@ var path = require('path'),
     urlTools = require('assetgraph/lib/util/urlTools'),
     mkpathSync = require('../lib/util/mkpathSync'),
     commandLineOptions = require('optimist')
-        .usage('$0 [--label <labelName>=<dir> ...] --babeldir=<dirForBabelFiles> --root <inputRootDirectory> --locale <localeId>,... <htmlFile>...')
+        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] --babeldir=<dirForBabelFiles> --root <inputRootDirectory> --locale <localeId>,... <htmlFile>...')
+        .boolean('parentdir')
         .demand(['root', 'locale', 'babeldir'])
         .argv,
     localeIds = _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");}));
@@ -26,7 +27,7 @@ new AssetGraph({root: commandLineOptions.root})
         process.exit(1);
     })
     .registerRequireJsConfig()
-    .registerLabelsAsCustomProtocols(commandLineOptions.label)
+    .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .populate({
         followRelations: {type: ['HtmlScript', 'HtmlRequireJsMain', 'JavaScriptOneInclude', 'JavaScriptAmdDefine', 'JavaScriptAmdRequire', 'JavaScriptOneGetText'],

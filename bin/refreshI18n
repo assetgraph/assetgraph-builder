@@ -6,10 +6,11 @@ var _ = require('underscore'),
     i18nTools = require('../lib/util/i18nTools'),
     uglifyAst = require('uglifyast'),
     urlTools = require('assetgraph/lib/util/urlTools'),
-    commandLineOptions = require('optimist').
-        usage('$0 [--label <labelName>=<dir> ...] --root <inputRootDirectory> --locale <localeId>,... <htmlFile>...').
-        demand(['root', 'locale']).
-        argv,
+    commandLineOptions = require('optimist')
+        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] --root <inputRootDirectory> --locale <localeId>,... <htmlFile>...')
+        .boolean('parentdir')
+        .demand(['root', 'locale'])
+        .argv,
     localeIds = _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");}));
 
 require('../lib/registerTransforms');
@@ -23,7 +24,7 @@ new AssetGraph({root: commandLineOptions.root})
         process.exit(1);
     })
     .registerRequireJsConfig()
-    .registerLabelsAsCustomProtocols(commandLineOptions.label)
+    .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .populate({
         followRelations: {

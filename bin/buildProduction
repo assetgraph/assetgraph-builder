@@ -39,6 +39,11 @@ var optimist = require('optimist'),
             type: 'string',
             demand: false
         })
+        .options('parentdir', {
+            describe: 'If an unknown label (scheme) is found, look for at parent dir of that name before failing (breaks custom protocols).',
+            type: 'boolean',
+            demand: false
+        })
         .options('locale', {
             describe: 'Comma seperated list of locales to build seperate versions for',
             type: 'string',
@@ -125,7 +130,7 @@ new AssetGraph({root: commandLineOptions.root})
         process.exit(1);
     })
     .registerRequireJsConfig()
-    .registerLabelsAsCustomProtocols(commandLineOptions.label)
+    .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .populate({
         followRelations: query.or({to: {type: 'I18n'}},

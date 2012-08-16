@@ -5,14 +5,15 @@ var fs = require('fs'),
     seq = require('seq'),
     AssetGraph = require('assetgraph'),
     urlTools = require('assetgraph/lib/util/urlTools'),
-    commandLineOptions = require('optimist').
-        usage('$0 [--label <labelName>=<dir> ...] [--root <dir>] [-o <outputJavaScriptFile>] <inputJavaScriptFile>').
-        check(function (argv) {
+    commandLineOptions = require('optimist')
+        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--root <dir>] [-o <outputJavaScriptFile>] <inputJavaScriptFile>')
+        .boolean('parentdir')
+        .check(function (argv) {
             if (argv._.length !== 1 || !/\.js$/.test(argv._[0])) {
                 throw "Please specify a single JavaScript file on the command line";
             }
-        }).
-        argv;
+        })
+        .argv;
 
 require('../lib/registerTransforms');
 
@@ -21,7 +22,7 @@ new AssetGraph({root: commandLineOptions.root})
         console.error(err.stack);
         process.exit(1);
     })
-    .registerLabelsAsCustomProtocols(commandLineOptions.label)
+    .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .populate({followRelations: {type: 'JavaScriptOneInclude'}})
     .queue(function (assetGraph) {

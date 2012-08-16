@@ -5,8 +5,8 @@ var _ = require('underscore'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist')
-        .usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] [--locale <localeId>,...] [--cssimports] [--inline <wildCard>] [--watch] [--version <versionTag>] <htmlFile> ...')
-        .boolean('cssimports')
+        .usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] [--parentdir] [--locale <localeId>,...] [--cssimports] [--inline <wildCard>] [--watch] [--version <versionTag>] <htmlFile> ...')
+        .boolean('cssimports', 'parentdir')
         .demand(['root'])
         .argv,
     supportedLocaleIds = commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");}));
@@ -26,7 +26,7 @@ new AssetGraph({root: commandLineOptions.root})
         .startOverIfAssetSourceFilesChange()
     .endif()
     .registerRequireJsConfig()
-    .registerLabelsAsCustomProtocols(commandLineOptions.label)
+    .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .moveAssets({isInitial: true}, function (asset) {return asset.url.replace(/\.template$/, "");})
     .if(commandLineOptions.version)
