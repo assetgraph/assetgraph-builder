@@ -45,7 +45,7 @@ var optimist = require('optimist'),
             demand: false
         })
         .options('locale', {
-            describe: 'Comma seperated list of locales to build seperate versions for',
+            describe: 'Comma-separated list of locales to build seperate versions for',
             type: 'string',
             demand: false
         })
