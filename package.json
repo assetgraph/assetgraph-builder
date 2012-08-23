@@ -23,7 +23,7 @@
         "underscore": "=1.2.0"
     },
     "optionalDependencies": {
-        "assetgraph-sprite": "=0.2.11",
+        "assetgraph-sprite": "=0.2.12",
         "histogram": "=0.1.2"
     },
     "devDependencies": {
