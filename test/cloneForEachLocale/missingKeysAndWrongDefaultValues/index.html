@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title data-i18n="TheMissingTitle">The default title</title>
+    <h1 data-i18n="KeyWithMismatchingDefaultValue">The default heading</h1>
+    <p data-i18n="PerfectlyFineKey">Default value</p>
+</head>
+<body>
+    <script>
+        one.include('index.i18n');
+        alert(one.tr('AnotherMissingKey', 'Default value'));
+        alert(one.tr('AnotherKeyWithMismatchingDefaultValue', 'Default value'));
+        alert(one.tr('AnotherPerfectlyFineKey', 'Default value'));
+    </script>
+</body>
+</html>

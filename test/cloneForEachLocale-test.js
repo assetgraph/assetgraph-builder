@@ -65,7 +65,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'then running the cloneForEachLocale transform': {
             topic: function (assetGraph) {
                 assetGraph
-                    .cloneForEachLocale({type: 'Html'}, ['en_US', 'da'])
+                    .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da']})
                     .run(this.callback);
             },
             'the graph should contain 2 Html assets': function (assetGraph) {
@@ -145,7 +145,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'then run the cloneForEachLocale transform': {
             topic: function (assetGraph) {
                 assetGraph
-                    .cloneForEachLocale({isInitial: true}, ['da', 'en_US', 'en_GB'])
+                    .cloneForEachLocale({isInitial: true}, {localeIds: ['da', 'en_US', 'en_GB']})
                     .prettyPrintAssets({type: 'JavaScript'})
                     .run(this.callback);
             },
@@ -219,7 +219,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 .loadAssets('index.html')
                 .populate()
                 .externalizeRelations({type: 'HtmlStyle'})
-                .cloneForEachLocale({type: 'Html'}, ['en_US', 'da'])
+                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da']})
                 .inlineCssImagesWithLegacyFallback({type: 'Html'})
                 .run(this.callback);
         },
@@ -259,7 +259,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'then run the cloneForEachLocale transform': {
             topic: function (assetGraph) {
                 assetGraph
-                    .cloneForEachLocale({type: 'Html'}, ['en_US', 'da'])
+                    .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da']})
                     .run(this.callback);
             },
             'the graph should contain 8 assets': function (assetGraph) {
@@ -304,6 +304,42 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                              '    quux in English\n' +
                              '    <span title="blah in English">baz in English</span>\n' +
                              '    Here is a nice and English nested i18n construct in English\n');
+            }
+        }
+    },
+    'After loading test case with missing keys and default values': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/missingKeysAndWrongDefaultValues/'})
+                .loadAssets('index.html')
+                .populate()
+                .run(this.callback);
+        },
+        'the graph should contain one Html asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 1);
+        },
+        'the graph should contain one inline JavaScript asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript', isInline: true}).length, 1);
+        },
+        'the graph should contain one I18n asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'I18n'}).length, 1);
+        },
+        'then running the cloneForEachLocale transform': {
+            topic: function (assetGraph) {
+                assetGraph
+                    .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da'], quiet: true})
+                    .run(this.callback);
+            },
+            'the AssetGraph instance should have a _localeIdsByMissingKey property with the expected values': function (assetGraph) {
+                assert.deepEqual(assetGraph._localeIdsByMissingKey, {
+                    TheMissingTitle: ['da'],
+                    AnotherMissingKey: ['da']
+                });
+            },
+            'the AssetGraph instance should have a _defaultValueMismatchesByKey property with the expected values': function (assetGraph) {
+                assert.deepEqual(assetGraph._defaultValueMismatchesByKey, {
+                    KeyWithMismatchingDefaultValue: [{defaultValue: 'The default heading', value: 'The default heading2'}],
+                    AnotherKeyWithMismatchingDefaultValue: [{defaultValue: 'Default value', value: 'Default value2'}]
+                });
             }
         }
     }

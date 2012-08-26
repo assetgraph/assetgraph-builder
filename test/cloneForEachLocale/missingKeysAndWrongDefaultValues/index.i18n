@@ -1,0 +1,18 @@
+{
+    "KeyWithMismatchingDefaultValue": {
+        "en": "The default heading2",
+        "da": "Standardoverskriften"
+    },
+    "AnotherKeyWithMismatchingDefaultValue": {
+        "en": "Default value2",
+        "da": "Standardværdi"
+    },
+    "PerfectlyFineKey": {
+        "en": "Default value",
+        "da": "Standardværdi"
+    },
+    "AnotherPerfectlyFineKey": {
+        "en": "Default value",
+        "da": "Standardværdi"
+    }
+}

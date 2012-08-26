@@ -40,7 +40,7 @@ var optimist = require('optimist'),
             demand: false
         })
         .options('parentdir', {
-            describe: 'If an unknown label (scheme) is found, look for at parent dir of that name before failing (breaks custom protocols).',
+            describe: 'If an unknown label (scheme) is found, look for at parent dir of that name before failing (breaks custom protocols)',
             type: 'boolean',
             demand: false
         })
@@ -48,6 +48,11 @@ var optimist = require('optimist'),
             describe: 'Comma-separated list of locales to build seperate versions for',
             type: 'string',
             demand: false
+        })
+        .options('defaultlocale', {
+            describe: 'The locale of the default value in one.tr statements and tags with a data-i18n attribute',
+            type: 'string',
+            default: 'en'
         })
         .options('optimizepngs', {
             describe: 'Tries optimal pallette reduction, removes ancillary chunks and tries for better compression',
@@ -177,7 +182,7 @@ new AssetGraph({root: commandLineOptions.root})
         .compressJavaScript({type: 'JavaScript'}, 'uglifyJs', {toplevel: commandLineOptions.mangletoplevel})
     .endif()
     .if(localeIds)
-        .cloneForEachLocale({type: 'Html', isInitial: true}, localeIds)
+        .cloneForEachLocale({type: 'Html', isInitial: true}, {localeIds: localeIds, defaultLocaleId: commandLineOptions.defaultlocale})
         .runJavaScriptConditionalBlocks({isInitial: true}, 'localize', true)
         .bundleRelations({type: 'HtmlStyle', to: {type: 'Css'}, node: function (node) {return !node.hasAttribute('nobundle');}})
         .bundleRelations({type: 'HtmlScript', to: {type: 'JavaScript'}, node: function (node) {return !node.hasAttribute('nobundle');}})
