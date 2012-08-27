@@ -342,5 +342,17 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 });
             }
         }
+    },
+    'After loading test case with a one.tr in a data-bind attribute and run the cloneForEachLocale transform': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/oneTrInHtmlDataBindAttribute/'})
+                .loadAssets('index.html')
+                .populate()
+                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da']})
+                .run(this.callback);
+        },
+        'the one.tr in the Danish HTML should be replaced with "Den danske værdi"': function (assetGraph) {
+            assert.matches(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text, /Den danske værdi/);
+        }
     }
 })['export'](module);
