@@ -1,0 +1,3 @@
+require(['tpl!template.ko'], function () {
+    // Here I am with my lovely template in scope...
+});

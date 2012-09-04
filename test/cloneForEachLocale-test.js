@@ -354,5 +354,23 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'the one.tr in the Danish HTML should be replaced with "Den danske værdi"': function (assetGraph) {
             assert.matches(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text, /Den danske værdi/);
         }
+    },
+    'After loading test case with a one.tr in a data-bind attribute in a .ko template and run the cloneForEachLocale transform': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/oneTrInHtmlDataBindAttributeInKoTemplate/'})
+                .loadAssets('index.html')
+                .populate()
+                .bundleRequireJs()
+                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da']})
+                .run(this.callback);
+        },
+        'the graph should contain 2 KnockoutJsTemplate assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'KnockoutJsTemplate'}).length, 2);
+        },
+        'the one.tr in the Danish Knockout.js template should be replaced with "Den danske værdi"': function (assetGraph) {
+            var danishRequireJsMain = assetGraph.findAssets({type: 'JavaScript', incoming: {type: 'HtmlRequireJsMain', from: {url: /\/index\.da\.html$/}}})[0],
+                danishKnockoutJsTemplate = assetGraph.findRelations({from: danishRequireJsMain, to: {type: 'KnockoutJsTemplate'}})[0].to;
+            assert.matches(danishKnockoutJsTemplate.text, /Den danske værdi/);
+        }
     }
 })['export'](module);
