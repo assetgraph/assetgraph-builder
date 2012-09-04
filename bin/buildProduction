@@ -93,6 +93,10 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
+        .options('version', {
+            describe: 'Adds or updates <meta http-equiv="Content-Version" content="..."> to the specified value. Use {0} to refer to the current value, eg. --version {0}/production or --version `git describe --long --tags --always --dirty 2>/dev/null || echo unknown`',
+            type: 'string'
+        })
         .check(function (argv) {
             return typeof argv.inlinesize === 'number';
         })
@@ -149,7 +153,9 @@ new AssetGraph({root: commandLineOptions.root})
             });
         })
     .endif()
-    .addContentVersionMetaElement({type: 'Html'}, '{0}/production', true)
+    .if(commandLineOptions.version)
+        .addContentVersionMetaElement({type: 'Html'}, commandLineOptions.version, true)
+    .endif()
     .if(commandLineOptions.less)
         // Replace Less assets with their Css counterparts:
         .compileLessToCss({type: 'Less'})
