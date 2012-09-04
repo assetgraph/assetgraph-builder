@@ -55,7 +55,7 @@ var optimist = require('optimist'),
             default: 'en'
         })
         .options('optimizepngs', {
-            describe: 'Tries optimal pallette reduction, removes ancillary chunks and tries for better compression',
+            describe: 'Tries optimal palette reduction, removes ancillary chunks and tries for better compression',
             type: 'boolean',
             default: false
         })
