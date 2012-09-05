@@ -11,7 +11,7 @@
         }
     ],
     "dependencies": {
-        "assetgraph": "=0.4.55",
+        "assetgraph": "=0.4.56",
         "bufferjs": "=1.0.2",
         "memoizer": "=0.0.4",
         "optimist": "=0.2.6",
