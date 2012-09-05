@@ -49,6 +49,10 @@ var optimist = require('optimist'),
             type: 'string',
             demand: false
         })
+        .options('striponebootstrapper', {
+            describe: 'Removes the production part of the oneBootstrapper script that buildDevelopment injects to support localization (defaults to true if --locale is specified, false otherwise)',
+            type: 'boolean'
+        })
         .options('defaultlocale', {
             describe: 'The locale of the default value in one.tr statements and tags with a data-i18n attribute',
             type: 'string',
@@ -118,6 +122,7 @@ var _ = require('underscore'),
     cdnroot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
     cdnoutroot = commandLineOptions.cdnoutroot && urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
     localeIds = commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");})),
+    stripOneBootstrapper = commandLineOptions.striponebootstrapper || !commandLineOptions.locale,
     blacklistUrlRegExp = /^$/;
 
 if (commandLineOptions.exclude) {
@@ -145,13 +150,17 @@ new AssetGraph({root: commandLineOptions.root})
         followRelations: query.or({to: {type: 'I18n'}},
                                   {type: query.not(['JavaScriptOneInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']), to: query.and({url: query.not(/^https?:/)}, {url: query.not(blacklistUrlRegExp)})})
     })
-    .stripDevelopmentModeFromOneBootstrapper({type: 'Html', isInitial: true})
-    .if(cdnroot)
-        .queue(function addCdnRootToOneBootstrapper(assetGraph) {
-            oneBootstrapper.findOneBootstrappersInGraph(assetGraph).forEach(function (javaScript) {
-                javaScript.parseTree[1].splice(1, 0, ['stat', ['assign', true, ['dot', ['name', 'one'], 'cdnRoot'], ['string', cdnroot]]]);
-            });
-        })
+    .if(stripOneBootstrapper)
+        .stripOneBootstrapper()
+    .else()
+        .stripDevelopmentModeFromOneBootstrapper({type: 'Html', isInitial: true})
+        .if(cdnroot)
+            .queue(function addCdnRootToOneBootstrapper(assetGraph) {
+                oneBootstrapper.findOneBootstrappersInGraph(assetGraph).forEach(function (javaScript) {
+                    javaScript.parseTree[1].splice(1, 0, ['stat', ['assign', true, ['dot', ['name', 'one'], 'cdnRoot'], ['string', cdnroot]]]);
+                });
+            })
+        .endif()
     .endif()
     .if(commandLineOptions.version)
         .addContentVersionMetaElement({type: 'Html'}, commandLineOptions.version, true)
