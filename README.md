@@ -194,7 +194,7 @@ Which compiles into:
 
 Non-text node elements inside the default text are interpreted as placeholders numbered from left to right:
 
-     <span data-18n="advancedKeyWithPlaceholders">Showing <span>1</span> to <span>50</span> of <span>100</span></span>
+     <span data-i18n="advancedKeyWithPlaceholders">Showing <span>1</span> to <span>50</span> of <span>100</span></span>
 
 In the Danish version the above compiles to:
 
