@@ -20,7 +20,7 @@ var optimist = require('optimist'),
             demand: true
         })
         .options('cdnroot', {
-            describe: 'URI root where the static assets will be deployed',
+            describe: 'URI root where the static assets will be deployed. Must be either an absolute or a protocol-relative url.',
             type: 'string',
             demand: false
         })
@@ -123,7 +123,13 @@ var _ = require('underscore'),
     cdnoutroot = commandLineOptions.cdnoutroot && urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
     localeIds = commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");})),
     stripOneBootstrapper = commandLineOptions.striponebootstrapper || !commandLineOptions.locale,
-    blacklistUrlRegExp = /^$/;
+    blacklistUrlRegExp = /^$/,
+    cdnrootIsProtocolRelative = false;
+
+if (/^\/\//.test(cdnroot)) {
+    cdnrootIsProtocolRelative = true;
+    cdnroot = 'http:' + cdnroot;
+}
 
 if (commandLineOptions.exclude) {
     blacklistUrlRegExp = new RegExp('(?:' +
@@ -223,6 +229,11 @@ new AssetGraph({root: commandLineOptions.root})
         // and thus cannot be put on a CDN because of same origin restrictions:
         if (cdnroot && (asset.isImage || assetGraph.findRelations({to: asset, type: 'StaticUrlMapEntry'}).length === 0)) {
             targetUrl = cdnroot;
+            if (cdnrootIsProtocolRelative) {
+                assetGraph.findRelations({to: asset}).forEach(function (incomingRelation) {
+                    incomingRelation.hrefType = 'protocolRelative';
+                });
+            }
         }
         return targetUrl + asset.md5Hex.substr(0, 10) + asset.extension + asset.url.replace(/^[^#\?]*(?:)/, ''); // Preserve query string and fragment identifier
     })
