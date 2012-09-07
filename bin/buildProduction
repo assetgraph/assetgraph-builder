@@ -49,12 +49,13 @@ var optimist = require('optimist'),
             type: 'string',
             demand: false
         })
-        .options('striponebootstrapper', {
-            describe: 'Removes the production part of the oneBootstrapper script that buildDevelopment injects to support localization (defaults to true if --locale is specified, false otherwise)',
-            type: 'boolean'
-        })
         .options('defaultlocale', {
             describe: 'The locale of the default value in one.tr statements and tags with a data-i18n attribute',
+            type: 'string',
+            default: 'en'
+        })
+        .options('localecookiename', {
+            describe: 'The name of your locale cookie (exposed as LOCALECOOKIENAME)',
             type: 'string',
             default: 'en'
         })
@@ -122,7 +123,6 @@ var _ = require('underscore'),
     cdnroot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
     cdnoutroot = commandLineOptions.cdnoutroot && urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
     localeIds = commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");})),
-    stripOneBootstrapper = commandLineOptions.striponebootstrapper || !commandLineOptions.locale,
     blacklistUrlRegExp = /^$/,
     cdnrootIsProtocolRelative = false;
 
@@ -156,18 +156,8 @@ new AssetGraph({root: commandLineOptions.root})
         followRelations: query.or({to: {type: 'I18n'}},
                                   {type: query.not(['JavaScriptOneInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']), to: query.and({url: query.not(/^https?:/)}, {url: query.not(blacklistUrlRegExp)})})
     })
-    .if(stripOneBootstrapper)
-        .stripOneBootstrapper()
-    .else()
-        .stripDevelopmentModeFromOneBootstrapper({type: 'Html', isInitial: true})
-        .if(cdnroot)
-            .queue(function addCdnRootToOneBootstrapper(assetGraph) {
-                oneBootstrapper.findOneBootstrappersInGraph(assetGraph).forEach(function (javaScript) {
-                    javaScript.parseTree[1].splice(1, 0, ['stat', ['assign', true, ['dot', ['name', 'one'], 'cdnRoot'], ['string', cdnroot]]]);
-                });
-            })
-        .endif()
-    .endif()
+    // Remove oneBootstrapper scripts injected by buildDevelopment:
+    .removeRelations({type: 'HtmlScript', node: {id: 'oneBootstrapper'}, from: {type: 'Html'}}, {detach: true, removeOrphan: true})
     .if(commandLineOptions.version)
         .addContentVersionMetaElement({type: 'Html'}, commandLineOptions.version, true)
     .endif()
@@ -192,8 +182,9 @@ new AssetGraph({root: commandLineOptions.root})
         .optimizePngs()
     .endif()
     .bundleRequireJs({type: 'Html'})
-    .bundleRelations({type: 'HtmlStyle', to: {type: 'Css'}, node: function (node) {return !node.hasAttribute('nobundle') && !node.hasAttribute('localize');}})
-    .bundleRelations({type: 'HtmlScript', to: {type: 'JavaScript'}, node: function (node) {return !node.hasAttribute('nobundle') && !node.hasAttribute('localize');}})
+    .bundleRelations({type: 'HtmlStyle', to: {type: 'Css'}, node: function (node) {return !node.hasAttribute('nobundle');}})
+    .bundleRelations({type: 'HtmlScript', to: {type: 'JavaScript'}, node: function (node) {return !node.hasAttribute('nobundle');}})
+    .removeNobundleAttribute({type: ['HtmlScript', 'HtmlStyle']})
     .inlineCssImagesWithLegacyFallback({type: 'Html', isInline: false}, commandLineOptions.inlinesize)
     .if(commandLineOptions.mangletoplevel)
         .pullGlobalsIntoVariables({type: 'JavaScript'})
@@ -202,11 +193,14 @@ new AssetGraph({root: commandLineOptions.root})
         .compressJavaScript({type: 'JavaScript'}, 'uglifyJs', {toplevel: commandLineOptions.mangletoplevel})
     .endif()
     .if(localeIds)
-        .cloneForEachLocale({type: 'Html', isInitial: true}, {localeIds: localeIds, defaultLocaleId: commandLineOptions.defaultlocale})
+        .cloneForEachLocale({type: 'Html', isInitial: true}, {
+            localeIds: localeIds,
+            supportedLocaleIds: localeIds,
+            localeCookieName: commandLineOptions.localeCookieName,
+            defaultLocaleId: commandLineOptions.defaultlocale
+        })
         .runJavaScriptConditionalBlocks({isInitial: true}, 'localize', true)
-        .bundleRelations({type: 'HtmlScript', to: {type: 'JavaScript'}, node: function (node) {return !node.hasAttribute('nobundle');}})
     .endif()
-    .removeNobundleAttribute({type: ['HtmlScript', 'HtmlStyle']})
     .removeAssets({type: 'I18n'}, true)
     .minifyAssets()
     .inlineRelations({

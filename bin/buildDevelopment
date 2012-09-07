@@ -5,7 +5,7 @@ var _ = require('underscore'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist')
-        .usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] [--parentdir] [--locale <localeId>,...] [--cssimports] [--inline <wildCard>] [--watch] [--version <versionTag>] <htmlFile> ...')
+        .usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] [--parentdir] [--locale <localeId>,...] [--defaultlocale <localeId>] [--localecookiename <cookieName>] [--cssimports] [--inline <wildCard>] [--watch] [--version <versionTag>] <htmlFile> ...')
         .boolean('cssimports', 'parentdir')
         .demand(['root'])
         .argv,
@@ -38,7 +38,11 @@ new AssetGraph({root: commandLineOptions.root})
             to: {url: query.not(/^https?:/)}
         }
     })
-    .injectOneBootstrapper({isInitial: true}, {supportedLocaleIds: supportedLocaleIds, localeCookieName: commandLineOptions.localecookiename})
+    .injectOneBootstrapper({isInitial: true}, {
+        defaultLocaleId: commandLineOptions.defaultLocaleId,
+        supportedLocaleIds: supportedLocaleIds,
+        localeCookieName: commandLineOptions.localecookiename
+    })
     .flattenStaticIncludes({isInitial: true})
     .removeAssets({isEmpty: true, type: 'JavaScript'})
     .inlineRelations({type: 'HtmlStyle', from: {isInitial: true, type: 'Html'}, to: {fixedUpExtJS: true}})

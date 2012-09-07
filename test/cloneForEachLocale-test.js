@@ -372,5 +372,21 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 danishKnockoutJsTemplate = assetGraph.findRelations({from: danishRequireJsMain, to: {type: 'KnockoutJsTemplate'}})[0].to;
             assert.matches(danishKnockoutJsTemplate.text, /Den danske værdi/);
         }
+    },
+    'After loading test case with a JavaScript that uses LOCALEID, DEFAULTLOCALE, LOCALECOOKIENAME, and SUPPORTEDLOCALEIDS': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/globalVarUsageInJavaScript/'})
+                .loadAssets('index.html')
+                .populate()
+                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da'], defaultLocaleId: 'en_US', localeCookieName: 'myCookie'})
+                .run(this.callback);
+        },
+        'the graph should contain 2 JavaScript assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 2);
+        },
+        'the upper case vars should be replaced by their respective values': function (assetGraph) {
+            var danishJavaScript = assetGraph.findAssets({type: 'JavaScript', incoming: {type: 'HtmlScript', from: {url: /\/index\.da\.html$/}}})[0];
+            assert.equal(danishJavaScript.text, 'alert("da");alert("en_US");alert("myCookie");alert(["en_US","da"]);LOCALEID="foo"');
+        }
     }
 })['export'](module);
