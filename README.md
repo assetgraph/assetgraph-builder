@@ -171,6 +171,44 @@ And the Danish version:
     var myRenderer = function (a0, a1, a2) {return 'Der er ' + a3 + ' i alt, viser nr. ' + a0 + ' til nr. ' + a1;};
     alert(myRenderer(1, 50, 100));
 
+As the translation files consist of plain JSON, translated values does
+not have to be strings. This enables more advanced features, that you
+would otherwise have to implement with string concatenation. The
+feature is best explained with an example. Let's say we would like to
+translate certain e-mail folder names, but otherwise default to their
+real name. That could be achieved the following way.
+
+The translation file:
+
+    {
+        "FolderName": {
+            "en": {
+                "Inbox" : "Inbox",
+                "Draft" : "Draft",
+                "Sent" : "Sent Mail"
+            },
+            "da": {
+                "Inbox" : "Indbakke",
+                "Draft" : "Kladder",
+                "Trash" : "Sendte e-mails"
+            }
+        }
+    }
+
+The code translating the e-mail folder names:
+
+    var folderTranslations = one.tr("FolderName", {
+        "Inbox" : "Inbox",
+        "Draft" : "Draft",
+        "Sent" : "Sent Mail"
+    });
+
+    return folderTranslations[folderName] || folderName;
+
+The `one.tr` function call extracts the internationalized `FolderName`
+structure or uses the provided default. Then we look for the folder
+name in the translation structure, if it is found we return it;
+otherwise we just return the folder name.
 
 ### HTML i18n syntax ###
 
