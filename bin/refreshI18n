@@ -2,8 +2,7 @@
 
 var _ = require('underscore'),
     AssetGraph = require('assetgraph'),
-    transforms = require('../lib/transforms'),
-    i18nTools = require('../lib/util/i18nTools'),
+    i18nTools = require('../lib/i18nTools'),
     uglifyAst = require('uglifyast'),
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist')

@@ -4,10 +4,10 @@ var path = require('path'),
     fs = require('fs'),
     _ = require('underscore'),
     AssetGraph = require('assetgraph'),
-    i18nTools = require('../lib/util/i18nTools'),
+    i18nTools = require('../lib/i18nTools'),
     uglifyAst = require('uglifyast'),
     urlTools = require('assetgraph/lib/util/urlTools'),
-    mkpathSync = require('../lib/util/mkpathSync'),
+    mkpathSync = require('../lib/mkpathSync'),
     commandLineOptions = require('optimist')
         .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] --babeldir=<dirForBabelFiles> --root <inputRootDirectory> --locale <localeId>,... <htmlFile>...')
         .boolean('parentdir')

@@ -3,8 +3,8 @@ var vows = require('vows'),
     vm = require('vm'),
     AssetGraph = require('assetgraph'),
     passError = require('passerror'),
-    i18nTools = require('../lib/util/i18nTools'),
-    oneBootstrapper = require('../lib/util/oneBootstrapper');
+    i18nTools = require('../lib/i18nTools'),
+    oneBootstrapper = require('../lib/oneBootstrapper');
 
 require('../lib/registerTransforms');
 

@@ -116,7 +116,7 @@ if (commandLineOptions.h) {
 
 var _ = require('underscore'),
     AssetGraph = require('assetgraph'),
-    oneBootstrapper = require('../lib/util/oneBootstrapper'),
+    oneBootstrapper = require('../lib/oneBootstrapper'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
     outroot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
