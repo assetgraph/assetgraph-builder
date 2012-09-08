@@ -24,7 +24,7 @@ new AssetGraph({root: commandLineOptions.root})
     })
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
-    .populate({followRelations: {type: 'JavaScriptOneInclude'}})
+    .populate({followRelations: {type: 'JavaScriptInclude'}})
     .queue(function (assetGraph) {
         assetGraph.findAssets({isInitial: true}).forEach(function (initialAsset) {
             // Get the original text including comments etc.:

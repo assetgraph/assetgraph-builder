@@ -37,7 +37,7 @@ applications.
  * Renames JavaScript, CSS, images etc. to a 10-char MD5 prefix + the
    original extension so they can be served with a far-future expiry time.
  * Supports a special syntax for getting the url of static assets from
-   JavaScript code (`one.getStaticUrl`). These are also modelled as
+   JavaScript code (`GETSTATICURL`). These are also modelled as
    relations so the target files will be included in the build and thus
    renamed so they can be served with a far-future expiry time.
  * Helps getting your static assets on a CDN by rewriting the
@@ -94,7 +94,7 @@ HTML and JavaScript code via a custom syntax. The approach is to do as
 much as possible at "compile time". For each language you want to
 support, `buildProduction` outputs a separate html file,
 eg. `index.en_US.html`, `index.da.html`, and so on. If you're using
-the `one.tr`/`one.trPattern` syntax for getting language-specific
+the `TR`/`TRPAT` syntax for getting language-specific
 strings within JavaScript, `buildProduction` will also output multiple
 versions of your JavaScript, one per language, and it will be wired up
 so that eg. `index.da.html` will refer to the Danish JavaScript file.
@@ -123,8 +123,8 @@ The translations themselves reside in separate JSON files with an
 
 ### JavaScript i18n syntax ###
 
-In JavaScript code you can use the `one.tr` function for getting a
-locale string and `one.trPattern` for getting a function that accepts
+In JavaScript code you can use the `TR` function for getting a
+locale string and `TRPAT` for getting a function that accepts
 the placeholder values and returns a locale string.
 
 For these functions to work in development, you currently have to use
@@ -132,7 +132,7 @@ For these functions to work in development, you currently have to use
 bootstrapper code that implements them. The bootstrapper will be
 removed by `buildProduction`.
 
-The second argument for `one.tr` and `one.trPattern` is optional. It
+The second argument for `TR` and `TRPAT` is optional. It
 will be used as the default value if the key isn't found in an .i18n
 file. This is very useful when you haven't yet translated your
 project. That way you don't need to create the .i18n files before you
@@ -140,16 +140,16 @@ actually have something to put in them.
 
 JavaScript example:
 
-    one.include('foo.i18n');
+    INCLUDE('foo.i18n');
 
     // This alerts "The value in English" or "Værdien på dansk" depending on which build you're running:
-    alert(one.tr('myKeyName', 'the default value'));
+    alert(TR('myKeyName', 'the default value'));
 
     // This alerts "Showing 1-50 of 100 records" or "Der er 100 i alt, viser fra nr. 1 til nr. 50":
     var foo = 1, bar = 50;
-    alert(one.trPattern('advancedKeyWithPlaceholders', 'the default value')(foo, bar, 100));
+    alert(TRPAT('advancedKeyWithPlaceholders', 'the default value')(foo, bar, 100));
 
-    var myRenderer = one.trPattern('advancedKeyWithPlaceholders', 'the default value');
+    var myRenderer = TRPAT('advancedKeyWithPlaceholders', 'the default value');
     // This also alerts "Showing 1-2 of 3 records" or "Der er 100 i alt, viser fra nr. 1 til nr. 50":
     alert(myRenderer(1, 50, 100));
 
@@ -197,7 +197,7 @@ The translation file:
 
 The code translating the e-mail folder names:
 
-    var folderTranslations = one.tr("FolderName", {
+    var folderTranslations = TR("FolderName", {
         "Inbox" : "Inbox",
         "Draft" : "Draft",
         "Sent" : "Sent Mail"
@@ -205,7 +205,7 @@ The code translating the e-mail folder names:
 
     return folderTranslations[folderName] || folderName;
 
-The `one.tr` function call extracts the internationalized `FolderName`
+The `TR` function call extracts the internationalized `FolderName`
 structure or uses the provided default. Then we look for the folder
 name in the translation structure, if it is found we return it;
 otherwise we just return the folder name.

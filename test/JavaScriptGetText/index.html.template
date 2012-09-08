@@ -3,6 +3,6 @@
 <head></head>
 <body>
 <script>
-    alert("Hello, my name is " + one.getText('name.txt'));
+    alert("Hello, my name is " + GETTEXT('name.txt'));
 </script>
 </html>

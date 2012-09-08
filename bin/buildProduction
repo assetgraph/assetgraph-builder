@@ -50,7 +50,7 @@ var optimist = require('optimist'),
             demand: false
         })
         .options('defaultlocale', {
-            describe: 'The locale of the default value in one.tr statements and tags with a data-i18n attribute',
+            describe: 'The locale of the default value in TR statements and tags with a data-i18n attribute',
             type: 'string',
             default: 'en'
         })
@@ -116,7 +116,7 @@ if (commandLineOptions.h) {
 
 var _ = require('underscore'),
     AssetGraph = require('assetgraph'),
-    oneBootstrapper = require('../lib/oneBootstrapper'),
+    bootstrapper = require('../lib/bootstrapper'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
     outroot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
@@ -154,10 +154,10 @@ new AssetGraph({root: commandLineOptions.root})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .populate({
         followRelations: query.or({to: {type: 'I18n'}},
-                                  {type: query.not(['JavaScriptOneInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']), to: query.and({url: query.not(/^https?:/)}, {url: query.not(blacklistUrlRegExp)})})
+                                  {type: query.not(['JavaScriptInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']), to: query.and({url: query.not(/^https?:/)}, {url: query.not(blacklistUrlRegExp)})})
     })
-    // Remove oneBootstrapper scripts injected by buildDevelopment:
-    .removeRelations({type: 'HtmlScript', node: {id: 'oneBootstrapper'}, from: {type: 'Html'}}, {detach: true, removeOrphan: true})
+    // Remove bootstrapper scripts injected by buildDevelopment:
+    .removeRelations({type: 'HtmlScript', node: {id: 'bootstrapper'}, from: {type: 'Html'}}, {detach: true, removeOrphan: true})
     .if(commandLineOptions.version)
         .addContentVersionMetaElement({type: 'Html'}, commandLineOptions.version, true)
     .endif()
@@ -171,7 +171,7 @@ new AssetGraph({root: commandLineOptions.root})
         // Find and populate CssImage relations from the compiled Less assets:
         .populate({from: {type: 'Css'}})
     .endif()
-    .removeRelations({type: 'JavaScriptOneInclude', to: {type: ['Css', 'JavaScript']}}, {detach: true, unresolved: true})
+    .removeRelations({type: 'JavaScriptInclude', to: {type: ['Css', 'JavaScript']}}, {detach: true, unresolved: true})
     .convertCssImportsToHtmlStyles()
     .removeAssets({isEmpty: true, type: ['Css', 'JavaScript']}, true)
     .externalizeRelations({from: {type: query.not('Htc')}, type: ['HtmlStyle', 'HtmlScript'], node: function (node) {return !node.hasAttribute('nobundle');}})
@@ -216,10 +216,10 @@ new AssetGraph({root: commandLineOptions.root})
     .endif()
     .setAsyncOrDeferOnHtmlScripts({to: {isInline: false, url: /^file:/}}, commandLineOptions.asyncscripts, commandLineOptions.deferscripts)
     .omitGetStaticUrlFunctionCall()
-    .inlineRelations({type: 'JavaScriptOneGetText'})
+    .inlineRelations({type: 'JavaScriptGetText'})
     .moveAssetsInOrder({isInitial: query.not(true), type: query.not('CacheManifest')}, function (asset, assetGraph) {
         var targetUrl = "/static/";
-        // Conservatively assume that all one.getStaticUrl relations pointing at non-images are intended to be fetched via XHR
+        // Conservatively assume that all GETSTATICURL relations pointing at non-images are intended to be fetched via XHR
         // and thus cannot be put on a CDN because of same origin restrictions:
         if (cdnroot && (asset.isImage || assetGraph.findRelations({to: asset, type: 'StaticUrlMapEntry'}).length === 0)) {
             targetUrl = cdnroot;

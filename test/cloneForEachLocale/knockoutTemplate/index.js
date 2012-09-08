@@ -1,4 +1,4 @@
-one.include('index.i18n');
+INCLUDE('index.i18n');
 
-var templateWithoutI18n = one.getText('templateWithoutI18n.ko'),
-    templateWithI18n = one.getText('templateWithI18n.ko');
+var templateWithoutI18n = GETTEXT('templateWithoutI18n.ko'),
+    templateWithI18n = GETTEXT('templateWithI18n.ko');

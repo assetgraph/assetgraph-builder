@@ -6,15 +6,15 @@
 <p><span data-i18n="attr: {foo: 'simplekeyinhtmlattribute'}" foo="Simple key in HTML attribute">...</span></p>
 <p><span data-i18n="keywithplaceholdersinhtml">Key with <span>nice</span> placeholders</span></p>
 <script>
-one.include('thething.i18n');
+INCLUDE('thething.i18n');
 
 // Use the keys so that makeBabelJob notices them:
-alert(one.tr('stringvalue'));
-alert(one.tr('arrayvalue'));
-alert(one.tr('objectvalue'));
-alert(one.tr('withexistingkeys'));
+alert(TR('stringvalue'));
+alert(TR('arrayvalue'));
+alert(TR('objectvalue'));
+alert(TR('withexistingkeys'));
 
-var knockoutTemplate = one.getText('template.ko');
+var knockoutTemplate = GETTEXT('template.ko');
 </script>
 </body>
 </html>

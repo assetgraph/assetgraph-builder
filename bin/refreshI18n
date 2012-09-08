@@ -27,7 +27,7 @@ new AssetGraph({root: commandLineOptions.root})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .populate({
         followRelations: {
-            type: ['HtmlScript', 'HtmlRequireJsMain', 'JavaScriptOneInclude', 'JavaScriptAmdDefine', 'JavaScriptAmdRequire', 'JavaScriptOneGetText'],
+            type: ['HtmlScript', 'HtmlRequireJsMain', 'JavaScriptInclude', 'JavaScriptAmdDefine', 'JavaScriptAmdRequire', 'JavaScriptGetText'],
             to: {url: AssetGraph.query.not(/^https?:/)}
         }
     })
@@ -84,7 +84,7 @@ new AssetGraph({root: commandLineOptions.root})
             var javaScript = assetGraph.idIndex[javaScriptId],
                 originalText = fs.readFileSync(urlTools.fileUrlToFsPath(javaScript.url), javaScript.encoding),
                 oneIncludeStatements = i18nRelations.map(function (i18nRelation) {
-                    return "one.include('" +
+                    return "INCLUDE('" +
                         urlTools.buildRelativeUrl(i18nRelation.from.url || assetGraph.findBaseAssetForRelation(i18nRelation).url, i18nRelation.to.url) +
                         "');\n";
                 }).join(""),

@@ -4,7 +4,7 @@ var vows = require('vows'),
     AssetGraph = require('assetgraph'),
     passError = require('passerror'),
     i18nTools = require('../lib/i18nTools'),
-    oneBootstrapper = require('../lib/oneBootstrapper');
+    bootstrapper = require('../lib/bootstrapper');
 
 require('../lib/registerTransforms');
 
@@ -13,7 +13,7 @@ function getJavaScriptTextAndBootstrappedContext(assetGraph, htmlQueryObj) {
         htmlScriptRelations = assetGraph.findRelations({from: htmlAsset, to: {type: 'JavaScript'}}),
         inlineJavaScript;
 
-    if (htmlScriptRelations[0].node.getAttribute('id') === 'oneBootstrapper') {
+    if (htmlScriptRelations[0].node.getAttribute('id') === 'bootstrapper') {
         inlineJavaScript = htmlScriptRelations[1].to;
     } else {
         inlineJavaScript = htmlScriptRelations[0].to;
@@ -21,7 +21,7 @@ function getJavaScriptTextAndBootstrappedContext(assetGraph, htmlQueryObj) {
 
     return {
         text: inlineJavaScript.text,
-        context: oneBootstrapper.createContext(assetGraph.findAssets(htmlQueryObj)[0], assetGraph)
+        context: bootstrapper.createContext(assetGraph.findAssets(htmlQueryObj)[0], assetGraph)
     };
 }
 
@@ -100,7 +100,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 topic: function (assetGraph) {
                     return assetGraph.findAssets({url: /\/index\.en_US\.html$/})[0].text;
                 },
-                'the one.tr expression in the inline script should be replaced with the American English text': function (text) {
+                'the TR expression in the inline script should be replaced with the American English text': function (text) {
                     assert.isTrue(/var localizedString\s*=\s*([\'\"])The American English text\1/.test(text));
                 }
             },
@@ -108,7 +108,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 topic: function (assetGraph) {
                     return assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text;
                 },
-                'the one.tr expression in the inline script should be replaced with the Danish text': function (text) {
+                'the TR expression in the inline script should be replaced with the Danish text': function (text) {
                     assert.isTrue(/var localizedString\s*=\s*([\'\"])The Danish text\1/.test(text));
                 }
             }
@@ -119,24 +119,33 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             new AssetGraph({root: __dirname + '/cloneForEachLocale/multipleLocales/'})
                 .loadAssets('index.html')
                 .populate()
-                .injectOneBootstrapper({type: 'Html', isInitial: true})
+                .injectBootstrapper({type: 'Html', isInitial: true})
                 .run(this.callback);
         },
         'the graph should contain 4 assets': function (assetGraph) {
             assert.equal(assetGraph.findAssets().length, 4);
+        },
+        'the graph should contain one Html asset': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'Html'}).length, 1);
+        },
+        'the graph should contain 2 inline JavaScript assets': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'JavaScript', isInline: true}).length, 2);
+        },
+        'the graph should contain 1 JavaScriptInclude relation': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({type: 'JavaScriptInclude'}).length, 1);
+        },
+        'the graph should contain one I18n asset': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'I18n'}).length, 1);
         },
         'then get the inline JavaScript asset as text': {
             topic: function (assetGraph) {
                 return getJavaScriptTextAndBootstrappedContext(assetGraph, {type: 'Html'});
             },
-            'the plainOneTr function should use the American English (default) pattern': function (obj) {
-                assert.equal(evaluateInContext(obj.text + "; return plainOneTr()", obj.context), 'Plain English');
+            'the plainTr function should use the American English (default) pattern': function (obj) {
+                assert.equal(evaluateInContext(obj.text + "; return plainTr()", obj.context), 'Plain English');
             },
-            'the callOneTrPattern function should use the American English (default) pattern': function (obj) {
-                assert.equal(evaluateInContext(obj.text + "; return callOneTrPattern()", obj.context), 'Boring and stupid English pattern');
+            'the callTRPAT function should use the American English (default) pattern': function (obj) {
+                assert.equal(evaluateInContext(obj.text + "; return callTRPAT()", obj.context), 'Boring and stupid English pattern');
             },
             'the nonInvokedTrPattern should use the American English (default) pattern': function (obj) {
                 assert.equal(evaluateInContext(obj.text + "; return nonInvokedTrPattern('X')", obj.context), 'Welcome to America, Mr. X');
@@ -174,11 +183,11 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 topic: function (assetGraph) {
                     return getJavaScriptTextAndBootstrappedContext(assetGraph, {type: 'Html', url: /\/index\.en_US\.html$/});
                 },
-                'the plainOneTr function should use the "en" pattern': function (obj) {
-                    assert.equal(evaluateInContext(obj.text + "; return plainOneTr()", obj.context), 'Plain English');
+                'the plainTr function should use the "en" pattern': function (obj) {
+                    assert.equal(evaluateInContext(obj.text + "; return plainTr()", obj.context), 'Plain English');
                 },
-                'the callOneTrPattern function should use the "en" pattern': function (obj) {
-                    assert.equal(evaluateInContext(obj.text + "; return callOneTrPattern();", obj.context), "Boring and stupid English pattern");
+                'the callTRPAT function should use the "en" pattern': function (obj) {
+                    assert.equal(evaluateInContext(obj.text + "; return callTRPAT();", obj.context), "Boring and stupid English pattern");
                 },
                 'the nonInvokedTrPattern should use the "en_US" pattern': function (obj) {
                     assert.equal(evaluateInContext(obj.text + "; return nonInvokedTrPattern('X');", obj.context), "Welcome to America, Mr. X");
@@ -188,11 +197,11 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 topic: function (assetGraph) {
                     return getJavaScriptTextAndBootstrappedContext(assetGraph, {type: 'Html', url: /\/index\.da\.html$/});
                 },
-                'the plainOneTr function should use the "en" pattern': function (obj) {
-                    assert.equal(evaluateInContext(obj.text + "; return plainOneTr()", obj.context), 'Jævnt dansk');
+                'the plainTr function should use the "en" pattern': function (obj) {
+                    assert.equal(evaluateInContext(obj.text + "; return plainTr()", obj.context), 'Jævnt dansk');
                 },
-                'the callOneTrPattern function should use the "en" pattern': function (obj) {
-                    assert.equal(evaluateInContext(obj.text + "; return callOneTrPattern();", obj.context), "Kedeligt and stupid dansk mønster");
+                'the callTRPAT function should use the "en" pattern': function (obj) {
+                    assert.equal(evaluateInContext(obj.text + "; return callTRPAT();", obj.context), "Kedeligt and stupid dansk mønster");
                 },
                 'the nonInvokedTrPattern should use the "en_US" pattern': function (obj) {
                     assert.equal(evaluateInContext(obj.text + "; return nonInvokedTrPattern('X');", obj.context), "Velkommen til Danmark, hr. X");
@@ -287,7 +296,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             },
             'the second template used by the Danish JavaScript should be cloned and translated': function (assetGraph) {
                 var danishJavaScript = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to;
-                assert.equal(assetGraph.findRelations({from: danishJavaScript, type: 'JavaScriptOneGetText'})[1].to.parseTree.firstChild.innerHTML,
+                assert.equal(assetGraph.findRelations({from: danishJavaScript, type: 'JavaScriptGetText'})[1].to.parseTree.firstChild.innerHTML,
                              '\n' +
                              '    <div>Min sprognøgle</div>\n' +
                              '    <span id="bar">Min anden sprognøgle</span>\n'+
@@ -297,7 +306,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             },
             'the second template used by the American English JavaScript should be cloned and translated': function (assetGraph) {
                 var americanEnglishJavaScript = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en_US\.html$/}})[0].to;
-                assert.equal(assetGraph.findRelations({from: americanEnglishJavaScript, type: 'JavaScriptOneGetText'})[1].to.parseTree.firstChild.innerHTML,
+                assert.equal(assetGraph.findRelations({from: americanEnglishJavaScript, type: 'JavaScriptGetText'})[1].to.parseTree.firstChild.innerHTML,
                              '\n' +
                              '    <div>My language key</div>\n' +
                              '    <span id="bar">My other language key</span>\n' +
@@ -343,21 +352,21 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             }
         }
     },
-    'After loading test case with a one.tr in a data-bind attribute and run the cloneForEachLocale transform': {
+    'After loading test case with a TR in a data-bind attribute and run the cloneForEachLocale transform': {
         topic: function () {
-            new AssetGraph({root: __dirname + '/cloneForEachLocale/oneTrInHtmlDataBindAttribute/'})
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/trInHtmlDataBindAttribute/'})
                 .loadAssets('index.html')
                 .populate()
                 .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da']})
                 .run(this.callback);
         },
-        'the one.tr in the Danish HTML should be replaced with "Den danske værdi"': function (assetGraph) {
+        'the TR in the Danish HTML should be replaced with "Den danske værdi"': function (assetGraph) {
             assert.matches(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text, /Den danske værdi/);
         }
     },
-    'After loading test case with a one.tr in a data-bind attribute in a .ko template and run the cloneForEachLocale transform': {
+    'After loading test case with a TR in a data-bind attribute in a .ko template and run the cloneForEachLocale transform': {
         topic: function () {
-            new AssetGraph({root: __dirname + '/cloneForEachLocale/oneTrInHtmlDataBindAttributeInKoTemplate/'})
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/trInHtmlDataBindAttributeInKoTemplate/'})
                 .loadAssets('index.html')
                 .populate()
                 .bundleRequireJs()
@@ -367,7 +376,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'the graph should contain 2 KnockoutJsTemplate assets': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'KnockoutJsTemplate'}).length, 2);
         },
-        'the one.tr in the Danish Knockout.js template should be replaced with "Den danske værdi"': function (assetGraph) {
+        'the TR in the Danish Knockout.js template should be replaced with "Den danske værdi"': function (assetGraph) {
             var danishRequireJsMain = assetGraph.findAssets({type: 'JavaScript', incoming: {type: 'HtmlRequireJsMain', from: {url: /\/index\.da\.html$/}}})[0],
                 danishKnockoutJsTemplate = assetGraph.findRelations({from: danishRequireJsMain, to: {type: 'KnockoutJsTemplate'}})[0].to;
             assert.matches(danishKnockoutJsTemplate.text, /Den danske værdi/);

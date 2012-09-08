@@ -30,7 +30,7 @@ new AssetGraph({root: commandLineOptions.root})
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .populate({
-        followRelations: {type: ['HtmlScript', 'HtmlRequireJsMain', 'JavaScriptOneInclude', 'JavaScriptAmdDefine', 'JavaScriptAmdRequire', 'JavaScriptOneGetText'],
+        followRelations: {type: ['HtmlScript', 'HtmlRequireJsMain', 'JavaScriptInclude', 'JavaScriptAmdDefine', 'JavaScriptAmdRequire', 'JavaScriptGetText'],
         to: {url: AssetGraph.query.not(/^https?:/)}}
     })
     .queue(function (assetGraph) {

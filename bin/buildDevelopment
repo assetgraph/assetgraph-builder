@@ -34,11 +34,11 @@ new AssetGraph({root: commandLineOptions.root})
     .endif()
     .populate({
         followRelations: {
-            type: ['HtmlScript', 'HtmlRequireJsMain', 'JavaScriptAmdRequire', 'JavaScriptAmdDefine', 'JavaScriptOneInclude', 'JavaScriptExtJsRequire'],
+            type: ['HtmlScript', 'HtmlRequireJsMain', 'JavaScriptAmdRequire', 'JavaScriptAmdDefine', 'JavaScriptInclude', 'JavaScriptExtJsRequire'],
             to: {url: query.not(/^https?:/)}
         }
     })
-    .injectOneBootstrapper({isInitial: true}, {
+    .injectBootstrapper({isInitial: true}, {
         defaultLocaleId: commandLineOptions.defaultLocaleId,
         supportedLocaleIds: supportedLocaleIds,
         localeCookieName: commandLineOptions.localecookiename

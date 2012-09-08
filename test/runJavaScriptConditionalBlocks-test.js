@@ -18,7 +18,7 @@ vows.describe('executeJavaScriptConditionalBlocks').addBatch({
         'then running the conditional blocks': {
             topic: function (assetGraph) {
                 assetGraph
-                    .runJavaScriptConditionalBlocks({type: 'Html'}, 'theEnvironment')
+                    .runJavaScriptConditionalBlocks({type: 'Html'}, 'THEENVIRONMENT')
                     .run(this.callback);
             },
             'the Html should contain a new <div> with a greeting from the conditional block': function (assetGraph) {

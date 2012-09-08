@@ -1,14 +1,14 @@
 {
-    "oneTrInJavaScriptConditionalBlock": {
+    "theTitle": {
         "en": "The awesome document title",
         "en_GB": "The most delightful document title",
         "da": "Dokumentets vidunderlige titel"
     },
-    "plainOneTr": {
+    "plainTr": {
         "en": "Plain English",
         "da": "Jævnt dansk"
     },
-    "callOneTrPattern": {
+    "callTRPAT": {
         "en": "Boring {0} English pattern",
         "da": "Kedeligt {0} dansk mønster"
     },
