@@ -18,6 +18,9 @@ var fs = require('fs'),
 require('../lib/registerTransforms');
 
 new AssetGraph({root: commandLineOptions.root})
+    .on('warn', function (err) {
+        console.warn(err.message);
+    })
     .on('error', function (err) {
         console.error(err.stack);
         process.exit(1);

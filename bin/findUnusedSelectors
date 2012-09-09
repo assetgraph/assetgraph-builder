@@ -9,6 +9,13 @@ var AssetGraph = require('assetgraph'),
         .argv;
 
 new AssetGraph({root: commandLineOptions.root})
+    .on('warn', function (err) {
+        console.warn(err.message);
+    })
+    .on('error', function (err) {
+        console.error(err.stack);
+        process.exit(1);
+    })
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .populate({
         followRelations: {type: ['HtmlStyle', 'CssImport'], to: {url: /^file:/}}
@@ -40,8 +47,4 @@ new AssetGraph({root: commandLineOptions.root})
             });
         });
     })
-    .run(function (err) {
-        if (err) {
-            throw err;
-        }
-    });
+    .run();

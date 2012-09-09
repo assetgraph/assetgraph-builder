@@ -145,6 +145,9 @@ new AssetGraph({root: commandLineOptions.root})
     .on('afterTransform', function (transform, elapsedTime) {
         console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
     })
+    .on('warn', function (err) {
+        console.warn(err.message);
+    })
     .on('error', function (err) {
         console.error(err.stack);
         process.exit(1);
