@@ -21,11 +21,12 @@ vows.describe('executeJavaScriptConditionalBlocks').addBatch({
                     .runJavaScriptConditionalBlocks({type: 'Html'}, 'THEENVIRONMENT')
                     .run(this.callback);
             },
-            'the Html should contain a new <div> with a greeting from the conditional block': function (assetGraph) {
+            'the Html should contain two new <div>s with greetings from the conditional blocks': function (assetGraph) {
                 var html = assetGraph.findAssets({type: 'Html'})[0],
                     divs = html.parseTree.getElementsByTagName('div');
-                assert.equal(divs.length, 1);
+                assert.equal(divs.length, 2);
                 assert.equal(divs[0].firstChild.nodeValue, "Howdy");
+                assert.equal(divs[1].firstChild.nodeValue, "there");
             }
         }
     }

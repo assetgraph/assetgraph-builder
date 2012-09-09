@@ -196,7 +196,7 @@ new AssetGraph({root: commandLineOptions.root})
             localeCookieName: commandLineOptions.localeCookieName,
             defaultLocaleId: commandLineOptions.defaultlocale
         })
-        .runJavaScriptConditionalBlocks({isInitial: true}, 'localize', true)
+        .runJavaScriptConditionalBlocks({isInitial: true}, 'LOCALIZE', true)
     .endif()
     .if(!commandLineOptions.nocompress)
         .compressJavaScript({type: 'JavaScript'}, 'uglifyJs', {toplevel: commandLineOptions.mangletoplevel})
