@@ -19,10 +19,13 @@ require('../lib/registerTransforms');
 
 new AssetGraph({root: commandLineOptions.root})
     .on('warn', function (err) {
-        console.warn(err.message);
+        // These are way too noisy
+        if (err.relationType !== 'JavaScriptCommonJsRequire') {
+            console.warn((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.message);
+        }
     })
     .on('error', function (err) {
-        console.error(err.stack);
+        console.error((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack);
         process.exit(1);
     })
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
