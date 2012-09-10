@@ -40,7 +40,7 @@ new AssetGraph({root: commandLineOptions.root})
                 })
                 .unflatten()
                 .seq(function (texts) {
-                    var flattenedText = texts.join("\n").replace(/one\.include\(([^\)]*)\);?\n?/g, "");
+                    var flattenedText = texts.join("\n").replace(/INCLUDE\(([^\)]*)\);?\n?/g, "");
                     if ('o' in commandLineOptions) {
                         fs.writeFileSync(commandLineOptions.o, flattenedText, AssetGraph.assets.JavaScript.prototype.encoding);
                     } else {
