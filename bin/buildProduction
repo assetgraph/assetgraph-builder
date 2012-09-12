@@ -123,13 +123,7 @@ var _ = require('underscore'),
     cdnroot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
     cdnoutroot = commandLineOptions.cdnoutroot && urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
     localeIds = commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");})),
-    blacklistUrlRegExp = /^$/,
-    cdnrootIsProtocolRelative = false;
-
-if (/^\/\//.test(cdnroot)) {
-    cdnrootIsProtocolRelative = true;
-    cdnroot = 'http:' + cdnroot;
-}
+    blacklistUrlRegExp = /^$/;
 
 if (commandLineOptions.exclude) {
     blacklistUrlRegExp = new RegExp('(?:' +
@@ -229,7 +223,7 @@ new AssetGraph({root: commandLineOptions.root})
         // and thus cannot be put on a CDN because of same origin restrictions:
         if (cdnroot && (asset.isImage || assetGraph.findRelations({to: asset, type: 'StaticUrlMapEntry'}).length === 0)) {
             targetUrl = cdnroot;
-            if (cdnrootIsProtocolRelative) {
+            if (/^\/\//.test(cdnroot)) {
                 assetGraph.findRelations({to: asset}).forEach(function (incomingRelation) {
                     incomingRelation.hrefType = 'protocolRelative';
                 });
