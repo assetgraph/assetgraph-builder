@@ -22,6 +22,9 @@ new AssetGraph({root: commandLineOptions.root})
         // These are way too noisy
         if (err.relationType !== 'JavaScriptCommonJsRequire') {
             console.warn((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.message);
+            if (commandLineOptions.stoponwarning) {
+                process.exit(1);
+            }
         }
     })
     .on('error', function (err) {

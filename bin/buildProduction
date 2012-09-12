@@ -98,6 +98,11 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
+        .options('stoponwarning', {
+            describe: 'Whether to stop with a non-zero exit code when a warning is encountered',
+            type: 'boolean',
+            default: false
+        })
         .options('version', {
             describe: 'Adds or updates <meta http-equiv="Content-Version" content="..."> to the specified value. Use {0} to refer to the current value, eg. --version {0}/production or --version `git describe --long --tags --always --dirty 2>/dev/null || echo unknown`',
             type: 'string'
@@ -143,6 +148,9 @@ new AssetGraph({root: commandLineOptions.root})
         // These are way too noisy
         if (err.relationType !== 'JavaScriptCommonJsRequire') {
             console.warn((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.message);
+            if (commandLineOptions.stoponwarning) {
+                process.exit(1);
+            }
         }
     })
     .on('error', function (err) {
