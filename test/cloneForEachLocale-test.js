@@ -397,5 +397,47 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             var danishJavaScript = assetGraph.findAssets({type: 'JavaScript', incoming: {type: 'HtmlScript', from: {url: /\/index\.da\.html$/}}})[0];
             assert.equal(danishJavaScript.text, 'alert("da");alert("en_US");alert("myCookie");alert(["en_US","da"]);LOCALEID="foo"');
         }
+    },
+    'After loading test case with a template in an inline script': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/inlineScriptTemplate/'})
+                .loadAssets('index.html')
+                .populate()
+                .run(this.callback);
+        },
+        'the graph should contain 4 assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets().length, 4);
+        },
+        'the graph should contain 2 Html asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
+        },
+        'the graph should contain 1 JavaScript asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 1);
+        },
+        'the graph should contain 1 I18n assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'I18n'}).length, 1);
+        },
+        'then run the cloneForEachLocale transform': {
+            topic: function (assetGraph) {
+                assetGraph
+                    .cloneForEachLocale({type: 'Html', isInline: false}, {localeIds: ['en_US', 'da']})
+                    .run(this.callback);
+            },
+            'the graph should contain 7 assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets().length, 7);
+            },
+            'the graph should contain 4 Html assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Html'}).length, 4);
+            },
+            'the graph should contain 2 JavaScript assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 2);
+            },
+            'the graph should contain 1 I18n assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'I18n'}).length, 1);
+            },
+            'the Danish Html asset should contain the Danish text in the template': function (assetGraph) {
+                assert.matches(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text, /Min sprognøgle/);
+            }
+        }
     }
 })['export'](module);
