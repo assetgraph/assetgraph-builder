@@ -408,7 +408,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'the graph should contain 4 assets': function (assetGraph) {
             assert.equal(assetGraph.findAssets().length, 4);
         },
-        'the graph should contain 2 Html asset': function (assetGraph) {
+        'the graph should contain 2 Html assets': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
         },
         'the graph should contain 1 JavaScript asset': function (assetGraph) {
@@ -437,6 +437,57 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             },
             'the Danish Html asset should contain the Danish text in the template': function (assetGraph) {
                 assert.matches(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text, /Min sprognøgle/);
+            }
+        }
+    },
+    'After loading test case with a template in an inline script in a Knockout.js template': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/inlineScriptTemplateInKnockoutJsTemplate/'})
+                .loadAssets('index.html')
+                .populate()
+                .run(this.callback);
+        },
+        'the graph should contain 5 assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets().length, 5);
+        },
+        'the graph should contain 2 Html assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
+        },
+        'the graph should contain 1 KnockoutJsTemplate asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'KnockoutJsTemplate'}).length, 1);
+        },
+        'the graph should contain 1 JavaScript asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 1);
+        },
+        'the graph should contain 1 I18n assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'I18n'}).length, 1);
+        },
+        'then run the cloneForEachLocale transform': {
+            topic: function (assetGraph) {
+                assetGraph
+                    .cloneForEachLocale({type: 'Html', isInline: false}, {localeIds: ['en_US', 'da']})
+                    .run(this.callback);
+            },
+            'the graph should contain 9 assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets().length, 9);
+            },
+            'the graph should contain 4 Html assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Html'}).length, 4);
+            },
+            'the graph should contain 2 JavaScript assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 2);
+            },
+            'the graph should contain 2 KnockoutJsTemplate assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'KnockoutJsTemplate'}).length, 2);
+            },
+            'the graph should contain 1 I18n assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'I18n'}).length, 1);
+            },
+            'the Danish Html KnockoutJsTemplate should contain the Danish text in the template': function (assetGraph) {
+                var danishHtml = assetGraph.findAssets({url: /\/index\.da\.html$/})[0],
+                    danishJavaScript = assetGraph.findRelations({from: danishHtml, type: 'HtmlScript'})[0].to,
+                    danishKnockoutJsTemplate = assetGraph.findRelations({from: danishJavaScript, type: 'JavaScriptGetText'})[0].to;
+                assert.matches(danishKnockoutJsTemplate.text, /Min sprognøgle/);
             }
         }
     }
