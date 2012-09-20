@@ -197,6 +197,7 @@ new AssetGraph({root: commandLineOptions.root})
     .if(commandLineOptions.mangletoplevel)
         .pullGlobalsIntoVariables({type: 'JavaScript'})
     .endif()
+    .minifyAssets()
     .if(localeIds)
         .cloneForEachLocale({type: 'Html', isInitial: true}, {
             localeIds: localeIds,
@@ -210,7 +211,6 @@ new AssetGraph({root: commandLineOptions.root})
         .compressJavaScript({type: 'JavaScript'}, 'uglifyJs', {toplevel: commandLineOptions.mangletoplevel})
     .endif()
     .removeAssets({type: 'I18n'}, true)
-    .minifyAssets()
     .inlineRelations({
         type: ['HtmlStyle', 'HtmlScript'],
         from: {isInline: false}, // Excludes relations occurring in conditional comments
