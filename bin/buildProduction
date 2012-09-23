@@ -93,6 +93,11 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
+        .options('negotiatemanifest', {
+            describe: 'Removes the locale id from the <html manifest="..."> references so all manifests are assumed to be accessible from the same url. Useful if you want the browser to pick up the right cache manifest and HTML after a locale change (your static file server needs to support content negotiation). Only makes sense when both  --manifest and --locale have been specified',
+            type: 'boolean',
+            default: false
+        })
         .options('less', {
             describe: 'Translates .less files to CSS',
             type: 'boolean',
@@ -238,6 +243,14 @@ new AssetGraph({root: rootUrl})
     })
     .if(commandLineOptions.manifest)
         .addCacheManifest({isInitial: true})
+        .if(localeIds && commandLineOptions.negotiatemanifest)
+            .queue(function stripLocaleIdFromHtmlCacheManifestRelations(assetGraph) {
+                // This would be much less fragile if an asset could have a canonical url as well as an url (under consideration):
+                assetGraph.findRelations({type: 'HtmlCacheManifest'}).forEach(function (htmlCacheManifest) {
+                    htmlCacheManifest.href = htmlCacheManifest.href.replace(/\.\w+\.appcache$/, '.appcache');
+                });
+            })
+        .endif()
     .endif()
     .if(commandLineOptions.nocompress)
         .prettyPrintAssets({type: ['Html', 'JavaScript', 'Css']})
