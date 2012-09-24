@@ -241,6 +241,12 @@ new AssetGraph({root: rootUrl})
         from: {isInline: false}, // Excludes relations occurring in conditional comments
         to: function (asset) {return asset.isAsset && asset.rawSrc.length < 4096;}
     })
+    .if(commandLineOptions.nocompress)
+        .prettyPrintAssets({type: ['Html', 'JavaScript', 'Css']})
+    .endif()
+    .setAsyncOrDeferOnHtmlScripts({to: {isInline: false, url: /^file:/}}, commandLineOptions.asyncscripts, commandLineOptions.deferscripts)
+    .omitGetStaticUrlFunctionCall()
+    .inlineRelations({type: 'JavaScriptGetText'})
     .if(commandLineOptions.manifest)
         .addCacheManifest({isInitial: true})
         .if(localeIds && commandLineOptions.negotiatemanifest)
@@ -252,12 +258,6 @@ new AssetGraph({root: rootUrl})
             })
         .endif()
     .endif()
-    .if(commandLineOptions.nocompress)
-        .prettyPrintAssets({type: ['Html', 'JavaScript', 'Css']})
-    .endif()
-    .setAsyncOrDeferOnHtmlScripts({to: {isInline: false, url: /^file:/}}, commandLineOptions.asyncscripts, commandLineOptions.deferscripts)
-    .omitGetStaticUrlFunctionCall()
-    .inlineRelations({type: 'JavaScriptGetText'})
     .moveAssetsInOrder({isInitial: query.not(true), type: query.not('CacheManifest')}, function (asset, assetGraph) {
         var targetUrl = "/static/";
         // Conservatively assume that all GETSTATICURL relations pointing at non-images are intended to be fetched via XHR
