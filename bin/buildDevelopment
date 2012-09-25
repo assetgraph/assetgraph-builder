@@ -65,6 +65,5 @@ new AssetGraph({root: commandLineOptions.root})
     .if(commandLineOptions.inline)
         .inlineRelations({to: {url: urlTools.makeFileUrlMatcher(commandLineOptions.inline)}})
     .endif()
-    .prettyPrintAssets({isInitial: true})
     .writeAssetsToDisc({isInitial: true})
     .run();
