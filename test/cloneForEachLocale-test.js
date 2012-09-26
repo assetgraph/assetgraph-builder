@@ -493,7 +493,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
     },
     'After loading test case with a TRHTML expression': {
         topic: function () {
-            new AssetGraph({root: __dirname + '/cloneForEachLocale/TRHTML/'})
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/JavaScriptTrHtml/'})
                 .loadAssets('index.html')
                 .populate()
                 .run(this.callback);
@@ -516,14 +516,14 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'then run the cloneForEachLocale transform': {
             topic: function (assetGraph) {
                 assetGraph
-                    .cloneForEachLocale({type: 'Html', isInline: false}, {localeIds: ['en_US', 'da']})
+                    .cloneForEachLocale({type: 'Html', url: /\/index\.html$/}, {localeIds: ['en_US', 'da']})
                     .run(this.callback);
             },
-            'the graph should contain 5 assets': function (assetGraph) {
-                assert.equal(assetGraph.findAssets().length, 5);
+            'the graph should contain 7 assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets().length, 7);
             },
-            'the graph should contain 2 Html assets': function (assetGraph) {
-                assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
+            'the graph should contain 4 Html assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Html'}).length, 4);
             },
             'the graph should contain 2 JavaScript assets': function (assetGraph) {
                 assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 2);
@@ -531,10 +531,89 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             'the graph should contain 1 I18n assets': function (assetGraph) {
                 assert.equal(assetGraph.findAssets({type: 'I18n'}).length, 1);
             },
-            'the Danish JavaScript should contain the Danish text': function (assetGraph) {
-                var danishHtml = assetGraph.findAssets({url: /\/index\.da\.html$/})[0];
-                assert.matches(assetGraph.findRelations({from: danishHtml, type: 'HtmlScript'})[0].to.text, /var myHtmlString\s*=\s*(['"])Den danske værdi\1/);
+            'then inline the JavaScriptTrHtml relations': {
+                topic: function (assetGraph) {
+                    assetGraph
+                        .inlineRelations({type: 'JavaScriptTrHtml'})
+                        .run(this.callback);
+                },
+                'the Danish JavaScript should contain the Danish text': function (assetGraph) {
+                    var danishHtml = assetGraph.findAssets({url: /\/index\.da\.html$/})[0];
+                    assert.matches(assetGraph.findRelations({from: danishHtml, type: 'HtmlScript'})[0].to.text, /var myHtmlString\s*=\s*TRHTML\((['"])Den danske værdi\1\)/);
+                }
+            }
+        }
+    },
+    'After loading test case with a TRHTML(GETTEXT(...)) expression': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/JavaScriptTrHtmlAndJavaScriptGetText/'})
+                .loadAssets('index.html')
+                .populate()
+                .run(this.callback);
+        },
+        'the graph should contain 4 assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets().length, 4);
+        },
+        'the graph should contain 2 Html assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
+        },
+        'the graph should contain 1 JavaScript asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 1);
+        },
+        'the graph should contain 1 I18n assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'I18n'}).length, 1);
+        },
+        'the graph should contain 1 JavaScriptTrHtml relation': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({type: 'JavaScriptTrHtml'}).length, 1);
+        },
+        'the graph should contain no JavaScriptGetText relations': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({type: 'JavaScriptGetText'}).length, 0);
+        },
+        'then run the cloneForEachLocale transform': {
+            topic: function (assetGraph) {
+                assetGraph
+                    .cloneForEachLocale({type: 'Html', url: /\/index\.html$/}, {localeIds: ['en_US', 'da']})
+                    .run(this.callback);
+            },
+            'the graph should contain 7 assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets().length, 7);
+            },
+            'the graph should contain 4 Html assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Html'}).length, 4);
+            },
+            'the graph should contain 2 JavaScript assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 2);
+            },
+            'the graph should contain 1 I18n assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'I18n'}).length, 1);
+            },
+            'then inline the JavaScriptTrHtml relations': {
+                topic: function (assetGraph) {
+                    assetGraph
+                        .inlineRelations({type: 'JavaScriptTrHtml'})
+                        .run(this.callback);
+                },
+                'the Danish JavaScript should contain the Danish text': function (assetGraph) {
+                    var danishHtml = assetGraph.findAssets({url: /\/index\.da\.html$/})[0];
+                    assert.matches(assetGraph.findRelations({from: danishHtml, type: 'HtmlScript'})[0].to.text, /var myHtmlString\s*=\s*TRHTML\((['"])Den danske værdi\\n\1\)/);
+                },
+                'then manipulate the Html assets pointed to by the JavaScriptTrHtml relations': {
+                    topic: function (assetGraph) {
+                        assetGraph.findRelations({type: 'JavaScriptTrHtml'}).forEach(function (javaScriptTrHtml) {
+                            var htmlAsset = javaScriptTrHtml.to,
+                                document = htmlAsset.parseTree;
+                            document.appendChild(document.createElement('div')).appendChild(document.createTextNode('foo'));
+                            htmlAsset.markDirty();
+                        });
+                        return assetGraph;
+                    },
+                    'the Danish JavaScript should have the freshly created <div>foo</div> in the string': function (assetGraph) {
+                        var danishHtml = assetGraph.findAssets({url: /\/index\.da\.html$/})[0];
+                        assert.matches(assetGraph.findRelations({from: danishHtml, type: 'HtmlScript'})[0].to.text, /var myHtmlString\s*=\s*TRHTML\((['"])Den danske værdi\\n<div>foo<\/div>\1\)/);
+                    }
+                }
             }
         }
     }
+
 })['export'](module);
