@@ -21,7 +21,7 @@ function getJavaScriptTextAndBootstrappedContext(assetGraph, htmlQueryObj) {
 
     return {
         text: inlineJavaScript.text,
-        context: bootstrapper.createContext(assetGraph.findAssets(htmlQueryObj)[0], assetGraph)
+        context: bootstrapper.createContext(assetGraph.findAssets(htmlQueryObj)[0], assetGraph, {TRANSLATE: false})
     };
 }
 
