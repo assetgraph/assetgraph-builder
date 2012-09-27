@@ -16,7 +16,7 @@ applications.
    `@font-face { src: url(...) }`, .htc files linked via CSS
    `behavior` properties.
  * Bundles JavaScript and CSS.
- * Removes duplicate images, JavaScript, Css, etc.
+ * Removes duplicate images, JavaScript, CSS, etc.
  * Minifies/packs JavaScript, CSS, and HTML (uses <a
    href="https://github.com/mishoo/UglifyJS">UglifyJS</a> and <a
    href="https://github.com/jbleuzen/node-cssmin">cssmin</a>, and <a
@@ -118,6 +118,14 @@ The translations themselves reside in separate JSON files with an
         "advancedKeyWithPlaceholders": {
             "en": "Showing {0}-{1} of {2} records",
             "da": "Der er {2} i alt, viser fra nr. {0} til nr. {1}"
+        },
+        "IAmSoXToday": {
+            "en": "I am so {0} today",
+            "da": "Jeg er så {0} i dag"
+        },
+        "TheColor": {
+            "en": "blue",
+            "da": "blå"
         }
     }
 
@@ -245,6 +253,27 @@ For HTML attributes there's a more elaborate, Knockout.js-ish syntax for the `da
 Which compiles to this in English:
 
     <div title="The other value in English">The value in English</span>
+
+
+### I18n of HTML chunks in JavaScript ###
+
+There's a special syntax for handling chunks of translated HTML in JavaScript:
+
+```javascript
+var myHtmlString = TRHTML('<div data-i18n="IAmSoXToday">I am so <span data-i18n="TheColor" style="color: blue;">blue</span> today</div>');
+```
+
+These HTML chunks behave like described in the "HTML i18n syntax" section above. The above would compile to the following in the Danish production build:
+
+```javascript
+var myHtmlString = TRHTML('<div>Jeg er så <span style="color: blue;">blå</span> i dag</div>');
+```
+
+It also works in combination with `GETTEXT` in case you prefer to maintain the HTML in a separate file:
+
+```javascript
+var myHtmlString = TRHTML(GETTEXT('my/file.html'));
+```
 
 License
 -------
