@@ -82,10 +82,10 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             },
             'then getting the text of the American English version of the Html asset': {
                 topic: function (assetGraph) {
-                    return assetGraph.findAssets({url: /\/index\.en_US\.html$/})[0].text;
+                    return assetGraph.findAssets({url: /\/index\.en_us\.html$/})[0].text;
                 },
                 'the html tag should have a lang attribute with a value of "en_US"': function (text) {
-                    assert.isTrue(/<html[^>]+lang=([\'\"])en_US\1/.test(text));
+                    assert.isTrue(/<html[^>]+lang=([\'\"])en_us\1/.test(text));
                 }
             },
             'then getting the text of the Danish version of the Html asset': {
@@ -98,7 +98,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             },
             'then getting the text of the American English Html asset': {
                 topic: function (assetGraph) {
-                    return assetGraph.findAssets({url: /\/index\.en_US\.html$/})[0].text;
+                    return assetGraph.findAssets({url: /\/index\.en_us\.html$/})[0].text;
                 },
                 'the TR expression in the inline script should be replaced with the American English text': function (text) {
                     assert.isTrue(/var localizedString\s*=\s*([\'\"])The American English text\1/.test(text));
@@ -170,18 +170,18 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 assert.equal(paragraphs[1].innerHTML, 'En <span>beautiful</span> tekst med <span>lovely</span> pladsholdere i sig');
             },
             'the British English Html asset should contain the British English texts': function (assetGraph) {
-                var paragraphs = assetGraph.findAssets({url: /\/index\.en_GB\.html$/})[0].parseTree.getElementsByTagName('p');
+                var paragraphs = assetGraph.findAssets({url: /\/index\.en_gb\.html$/})[0].parseTree.getElementsByTagName('p');
                 assert.equal(paragraphs[0].firstChild.nodeValue, 'Some text in body');
                 assert.equal(paragraphs[1].innerHTML, 'A <span>beautiful</span> text with oh so <span>lovely</span> placeholders in it');
             },
             'the American English Html asset should contain the American English texts': function (assetGraph) {
-                var paragraphs = assetGraph.findAssets({url: /\/index\.en_US\.html$/})[0].parseTree.getElementsByTagName('p');
+                var paragraphs = assetGraph.findAssets({url: /\/index\.en_us\.html$/})[0].parseTree.getElementsByTagName('p');
                 assert.equal(paragraphs[0].firstChild.nodeValue, 'Some text in body');
                 assert.equal(paragraphs[1].innerHTML, 'A <span>beautiful</span> text with <span>lovely</span> placeholders in it');
             },
             'then get the American English JavaScript as text along with the bootstrapped context': {
                 topic: function (assetGraph) {
-                    return getJavaScriptTextAndBootstrappedContext(assetGraph, {type: 'Html', url: /\/index\.en_US\.html$/});
+                    return getJavaScriptTextAndBootstrappedContext(assetGraph, {type: 'Html', url: /\/index\.en_us\.html$/});
                 },
                 'the plainTr function should use the "en" pattern': function (obj) {
                     assert.equal(evaluateInContext(obj.text + "; return plainTr()", obj.context), 'Plain English');
@@ -214,7 +214,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                         .run(this.callback);
                 },
                 'the American English Html asset should contain the American English title': function (assetGraph) {
-                    assert.equal(assetGraph.findAssets({type: 'Html', url: /\/index\.en_US\.html$/})[0].parseTree.title, "The awesome document title");
+                    assert.equal(assetGraph.findAssets({type: 'Html', url: /\/index\.en_us\.html$/})[0].parseTree.title, "The awesome document title");
                 },
                 'the Danish Html asset should contain the Danish title': function (assetGraph) {
                     assert.equal(assetGraph.findAssets({type: 'Html', url: /\/index\.da\.html$/})[0].parseTree.title, "Dokumentets vidunderlige titel");
@@ -236,7 +236,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             assert.equal(assetGraph.findAssets({type: 'Html', isInline: false}).length, 2);
         },
         'the American English Html should contain two HtmlConditionalComment relations': function (assetGraph) {
-            assert.equal(assetGraph.findRelations({from: {url: /\/index\.en_US\.html$/}, type: 'HtmlConditionalComment'}).length, 2);
+            assert.equal(assetGraph.findRelations({from: {url: /\/index\.en_us\.html$/}, type: 'HtmlConditionalComment'}).length, 2);
         },
         'the Danish Html should contain two HtmlConditionalComment relations': function (assetGraph) {
             assert.equal(assetGraph.findRelations({from: {url: /\/index\.da\.html$/}, type: 'HtmlConditionalComment'}).length, 2);
@@ -288,7 +288,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             },
             'the first template used by Danish and American English JavaScript asset should be the same asset': function (assetGraph) {
                 var danishJavaScript = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to,
-                    americanEnglishJavaScript = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en_US\.html$/}})[0].to;
+                    americanEnglishJavaScript = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en_us\.html$/}})[0].to;
                 assert.ok(danishJavaScript);
                 assert.ok(americanEnglishJavaScript);
                 assert.equal(assetGraph.findRelations({from: danishJavaScript})[0].to,
@@ -305,7 +305,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                              '    Her er en rar dyb i18n-struktur på dansk\n');
             },
             'the second template used by the American English JavaScript should be cloned and translated': function (assetGraph) {
-                var americanEnglishJavaScript = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en_US\.html$/}})[0].to;
+                var americanEnglishJavaScript = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en_us\.html$/}})[0].to;
                 assert.equal(assetGraph.findRelations({from: americanEnglishJavaScript, type: 'JavaScriptGetText'})[1].to.parseTree.firstChild.innerHTML,
                              '\n' +
                              '    <div>My language key</div>\n' +
@@ -395,7 +395,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         },
         'the upper case vars should be replaced by their respective values': function (assetGraph) {
             var danishJavaScript = assetGraph.findAssets({type: 'JavaScript', incoming: {type: 'HtmlScript', from: {url: /\/index\.da\.html$/}}})[0];
-            assert.equal(danishJavaScript.text, 'alert("da");alert("en_US");alert("myCookie");alert(["en_US","da"]);LOCALEID="foo"');
+            assert.equal(danishJavaScript.text, 'alert("da");alert("en_us");alert("myCookie");alert(["en_us","da"]);LOCALEID="foo"');
         }
     },
     'After loading test case with a template in an inline script': {

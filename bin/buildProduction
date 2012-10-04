@@ -125,13 +125,15 @@ if (commandLineOptions.h) {
 
 var _ = require('underscore'),
     AssetGraph = require('assetgraph'),
-    bootstrapper = require('../lib/bootstrapper'),
+    i18nTools = require('../lib/i18nTools'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
     outroot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
     cdnroot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
     cdnoutroot = commandLineOptions.cdnoutroot && urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
-    localeIds = commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");})),
+    localeIds = commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {
+        return localeId.split(",").map(i18nTools.normalizeLocaleId);
+    })),
     blacklistUrlRegExp = /^$/,
     rootUrl = commandLineOptions.root && urlTools.urlOrFsPathToUrl(commandLineOptions.root, true),
     inputUrls;
