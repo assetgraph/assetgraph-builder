@@ -128,12 +128,9 @@ var _ = require('underscore'),
     i18nTools = require('../lib/i18nTools'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
-    outroot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
-    cdnroot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
-    cdnoutroot = commandLineOptions.cdnoutroot && urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
-    localeIds = commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {
-        return localeId.split(",").map(i18nTools.normalizeLocaleId);
-    })),
+    outRoot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
+    cdnRoot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
+    cdnOutRoot = commandLineOptions.cdnoutroot && urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
     blacklistUrlRegExp = /^$/,
     rootUrl = commandLineOptions.root && urlTools.urlOrFsPathToUrl(commandLineOptions.root, true),
     inputUrls;
@@ -189,94 +186,30 @@ new AssetGraph({root: rootUrl})
     .loadAssets(inputUrls)
     .populate({
         followRelations: query.or({to: {type: 'I18n'}},
-                                  {type: query.not(['JavaScriptInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']), to: query.and({url: query.not(/^https?:/)}, {url: query.not(blacklistUrlRegExp)})})
+                                  {type: query.not(['JavaScriptInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']),
+                                   to: query.and({url: query.not(/^https?:/)}, {url: query.not(blacklistUrlRegExp)})})
     })
-    // Remove bootstrapper scripts injected by buildDevelopment:
-    .removeRelations({type: 'HtmlScript', node: {id: 'bootstrapper'}, from: {type: 'Html'}}, {detach: true, removeOrphan: true})
-    .if(commandLineOptions.version)
-        .addContentVersionMetaElement({type: 'Html'}, commandLineOptions.version, true)
-    .endif()
-    .if(commandLineOptions.less)
-        // Replace Less assets with their Css counterparts:
-        .compileLessToCss({type: 'Less'})
-
-        // Kill in-browser less compiler and remove its incoming relations:
-        .removeAssets({url: /\/less(?:-\d+\.\d+\.\d+)?(?:\.min)?\.js$/}, true)
-
-        // Find and populate CssImage relations from the compiled Less assets:
-        .populate({from: {type: 'Css'}})
-    .endif()
-    .removeRelations({type: 'JavaScriptInclude', to: {type: ['Css', 'JavaScript']}}, {detach: true, unresolved: true})
-    .convertCssImportsToHtmlStyles()
-    .removeAssets({isEmpty: true, type: ['Css', 'JavaScript']}, true)
-    .externalizeRelations({from: {type: query.not('Htc')}, type: ['HtmlStyle', 'HtmlScript'], node: function (node) {return !node.hasAttribute('nobundle');}})
-    .mergeIdenticalAssets(query.or({isImage: true}, {type: ['JavaScript', 'Css']}))
-    .spriteBackgroundImages()
-    .postProcessCssImages()
-    .if(commandLineOptions.optimizepngs)
-        .optimizePngs()
-    .endif()
-    .bundleRequireJs({type: 'Html'})
-    .bundleRelations({type: 'HtmlStyle', to: {type: 'Css'}, node: function (node) {return !node.hasAttribute('nobundle');}})
-    .bundleRelations({type: 'HtmlScript', to: {type: 'JavaScript'}, node: function (node) {return !node.hasAttribute('nobundle');}})
-    .removeNobundleAttribute({type: ['HtmlScript', 'HtmlStyle']})
-    .inlineCssImagesWithLegacyFallback({type: 'Html', isInline: false}, commandLineOptions.inlinesize)
-    .if(commandLineOptions.mangletoplevel)
-        .pullGlobalsIntoVariables({type: 'JavaScript'})
-    .endif()
-    .minifyAssets()
-    .if(localeIds)
-        .cloneForEachLocale({type: 'Html', isInitial: true}, {
-            localeIds: localeIds,
-            supportedLocaleIds: localeIds,
-            localeCookieName: commandLineOptions.localeCookieName,
-            defaultLocaleId: commandLineOptions.defaultlocale
-        })
-        .runJavaScriptConditionalBlocks({isInitial: true}, 'LOCALIZE', true)
-    .endif()
-    .if(!commandLineOptions.nocompress)
-        .compressJavaScript({type: 'JavaScript'}, 'uglifyJs', {toplevel: commandLineOptions.mangletoplevel})
-    .endif()
-    .removeAssets({type: 'I18n'}, true)
-    .inlineRelations({
-        type: ['HtmlStyle', 'HtmlScript'],
-        from: {isInline: false}, // Excludes relations occurring in conditional comments
-        to: function (asset) {return asset.isAsset && asset.rawSrc.length < 4096;}
+    .buildProduction({
+        version: commandLineOptions.version,
+        less: commandLineOptions.less,
+        optimizePngs: commandLineOptions.optimizepngs,
+        inlineSize: commandLineOptions.inlinesize,
+        mangleTopLevel: commandLineOptions.mangletoplevel,
+        localeIds: commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {
+            return localeId.split(",").map(i18nTools.normalizeLocaleId);
+        })),
+        localeCookieName: commandLineOptions.localecookiename,
+        defaultLocaleId: commandLineOptions.defaultlocaleid,
+        manifest: commandLineOptions.manifest,
+        negotiateManifest: commandLineOptions.negotiatemanifest,
+        asyncScripts: commandlineoptions.asyncscripts,
+        deferScripts: commandlineoptions.deferscripts,
+        cdnRoot: cdnRoot,
+        noCompress: commandLineOptions.nocompress
     })
-    .if(commandLineOptions.nocompress)
-        .prettyPrintAssets({type: ['Html', 'JavaScript', 'Css']})
-    .endif()
-    .setAsyncOrDeferOnHtmlScripts({to: {isInline: false, url: /^file:/}}, commandLineOptions.asyncscripts, commandLineOptions.deferscripts)
-    .omitFunctionCall({type: ['JavaScriptGetStaticUrl', 'JavaScriptTrHtml']})
-    .inlineRelations({type: ['JavaScriptGetText', 'JavaScriptTrHtml']})
-    .if(commandLineOptions.manifest)
-        .addCacheManifest({isInitial: true})
-        .if(localeIds && commandLineOptions.negotiatemanifest)
-            .queue(function stripLocaleIdFromHtmlCacheManifestRelations(assetGraph) {
-                // This would be much less fragile if an asset could have a canonical url as well as an url (under consideration):
-                assetGraph.findRelations({type: 'HtmlCacheManifest'}).forEach(function (htmlCacheManifest) {
-                    htmlCacheManifest.href = htmlCacheManifest.href.replace(/\.\w+\.appcache$/, '.appcache');
-                });
-            })
-        .endif()
-    .endif()
-    .moveAssetsInOrder({isInitial: query.not(true), type: query.not('CacheManifest')}, function (asset, assetGraph) {
-        var targetUrl = "/static/";
-        // Conservatively assume that all GETSTATICURL relations pointing at non-images are intended to be fetched via XHR
-        // and thus cannot be put on a CDN because of same origin restrictions:
-        if (cdnroot && (asset.isImage || assetGraph.findRelations({to: asset, type: 'StaticUrlMapEntry'}).length === 0)) {
-            targetUrl = cdnroot;
-            if (/^\/\//.test(cdnroot)) {
-                assetGraph.findRelations({to: asset}).forEach(function (incomingRelation) {
-                    incomingRelation.hrefType = 'protocolRelative';
-                });
-            }
-        }
-        return targetUrl + asset.md5Hex.substr(0, 10) + asset.extension + asset.url.replace(/^[^#\?]*(?:)/, ''); // Preserve query string and fragment identifier
-    })
-    .writeAssetsToDisc({url: /^file:/}, outroot)
-    .if(cdnroot)
-        .writeAssetsToDisc({url: query.createPrefixMatcher(cdnroot)}, cdnoutroot || outroot, cdnroot)
+    .writeAssetsToDisc({url: /^file:/}, outRoot)
+    .if(cdnRoot)
+        .writeAssetsToDisc({url: query.createPrefixMatcher(cdnRoot)}, cdnOutRoot || outRoot, cdnRoot)
     .endif()
     .writeStatsToStderr()
     .run();
