@@ -202,8 +202,8 @@ new AssetGraph({root: rootUrl})
         defaultLocaleId: commandLineOptions.defaultlocaleid,
         manifest: commandLineOptions.manifest,
         negotiateManifest: commandLineOptions.negotiatemanifest,
-        asyncScripts: commandlineoptions.asyncscripts,
-        deferScripts: commandlineoptions.deferscripts,
+        asyncScripts: commandLineOptions.asyncscripts,
+        deferScripts: commandLineOptions.deferscripts,
         cdnRoot: cdnRoot,
         noCompress: commandLineOptions.nocompress
     })
