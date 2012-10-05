@@ -367,6 +367,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
     'After loading test case with a TR in a data-bind attribute in a .ko template and run the cloneForEachLocale transform': {
         topic: function () {
             new AssetGraph({root: __dirname + '/cloneForEachLocale/trInHtmlDataBindAttributeInKoTemplate/'})
+                .registerRequireJsConfig()
                 .loadAssets('index.html')
                 .populate()
                 .bundleRequireJs()
