@@ -7,11 +7,13 @@
         <link rel="stylesheet" href="styles3.css" nobundle="nobundle">
     </head>
     <body>
-        <script src="script1.js"></script>
-        <script src="script2.js"></script>
-        <script src="script3.js" nobundle="nobundle"></script>
         <script>
             INCLUDE('index.i18n');
+            var myStaticUrl = GETSTATICURL('/someTextFile.txt');
         </script>
+        <script src="script1.js"></script>
+        <script src="script2.js"></script>
+        <script src="require.js" data-main="morescripts/main"></script>
+        <script src="script3.js" nobundle="nobundle"></script>
     </body>
 </html>
