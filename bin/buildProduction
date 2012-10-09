@@ -196,10 +196,10 @@ new AssetGraph({root: rootUrl})
         inlineSize: commandLineOptions.inlinesize,
         mangleTopLevel: commandLineOptions.mangletoplevel,
         localeIds: commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {
-            return localeId.split(",").map(i18nTools.normalizeLocaleId);
-        })),
+            return localeId.split(",");
+        })).map(i18nTools.normalizeLocaleId),
         localeCookieName: commandLineOptions.localecookiename,
-        defaultLocaleId: commandLineOptions.defaultlocaleid,
+        defaultLocaleId: commandLineOptions.defaultlocaleid && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocaleid),
         manifest: commandLineOptions.manifest,
         negotiateManifest: commandLineOptions.negotiatemanifest,
         asyncScripts: commandLineOptions.asyncscripts,

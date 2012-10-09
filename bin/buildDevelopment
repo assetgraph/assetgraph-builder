@@ -3,6 +3,7 @@
 var _ = require('underscore'),
     AssetGraph = require('assetgraph'),
     query = AssetGraph.query,
+    i18nTools = require('../lib/i18nTools'),
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist')
         .usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] [--parentdir] [--locale <localeId>,...] [--defaultlocale <localeId>] [--localecookiename <cookieName>] [--cssimports] [--inline <wildCard>] [--watch] [--version <versionTag>] <htmlFile> ...')
@@ -37,8 +38,10 @@ new AssetGraph({root: commandLineOptions.root})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .buildDevelopment({
         version: commandLineOptions.version,
-        supportedLocaleIds: commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");})),
-        defaultLocaleId: commandLineOptions.defaultlocaleid,
+        supportedLocaleIds: commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {
+            return localeId.split(",");
+        })).map(i18nTools.normalizeLocaleId),
+        defaultLocaleId: commandLineOptions.defaultlocaleid && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocaleid),
         localeCookieName: commandLineOptions.localeCookieName,
         cssImports: commandLineOptions.cssimports,
         inlineUrlWildCard: commandLineOptions.inline
