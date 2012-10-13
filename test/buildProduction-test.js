@@ -4,7 +4,7 @@ var vows = require('vows'),
 
 require('../lib/registerTransforms');
 
-vows.describe('GETTEXT').addBatch({
+vows.describe('buildProduction').addBatch({
     'After loading test case and running the buildProduction transform': {
         topic: function () {
             new AssetGraph({root: __dirname + '/buildProduction/simple/'})
@@ -100,6 +100,19 @@ vows.describe('GETTEXT').addBatch({
                     ''
                 ]);
             });
+        }
+    },
+    'After loading a test case with two stylesheets that @import the same stylesheet, then running the buildProduction transform (assetgraph issue #82)': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/duplicateImports/'})
+                .registerRequireJsConfig()
+                .loadAssets('index.html')
+                .populate()
+                .buildProduction()
+                .run(this.callback);
+        },
+        'the rules from the @imported stylesheet should only be included once': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({type: 'HtmlStyle'})[0].to.text, 'body{color:white}');
         }
     }
 })['export'](module);
