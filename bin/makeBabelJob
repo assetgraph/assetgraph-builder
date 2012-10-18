@@ -9,11 +9,11 @@ var path = require('path'),
     urlTools = require('assetgraph/lib/util/urlTools'),
     mkpathSync = require('../lib/mkpathSync'),
     commandLineOptions = require('optimist')
-        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] --babeldir=<dirForBabelFiles> --root <inputRootDirectory> --locale <localeId>,... <htmlFile>...')
+        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] --babeldir=<dirForBabelFiles> --root <inputRootDirectory> --locales <localeId>,... <htmlFile>...')
         .boolean('parentdir')
-        .demand(['root', 'locale', 'babeldir'])
+        .demand(['root', 'locales', 'babeldir'])
         .argv,
-    localeIds = _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");}));
+    localeIds = _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {return localeId.split(",");}));
 
 require('../lib/registerTransforms');
 

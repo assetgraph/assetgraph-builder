@@ -44,7 +44,7 @@ var optimist = require('optimist'),
             type: 'boolean',
             demand: false
         })
-        .options('locale', {
+        .options('locales', {
             describe: 'Comma-separated list of locales to build seperate versions for',
             type: 'string',
             demand: false
@@ -195,7 +195,7 @@ new AssetGraph({root: rootUrl})
         optimizePngs: commandLineOptions.optimizepngs,
         inlineSize: commandLineOptions.inlinesize,
         mangleTopLevel: commandLineOptions.mangletoplevel,
-        localeIds: commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {
+        localeIds: commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
             return localeId.split(",");
         })).map(i18nTools.normalizeLocaleId),
         localeCookieName: commandLineOptions.localecookiename,

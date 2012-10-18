@@ -6,7 +6,7 @@ var _ = require('underscore'),
     i18nTools = require('../lib/i18nTools'),
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist')
-        .usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] [--parentdir] [--locale <localeId>,...] [--defaultlocale <localeId>] [--localecookiename <cookieName>] [--cssimports] [--inline <wildCard>] [--watch] [--version <versionTag>] <htmlFile> ...')
+        .usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] [--parentdir] [--locales <localeId>,...] [--defaultlocale <localeId>] [--localecookiename <cookieName>] [--cssimports] [--inline <wildCard>] [--watch] [--version <versionTag>] <htmlFile> ...')
         .boolean('cssimports', 'parentdir')
         .demand(['root'])
         .argv;
@@ -38,7 +38,7 @@ new AssetGraph({root: commandLineOptions.root})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .buildDevelopment({
         version: commandLineOptions.version,
-        supportedLocaleIds: commandLineOptions.locale && _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {
+        supportedLocaleIds: commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
             return localeId.split(",");
         })).map(i18nTools.normalizeLocaleId),
         defaultLocaleId: commandLineOptions.defaultlocaleid && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocaleid),

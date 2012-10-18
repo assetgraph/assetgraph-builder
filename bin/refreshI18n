@@ -6,11 +6,11 @@ var _ = require('underscore'),
     uglifyAst = require('uglifyast'),
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist')
-        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] --root <inputRootDirectory> --locale <localeId>,... <htmlFile>...')
+        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] --root <inputRootDirectory> --locales <localeId>,... <htmlFile>...')
         .boolean('parentdir')
-        .demand(['root', 'locale'])
+        .demand(['root', 'locales'])
         .argv,
-    localeIds = _.flatten(_.flatten([commandLineOptions.locale]).map(function (localeId) {return localeId.split(",");}));
+    localeIds = _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {return localeId.split(",");}));
 
 require('../lib/registerTransforms');
 

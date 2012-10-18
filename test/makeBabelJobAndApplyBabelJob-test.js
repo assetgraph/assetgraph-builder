@@ -13,7 +13,7 @@ vows.describe('bin/makeBabelJob test').addBatch({
                     '--babeldir', babelDir,
                     '--root', __dirname + '/makeBabelJobAndApplyBabelJob/',
                     __dirname + '/makeBabelJobAndApplyBabelJob/index.html',
-                    '--locale', 'en,da,de'
+                    '--locales', 'en,da,de'
                 ]);
 
             makeBabelJobProcess.on('exit', function (exitCode) {
@@ -110,7 +110,7 @@ vows.describe('bin/makeBabelJob test').addBatch({
                     var applyBabelJobProcess = childProcess.spawn(__dirname + '/../bin/applyBabelJob', [
                         '--babeldir', babelDir,
                         '--root', tmpTestCaseCopyDir,
-                        '--locale', 'en,da,de',
+                        '--locales', 'en,da,de',
                         tmpTestCaseCopyDir + '/index.html'
                     ]);
                     applyBabelJobProcess.on('exit', function (exitCode) {
