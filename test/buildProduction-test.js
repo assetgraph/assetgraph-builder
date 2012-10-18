@@ -114,5 +114,20 @@ vows.describe('buildProduction').addBatch({
         'the rules from the @imported stylesheet should only be included once': function (assetGraph) {
             assert.equal(assetGraph.findRelations({type: 'HtmlStyle'})[0].to.text, 'body{color:white}');
         }
+    },
+    'After loading a test case with 3 in-browser less compilers, then running the buildProduction transform': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/lessCompiler/'})
+                .registerRequireJsConfig()
+                .loadAssets('index.html')
+                .populate()
+                .buildProduction({
+                    less: true
+                })
+                .run(this.callback);
+        },
+        'there should be no relations': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({}, true).length, 0);
+        }
     }
 })['export'](module);
