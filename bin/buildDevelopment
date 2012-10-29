@@ -42,7 +42,7 @@ new AssetGraph({root: commandLineOptions.root})
             return localeId.split(",");
         })).map(i18nTools.normalizeLocaleId),
         defaultLocaleId: commandLineOptions.defaultlocaleid && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocaleid),
-        localeCookieName: commandLineOptions.localeCookieName,
+        localeCookieName: commandLineOptions.localecookiename,
         cssImports: commandLineOptions.cssimports,
         inlineUrlWildCard: commandLineOptions.inline
     })
