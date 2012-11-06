@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+    <script>
+        INCLUDE('index.i18n');
+        alert(TR('trKeyWithLeadingWhitespaceInTheDefaultValue', ' foo'));
+        alert(TR('trKeyWithTrailingWhitespaceInTheDefaultValue', 'foo '));
+        alert(TR('trKeyWithLeadingWhitespaceInTheDanishValue', 'foo'));
+        alert(TR('trKeyWithTrailingWhitespaceInTheDanishValue', 'foo'));
+    </script>
+    <div data-i18n="dataI18nKeyWithLeadingWhitespaceInTheDefaultValue"> foo</div>
+    <div data-i18n="dataI18nKeyWithTrailingWhitespaceInTheDefaultValue">foo </div>
+    <div data-i18n="dataI18nKeyWithLeadingWhitespaceInTheDanishValue">foo</div>
+    <div data-i18n="dataI18nKeyWithTrailingWhitespaceInTheDanishValue">foo</div>
+</body>
+</html>

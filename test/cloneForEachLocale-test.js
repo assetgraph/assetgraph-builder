@@ -633,5 +633,29 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 keyname2: {defaultValues: ['defaultValue3', 'defaultValue4']}
             });
         }
+    },
+    'After loading test case with whitespace bugs in lpanguage key values and running the cloneForEachLocale transform': {
+        topic: function () {
+            var assetGraph = new AssetGraph({root: __dirname + '/cloneForEachLocale/whitespaceInDefaultValues/'});
+            assetGraph._cloneForEachLocaleInfo = {};
+            assetGraph
+                .loadAssets('index.html')
+                .populate()
+                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da'], quiet: true, infoObject: assetGraph._cloneForEachLocaleInfo})
+                .run(this.callback);
+        },
+        'assetGraph._cloneForEachLocaleInfo should have a whitespaceWarningsByKey property with the expected values': function (assetGraph) {
+            assert.deepEqual(assetGraph._cloneForEachLocaleInfo.whitespaceWarningsByKey, {
+                trKeyWithLeadingWhitespaceInTheDefaultValue: [{type: 'defaultValue', localeId: 'en', value: ' foo'}],
+                trKeyWithTrailingWhitespaceInTheDefaultValue: [{type: 'defaultValue', localeId: 'en', value: 'foo '}],
+                trKeyWithLeadingWhitespaceInTheDanishValue: [{type: 'value', localeId: 'da', value: ' foo'}],
+                trKeyWithTrailingWhitespaceInTheDanishValue: [{type: 'value', localeId: 'da', value: 'foo '}],
+                dataI18nKeyWithLeadingWhitespaceInTheDanishValue: [{type: 'value', localeId: 'da', value: ' foo'}],
+                dataI18nKeyWithTrailingWhitespaceInTheDanishValue: [{type: 'value', localeId: 'da', value: 'foo '}]
+                // These are stripped by eachI18nTagInHtmlDocument:
+                // dataI18nKeyWithLeadingWhitespaceInTheDefaultValue: [{type: 'defaultValue', localeId: 'en', value: ' foo'}],
+                // dataI18nKeyWithTrailingWhitespaceInTheDefaultValue: [{type: 'defaultValue', localeId: 'en', value: 'foo '}],
+            });
+        }
     }
 })['export'](module);
