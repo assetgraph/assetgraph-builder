@@ -334,20 +334,21 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         },
         'then running the cloneForEachLocale transform': {
             topic: function (assetGraph) {
+                assetGraph._cloneForEachLocaleInfo = {};
                 assetGraph
-                    .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da'], quiet: true})
+                    .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da'], quiet: true, infoObject: assetGraph._cloneForEachLocaleInfo})
                     .run(this.callback);
             },
-            'the AssetGraph instance should have a _localeIdsByMissingKey property with the expected values': function (assetGraph) {
-                assert.deepEqual(assetGraph._localeIdsByMissingKey, {
+            'assetGraph._cloneForEachLocaleInfo should have a localeIdsByMissingKey property with the expected values': function (assetGraph) {
+                assert.deepEqual(assetGraph._cloneForEachLocaleInfo.localeIdsByMissingKey, {
                     TheMissingTitle: ['da'],
                     AnotherMissingKey: ['da']
                 });
             },
-            'the AssetGraph instance should have a _defaultValueMismatchesByKey property with the expected values': function (assetGraph) {
-                assert.deepEqual(assetGraph._defaultValueMismatchesByKey, {
-                    KeyWithMismatchingDefaultValue: [{defaultValue: 'The default heading', value: 'The default heading2'}],
-                    AnotherKeyWithMismatchingDefaultValue: [{defaultValue: 'Default value', value: 'Default value2'}]
+            'assetGraph._cloneForEachLocaleInfo should have a defaultValueMismatchesByKey property with the expected values': function (assetGraph) {
+                assert.deepEqual(assetGraph._cloneForEachLocaleInfo.defaultValueMismatchesByKey, {
+                    KeyWithMismatchingDefaultValue: {defaultValues: ['The default heading'], en: 'The default heading2'},
+                    AnotherKeyWithMismatchingDefaultValue: {defaultValues: ['Default value'], en: 'Default value2'}
                 });
             }
         }
@@ -615,6 +616,22 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 }
             }
         }
+    },
+    'After loading test case with inconsistent default values in TR calls and running the cloneForEachLocale transform': {
+        topic: function () {
+            var assetGraph = new AssetGraph({root: __dirname + '/cloneForEachLocale/inconsistentTrDefaultValues/'});
+            assetGraph._cloneForEachLocaleInfo = {};
+            assetGraph
+                .loadAssets('index.html')
+                .populate()
+                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da'], quiet: true, infoObject: assetGraph._cloneForEachLocaleInfo})
+                .run(this.callback);
+        },
+        'assetGraph._cloneForEachLocaleInfo should have a defaultValueMismatchesByKey property with the expected values': function (assetGraph) {
+            assert.deepEqual(assetGraph._cloneForEachLocaleInfo.defaultValueMismatchesByKey, {
+                keyname: {defaultValues: ['defaultValue1', 'defaultValue2']},
+                keyname2: {defaultValues: ['defaultValue3', 'defaultValue4']}
+            });
+        }
     }
-
 })['export'](module);

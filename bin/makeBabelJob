@@ -80,11 +80,7 @@ new AssetGraph({root: commandLineOptions.root})
                     occurrences.forEach(function (occurrence) {
                         // FIXME: Warn about multiple different default values?
                         if (typeof defaultValue === 'undefined') {
-                            if (/^i18nTag/.test(occurrence.type)) {
-                                defaultValue = occurrence.defaultValue;
-                            } else if (occurrence.defaultValue) {
-                                defaultValue = uglifyAst.astToObj(occurrence.defaultValue);
-                            }
+                            defaultValue = occurrence.defaultValue;
                         }
                     });
                 }
