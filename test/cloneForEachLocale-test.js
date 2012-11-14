@@ -71,8 +71,8 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             'the graph should contain 2 Html assets': function (assetGraph) {
                 assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
             },
-            'the graph should contain 2 CacheManifest assets': function (assetGraph) {
-                assert.equal(assetGraph.findAssets({type: 'CacheManifest'}).length, 2);
+            'the graph should contain 1 CacheManifest asset': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'CacheManifest'}).length, 1);
             },
             'the graph should contain 2 HtmlStyle relations pointing at style.css': function (assetGraph) {
                 assert.equal(assetGraph.findRelations({type: 'HtmlStyle', to: {url: /\/style\.css$/}}).length, 2);
@@ -634,7 +634,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             });
         }
     },
-    'After loading test case with whitespace bugs in lpanguage key values and running the cloneForEachLocale transform': {
+    'After loading test case with whitespace bugs in language key values and running the cloneForEachLocale transform': {
         topic: function () {
             var assetGraph = new AssetGraph({root: __dirname + '/cloneForEachLocale/whitespaceInDefaultValues/'});
             assetGraph._cloneForEachLocaleInfo = {};
