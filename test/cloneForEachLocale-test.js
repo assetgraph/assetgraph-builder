@@ -657,5 +657,57 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 // dataI18nKeyWithTrailingWhitespaceInTheDefaultValue: [{type: 'defaultValue', localeId: 'en', value: 'foo '}],
             });
         }
+    },
+    'After loading test case with a Css asset that needs localization and running the cloneForEachLocale transform': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/css/'})
+                .loadAssets('index.html')
+                .populate()
+                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da', 'de'], quiet: true})
+                .run(this.callback);
+        },
+        'the graph should contain 4 Css assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Css'}).length, 4);
+        },
+        'the graph should contain 3 Png assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Png'}).length, 3);
+        },
+        'the Danish Css should contain the expected rules and outgoing relations': function (assetGraph) {
+            var danishCss = assetGraph.findAssets({url: /\/needsLocalization\.da\.css$/})[0],
+                cssRules = danishCss.parseTree.cssRules;
+            assert.equal(cssRules.length, 2);
+            assert.equal(cssRules[0].selectorText, 'body');
+            assert.equal(cssRules[1].selectorText, 'html .theThing');
+            var outgoingRelations = assetGraph.findRelations({from: danishCss});
+            assert.equal(outgoingRelations.length, 1);
+            assert.equal(outgoingRelations[0].href, 'foo.png');
+        },
+        'the German Css should contain the expected rules and outgoing relations': function (assetGraph) {
+            var germanCss = assetGraph.findAssets({url: /\/needsLocalization\.de\.css$/})[0],
+                cssRules = germanCss.parseTree.cssRules;
+            assert.equal(cssRules.length, 2);
+            assert.equal(cssRules[0].selectorText, 'body');
+            assert.equal(cssRules[1].selectorText, 'html.anotherClassOnHtml .theGermanThing');
+            var outgoingRelations = assetGraph.findRelations({from: germanCss});
+            assert.equal(outgoingRelations.length, 1);
+            assert.ok(outgoingRelations[0].to.isImage);
+        },
+        'the English Css should contain the expected rules and outgoing relations': function (assetGraph) {
+            var englishCss = assetGraph.findAssets({url: /\/needsLocalization\.en\.css$/})[0],
+                cssRules = englishCss.parseTree.cssRules;
+            assert.equal(cssRules.length, 1);
+            assert.equal(cssRules[0].selectorText, 'body');
+            var outgoingRelations = assetGraph.findRelations({from: englishCss});
+            assert.equal(outgoingRelations.length, 0);
+        },
+        'bar.png should have no incoming relations': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({to: {url: /\/bar\.png$/}}).length, 0);
+        },
+        'needsLocalization.de.css should have a relation to an inline image': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({from: {url: /\/needsLocalization\.de\.css$/}, to: {isInline: true, isImage: true}}).length, 1);
+        },
+        'needsLocalization.da.css should not have a relation to an inline image': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({from: {url: /\/needsLocalization\.da\.css$/}, to: {isInline: true, isImage: true}}).length, 0);
+        }
     }
 })['export'](module);
