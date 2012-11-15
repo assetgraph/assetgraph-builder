@@ -38,8 +38,7 @@ new AssetGraph({root: commandLineOptions.root})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .populate({
         followRelations: {
-            type: ['HtmlScript', 'HtmlRequireJsMain', 'JavaScriptInclude', 'JavaScriptAmdDefine', 'JavaScriptAmdRequire', 'JavaScriptGetText'],
-            to: {url: AssetGraph.query.not(/^https?:/)}
+            to: {type: AssetGraph.query.not('HtmlAnchor'), url: AssetGraph.query.not(/^https?:/)}
         }
     })
     .queue(function (assetGraph) {

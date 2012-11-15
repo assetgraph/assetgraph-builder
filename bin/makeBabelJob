@@ -40,8 +40,7 @@ new AssetGraph({root: commandLineOptions.root})
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .populate({
-        followRelations: {type: ['HtmlScript', 'HtmlRequireJsMain', 'JavaScriptInclude', 'JavaScriptAmdDefine', 'JavaScriptAmdRequire', 'JavaScriptGetText'],
-        to: {url: AssetGraph.query.not(/^https?:/)}}
+        followRelations: {type: AssetGraph.query.not('HtmlAnchor'), to: {url: AssetGraph.query.not(/^https?:/)}}
     })
     .queue(function (assetGraph) {
         var initialHtmlAssets = assetGraph.findAssets({type: 'Html', isInitial: true}),
