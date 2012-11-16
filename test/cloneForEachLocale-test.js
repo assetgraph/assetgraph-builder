@@ -65,7 +65,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'then running the cloneForEachLocale transform': {
             topic: function (assetGraph) {
                 assetGraph
-                    .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da'], quiet: true})
+                    .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da']})
                     .run(this.callback);
             },
             'the graph should contain 2 Html assets': function (assetGraph) {
@@ -154,7 +154,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'then run the cloneForEachLocale transform': {
             topic: function (assetGraph) {
                 assetGraph
-                    .cloneForEachLocale({isInitial: true}, {localeIds: ['da', 'en_US', 'en_GB'], quiet: true})
+                    .cloneForEachLocale({isInitial: true}, {localeIds: ['da', 'en_US', 'en_GB']})
                     .prettyPrintAssets({type: 'JavaScript'})
                     .run(this.callback);
             },
@@ -228,7 +228,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 .loadAssets('index.html')
                 .populate()
                 .externalizeRelations({type: 'HtmlStyle'})
-                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da'], quiet: true})
+                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da']})
                 .inlineCssImagesWithLegacyFallback({type: 'Html'})
                 .run(this.callback);
         },
@@ -268,7 +268,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'then run the cloneForEachLocale transform': {
             topic: function (assetGraph) {
                 assetGraph
-                    .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da'], quiet: true})
+                    .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da']})
                     .run(this.callback);
             },
             'the graph should contain 8 assets': function (assetGraph) {
@@ -336,7 +336,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             topic: function (assetGraph) {
                 assetGraph._cloneForEachLocaleInfo = {};
                 assetGraph
-                    .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da'], quiet: true, infoObject: assetGraph._cloneForEachLocaleInfo})
+                    .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da'], infoObject: assetGraph._cloneForEachLocaleInfo})
                     .run(this.callback);
             },
             'assetGraph._cloneForEachLocaleInfo should have a localeIdsByMissingKey property with the expected values': function (assetGraph) {
@@ -358,7 +358,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             new AssetGraph({root: __dirname + '/cloneForEachLocale/trInHtmlDataBindAttribute/'})
                 .loadAssets('index.html')
                 .populate()
-                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da'], quiet: true})
+                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da']})
                 .run(this.callback);
         },
         'the TR in the Danish HTML should be replaced with "Den danske værdi"': function (assetGraph) {
@@ -372,7 +372,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 .loadAssets('index.html')
                 .populate()
                 .bundleRequireJs()
-                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da'], quiet: true})
+                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da']})
                 .run(this.callback);
         },
         'the graph should contain 2 KnockoutJsTemplate assets': function (assetGraph) {
@@ -389,7 +389,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             new AssetGraph({root: __dirname + '/cloneForEachLocale/globalVarUsageInJavaScript/'})
                 .loadAssets('index.html')
                 .populate()
-                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da'], defaultLocaleId: 'en_US', localeCookieName: 'myCookie', quiet: true})
+                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da'], defaultLocaleId: 'en_US', localeCookieName: 'myCookie'})
                 .run(this.callback);
         },
         'the graph should contain 2 JavaScript assets': function (assetGraph) {
@@ -422,7 +422,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'then run the cloneForEachLocale transform': {
             topic: function (assetGraph) {
                 assetGraph
-                    .cloneForEachLocale({type: 'Html', isInline: false}, {localeIds: ['en_US', 'da'], quiet: true})
+                    .cloneForEachLocale({type: 'Html', isInline: false}, {localeIds: ['en_US', 'da']})
                     .run(this.callback);
             },
             'the graph should contain 7 assets': function (assetGraph) {
@@ -467,7 +467,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'then run the cloneForEachLocale transform': {
             topic: function (assetGraph) {
                 assetGraph
-                    .cloneForEachLocale({type: 'Html', isInline: false}, {localeIds: ['en_US', 'da'], quiet: true})
+                    .cloneForEachLocale({type: 'Html', isInline: false}, {localeIds: ['en_US', 'da']})
                     .run(this.callback);
             },
             'the graph should contain 9 assets': function (assetGraph) {
@@ -518,7 +518,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'then run the cloneForEachLocale transform': {
             topic: function (assetGraph) {
                 assetGraph
-                    .cloneForEachLocale({type: 'Html', url: /\/index\.html$/}, {localeIds: ['en_US', 'da'], quiet: true})
+                    .cloneForEachLocale({type: 'Html', url: /\/index\.html$/}, {localeIds: ['en_US', 'da']})
                     .run(this.callback);
             },
             'the graph should contain 7 assets': function (assetGraph) {
@@ -574,7 +574,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'then run the cloneForEachLocale transform': {
             topic: function (assetGraph) {
                 assetGraph
-                    .cloneForEachLocale({type: 'Html', url: /\/index\.html$/}, {localeIds: ['en_US', 'da'], quiet: true})
+                    .cloneForEachLocale({type: 'Html', url: /\/index\.html$/}, {localeIds: ['en_US', 'da']})
                     .run(this.callback);
             },
             'the graph should contain 7 assets': function (assetGraph) {
@@ -624,7 +624,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             assetGraph
                 .loadAssets('index.html')
                 .populate()
-                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da'], quiet: true, infoObject: assetGraph._cloneForEachLocaleInfo})
+                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da'], infoObject: assetGraph._cloneForEachLocaleInfo})
                 .run(this.callback);
         },
         'assetGraph._cloneForEachLocaleInfo should have a defaultValueMismatchesByKey property with the expected values': function (assetGraph) {
@@ -641,7 +641,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             assetGraph
                 .loadAssets('index.html')
                 .populate()
-                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da'], quiet: true, infoObject: assetGraph._cloneForEachLocaleInfo})
+                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da'], infoObject: assetGraph._cloneForEachLocaleInfo})
                 .run(this.callback);
         },
         'assetGraph._cloneForEachLocaleInfo should have a whitespaceWarningsByKey property with the expected values': function (assetGraph) {
@@ -663,7 +663,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             new AssetGraph({root: __dirname + '/cloneForEachLocale/css/'})
                 .loadAssets('index.html')
                 .populate()
-                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da', 'de'], quiet: true})
+                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da', 'de']})
                 .run(this.callback);
         },
         'the graph should contain 4 Css assets': function (assetGraph) {

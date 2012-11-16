@@ -129,6 +129,7 @@ if (commandLineOptions.h) {
 }
 
 var _ = require('underscore'),
+    util = require('util'),
     uglifyJs = require('uglify-js-papandreou'),
     AssetGraph = require('assetgraph'),
     i18nTools = require('../lib/i18nTools'),
@@ -139,6 +140,11 @@ var _ = require('underscore'),
     cdnOutRoot = commandLineOptions.cdnoutroot && urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
     blacklistUrlRegExp = /^$/,
     rootUrl = commandLineOptions.root && urlTools.urlOrFsPathToUrl(commandLineOptions.root, true),
+    localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
+        return localeId.split(",");
+    })).map(i18nTools.normalizeLocaleId),
+    defaultLocaleId = commandLineOptions.defaultlocaleid && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocaleid),
+    localizationInfoObject = {},
     defines = {},
     inputUrls;
 
@@ -230,11 +236,10 @@ new AssetGraph({root: rootUrl})
         inlineSize: commandLineOptions.inlinesize,
         mangleTopLevel: commandLineOptions.mangletoplevel,
         defines: defines,
-        localeIds: commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
-            return localeId.split(",");
-        })).map(i18nTools.normalizeLocaleId),
+        localeIds: localeIds,
         localeCookieName: commandLineOptions.localecookiename,
-        defaultLocaleId: commandLineOptions.defaultlocaleid && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocaleid),
+        localizationInfoObject: localizationInfoObject,
+        defaultLocaleId: defaultLocaleId,
         manifest: commandLineOptions.manifest,
         negotiateManifest: commandLineOptions.negotiatemanifest,
         asyncScripts: commandLineOptions.asyncscripts,
@@ -247,4 +252,26 @@ new AssetGraph({root: rootUrl})
         .writeAssetsToDisc({url: query.createPrefixMatcher(cdnRoot)}, cdnOutRoot || outRoot, cdnRoot)
     .endif()
     .writeStatsToStderr()
-    .run();
+    .run(function () {
+        if (localeIds) {
+            var missingKeys = Object.keys(localizationInfoObject.localeIdsByMissingKey);
+            if (missingKeys.length > 0) {
+                console.warn('The following keys were missing:\n  ' + missingKeys.map(function (missingKey) {
+                    return missingKey + ' (' + localizationInfoObject.localeIdsByMissingKey[missingKey].join(',') + ')';
+                }).join('\n  '));
+            }
+
+            var defaultValueMismatchKeys = Object.keys(localizationInfoObject.defaultValueMismatchesByKey);
+            if (defaultValueMismatchKeys.length > 0) {
+                console.warn('The following keys had mismatching default and/or ' + defaultLocaleId + ' values:\n  ' + defaultValueMismatchKeys.map(function (defaultValueMismatchKey) {
+                    return defaultValueMismatchKey + ':\n    ' + util.inspect(localizationInfoObject.defaultValueMismatchesByKey[defaultValueMismatchKey]);
+                }).join('\n  '));
+            }
+            var whitespaceWarningKeys = Object.keys(localizationInfoObject.whitespaceWarningsByKey);
+            if (whitespaceWarningKeys.length > 0) {
+                console.warn('The following keys had leading or trailing whitespace:\n  ' + whitespaceWarningKeys.map(function (whitespaceWarningKey) {
+                    return whitespaceWarningKey + ':\n    ' + util.inspect(localizationInfoObject.whitespaceWarningsByKey[whitespaceWarningKey]);
+                }).join('\n  '));
+            }
+        }
+    });
