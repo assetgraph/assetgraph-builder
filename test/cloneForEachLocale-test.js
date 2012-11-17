@@ -1,6 +1,7 @@
 var vows = require('vows'),
     assert = require('assert'),
     vm = require('vm'),
+    _ = require('underscore'),
     AssetGraph = require('assetgraph'),
     passError = require('passerror'),
     i18nTools = require('../lib/i18nTools'),
@@ -708,6 +709,31 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         },
         'needsLocalization.da.css should not have a relation to an inline image': function (assetGraph) {
             assert.equal(assetGraph.findRelations({from: {url: /\/needsLocalization\.da\.css$/}, to: {isInline: true, isImage: true}}).length, 0);
+        }
+    },
+    'After loading test case with two Html assets that include references to the same JavaScripts and running the cloneForEachLocale transform': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/multipleHtmls/'})
+                .loadAssets('1.html', '2.html')
+                .populate()
+                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da']})
+                .run(this.callback);
+        },
+        'the graph should contain 4 Html assets with the expected urls': function (assetGraph) {
+            assert.deepEqual(_.pluck(assetGraph.findAssets({type: 'Html'}), 'url').sort(), [
+                assetGraph.root + '1.da.html',
+                assetGraph.root + '1.en.html',
+                assetGraph.root + '2.da.html',
+                assetGraph.root + '2.en.html'
+            ]);
+        },
+        'the graph should contain 4 JavaScript with the expected urls': function (assetGraph) {
+            assert.deepEqual(_.pluck(assetGraph.findAssets({type: 'JavaScript'}), 'url').sort(), [
+                assetGraph.root + 'doesNotNeedLocalization.da.js',
+                assetGraph.root + 'doesNotNeedLocalization.en.js',
+                assetGraph.root + 'needsLocalization.da.js',
+                assetGraph.root + 'needsLocalization.en.js'
+            ]);
         }
     }
 })['export'](module);
