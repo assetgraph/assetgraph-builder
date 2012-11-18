@@ -224,14 +224,10 @@ new AssetGraph({root: rootUrl})
     .registerRequireJsConfig()
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(inputUrls)
-    .populate({
-        followRelations: query.or({to: {type: 'I18n'}},
-                                  {type: query.not(['JavaScriptInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']),
-                                   to: query.and({url: query.not(/^https?:/)}, {url: query.not(blacklistUrlRegExp)})})
-    })
     .buildProduction({
         version: commandLineOptions.version,
         less: commandLineOptions.less,
+        blacklistUrlRegExp: blacklistUrlRegExp,
         optimizePngs: commandLineOptions.optimizepngs,
         inlineSize: commandLineOptions.inlinesize,
         mangleTopLevel: commandLineOptions.mangletoplevel,

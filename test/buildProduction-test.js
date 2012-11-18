@@ -11,7 +11,6 @@ vows.describe('buildProduction').addBatch({
                 .on('error', this.callback)
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
-                .populate()
                 .buildProduction({
                     quiet: true,
                     version: "The version number",
@@ -107,7 +106,6 @@ vows.describe('buildProduction').addBatch({
             new AssetGraph({root: __dirname + '/buildProduction/duplicateImports/'})
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
-                .populate()
                 .buildProduction()
                 .run(this.callback);
         },
@@ -120,7 +118,6 @@ vows.describe('buildProduction').addBatch({
             new AssetGraph({root: __dirname + '/buildProduction/lessCompiler/'})
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
-                .populate()
                 .buildProduction({
                     less: true
                 })
