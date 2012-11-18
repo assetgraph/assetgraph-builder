@@ -787,5 +787,25 @@ vows.describe('buildProduction').addBatch({
         'the graph should contain one JavaScript asset': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 1);
         }
+    },
+    'After loading a test case with a require.js module whose name depends on LOCALEID, then running the buildProduction transform': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/localeDependentRequire/'})
+                .registerRequireJsConfig()
+                .loadAssets('index.html')
+                .buildProduction({
+                    localeIds: ['da', 'en']
+                })
+                .run(this.callback);
+        },
+        'the graph should contain 2 Html assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
+        },
+        'the Danish JavaScript should include the contents of foo_da.js': function (assetGraph) {
+            assert.matches(assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.text, /The Danish one/);
+        },
+        'the English JavaScript should include the contents of foo_en.js': function (assetGraph) {
+            assert.matches(assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.text, /The English one/);
+        }
     }
 })['export'](module);
