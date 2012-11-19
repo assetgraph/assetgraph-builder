@@ -63,8 +63,10 @@ new AssetGraph({root: commandLineOptions.root})
         });
 
         localeIds.forEach(function (localeId) {
-            var babelSrc = '';
-            _.each(occurrencesByKey, function (occurrences, key) {
+            var babelSrc = '',
+                keys = Object.keys(occurrencesByKey).sort();
+            keys.forEach(function (key) {
+                var occurrences = occurrencesByKey[key];
                 if (alreadyTranslatedByKey[key]) {
                     return;
                 }
