@@ -9,8 +9,8 @@ var path = require('path'),
     urlTools = require('assetgraph/lib/util/urlTools'),
     mkpathSync = require('../lib/mkpathSync'),
     commandLineOptions = require('optimist')
-        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] --babeldir=<dirForBabelFiles> --root <inputRootDirectory> --locales <localeId>,... <htmlFile>...')
-        .boolean('parentdir')
+        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--all] --babeldir=<dirForBabelFiles> --root <inputRootDirectory> --locales <localeId>,... <htmlFile>...')
+        .boolean('parentdir', 'all')
         .demand(['root', 'locales', 'babeldir'])
         .argv,
     localeIds = _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {return localeId.split(",");}));
@@ -67,7 +67,7 @@ new AssetGraph({root: commandLineOptions.root})
                 keys = Object.keys(occurrencesByKey).sort();
             keys.forEach(function (key) {
                 var occurrences = occurrencesByKey[key];
-                if (alreadyTranslatedByKey[key]) {
+                if (alreadyTranslatedByKey[key] && !commandLineOptions.all) {
                     return;
                 }
                 var value,
