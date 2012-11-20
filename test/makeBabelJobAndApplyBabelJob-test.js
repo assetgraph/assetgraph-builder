@@ -31,55 +31,55 @@ vows.describe('bin/makeBabelJob test').addBatch({
         'en.txt should have the correct contents': function (babelDir) {
             var lines = fs.readFileSync(babelDir + '/en.txt', 'utf-8').split(/\n/);
             assert.equal(lines.length, 14);
-            assert.equal(lines.shift(), 'simplekeyinknockoutjstemplate=Simple key in a Knockout.js template');
-            assert.equal(lines.shift(), 'stringvalue=value');
             assert.equal(lines.shift(), 'arrayvalue[0]=5');
             assert.equal(lines.shift(), 'arrayvalue[1]=items');
             assert.equal(lines.shift(), 'arrayvalue[2]=in');
             assert.equal(lines.shift(), 'arrayvalue[3]=an');
             assert.equal(lines.shift(), 'arrayvalue[4]=array');
+            assert.equal(lines.shift(), 'keywithplaceholdersinhtml=Key with {0} placeholders in HTML, English');
             assert.equal(lines.shift(), 'objectvalue[key1]=value1');
             assert.equal(lines.shift(), 'objectvalue[key2]=value2');
-            assert.equal(lines.shift(), 'withexistingkeys=the English value');
             assert.equal(lines.shift(), 'simplekeyinhtml=Simple key in HTML, English');
             assert.equal(lines.shift(), 'simplekeyinhtmlattribute=Simple key in HTML attribute, English');
-            assert.equal(lines.shift(), 'keywithplaceholdersinhtml=Key with {0} placeholders in HTML, English');
+            assert.equal(lines.shift(), 'simplekeyinknockoutjstemplate=Simple key in a Knockout.js template');
+            assert.equal(lines.shift(), 'stringvalue=value');
+            assert.equal(lines.shift(), 'withexistingkeys=the English value');
             assert.equal(lines.shift(), '');
         },
         'da.txt should have the correct contents': function (babelDir) {
             var lines = fs.readFileSync(babelDir + '/da.txt', 'utf-8').split(/\n/);
             assert.equal(lines.length, 14);
-            assert.equal(lines.shift(), 'simplekeyinknockoutjstemplate=');
-            assert.equal(lines.shift(), 'stringvalue=');
             assert.equal(lines.shift(), 'arrayvalue[0]=');
             assert.equal(lines.shift(), 'arrayvalue[1]=');
             assert.equal(lines.shift(), 'arrayvalue[2]=');
             assert.equal(lines.shift(), 'arrayvalue[3]=');
             assert.equal(lines.shift(), 'arrayvalue[4]=');
+            assert.equal(lines.shift(), 'keywithplaceholdersinhtml=');
             assert.equal(lines.shift(), 'objectvalue[key1]=');
             assert.equal(lines.shift(), 'objectvalue[key2]=');
-            assert.equal(lines.shift(), 'withexistingkeys=the Danish value');
             assert.equal(lines.shift(), 'simplekeyinhtml=');
             assert.equal(lines.shift(), 'simplekeyinhtmlattribute=');
-            assert.equal(lines.shift(), 'keywithplaceholdersinhtml=');
+            assert.equal(lines.shift(), 'simplekeyinknockoutjstemplate=');
+            assert.equal(lines.shift(), 'stringvalue=');
+            assert.equal(lines.shift(), 'withexistingkeys=the Danish value');
             assert.equal(lines.shift(), '');
         },
         'de.txt should have the correct contents': function (babelDir) {
             var lines = fs.readFileSync(babelDir + '/de.txt', 'utf-8').split(/\n/);
             assert.equal(lines.length, 14);
-            assert.equal(lines.shift(), 'simplekeyinknockoutjstemplate=');
-            assert.equal(lines.shift(), 'stringvalue=');
             assert.equal(lines.shift(), 'arrayvalue[0]=');
             assert.equal(lines.shift(), 'arrayvalue[1]=');
             assert.equal(lines.shift(), 'arrayvalue[2]=');
             assert.equal(lines.shift(), 'arrayvalue[3]=');
             assert.equal(lines.shift(), 'arrayvalue[4]=');
+            assert.equal(lines.shift(), 'keywithplaceholdersinhtml=');
             assert.equal(lines.shift(), 'objectvalue[key1]=');
             assert.equal(lines.shift(), 'objectvalue[key2]=');
-            assert.equal(lines.shift(), 'withexistingkeys=');
             assert.equal(lines.shift(), 'simplekeyinhtml=');
             assert.equal(lines.shift(), 'simplekeyinhtmlattribute=');
-            assert.equal(lines.shift(), 'keywithplaceholdersinhtml=');
+            assert.equal(lines.shift(), 'simplekeyinknockoutjstemplate=');
+            assert.equal(lines.shift(), 'stringvalue=');
+            assert.equal(lines.shift(), 'withexistingkeys=');
             assert.equal(lines.shift(), '');
         },
         'then add translations to da.txt, duplicate the test case and run applyBabelJob on it': {
