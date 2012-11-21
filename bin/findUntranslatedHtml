@@ -1,0 +1,123 @@
+#!/usr/bin/env node
+
+var path = require('path'),
+    fs = require('fs'),
+    _ = require('underscore'),
+    AssetGraph = require('assetgraph'),
+    i18nTools = require('../lib/i18nTools'),
+    uglifyAst = require('uglifyast'),
+    urlTools = require('assetgraph/lib/util/urlTools'),
+    mkpathSync = require('../lib/mkpathSync'),
+    commandLineOptions = require('optimist')
+        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] --root <inputRootDirectory><htmlFile>...')
+        .boolean('parentdir')
+        .demand(['root'])
+        .argv;
+
+require('../lib/registerTransforms');
+
+var ignoreByAttributeName = {};
+
+[
+    'accesskey', 'class', 'contenteditable', 'contextmenu', 'dir', 'draggable', 'dropzone', 'hidden', 'id', 'lang', 'spellcheck', 'style', 'tabindex',
+    'translate',
+    'seamless', 'src', 'href', 'width', 'height', 'cellspacing', 'cellpadding',
+    'data-bind', 'sizes', 'type', 'rel', 'charset', 'for', 'name', 'content', 'rows', 'cols', 'maxlength', 'data-dropdown', 'target', 'disabled', 'enctype',
+    'data-toggle', 'frameborder', 'visible', 'role', 'hidefocus', 'autocomplete', 'data-elastic',
+    'data-i18n'
+].forEach(function (attributeName) {
+    ignoreByAttributeName[attributeName] = true;
+});
+
+var ignoreByTagName = {};
+
+[
+    'style', 'script'
+].forEach(function (tagName) {
+    ignoreByTagName[tagName] = true;
+});
+
+new AssetGraph({root: commandLineOptions.root})
+    .on('afterTransform', function (transform, elapsedTime) {
+        console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
+    })
+    .on('warn', function (err) {
+        // These are way too noisy
+        if (err.relationType !== 'JavaScriptCommonJsRequire') {
+            console.warn((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.message);
+            if (commandLineOptions.stoponwarning) {
+                process.exit(1);
+            }
+        }
+    })
+    .on('error', function (err) {
+        console.error((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack);
+        process.exit(1);
+    })
+    .registerRequireJsConfig()
+    .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
+    .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
+    .populate({
+        followRelations: {type: AssetGraph.query.not('HtmlAnchor'), to: {url: AssetGraph.query.not(/^https?:/)}}
+    })
+    .queue(function (assetGraph) {
+        assetGraph.findAssets({isHtml: true}).forEach(function (htmlAsset) {
+            var document = htmlAsset.parseTree;
+            if (!document.body) {
+                document = new AssetGraph.assets.Html({text: '<html><body>' + document.outerHTML + '</body></html>'}).parseTree;
+            }
+
+            var occurrences = [];
+            i18nTools.eachI18nTagInHtmlDocument(document, function (occurrence) {
+                if (occurrence.key) {
+                    occurrences.push(occurrence);
+                }
+            });
+
+            var warnings = [];
+
+            document.querySelectorAll('*').forEach(function (element) {
+                var elementName = element.nodeName.toLowerCase();
+                if (ignoreByTagName[elementName]) {
+                    return;
+                }
+
+                var hasNonWhitespaceChildNodes = element.childNodes.some(function (childNode) {
+                    return childNode.nodeType === childNode.TEXT_NODE && !/^[\s\n]*$|^\d+$/.test(childNode.nodeValue);
+                });
+                var i18nAttributes = _.toArray(element.attributes).filter(function (attribute) {
+                    var attributeName = attribute.nodeName.toLowerCase(),
+                        attributeValue = attribute.nodeValue;
+                    if (attributeName === 'value' && (elementName === 'option' || (elementName === 'input' && attributeName === 'hidden'))) {
+                        return false;
+                    }
+
+                    return attributeValue !== '' && !ignoreByAttributeName[attributeName];
+                });
+
+                if (hasNonWhitespaceChildNodes || i18nAttributes.length > 0) {
+                    var matchingOccurrences = occurrences.filter(function (occurrence) {
+                        return occurrence.node === element;
+                    });
+                    if (hasNonWhitespaceChildNodes && !matchingOccurrences.some(function (matchingOccurrence) {return matchingOccurrence.type === 'i18nTagText';})) {
+                        warnings.push("No data-i18n attribute for contents of " + element.outerHTML);
+                    }
+                    i18nAttributes.forEach(function (i18nAttribute) {
+                        if (!matchingOccurrences.some(function (matchingOccurrence) {
+                            return matchingOccurrence.type === 'i18nTagAttribute' &&
+                            matchingOccurrence.attributeName.toLowerCase() === i18nAttribute.nodeName.toLowerCase();
+                        })) {
+                            warnings.push("No data-i18n attribute for '" + i18nAttribute.nodeName + "' attribute of " + element.outerHTML);
+                        }
+                    });
+                }
+            });
+            if (warnings.length > 0) {
+                console.warn(htmlAsset.urlOrDescription + ':');
+                warnings.forEach(function (warning) {
+                    console.warn(warning.split(/\n/).map(function (line) {return "    " + line;}).join("\n"));
+                });
+            }
+        });
+    })
+    .run();
