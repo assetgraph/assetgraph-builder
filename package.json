@@ -19,7 +19,7 @@
         "passerror": "=0.0.1",
         "seq": "=0.3.5",
         "temp": "=0.4.0",
-        "uglifyast": "=0.0.3",
+        "uglifyast": "=0.0.6",
         "uglify-js-papandreou": "=1.3.3-patch1",
         "underscore": "=1.2.0"
     },
