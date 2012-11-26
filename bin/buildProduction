@@ -64,6 +64,11 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
+        .options('optimizejpgs', {
+            describe: 'Runs jpegtran optimization on all jpeg images',
+            type: 'boolean',
+            default: false
+        })
         .options('inlinesize', {
             describe: 'Inline CSS backgrounds below this threshold as data-uris',
             default: 8192
@@ -229,6 +234,7 @@ new AssetGraph({root: rootUrl})
         less: commandLineOptions.less,
         blacklistUrlRegExp: blacklistUrlRegExp,
         optimizePngs: commandLineOptions.optimizepngs,
+        optimizeJpgs: commandLineOptions.optimizejpgs,
         inlineSize: commandLineOptions.inlinesize,
         mangleTopLevel: commandLineOptions.mangletoplevel,
         defines: defines,
