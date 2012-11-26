@@ -26,6 +26,7 @@ applications.
    href="http://requirejs.org/docs/optimization.html">the require.js
    optimizer</a> does (still missing some features though). Understands
    the require.js config options `baseUrl` and `paths`.
+ * Optimizes pngs with pngquant, pngcrush and optipng
  * Sprites background images (see <a
    href="https://github.com/One-com/assetgraph-sprite">assetgraph-sprite</a>).
  * Inlines CSS `background-image`s less than 8192 bytes and provides an
