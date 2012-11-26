@@ -266,13 +266,13 @@ new AssetGraph({root: rootUrl})
             var defaultValueMismatchKeys = Object.keys(localizationInfoObject.defaultValueMismatchesByKey);
             if (defaultValueMismatchKeys.length > 0) {
                 console.warn('The following keys had mismatching default and/or ' + defaultLocaleId + ' values:\n  ' + defaultValueMismatchKeys.map(function (defaultValueMismatchKey) {
-                    return defaultValueMismatchKey + ':\n    ' + util.inspect(localizationInfoObject.defaultValueMismatchesByKey[defaultValueMismatchKey]);
+                    return defaultValueMismatchKey + ':\n    ' + util.inspect(localizationInfoObject.defaultValueMismatchesByKey[defaultValueMismatchKey], false, 99);
                 }).join('\n  '));
             }
             var whitespaceWarningKeys = Object.keys(localizationInfoObject.whitespaceWarningsByKey);
             if (whitespaceWarningKeys.length > 0) {
                 console.warn('The following keys had leading or trailing whitespace:\n  ' + whitespaceWarningKeys.map(function (whitespaceWarningKey) {
-                    return whitespaceWarningKey + ':\n    ' + util.inspect(localizationInfoObject.whitespaceWarningsByKey[whitespaceWarningKey]);
+                    return whitespaceWarningKey + ':\n    ' + util.inspect(localizationInfoObject.whitespaceWarningsByKey[whitespaceWarningKey], false, 99);
                 }).join('\n  '));
             }
         }
