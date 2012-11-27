@@ -158,19 +158,10 @@ var _ = require('underscore'),
     if (matchDefine) {
         var valueAst;
         if (matchDefine[2]) {
-            var parsedValue;
             try {
-                parsedValue = uglifyJs.parser.parse(matchDefine[2]);
+                valueAst = uglifyAst.parseExpression(matchDefine[2]);
             } catch (e) {
                 throw new Error('Invalid --define ' + matchDefine[1] + ': Could not parse ' + matchDefine[2] + ' as a JavaScript expression. Missing shell escapes?');
-            }
-            if (parsedValue[1].length !== 1 || !/^(?:stat|directive)$/.test(parsedValue[1][0][0])) {
-                throw new Error('Invalid --define ' + matchDefine[1] + ': Value parses as ' + JSON.stringify(parsedValue) + ', must be an expression');
-            }
-            if (parsedValue[1][0][0] === 'directive') {
-                valueAst = ['string', parsedValue[1][0][1]];
-            } else {
-                valueAst = parsedValue[1][0][1];
             }
         } else {
             valueAst = ['name', 'true'];
