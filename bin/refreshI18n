@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var _ = require('underscore'),
-    AssetGraph = require('assetgraph'),
+    AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
     uglifyAst = require('uglifyast'),
     urlTools = require('assetgraph/lib/util/urlTools'),
@@ -11,8 +11,6 @@ var _ = require('underscore'),
         .demand(['root', 'locales'])
         .argv,
     localeIds = _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {return localeId.split(",");}));
-
-require('../lib/registerTransforms');
 
 new AssetGraph({root: commandLineOptions.root})
     .on('afterTransform', function (transform, elapsedTime) {

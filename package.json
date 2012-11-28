@@ -10,6 +10,7 @@
             "email": "andreas@one.com"
         }
     ],
+    "main": "lib/AssetGraph.js",
     "dependencies": {
         "assetgraph": "=1.0.24",
         "bufferjs": "=1.0.2",

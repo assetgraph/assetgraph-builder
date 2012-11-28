@@ -3,7 +3,7 @@
 var path = require('path'),
     fs = require('fs'),
     _ = require('underscore'),
-    AssetGraph = require('assetgraph'),
+    AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
     uglifyAst = require('uglifyast'),
     urlTools = require('assetgraph/lib/util/urlTools'),
@@ -14,8 +14,6 @@ var path = require('path'),
         .demand(['root', 'locales', 'babeldir'])
         .argv,
     localeIds = _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {return localeId.split(",");}));
-
-require('../lib/registerTransforms');
 
 mkpathSync(commandLineOptions.babeldir);
 

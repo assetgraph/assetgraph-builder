@@ -136,7 +136,7 @@ if (commandLineOptions.h) {
 var _ = require('underscore'),
     util = require('util'),
     uglifyJs = require('uglify-js-papandreou'),
-    AssetGraph = require('assetgraph'),
+    AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
@@ -197,8 +197,6 @@ if (commandLineOptions.exclude) {
         }).join('|') +
         ')');
 }
-
-require('../lib/registerTransforms');
 
 new AssetGraph({root: rootUrl})
     .on('afterTransform', function (transform, elapsedTime) {

@@ -1,15 +1,13 @@
 #!/usr/bin/env node
 
 var _ = require('underscore'),
-    AssetGraph = require('assetgraph'),
+    AssetGraph = require('../lib/AssetGraph'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist')
         .usage('$0 --root <inputRootDirectory> <htmlFile>...')
         .demand('root')
         .argv;
-
-require('../lib/registerTransforms');
 
 new AssetGraph({root: commandLineOptions.root})
     .on('afterTransform', function (transform, elapsedTime) {

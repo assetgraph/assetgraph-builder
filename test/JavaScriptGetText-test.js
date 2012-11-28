@@ -1,9 +1,7 @@
 var vows = require('vows'),
     assert = require('assert'),
-    AssetGraph = require('assetgraph'),
+    AssetGraph = require('../lib/AssetGraph'),
     query = AssetGraph.query;
-
-require('../lib/registerTransforms');
 
 vows.describe('GETTEXT').addBatch({
     'After loading test case': {

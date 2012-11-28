@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var AssetGraph = require('assetgraph'),
+var AssetGraph = require('../lib/AssetGraph'),
     _ = require('underscore'),
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist')

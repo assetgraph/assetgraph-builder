@@ -1,8 +1,6 @@
 var vows = require('vows'),
     assert = require('assert'),
-    AssetGraph = require('assetgraph');
-
-require('../lib/registerTransforms');
+    AssetGraph = require('../lib/AssetGraph');
 
 vows.describe('GETTEXT').addBatch({
     'After loading test case and running the buildDevelopment transform': {

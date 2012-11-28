@@ -1,6 +1,6 @@
 var vows = require('vows'),
     assert = require('assert'),
-    AssetGraph = require('assetgraph'),
+    AssetGraph = require('../lib/AssetGraph'),
     resolvers = require('../lib/resolvers'),
     assetGraphRoot = __dirname + '/findParentDirectory/';
 

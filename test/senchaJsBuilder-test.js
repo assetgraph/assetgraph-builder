@@ -1,9 +1,7 @@
 var vows = require('vows'),
     assert = require('assert'),
     _ = require('underscore'),
-    AssetGraph = require('assetgraph');
-
-require('../lib/registerTransforms');
+    AssetGraph = require('../lib/AssetGraph');
 
 vows.describe('resolvers.senchaJsBuilder test').addBatch({
     'After loading a test case with three assets': {

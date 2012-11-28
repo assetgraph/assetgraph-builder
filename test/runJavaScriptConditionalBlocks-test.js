@@ -1,8 +1,6 @@
 var vows = require('vows'),
     assert = require('assert'),
-    AssetGraph = require('assetgraph');
-
-require('../lib/registerTransforms');
+    AssetGraph = require('../lib/AssetGraph');
 
 vows.describe('executeJavaScriptConditionalBlocks').addBatch({
     'After loading test case': {

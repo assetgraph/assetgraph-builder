@@ -3,7 +3,7 @@
 var fs = require('fs'),
     _ = require('underscore'),
     seq = require('seq'),
-    AssetGraph = require('assetgraph'),
+    AssetGraph = require('../lib/AssetGraph'),
     urlTools = require('assetgraph/lib/util/urlTools'),
     commandLineOptions = require('optimist')
         .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--root <dir>] [-o <outputJavaScriptFile>] <inputJavaScriptFile>')
@@ -14,8 +14,6 @@ var fs = require('fs'),
             }
         })
         .argv;
-
-require('../lib/registerTransforms');
 
 new AssetGraph({root: commandLineOptions.root})
     .on('warn', function (err) {

@@ -3,7 +3,7 @@
 var path = require('path'),
     fs = require('fs'),
     _ = require('underscore'),
-    AssetGraph = require('assetgraph'),
+    AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
     uglifyAst = require('uglifyast'),
     urlTools = require('assetgraph/lib/util/urlTools'),
@@ -13,8 +13,6 @@ var path = require('path'),
         .boolean('parentdir')
         .demand(['root', 'babeldir'])
         .argv;
-
-require('../lib/registerTransforms');
 
 new AssetGraph({root: commandLineOptions.root})
     .on('afterTransform', function (transform, elapsedTime) {
