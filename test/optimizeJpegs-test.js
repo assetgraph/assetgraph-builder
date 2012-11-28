@@ -7,7 +7,7 @@ var vows = require('vows'),
 vows.describe('Postprocess images').addBatch({
     'After loading the test case': {
         topic: function () {
-            new AssetGraph({root: __dirname + '/optimizeJpgs/'})
+            new AssetGraph({root: __dirname + '/optimizeJpegs/'})
                 .loadAssets('style.css')
                 .populate()
                 .run(this.callback);
@@ -18,10 +18,10 @@ vows.describe('Postprocess images').addBatch({
             assert.equal(assetGraph.findAssets({type: 'Css'}).length, 1);
             assert.equal(assetGraph.findRelations({type: 'CssImage'}).length, 1);
         },
-        'then running the optimizeJpgs transform': {
+        'then running the optimizeJpegs transform': {
             topic: function (assetGraph) {
                 assetGraph
-                    .optimizeJpgs()
+                    .optimizeJpegs()
                     .run(this.callback);
             },
             'turtle.jpg should be smaller': function (assetGraph) {

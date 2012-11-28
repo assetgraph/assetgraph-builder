@@ -64,7 +64,7 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
-        .options('optimizejpgs', {
+        .options('optimizejpegs', {
             describe: 'Runs jpegtran optimization on all jpeg images',
             type: 'boolean',
             default: false
@@ -223,7 +223,7 @@ new AssetGraph({root: rootUrl})
         less: commandLineOptions.less,
         blacklistUrlRegExp: blacklistUrlRegExp,
         optimizePngs: commandLineOptions.optimizepngs,
-        optimizeJpgs: commandLineOptions.optimizejpgs,
+        optimizeJpegs: commandLineOptions.optimizejpegs,
         inlineSize: commandLineOptions.inlinesize,
         mangleTopLevel: commandLineOptions.mangletoplevel,
         defines: defines,
