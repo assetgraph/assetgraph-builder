@@ -234,11 +234,11 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'there should be 2 non-inline Html assets': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'Html', isInline: false}).length, 2);
         },
-        'the American English Html should contain two HtmlConditionalComment relations': function (assetGraph) {
-            assert.equal(assetGraph.findRelations({from: {url: /\/index\.en_us\.html$/}, type: 'HtmlConditionalComment'}).length, 2);
+        'the American English Html should contain one HtmlConditionalComment relation': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({from: {url: /\/index\.en_us\.html$/}, type: 'HtmlConditionalComment'}).length, 1);
         },
-        'the Danish Html should contain two HtmlConditionalComment relations': function (assetGraph) {
-            assert.equal(assetGraph.findRelations({from: {url: /\/index\.da\.html$/}, type: 'HtmlConditionalComment'}).length, 2);
+        'the Danish Html should contain one HtmlConditionalComment relation': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({from: {url: /\/index\.da\.html$/}, type: 'HtmlConditionalComment'}).length, 1);
         }
 
     },
