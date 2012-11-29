@@ -2,7 +2,7 @@
     "name": "assetgraph-builder",
     "description": "Build system for web sites and applications",
     "repository": "git://github.com/One-com/assetgraph-builder.git",
-    "version": "1.1.12",
+    "version": "1.1.13",
     "keywords": ["assetgraph", "web", "build", "build system", "single page", "web application", "static html", "cache manifest", "appcache", "spriting", "html", "css", "javascript", "jsdom", "localization", "internationalization", "i18n", "l10n"],
     "maintainers": [
         {
