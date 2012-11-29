@@ -162,7 +162,9 @@ var _ = require('underscore'),
             try {
                 valueAst = uglifyAst.parseExpression(matchDefine[2]);
             } catch (e) {
-                throw new Error('Invalid --define ' + matchDefine[1] + ': Could not parse ' + matchDefine[2] + ' as a JavaScript expression. Missing shell escapes?');
+                console.error('Invalid --define ' + matchDefine[1] + ': Could not parse ' + matchDefine[2] + ' as a JavaScript expression. Missing shell escapes?');
+                console.error(e.message + ' (line ' + e.line + ', column ' + e.col + ')');
+                process.exit(1);
             }
         } else {
             valueAst = ['name', 'true'];
