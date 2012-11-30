@@ -9,10 +9,19 @@ var path = require('path'),
     urlTools = require('assetgraph/lib/util/urlTools'),
     mkpathSync = require('../lib/mkpathSync'),
     commandLineOptions = require('optimist')
-        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] --babeldir=<dirContainingTheBabelFilesToApply> --root <inputRootDirectory> <htmlFile>...')
+        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--i18n <pathToI18nFile>] --babeldir=<dirContainingTheBabelFilesToApply> --root <inputRootDirectory> <htmlFile>...')
         .boolean('parentdir')
         .demand(['root', 'babeldir'])
-        .argv;
+        .argv,
+    initialAssetUrls = commandLineOptions._.map(urlTools.fsFilePathToFileUrl),
+    i18nUrl,
+    i18nAsset;
+
+
+if (commandLineOptions.i18n) {
+    i18nUrl = urlTools.fsFilePathToFileUrl(commandLineOptions.i18n);
+    initialAssetUrls.push(i18nUrl);
+}
 
 new AssetGraph({root: commandLineOptions.root})
     .on('afterTransform', function (transform, elapsedTime) {
@@ -33,7 +42,7 @@ new AssetGraph({root: commandLineOptions.root})
     })
     .registerRequireJsConfig()
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
-    .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
+    .loadAssets(initialAssetUrls)
     .populate({
         followRelations: {
             type: AssetGraph.query.not('HtmlAnchor'),
@@ -43,7 +52,16 @@ new AssetGraph({root: commandLineOptions.root})
     .queue(function (assetGraph) {
         var translationsByKeyAndLocaleId = {},
             existingI18nRelations = assetGraph.findRelations({to: {type: 'I18n'}, from: {type: 'JavaScript'}}),
-            occurrencesByKey = i18nTools.findOccurrences(assetGraph, assetGraph.findAssets({type: 'Html', isInitial: true}));
+            occurrencesByKey = i18nTools.findOccurrences(assetGraph, assetGraph.findAssets({type: 'Html', isInitial: true})),
+            i18nAssetForAllKeys;
+
+        if (i18nUrl) {
+            i18nAssetForAllKeys = assetGraph.findAssets({url: i18nUrl})[0];
+            if (!i18nAssetForAllKeys) {
+                console.error('--i18n ' + commandLineOptions.i18n + ': not found');
+                process.exit(1);
+            }
+        }
 
         fs.readdirSync(commandLineOptions.babeldir).forEach(function (fileName) {
             if (fileName === 'SOURCE.txt') {
@@ -113,7 +131,7 @@ new AssetGraph({root: commandLineOptions.root})
         _.keys(translationsByKeyAndLocaleId).forEach(function (key) {
             var i18nAsset;
             try {
-                i18nAsset = i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, occurrencesByKey);
+                i18nAsset = i18nAssetForAllKeys || i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, occurrencesByKey);
             } catch (e) {
                 console.warn("Skipping language key: " + e.message);
             }
