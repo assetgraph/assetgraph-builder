@@ -124,5 +124,24 @@ vows.describe('buildProduction').addBatch({
         'there should be no relations': function (assetGraph) {
             assert.equal(assetGraph.findRelations({}, true).length, 0);
         }
+    },
+    'After loading a test case with a GETSTATICURL then running the buildProduction transform': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/JavaScriptGetStaticUrlWithProcessedImages/'})
+                .registerRequireJsConfig()
+                .loadAssets('index.html')
+                .buildProduction({
+                    less: true
+                })
+                .run(this.callback);
+        },
+        'the graph should contain 2 Png images': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Png'}).length, 2);
+        },
+        'none of the Png assets should contain a gAMA chunk': function (assetGraph) {
+            assetGraph.findAssets({type: 'Png'}).forEach(function (pngAsset) {
+                assert.equal(pngAsset.rawSrc.toString('ascii').indexOf('gAMA'), -1);
+            });
+        }
     }
 })['export'](module);
