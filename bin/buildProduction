@@ -143,6 +143,7 @@ var _ = require('underscore'),
     uglifyAst = require('uglifyast'),
     outRoot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
     cdnRoot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
+    fullCdnRoot = (/^\/\//.test(cdnRoot) ? 'http:' : '') + cdnRoot,
     cdnOutRoot = commandLineOptions.cdnoutroot && urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
     blacklistUrlRegExp = /^$/,
     rootUrl = commandLineOptions.root && urlTools.urlOrFsPathToUrl(commandLineOptions.root, true),
@@ -243,7 +244,7 @@ new AssetGraph({root: rootUrl})
     })
     .writeAssetsToDisc({url: /^file:/}, outRoot)
     .if(cdnRoot)
-        .writeAssetsToDisc({url: query.createPrefixMatcher(cdnRoot)}, cdnOutRoot || outRoot, cdnRoot)
+        .writeAssetsToDisc({url: query.createPrefixMatcher(fullCdnRoot)}, cdnOutRoot || outRoot, fullCdnRoot)
     .endif()
     .writeStatsToStderr()
     .run(function () {
