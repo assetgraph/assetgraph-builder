@@ -71,7 +71,7 @@ vows.describe('transforms.processImages').addBatch({
             assert.deepEqual(_.pluck(assetGraph.findAssets({isImage: true}), 'url').sort(), [
                 assetGraph.root + 'myImage.png',
                 assetGraph.root + 'myImage.png?resize=200+200',
-                assetGraph.root + 'myImage.png?resize=400+400'
+                assetGraph.root + 'myImage.png?resize=400+400#foo'
             ]);
         },
         'the Png assets should all have a size of 8285 bytes': function (assetGraph) {
@@ -91,7 +91,7 @@ vows.describe('transforms.processImages').addBatch({
             'the urls of the image assets should have the processing instructions removed from the query string, but added before the extension': function (assetGraph) {
                 assert.deepEqual(_.pluck(assetGraph.findAssets({isImage: true}), 'url').sort(), [
                     assetGraph.root + 'myImage.resize-200-200.png',
-                    assetGraph.root + 'myImage.resize-400-400.png',
+                    assetGraph.root + 'myImage.resize-400-400.png#foo',
                     assetGraph.root + 'myImage.png'
                 ].sort());
             }
