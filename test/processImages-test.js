@@ -96,5 +96,40 @@ vows.describe('transforms.processImages').addBatch({
                 ].sort());
             }
         }
+    },
+    'After loading a Css test case with a setFormat instruction in the query string of a background-image url': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/processImages/setFormat/'})
+                .loadAssets('index.css')
+                .populate()
+                .run(this.callback);
+        },
+        'the graph should contain a Png asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Png'}).length, 1);
+        },
+        'the graph should contain 1 Css asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Css'}).length, 1);
+        },
+        'the graph should contain 1 CssImage relations': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({type: 'CssImage'}).length, 1);
+        },
+        'then running the processImages transform': {
+            topic: function (assetGraph) {
+                assetGraph
+                    .processImages()
+                    .run(this.callback);
+            },
+            'there should be no Png assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Png'}).length, 0);
+            },
+            'there should be one Gif asset': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Gif'}).length, 1);
+            },
+            'the url of the gif should be updated correctly': function (assetGraph) {
+                assert.deepEqual(_.pluck(assetGraph.findAssets({isImage: true}), 'url').sort(), [
+                    assetGraph.root + 'foo.gif'
+                ]);
+            }
+        }
     }
 })['export'](module);
