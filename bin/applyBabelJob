@@ -87,7 +87,7 @@ new AssetGraph({root: commandLineOptions.root})
                                     value = parseFloat(value);
                                 }
                                 // Chop off [x][y]... suffix and note the components in the 'path' array
-                                key = key.replace(/\[(\w+)\]/g, function ($0, pathComponent) {
+                                key = key.replace(/\[([^\]]+)\]/g, function ($0, pathComponent) {
                                     path.push(pathComponent);
                                     return "";
                                 });
