@@ -34,6 +34,7 @@
         "histogram": "=0.1.2"
     },
     "devDependencies": {
+        "gm": "=1.6.1",
         "vows": ">=0.6.3"
     },
     "engines": {

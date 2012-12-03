@@ -1,5 +1,7 @@
 var vows = require('vows'),
     assert = require('assert'),
+    Stream = require('stream'),
+    gm = require('gm'),
     AssetGraph = require('../lib/AssetGraph');
 
 vows.describe('buildProduction').addBatch({
@@ -142,6 +144,43 @@ vows.describe('buildProduction').addBatch({
             assetGraph.findAssets({type: 'Png'}).forEach(function (pngAsset) {
                 assert.equal(pngAsset.rawSrc.toString('ascii').indexOf('gAMA'), -1);
             });
+        }
+    },
+    'After loading a test case that uses both processImage instructions for both sprited images and the sprite itself': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/spriteAndProcessImages/'})
+                .registerRequireJsConfig()
+                .loadAssets('index.html')
+                .buildProduction({
+                    less: true
+                })
+                .run(this.callback);
+        },
+        'the graph should contain no Png images': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Png'}).length, 0);
+        },
+        'the graph should contain one image, and it should have type=Gif': function (assetGraph) {
+            var imageAssets = assetGraph.findAssets({isImage: true});
+            assert.equal(imageAssets.length, 1);
+            assert.equal(imageAssets[0].type, 'Gif');
+        },
+        'then get the metadata for the Gif': {
+            topic: function (assetGraph) {
+                var gifAssets = assetGraph.findAssets({isImage: true});
+                assert.equal(gifAssets.length, 1);
+                var readStream = new Stream();
+                readStream.readable = true;
+                gm(readStream)
+                    .identify(this.callback);
+                process.nextTick(function () {
+                    readStream.emit('data', assetGraph.findAssets({type: 'Gif'})[0].rawSrc);
+                    readStream.emit('end');
+                });
+            },
+            'it should be a 10x10 GIF': function (metadata) {
+                assert.matches(metadata.Format, /^GIF/i);
+                assert.equal(metadata.Geometry, '10x10');
+            }
         }
     }
 })['export'](module);
