@@ -71,7 +71,7 @@ vows.describe('transforms.processImages').addBatch({
             assert.deepEqual(_.pluck(assetGraph.findAssets({isImage: true}), 'url').sort(), [
                 assetGraph.root + 'myImage.png',
                 assetGraph.root + 'myImage.png?resize=200+200',
-                assetGraph.root + 'myImage.png?resize=400+400'
+                assetGraph.root + 'myImage.png?resize=400+400#foo'
             ]);
         },
         'the Png assets should all have a size of 8285 bytes': function (assetGraph) {
@@ -91,7 +91,7 @@ vows.describe('transforms.processImages').addBatch({
             'the urls of the image assets should have the processing instructions removed from the query string, but added before the extension': function (assetGraph) {
                 assert.deepEqual(_.pluck(assetGraph.findAssets({isImage: true}), 'url').sort(), [
                     assetGraph.root + 'myImage.resize-200-200.png',
-                    assetGraph.root + 'myImage.resize-400-400.png',
+                    assetGraph.root + 'myImage.resize-400-400.png#foo',
                     assetGraph.root + 'myImage.png'
                 ].sort());
             }
@@ -129,6 +129,62 @@ vows.describe('transforms.processImages').addBatch({
                 assert.deepEqual(_.pluck(assetGraph.findAssets({isImage: true}), 'url').sort(), [
                     assetGraph.root + 'foo.gif'
                 ]);
+            }
+        }
+    },
+    'After loading test with a Jpeg': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/processImages/jpeg/'})
+                .loadAssets('style.css')
+                .populate()
+                .run(this.callback);
+        },
+        'the graph contains the expected assets and relations': function (assetGraph) {
+            assert.equal(assetGraph.findAssets().length, 2);
+            assert.equal(assetGraph.findAssets({type: 'Jpeg'}).length, 1);
+            assert.equal(assetGraph.findAssets({type: 'Css'}).length, 1);
+            assert.equal(assetGraph.findRelations({type: 'CssImage'}).length, 1);
+        },
+        'then running the processImages transform with {jpegtran: true}': {
+            topic: function (assetGraph) {
+                assetGraph
+                    .processImages({type: 'Jpeg'}, {jpegtran: true})
+                    .run(this.callback);
+            },
+            'turtle.jpg should be smaller': function (assetGraph) {
+                var turtle = assetGraph.findAssets({url: /\/turtle\.jpg$/})[0];
+                assert.lesser(turtle.rawSrc.length, 105836);
+            }
+        }
+    },
+    'After loading test case with a couple of pngs': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/processImages/pngs/'})
+                .loadAssets('style.css')
+                .populate()
+                .run(this.callback);
+        },
+        'the graph contains the expected assets and relations': function (assetGraph) {
+            assert.equal(assetGraph.findAssets().length, 3);
+            assert.equal(assetGraph.findAssets({type: 'Png'}).length, 2);
+            assert.equal(assetGraph.findAssets({type: 'Css'}).length, 1);
+            assert.equal(assetGraph.findRelations({type: 'CssImage'}).length, 2);
+        },
+        'then running the processImages transform with all the png tools turned on': {
+            topic: function (assetGraph) {
+                assetGraph
+                    .processImages({type: 'Png'}, {pngcrush: true, optipng: true, pngquant: true})
+                    .run(this.callback);
+            },
+            'redalpha24bit.png should be smaller and still a PNG': function (assetGraph) {
+                var redAlpha24Bit = assetGraph.findAssets({url: /\/redalpha24bit\.png$/})[0];
+                assert.deepEqual(_.toArray(redAlpha24Bit.rawSrc.slice(0, 4)), [0x89, 0x50, 0x4e, 0x47]);
+                assert.lesser(redAlpha24Bit.rawSrc.length, 6037);
+            },
+            'purplealpha24bit.png should be smaller and still a PNG': function (assetGraph) {
+                var purpleAlpha24Bit = assetGraph.findAssets({url: /\/purplealpha24bit\.png$/})[0];
+                assert.deepEqual(_.toArray(purpleAlpha24Bit.rawSrc.slice(0, 4)), [0x89, 0x50, 0x4e, 0x47]);
+                assert.lesser(purpleAlpha24Bit.rawSrc.length, 8285);
             }
         }
     }
