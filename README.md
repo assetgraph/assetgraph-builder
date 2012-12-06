@@ -17,6 +17,8 @@ applications.
    `behavior` properties.
  * Bundles JavaScript and CSS.
  * Removes duplicate images, JavaScript, CSS, etc.
+ * Supports automatic optimization and custom processing of images using
+   pngquant, pngcrush, optipng, jpegtran, and GraphicsMagick.
  * Minifies/packs JavaScript, CSS, and HTML (uses <a
    href="https://github.com/mishoo/UglifyJS">UglifyJS</a> and <a
    href="https://github.com/jbleuzen/node-cssmin">cssmin</a>, and <a
@@ -26,8 +28,6 @@ applications.
    href="http://requirejs.org/docs/optimization.html">the require.js
    optimizer</a> does (still missing some features though). Understands
    the require.js config options `baseUrl` and `paths`.
- * Optimizes pngs with pngquant, pngcrush and optipng
- * Optimizes jpgs with jpegtran
  * Sprites background images (see <a
    href="https://github.com/One-com/assetgraph-sprite">assetgraph-sprite</a>).
  * Inlines CSS `background-image`s less than 8192 bytes and provides an
@@ -87,6 +87,48 @@ contents of `path/to/production` online and pointing your CloudFront (or other C
 distribution at the root of your origin server. As long as you serve `/static` and everything
 below it with a far-future expires, you won't need to touch your CDN config or manually
 upload anything to your CDN provider.
+
+Image optimization and processing
+---------------------------------
+
+The `buildProduction` switches `--pngquant`, `--pngcrush`,
+`--optipng`, and `--jpegtran` turn on automatic lossless optimization
+of all images of the relevant type in the graph. The
+`--optimizeimages` switch is shorthand for all of them.
+
+Additionally, you can specify individual processing instructions for
+each image using custom GET parameters. For example you might want to
+reduce the palette of an image to a specific number of colors or apply
+a specific compression level:
+
+```html
+<img src="myImage.png?pngquant=37">
+<img src="myOtherImage.png?optipng=-o7&amp;pngcrush=-rem,tEXT">
+```
+
+The image processing is supported everywhere you can refer to an
+image, including `background-image` properties in CSS, shortcut icon
+links etc.
+
+Additionally, all GraphicsMagick operations (as exposed by the <a
+href="https://github.com/aheckmann/gm">gm module</a>) are supported:
+
+```css
+body {
+    background-image: url(foo.png?resize=500,300&flip&magnify&pngcrush);
+}
+```
+
+This allows you to only check your original images into version
+control and have your build system create the scaled/processed/derived
+ones dynamically.
+
+The processing instructions are executed using the same engine that
+powers <a
+href="https://github.com/papandreou/express-processimage">express-processimage</a>
+and <a href="https://github.com/One-com/LiveStyle">livestyle with the
+--processimage</a> switch. You can use one of those to have the image
+processing instructions applied on your development setup.
 
 Internationalization
 --------------------
