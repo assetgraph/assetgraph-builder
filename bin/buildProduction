@@ -64,7 +64,7 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
-        .options('optimizepngs', {
+        .options('optimizejpegs', {
             describe: '(deprecated, please use --jpegtran or --optimizeimages) Runs jpegtran optimization on all jpeg images',
             type: 'boolean',
             default: false
