@@ -1,9 +1,8 @@
 #redalpha24bit {
-    -ag-image-postprocess: ie6 pngquant(256);
     background-image: url(redalpha24bit.png);
+    _background-image: url(redalpha24bit.png?pngquant=256);
 }
 
 #purplealpha24bit {
-    -ag-image-postprocess: pngquant(256);
-    background-image: url(purplealpha24bit.png);
+    background-image: url(purplealpha24bit.png?pngcrush);
 }

@@ -165,10 +165,10 @@ vows.describe('transforms.processImages').addBatch({
                 .run(this.callback);
         },
         'the graph contains the expected assets and relations': function (assetGraph) {
-            assert.equal(assetGraph.findAssets().length, 3);
-            assert.equal(assetGraph.findAssets({type: 'Png'}).length, 2);
+            assert.equal(assetGraph.findAssets().length, 4);
+            assert.equal(assetGraph.findAssets({type: 'Png'}).length, 3);
             assert.equal(assetGraph.findAssets({type: 'Css'}).length, 1);
-            assert.equal(assetGraph.findRelations({type: 'CssImage'}).length, 2);
+            assert.equal(assetGraph.findRelations({type: 'CssImage'}).length, 3);
         },
         'then running the processImages transform with all the png tools turned on': {
             topic: function (assetGraph) {
@@ -176,15 +176,15 @@ vows.describe('transforms.processImages').addBatch({
                     .processImages({type: 'Png'}, {pngcrush: true, optipng: true, pngquant: true})
                     .run(this.callback);
             },
-            'redalpha24bit.png should be smaller and still a PNG': function (assetGraph) {
-                var redAlpha24Bit = assetGraph.findAssets({url: /\/redalpha24bit\.png$/})[0];
-                assert.deepEqual(_.toArray(redAlpha24Bit.rawSrc.slice(0, 4)), [0x89, 0x50, 0x4e, 0x47]);
-                assert.lesser(redAlpha24Bit.rawSrc.length, 6037);
+            'redalpha24bit.pngquant-256.png should be a smaller PNG': function (assetGraph) {
+                var redAlpha24BitPngquanted = assetGraph.findAssets({url: /\/redalpha24bit\.pngquant-256\.png$/})[0];
+                assert.deepEqual(_.toArray(redAlpha24BitPngquanted.rawSrc.slice(0, 4)), [0x89, 0x50, 0x4e, 0x47]);
+                assert.lesser(redAlpha24BitPngquanted.rawSrc.length, 6037);
             },
-            'purplealpha24bit.png should be smaller and still a PNG': function (assetGraph) {
-                var purpleAlpha24Bit = assetGraph.findAssets({url: /\/purplealpha24bit\.png$/})[0];
-                assert.deepEqual(_.toArray(purpleAlpha24Bit.rawSrc.slice(0, 4)), [0x89, 0x50, 0x4e, 0x47]);
-                assert.lesser(purpleAlpha24Bit.rawSrc.length, 8285);
+            'purplealpha24bit.pngcrush.png should be a smaller PNG': function (assetGraph) {
+                var purpleAlpha24BitPngcrushed = assetGraph.findAssets({url: /\/purplealpha24bit\.pngcrush\.png$/})[0];
+                assert.deepEqual(_.toArray(purpleAlpha24BitPngcrushed.rawSrc.slice(0, 4)), [0x89, 0x50, 0x4e, 0x47]);
+                assert.lesser(purpleAlpha24BitPngcrushed.rawSrc.length, 8285);
             }
         }
     }
