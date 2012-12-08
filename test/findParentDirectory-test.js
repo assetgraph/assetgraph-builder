@@ -8,7 +8,7 @@ function resolveAssetConfig(assetConfig, fromUrl, cb) {
     return function () {
         var assetGraph = new AssetGraph({root: assetGraphRoot});
         assetGraph.defaultResolver = resolvers.findParentDirectory();
-        AssetGraph.assets.resolveConfig(assetConfig, fromUrl || assetGraph.root, assetGraph, cb || this.callback);
+        assetGraph.resolveAssetConfig(assetConfig, fromUrl || assetGraph.root, cb || this.callback);
     };
 }
 
