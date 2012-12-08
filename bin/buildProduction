@@ -149,7 +149,7 @@ var _ = require('underscore'),
     localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
         return localeId.split(",");
     })).map(i18nTools.normalizeLocaleId),
-    defaultLocaleId = commandLineOptions.defaultlocaleid && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocaleid),
+    defaultLocaleId = commandLineOptions.defaultlocale && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale),
     localizationInfoObject = {},
     defines = {},
     inputUrls;
