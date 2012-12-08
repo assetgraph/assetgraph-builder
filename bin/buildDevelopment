@@ -39,7 +39,7 @@ new AssetGraph({root: commandLineOptions.root})
         supportedLocaleIds: commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
             return localeId.split(",");
         })).map(i18nTools.normalizeLocaleId),
-        defaultLocaleId: commandLineOptions.defaultlocaleid && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocaleid),
+        defaultLocaleId: commandLineOptions.defaultlocale && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale),
         localeCookieName: commandLineOptions.localecookiename,
         cssImports: commandLineOptions.cssimports,
         inlineUrlWildCard: commandLineOptions.inline
