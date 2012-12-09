@@ -30,8 +30,11 @@ vows.describe('buildProduction').addBatch({
                 })
                 .run(this.callback);
         },
-        'the graph should contain 2 Html assets': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
+        'the graph should contain 2 non-inline Html assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html', isInline: false}).length, 2);
+        },
+        'the graph should contain 2 inline Html assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html', isInline: true}).length, 2);
         },
         'the graph should contain an index.da.html with the correct lang attribute on the html element and the right title': function (assetGraph) {
             var htmlAssets = assetGraph.findAssets({type: 'Html', url: /\/index\.da\.html$/});
@@ -48,7 +51,7 @@ vows.describe('buildProduction').addBatch({
             assert.equal(htmlAsset.parseTree.title, 'The English title');
         },
         'the Html assets should contain the correct Content-Version meta tags': function (assetGraph) {
-            assetGraph.findAssets({type: 'Html'}).forEach(function (htmlAsset) {
+            assetGraph.findAssets({type: 'Html', isInline: false}).forEach(function (htmlAsset) {
                 assert.equal(htmlAsset.parseTree.querySelectorAll('meta[http-equiv="Content-Version"][content="The version number"]').length, 1);
             });
         },
@@ -57,17 +60,17 @@ vows.describe('buildProduction').addBatch({
         },
         'the English Html asset should have the expected contents': function (assetGraph) {
             assert.equal(assetGraph.findAssets({url: /\/index\.en\.html$/})[0].text,
-                         '<!DOCTYPE html>\n<html lang="en" manifest="index.appcache"><head><title>The English title</title><style type="text/css">body{color:teal;color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style><meta http-equiv="Content-Version" content="The version number" /></head><body><script src="http://cdn.example.com/foo/5503882c3f.js" data-main="http://cdn.example.com/foo/56082cbc37" async="async" defer="defer"></script><script>alert("script3")</script></body></html>');
+                         '<!DOCTYPE html>\n<html lang="en" manifest="index.appcache"><head><title>The English title</title><style type="text/css">body{color:teal;color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style><meta http-equiv="Content-Version" content="The version number" /></head><body><script src="http://cdn.example.com/foo/5503882c3f.js" data-main="http://cdn.example.com/foo/7a80102762" async="async" defer="defer"></script><script>alert("script3")</script><script type="text/html" id="template"><a href="/index.html">The English link text</a><img src="http://cdn.example.com/foo/3fb51b1ae1.gif" /></script></body></html>');
         },
         'the Danish Html asset should have the expected contents': function (assetGraph) {
             assert.equal(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text,
-                         '<!DOCTYPE html>\n<html lang="da" manifest="index.appcache"><head><title>Den danske titel</title><style type="text/css">body{color:teal;color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style><meta http-equiv="Content-Version" content="The version number" /></head><body><script src="http://cdn.example.com/foo/5503882c3f.js" data-main="http://cdn.example.com/foo/271b906b9b" async="async" defer="defer"></script><script>alert("script3")</script></body></html>');
+                         '<!DOCTYPE html>\n<html lang="da" manifest="index.appcache"><head><title>Den danske titel</title><style type="text/css">body{color:teal;color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style><meta http-equiv="Content-Version" content="The version number" /></head><body><script src="http://cdn.example.com/foo/5503882c3f.js" data-main="http://cdn.example.com/foo/fba2a68c1e" async="async" defer="defer"></script><script>alert("script3")</script><script type="text/html" id="template"><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/3fb51b1ae1.gif" /></script></body></html>');
         },
         'the English Html data-main js should have the expected contents': function (assetGraph) {
-            assert.equal(assetGraph.findRelations({type: 'HtmlRequireJsMain', from: {url: /\/index\.en\.html$/}})[0].to.text, 'alert("something else"),alert("shimmed"),define("amdDependency",function(){console.warn("here I AM(D)")}),define("view/template.ko",ko.externalTemplateEngine.templates.template=\'<a href="/index.html">The English link text</a><img src="http://cdn.example.com/foo/3fb51b1ae1.gif" />\'),require.config({shim:{shimmed:["somethingElse"]}}),require(["amdDependency","view/template.ko"],function(e){alert("Hello!")})');
+            assert.equal(assetGraph.findRelations({type: 'HtmlRequireJsMain', from: {url: /\/index\.en\.html$/}})[0].to.text, 'alert("something else"),alert("shimmed"),define("amdDependency",function(){console.warn("here I AM(D)")}),require.config({shim:{shimmed:["somethingElse"]}}),require(["amdDependency"],function(e){alert("Hello!")})');
         },
         'the Danish Html data-main js should have the expected contents': function (assetGraph) {
-            assert.equal(assetGraph.findRelations({type: 'HtmlRequireJsMain', from: {url: /\/index\.da\.html$/}})[0].to.text, 'alert("something else"),alert("shimmed"),define("amdDependency",function(){console.warn("here I AM(D)")}),define("view/template.ko",ko.externalTemplateEngine.templates.template=\'<a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/3fb51b1ae1.gif" />\'),require.config({shim:{shimmed:["somethingElse"]}}),require(["amdDependency","view/template.ko"],function(e){alert("Hej!")})');
+            assert.equal(assetGraph.findRelations({type: 'HtmlRequireJsMain', from: {url: /\/index\.da\.html$/}})[0].to.text, 'alert("something else"),alert("shimmed"),define("amdDependency",function(){console.warn("here I AM(D)")}),require.config({shim:{shimmed:["somethingElse"]}}),require(["amdDependency"],function(e){alert("Hej!")})');
         },
         'someTextFile.txt should be found at /static/c7429a1035.txt (not on the CDN)': function (assetGraph) {
             assert.equal(assetGraph.findAssets({url: /\/static\/c7429a1035\.txt$/}).length, 1);
@@ -78,7 +81,7 @@ vows.describe('buildProduction').addBatch({
             assert.equal(assetGraph.findRelations({to: queryObj}).length, 4);
         },
         'each Html asset should have an HtmlCacheManifest relation and the cache manifest should have the expected contents': function (assetGraph) {
-            assetGraph.findAssets({type: 'Html'}).forEach(function (htmlAsset) {
+            assetGraph.findAssets({type: 'Html', isInline: false}).forEach(function (htmlAsset) {
                 var htmlCacheManifestRelations = assetGraph.findRelations({from: htmlAsset, type: 'HtmlCacheManifest'});
                 assert.equal(htmlCacheManifestRelations.length, 1);
                 var cacheManifest = htmlCacheManifestRelations[0].to;
@@ -90,10 +93,10 @@ vows.describe('buildProduction').addBatch({
                     '# ' + htmlCacheManifestRelations[0].from.fileName,
                     'static/c7429a1035.txt',
                     'http://cdn.example.com/foo/5503882c3f.js',
-                    'http://cdn.example.com/foo/3fb51b1ae1.gif',
                     htmlAsset.fileName === 'index.da.html' ?
-                        'http://cdn.example.com/foo/271b906b9b.js' :
-                        'http://cdn.example.com/foo/56082cbc37.js',
+                        'http://cdn.example.com/foo/fba2a68c1e.js' :
+                        'http://cdn.example.com/foo/7a80102762.js',
+                    'http://cdn.example.com/foo/3fb51b1ae1.gif',
                     'NETWORK:',
                     '*',
                     ''
@@ -343,6 +346,57 @@ vows.describe('buildProduction').addBatch({
             var htmlAsset = htmlAssets[0];
             assert.equal(htmlAsset.parseTree.documentElement.getAttribute('lang'), 'da');
             assert.equal(htmlAsset.text, '<!DOCTYPE html>\n<html lang="da"><head><title>Ja, <!--#echo "exactly" --> sådan</title></head><body><div><!--#echo "Here" --> er tingen</div></body></html>');
+        }
+    },
+    'After loading a test case with Knockout.js templates': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/knockoutJs/'})
+                .registerRequireJsConfig()
+                .loadAssets('index.html')
+                .populate()
+                .run(this.callback);
+        },
+        'the graph should contain 1 Html asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 1);
+        },
+        'the graph should contain 3 non-inline JavaScript assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript', isInline: false}).length, 3);
+        },
+        'the graph should contain 3 JavaScriptAmdRequire/JavaScriptAmdDefine relations pointing at Knockout.js templates': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({type: ['JavaScriptAmdRequire', 'JavaScriptAmdDefine'], to: {type: 'KnockoutJsTemplate'}}).length, 3);
+        },
+        'the graph should contain 1 JavaScriptGetStaticUrl relation': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({type: 'JavaScriptGetStaticUrl'}).length, 1);
+        },
+        'the graph should contain 2 KnockoutJsTemplate assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'KnockoutJsTemplate'}).length, 2);
+        },
+        'the graph should contain 1 Png asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Png'}).length, 1);
+        },
+        'then run the buildProduction transform': {
+            topic: function (assetGraph) {
+                assetGraph.buildProduction().run(this.callback);
+            },
+            'the graph should contain no JavaScriptAmdRequire/JavaScriptAmdDefine relations pointing at Knockout.js templates': function (assetGraph) {
+                assert.equal(assetGraph.findRelations({type: ['JavaScriptAmdRequire', 'JavaScriptAmdDefine'], to: {type: 'KnockoutJsTemplate'}}).length, 0);
+            },
+            'the graph should contain 2 HtmlInlineScriptTemplate relations': function (assetGraph) {
+                assert.equal(assetGraph.findRelations({type: 'HtmlInlineScriptTemplate'}).length, 2);
+            },
+            'index.html should have the expected contents': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({url: /\/index\.html$/})[0].text, '<!DOCTYPE html>\n<html><head></head><body><script src="static/3c9fc5df88.js" data-main="static/7858076db0"></script><script type="text/html" id="foo"><img data-bind="attr:{src:\'static/d65dd5318f.png\'}" /></script><script type="text/html" id="bar"><div><h1>bar.ko</h1></div></script></body></html>');
+            },
+            'one of the HtmlInlineScriptTemplateRelations should have an id of "foo" and point at a KnockoutJsTemplate asset with the correct contents': function (assetGraph) {
+                var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'foo';}})[0];
+                assert.ok(relation);
+                assert.equal(relation.to.text, '<img data-bind="attr:{src:\'static/d65dd5318f.png\'}" />');
+            },
+            'one of the HtmlInlineScriptTemplateRelations should have an id of "bar" and point at a KnockoutJsTemplate asset with the correct contents': function (assetGraph) {
+                var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'bar';}})[0];
+                assert.ok(relation);
+                assert.equal(relation.to.text, '<div><h1>bar.ko</h1></div>');
+            }
         }
     }
 })['export'](module);
