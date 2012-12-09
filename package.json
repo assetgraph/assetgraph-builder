@@ -12,7 +12,7 @@
     ],
     "main": "lib/AssetGraph.js",
     "dependencies": {
-        "assetgraph": "=1.2.0",
+        "assetgraph": "=1.2.1",
         "bufferjs": "=1.0.2",
         "express-processimage": "=0.0.4",
         "jpegtran": "=0.0.2",
