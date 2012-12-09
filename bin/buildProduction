@@ -264,9 +264,9 @@ new AssetGraph({root: rootUrl})
         cdnRoot: cdnRoot,
         noCompress: commandLineOptions.nocompress
     })
-    .writeAssetsToDisc({url: /^file:/}, outRoot)
+    .writeAssetsToDisc({url: /^file:/, isLoaded: true}, outRoot)
     .if(cdnRoot)
-        .writeAssetsToDisc({url: query.createPrefixMatcher(fullCdnRoot)}, cdnOutRoot || outRoot, fullCdnRoot)
+        .writeAssetsToDisc({url: query.createPrefixMatcher(fullCdnRoot), isLoaded: true}, cdnOutRoot || outRoot, fullCdnRoot)
     .endif()
     .writeStatsToStderr()
     .run(function (err) {
