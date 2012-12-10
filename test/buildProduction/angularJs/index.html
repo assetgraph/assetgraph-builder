@@ -16,6 +16,8 @@
 
   <script src="vendor/angular.js"></script>
   <script>
+INCLUDE('index.i18n');
+
 angular.module('myApp', []).
   config(['$routeProvider', function($routeProvider) {
     $routeProvider
@@ -40,7 +42,7 @@ angular.module('myApp', []).
       });
   }])
   .run(["$templateCache", function($templateCache) {
-    $templateCache.put("partials/4.html", "<h1>4: Template with a relation (<img src='bar.png'>) injected directly into <code>$templateCache</code></h1>");
+    $templateCache.put("partials/4.html", "<h1>4: Template with a relation (<img src='bar.png'>) injected <span data-i18n='foo'>directly</span> into <code>$templateCache</code></h1>");
   }])
   .run(["$templateCache", function(blarf) {
     blarf.put("partials/5.html", "<h1>5: Template with a relation (<img src='quux.png'>) injected directly into <code>$templateCache</code>, but using a different variable name</h1>");
