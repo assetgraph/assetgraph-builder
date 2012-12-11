@@ -342,7 +342,7 @@ vows.describe('buildProduction').addBatch({
             assert.equal(htmlAssets.length, 1);
             var htmlAsset = htmlAssets[0];
             assert.equal(htmlAsset.parseTree.documentElement.getAttribute('lang'), 'da');
-            assert.equal(htmlAsset.text, '<!DOCTYPE html>\n<html lang="da"><head><title>Ja, <!--#echo "exactly" --> sådan</title></head><body><script></script></body></html>');
+            assert.equal(htmlAsset.text, '<!DOCTYPE html>\n<html lang="da"><head><title>Ja, <!--#echo "exactly" --> sådan</title></head><body><div><!--#echo "Here" --> er tingen</div><script></script></body></html>');
         }
     }
 })['export'](module);

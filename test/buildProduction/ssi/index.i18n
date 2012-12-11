@@ -2,5 +2,9 @@
     "title": {
         "en": "Yes, {0} like that",
         "da": "Ja, {0} sådan"
+    },
+    "somethingelse": {
+        "en": "{0} is the thing",
+        "da": "{0} er tingen"
     }
 }
