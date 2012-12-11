@@ -33,14 +33,14 @@ vows.describe('buildProduction').addBatch({
         'the graph should contain 2 Html assets': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
         },
-        'the graph should an index.da.html with the correct lang attribute on the html element and the right title': function (assetGraph) {
+        'the graph should contain an index.da.html with the correct lang attribute on the html element and the right title': function (assetGraph) {
             var htmlAssets = assetGraph.findAssets({type: 'Html', url: /\/index\.da\.html$/});
             assert.equal(htmlAssets.length, 1);
             var htmlAsset = htmlAssets[0];
             assert.equal(htmlAsset.parseTree.documentElement.getAttribute('lang'), 'da');
             assert.equal(htmlAsset.parseTree.title, 'Den danske titel');
         },
-        'the graph should an index.en.html with the correct lang attribute on the html element and the right title': function (assetGraph) {
+        'the graph should contain an index.en.html with the correct lang attribute on the html element and the right title': function (assetGraph) {
             var htmlAssets = assetGraph.findAssets({type: 'Html', url: /\/index\.en\.html$/});
             assert.equal(htmlAssets.length, 1);
             var htmlAsset = htmlAssets[0];
@@ -321,6 +321,28 @@ vows.describe('buildProduction').addBatch({
             var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'partials/5.html';}})[0];
             assert.ok(relation);
             assert.equal(relation.to.text, '<h1>5: Template with a relation (<img src="static/d65dd5318f.png" />) injected directly into <code>$templateCache</code>, but using a different variable name</h1>');
+        }
+    },
+    'After loading a test case with a SSI in the document title, then running the buildProduction transform': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/ssi/'})
+                .on('error', this.callback)
+                .registerRequireJsConfig()
+                .loadAssets('index.html')
+                .buildProduction({
+                    localeIds: ['da', 'en']
+                })
+                .run(this.callback);
+        },
+        'the graph should contain 2 Html assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
+        },
+        'the graph should contain an index.da.html with the correct lang attribute on the html element and the expected contents': function (assetGraph) {
+            var htmlAssets = assetGraph.findAssets({type: 'Html', url: /\/index\.da\.html$/});
+            assert.equal(htmlAssets.length, 1);
+            var htmlAsset = htmlAssets[0];
+            assert.equal(htmlAsset.parseTree.documentElement.getAttribute('lang'), 'da');
+            assert.equal(htmlAsset.text, '<!DOCTYPE html>\n<html lang="da"><head><title>Ja, <!--#echo "exactly" --> sådan</title></head><body><script></script></body></html>');
         }
     }
 })['export'](module);
