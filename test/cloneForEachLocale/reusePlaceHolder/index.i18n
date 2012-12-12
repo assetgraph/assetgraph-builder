@@ -1,0 +1,6 @@
+{
+     "foo": {
+        "en": "Some {0} thing",
+        "da": "Some {0} {0} thing"
+    }
+}

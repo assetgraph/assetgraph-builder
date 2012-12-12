@@ -733,5 +733,17 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 assetGraph.root + 'needsLocalization.en.js'
             ]);
         }
+    },
+    'After loading test case in which a language key uses the same placeholder twice in the Danish translation, then run the cloneForEachLocale transform': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/reusePlaceHolder/'})
+                .loadAssets('index.html')
+                .populate()
+                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da']})
+                .run(this.callback);
+        },
+        'the Danish Html should have two spans': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].parseTree.body.innerHTML, '\n    <div>Some <span>foo</span> <span>foo</span> thing</div>\n    <script>INCLUDE("index.i18n")</script>\n');
+        }
     }
 })['export'](module);
