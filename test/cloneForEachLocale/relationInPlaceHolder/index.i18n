@@ -1,0 +1,6 @@
+{
+     "foo": {
+        "en": "Some {0} thing",
+        "da": "Et {0} eller {0} andet"
+    }
+}

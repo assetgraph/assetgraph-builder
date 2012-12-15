@@ -745,5 +745,20 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'the Danish Html should have two spans': function (assetGraph) {
             assert.equal(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].parseTree.body.innerHTML, '\n    <div>Some <span>foo</span> <span>foo</span> thing</div>\n    <script>INCLUDE("index.i18n")</script>\n');
         }
+    },
+    'After loading test case in which a language key uses the same placeholder twice in the Danish translation, and the placeholder in the Html has a relation in it, then run the cloneForEachLocale transform': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/relationInPlaceHolder/'})
+                .loadAssets('index.html')
+                .populate()
+                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da']})
+                .run(this.callback);
+        },
+        'the English Html asset should have one outgoing HtmlImage relation': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({type: 'HtmlImage', from: {url: /\/index\.en\.html$/}}).length, 1);
+        },
+        'the Danish Html asset should have two outgoing HtmlImage relations': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({type: 'HtmlImage', from: {url: /\/index\.da\.html$/}}).length, 2);
+        }
     }
 })['export'](module);
