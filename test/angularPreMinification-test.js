@@ -14,7 +14,7 @@ vows.describe('transforms.angluarPreMinification').addBatch({
         },
         'the inline JavaScript should have the expected transformations applied': function (assetGraph) {
             assert.deepEqual(assetGraph.findAssets({type: 'JavaScript'})[0].text,
-                             'angular.module("myModuleName").service("MyCtrl",["$scope",function($scope){}])');
+                             'angular.module("myModuleName").service("MyCtrl",["$scope",function($scope){}]).service("MyOtherCtrl",["$scope",function($scope){}])');
         }
     }
 })['export'](module);
