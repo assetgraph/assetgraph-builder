@@ -18,7 +18,6 @@
         "jpegtran": "=0.0.4",
         "less": "=1.3.0",
         "memoizer": "=0.0.4",
-        "ngmin": "=0.0.4",
         "optimist": "=0.2.6",
         "optipng": "=0.0.4",
         "passerror": "=0.0.1",
