@@ -398,5 +398,31 @@ vows.describe('buildProduction').addBatch({
                 assert.equal(relation.to.text, '<div><h1>bar.ko</h1></div>');
             }
         }
+    },
+    'After loading a test case with Html fragments as initial assets': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/initialHtmlFragments/'})
+                .on('error', this.callback)
+                .registerRequireJsConfig()
+                .loadAssets('**/*.html')
+                .run(this.callback);
+        },
+        'the graph should contain 2 Html assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
+        },
+        'the graph should contain 1 Html fragment asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html', isFragment: true}).length, 1);
+        },
+        'then run the buildProduction transform': {
+            topic: function (assetGraph) {
+                assetGraph.buildProduction().run(this.callback);
+            },
+            'the graph should contain 1 Png assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Png'}).length, 1);
+            },
+            'the main Html asset should have the expected contents': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Html', isInitial: true, isFragment: false})[0].text, '<!DOCTYPE html>\n<html><head></head><body><script>var myTemplateUrl="static/76e8658965.html"</script></body></html>');
+            }
+        }
     }
 })['export'](module);
