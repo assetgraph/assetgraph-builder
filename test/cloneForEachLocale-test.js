@@ -252,17 +252,17 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'the graph should contain 5 assets': function (assetGraph) {
             assert.equal(assetGraph.findAssets().length, 5);
         },
-        'the graph should contain 1 Html asset': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 1);
+        'the graph should contain 3 Html asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 3);
+        },
+        'the graph should contain 2 Html fragment assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html', isFragment: true}).length, 2);
         },
         'the graph should contain 1 JavaScript asset': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 1);
         },
         'the graph should contain 1 I18n assets': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'I18n'}).length, 1);
-        },
-        'the graph should contain 2 KnockoutJsTemplate assets': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({type: 'KnockoutJsTemplate'}).length, 2);
         },
         'then run the cloneForEachLocale transform': {
             topic: function (assetGraph) {
@@ -273,8 +273,8 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             'the graph should contain 8 assets': function (assetGraph) {
                 assert.equal(assetGraph.findAssets().length, 8);
             },
-            'the graph should contain 2 Html assets': function (assetGraph) {
-                assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
+            'the graph should contain 5 Html assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Html'}).length, 5);
             },
             'the graph should contain 2 JavaScript assets': function (assetGraph) {
                 assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 2);
@@ -282,8 +282,8 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             'the graph should contain 1 I18n assets': function (assetGraph) {
                 assert.equal(assetGraph.findAssets({type: 'I18n'}).length, 1);
             },
-            'the graph should contain 3 KnockoutJsTemplate assets': function (assetGraph) {
-                assert.equal(assetGraph.findAssets({type: 'KnockoutJsTemplate'}).length, 3);
+            'the graph should contain 3 Html fragment assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Html', isFragment: true}).length, 3);
             },
             'the first template used by Danish and American English JavaScript asset should be the same asset': function (assetGraph) {
                 var danishJavaScript = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to,
@@ -374,12 +374,12 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da']})
                 .run(this.callback);
         },
-        'the graph should contain 2 KnockoutJsTemplate assets': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({type: 'KnockoutJsTemplate'}).length, 2);
+        'the graph should contain 2 Html fragment assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html', isFragment: true}).length, 2);
         },
         'the TR in the Danish Knockout.js template should be replaced with "Den danske værdi"': function (assetGraph) {
             var danishRequireJsMain = assetGraph.findAssets({type: 'JavaScript', incoming: {type: 'HtmlRequireJsMain', from: {url: /\/index\.da\.html$/}}})[0],
-                danishKnockoutJsTemplate = assetGraph.findRelations({from: danishRequireJsMain, to: {type: 'KnockoutJsTemplate'}})[0].to;
+                danishKnockoutJsTemplate = assetGraph.findRelations({from: danishRequireJsMain, to: {type: 'Html', isFragment: true}})[0].to;
             assert.matches(danishKnockoutJsTemplate.text, /Den danske værdi/);
         }
     },
@@ -451,11 +451,11 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'the graph should contain 5 assets': function (assetGraph) {
             assert.equal(assetGraph.findAssets().length, 5);
         },
-        'the graph should contain 2 Html assets': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
+        'the graph should contain 3 Html assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 3);
         },
-        'the graph should contain 1 KnockoutJsTemplate asset': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({type: 'KnockoutJsTemplate'}).length, 1);
+        'the graph should contain 2 Html fragment assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html', isFragment: true}).length, 2);
         },
         'the graph should contain 1 JavaScript asset': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 1);
@@ -472,14 +472,14 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             'the graph should contain 9 assets': function (assetGraph) {
                 assert.equal(assetGraph.findAssets().length, 9);
             },
-            'the graph should contain 4 Html assets': function (assetGraph) {
-                assert.equal(assetGraph.findAssets({type: 'Html'}).length, 4);
+            'the graph should contain 6 Html assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Html'}).length, 6);
             },
             'the graph should contain 2 JavaScript assets': function (assetGraph) {
                 assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 2);
             },
-            'the graph should contain 2 KnockoutJsTemplate assets': function (assetGraph) {
-                assert.equal(assetGraph.findAssets({type: 'KnockoutJsTemplate'}).length, 2);
+            'the graph should contain 4 Html fragment assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Html', isFragment: true}).length, 4);
             },
             'the graph should contain 1 I18n assets': function (assetGraph) {
                 assert.equal(assetGraph.findAssets({type: 'I18n'}).length, 1);
