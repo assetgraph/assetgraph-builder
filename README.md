@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/One-com/assetgraph-builder.png)](http://travis-ci.org/One-com/assetgraph-builder)
 AssetGraph-builder
 ==================
 
