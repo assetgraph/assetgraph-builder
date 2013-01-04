@@ -424,5 +424,25 @@ vows.describe('buildProduction').addBatch({
                 assert.equal(assetGraph.findAssets({type: 'Html', isInitial: true, isFragment: false})[0].text, '<!DOCTYPE html>\n<html><head></head><body><script>var myTemplateUrl="static/76e8658965.html"</script></body></html>');
             }
         }
+    },
+    'After loading a test case with an HtmlScript relation pointing at an extension-less, non-existent file': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/nonExistentFileWithoutExtension/'})
+                .on('error', this.callback)
+                .registerRequireJsConfig()
+                .loadAssets('index.html')
+                .run(this.callback);
+        },
+        'the graph should contain 1 asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets().length, 1);
+        },
+        'then run the buildProduction transform': {
+            topic: function (assetGraph) {
+                assetGraph.buildProduction().run(this.callback);
+            },
+            'the main Html asset should have the expected contents': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({url: /\/index\.html$/})[0].text, '<!DOCTYPE html>\n<html><head></head><body><script src="foo"></script></body></html>');
+            }
+        }
     }
 })['export'](module);
