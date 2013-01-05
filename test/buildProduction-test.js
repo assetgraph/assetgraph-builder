@@ -373,6 +373,35 @@ vows.describe('buildProduction').addBatch({
             assert.equal(relation.to.text, '<h1>5: Template with a relation (<img src="static/d65dd5318f.png" />) injected directly into <code>$templateCache</code>, but using a different variable name</h1>');
         }
     },
+    'After loading an Angular.js test case with multiple references to the same template': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/angularJsMultipleTemplateRefs/'})
+                .registerRequireJsConfig()
+                .loadAssets('index.html')
+                .populate()
+                .run(this.callback);
+        },
+        'the graph should contain 2 JavaScriptAngularJsTemplate relations': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({type: 'JavaScriptAngularJsTemplate'}).length, 2);
+        },
+        'the graph should contain 1 Html fragment asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html', isFragment: true}).length, 1);
+        },
+        'then run the buildProduction transform': {
+            topic: function (assetGraph) {
+                assetGraph.buildProduction().run(this.callback);
+            },
+            'the graph should contain 1 HtmlInlineScriptTemplate relations': function (assetGraph) {
+                assert.equal(assetGraph.findRelations({type: 'HtmlInlineScriptTemplate'}).length, 1);
+            },
+            'the graph should contain 2 inline Html fragment assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Html', isFragment: true, isInline: true}).length, 1);
+            },
+            'the graph should contain no non-inline Html fragment assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Html', isFragment: true, isInline: false}).length, 0);
+            }
+        }
+    },
     'After loading a test case with a SSI in the document title, then running the buildProduction transform': {
         topic: function () {
             new AssetGraph({root: __dirname + '/buildProduction/ssi/'})
