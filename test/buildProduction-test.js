@@ -517,5 +517,20 @@ vows.describe('buildProduction').addBatch({
                 assert.equal(assetGraph.findAssets({url: /\/index\.html$/})[0].text, '<!DOCTYPE html>\n<html><head></head><body><script src="foo"></script></body></html>');
             }
         }
+    },
+    'After loading a test case with a JavaScriptGetStaticUrl relation pointing at an image, then running the buildProduction transform with the cdnRoot option': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/GetStaticUrlImageOnCdn/'})
+                .on('error', this.callback)
+                .registerRequireJsConfig()
+                .loadAssets('index.html')
+                .buildProduction({
+                    cdnRoot: 'http://cdn.example.com/foo/'
+                })
+                .run(this.callback);
+        },
+        'the main Html asset should have the expected contents': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({url: /\/index\.html$/})[0].text, '<!DOCTYPE html>\n<html><head></head><body><script>var imgUrl="http://cdn.example.com/foo/d65dd5318f.png"</script></body></html>');
+        }
     }
 })['export'](module);
