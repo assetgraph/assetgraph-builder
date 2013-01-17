@@ -38,6 +38,7 @@
         "lib": "./lib",
         "bin": "./bin"
     },
+    "tag": "v1.1",
     "publishConfig": {
         "registry": "http://registry.npmjs.org/"
     },
