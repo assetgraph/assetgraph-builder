@@ -33,7 +33,7 @@ vows.describe('GETTEXT').addBatch({
             assert.matches(bootstrapper.text, /\bwindow\.SUPPORTEDLOCALEIDS\s*=\s*\[\s*(['"])en\1\s*,\s*\1da\1\s*\]\s*;/);
             assert.matches(bootstrapper.text, /\bwindow\.DEFAULTLOCALEID\s*=\s*(['"])en\1\s*;/);
             assert.matches(bootstrapper.text, /\bwindow\.LOCALECOOKIENAME\s*=\s*(['"])myLocaleCookie\1\s*;/);
-            assert.matches(bootstrapper.text, /\bwindow\.I18NKEYS\s*=\s*\{\s*myLanguageKey:\s*\{\s*da:\s*(['"])Den danske værdi\1,\s*en:\s*\1The English value\1\s*\}\s*\}\s*;/);
+            assert.matches(bootstrapper.text, /\bwindow\.I18NKEYS\s*=\s*\{\s*myLanguageKey:\s*\{\s*en:\s*(['"])The English value\1\s*,\s*da:\s*\1Den danske værdi\1\s*\}\s*\}\s*;/);
         },
         'the Html asset should contain the correct Content-Version meta tag': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'Html'})[0].parseTree.querySelectorAll('meta[http-equiv="Content-Version"][content="The version number"]').length, 1);
