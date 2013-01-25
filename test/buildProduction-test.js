@@ -532,5 +532,18 @@ vows.describe('buildProduction').addBatch({
         'the main Html asset should have the expected contents': function (assetGraph) {
             assert.equal(assetGraph.findAssets({url: /\/index\.html$/})[0].text, '<!DOCTYPE html>\n<html><head></head><body><script>var imgUrl="http://cdn.example.com/foo/d65dd5318f.png"</script></body></html>');
         }
+    },
+    'After loading a test case with a HtmlRequireDataMain relation pointing at a script with a JavaScriptInclude relation pointing at an I18n asset, then running the buildProduction transform': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/htmlDataMainWithI18n/'})
+                .on('error', this.callback)
+                .registerRequireJsConfig()
+                .loadAssets('index.html')
+                .buildProduction()
+                .run(this.callback);
+        },
+        'no JavaScript asset should contain an include': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript', text: /INCLUDE/}).length, 0);
+        }
     }
 })['export'](module);
