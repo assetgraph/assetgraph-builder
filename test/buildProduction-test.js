@@ -498,6 +498,29 @@ vows.describe('buildProduction').addBatch({
             }
         }
     },
+    'After loading a test case with an Html fragment as an initial asset, but without loading the asset referencing it': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/initialHtmlFragments/'})
+                .on('error', this.callback)
+                .registerRequireJsConfig()
+                .loadAssets('myTemplate.html')
+                .run(this.callback);
+        },
+        'the graph should contain 1 Html asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 1);
+        },
+        'the graph should contain 1 Html fragment asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html', isFragment: true}).length, 1);
+        },
+        'then run the buildProduction transform': {
+            topic: function (assetGraph) {
+                assetGraph.buildProduction().run(this.callback);
+            },
+            'the Html fragment asset should have the expected contents': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Html', isInitial: true, isFragment: true})[0].text, '<div><h1>Template with a relative image reference: <img src="foo.png" /></h1></div>');
+            }
+        }
+    },
     'After loading a test case with an HtmlScript relation pointing at an extension-less, non-existent file': {
         topic: function () {
             new AssetGraph({root: __dirname + '/buildProduction/nonExistentFileWithoutExtension/'})
