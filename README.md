@@ -148,7 +148,7 @@ HTML before all your other scripts:
 <script id="bootstrapper">
     window.GETSTATICURL = function (url) { // , placeHolderValue1, placeHolderValue2, ...
         var placeHolderValues = Array.prototype.slice.call(arguments, 1);
-        return url.replace(/\*\*?/g, function ($0) {
+        return url.replace(/\*\*?|\{[^\}]*\}/g, function () {
             return placeHolderValues.shift();
         });
     };
