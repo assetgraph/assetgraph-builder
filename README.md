@@ -100,7 +100,12 @@ indistinguishable from a regular string.
 
 However, if you wrap `GETSTATICURL(...)` around your url, it will be
 modelled as a relation, and the target asset will be included in the
-build:
+build. Note that relative urls will be resolved from the url of the
+containing HTML asset, not the JavaScript asset (otherwise it wouldn't
+work without `buildProduction` as there's no way to get retrieve
+the url of the JavaScript being executed in a browser).
+
+Example:
 
 ```javascript
 var url = GETSTATICURL('foo.json');
