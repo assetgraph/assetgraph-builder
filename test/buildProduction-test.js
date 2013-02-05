@@ -26,7 +26,7 @@ vows.describe('buildProduction').addBatch({
                     asyncScripts: true, // Test it
                     deferScripts: true, // Test it
                     cdnRoot: 'http://cdn.example.com/foo/',
-                    noCompress: false // Test it
+                    prettyPrint: false // Test it
                 })
                 .run(this.callback);
         },

@@ -105,7 +105,7 @@ var optimist = require('optimist'),
         })
         .options('define', {
             alias: 'd',
-            describe: '--define SYMBOL[=value] will be passed to UglifyJS as is (see the docs at https://github.com/mishoo/UglifyJS#usage). Remember to protect quotes from the shell, eg. --define foo=\\"bar\\". Does not work with --nocompress',
+            describe: '--define SYMBOL[=value] will be passed to UglifyJS as is (see the docs at https://github.com/mishoo/UglifyJS#usage). Remember to protect quotes from the shell, eg. --define foo=\\"bar\\".',
             type: 'string'
         })
         .options('nocompress', {
@@ -262,7 +262,7 @@ new AssetGraph({root: rootUrl})
         asyncScripts: commandLineOptions.asyncscripts,
         deferScripts: commandLineOptions.deferscripts,
         cdnRoot: cdnRoot,
-        noCompress: commandLineOptions.nocompress
+        prettyPrint: commandLineOptions.prettyPrint
     })
     .writeAssetsToDisc({url: /^file:/, isLoaded: true}, outRoot)
     .if(cdnRoot)
