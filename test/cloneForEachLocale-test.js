@@ -396,7 +396,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         },
         'the upper case vars should be replaced by their respective values': function (assetGraph) {
             var danishJavaScript = assetGraph.findAssets({type: 'JavaScript', incoming: {type: 'HtmlScript', from: {url: /\/index\.da\.html$/}}})[0];
-            assert.equal(danishJavaScript.text, 'alert("da");alert("en_us");alert("myCookie");alert(["en_us","da"]);LOCALEID="foo"');
+            assert.equal(danishJavaScript.text, 'alert("da");alert("en_us");alert("myCookie");alert(["en_us","da"]);LOCALEID="foo";');
         }
     },
     'After loading test case with a template in an inline script': {
@@ -743,7 +743,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 .run(this.callback);
         },
         'the Danish Html should have two spans': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].parseTree.body.innerHTML, '\n    <div>Some <span>foo</span> <span>foo</span> thing</div>\n    <script>INCLUDE("index.i18n")</script>\n');
+            assert.equal(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].parseTree.body.innerHTML, '\n    <div>Some <span>foo</span> <span>foo</span> thing</div>\n    <script>INCLUDE("index.i18n");</script>\n');
         }
     },
     'After loading test case in which a language key uses the same placeholder twice in the Danish translation, and the placeholder in the Html has a relation in it, then run the cloneForEachLocale transform': {
@@ -770,10 +770,10 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 .run(this.callback);
         },
         'the script in the English Html asset should have the expected contents': function (assetGraph) {
-            assert.equal(assetGraph.findRelations({from: {url: /\/index\.en\.html$/}})[0].to.text, 'alert("foo");alert("baz");alert("quux")');
+            assert.equal(assetGraph.findRelations({from: {url: /\/index\.en\.html$/}})[0].to.text, 'alert("foo");alert("baz");alert("quux");');
         },
         'the script in the Danish Html asset should have the expected contents': function (assetGraph) {
-            assert.equal(assetGraph.findRelations({from: {url: /\/index\.da\.html$/}})[0].to.text, 'alert("foo");alert("bar");alert("boz");alert("quux")');
+            assert.equal(assetGraph.findRelations({from: {url: /\/index\.da\.html$/}})[0].to.text, 'alert("foo");alert("bar");alert("boz");alert("quux");');
         }
     }
 })['export'](module);
