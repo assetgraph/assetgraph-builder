@@ -1,0 +1,134 @@
+#!/usr/bin/env node
+
+var optimist = require('optimist'),
+    commandLineOptions = optimist
+        .usage('$0 --root <inputRootDirectory> [options] <htmlFile(s)>')
+        .options('locales', {
+            describe: 'Comma-separated list of locales to check',
+            type: 'string',
+            demand: true
+        })
+        .options('defaultlocale', {
+            describe: 'The locale of the default value in TR statements and tags with a data-i18n attribute',
+            type: 'string',
+            default: 'en'
+        })
+        .wrap(72)
+        .argv;
+
+if (commandLineOptions.h) {
+    optimist.showHelp();
+    process.exit(1);
+}
+
+var _ = require('underscore'),
+    util = require('util'),
+    uglifyJs = require('uglify-js-papandreou'),
+    AssetGraph = require('../lib/AssetGraph'),
+    i18nTools = require('../lib/i18nTools'),
+    query = AssetGraph.query,
+    urlTools = require('assetgraph/lib/util/urlTools'),
+    uglifyAst = require('uglifyast'),
+    rootUrl = commandLineOptions.root && urlTools.urlOrFsPathToUrl(commandLineOptions.root, true),
+    localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
+        return localeId.split(",");
+    })).map(i18nTools.normalizeLocaleId),
+    defaultLocaleId = commandLineOptions.defaultlocale && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale),
+    localizationInfoObject = {},
+    inputUrls;
+
+(commandLineOptions.define ? _.flatten(_.flatten([commandLineOptions.define])) : []).forEach(function (define) {
+    var matchDefine = define.match(/^(\w+)(?:=(.*))?$/);
+    if (matchDefine) {
+        var valueAst;
+        if (matchDefine[2]) {
+            try {
+                valueAst = uglifyAst.parseExpression(matchDefine[2]);
+            } catch (e) {
+                console.error('Invalid --define ' + matchDefine[1] + ': Could not parse ' + matchDefine[2] + ' as a JavaScript expression. Missing shell escapes?');
+                console.error(e.message + ' (line ' + e.line + ', column ' + e.col + ')');
+                process.exit(1);
+            }
+        } else {
+            valueAst = ['name', 'true'];
+        }
+        defines[matchDefine[1]] = valueAst;
+    }
+});
+
+
+if (commandLineOptions._.length > 0) {
+    inputUrls = commandLineOptions._.map(function (urlOrFsPath) {
+        return urlTools.urlOrFsPathToUrl(urlOrFsPath, false);
+    });
+    if (!rootUrl) {
+        rootUrl = urlTools.findCommonUrlPrefix(inputUrls.filter(function (inputUrl) {
+            return /^file:/.test(inputUrl);
+        }));
+        if (rootUrl) {
+            console.warn("Guessing --root from input files: " + rootUrl);
+        }
+    }
+} else if (rootUrl && /^file:/.test(rootUrl)) {
+    inputUrls = [rootUrl + '**/*.html'];
+    console.warn('No input files specified, defaulting to ' + inputUrls[0]);
+} else {
+    throw new Error("No input files and no --root specified (or it isn't file:), cannot proceed");
+}
+
+new AssetGraph({root: rootUrl})
+    .on('afterTransform', function (transform, elapsedTime) {
+        console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
+    })
+    .on('warn', function (err) {
+        // These are way too noisy
+        if (err.relationType !== 'JavaScriptCommonJsRequire') {
+            console.warn((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.message);
+            if (commandLineOptions.stoponwarning) {
+                process.exit(1);
+            }
+        }
+    })
+    .on('error', function (err) {
+        console.error((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack);
+        process.exit(1);
+    })
+    .registerRequireJsConfig()
+    .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
+    .loadAssets(inputUrls)
+    .populate({
+        followRelations: query.or(
+            {to: {type: 'I18n'}},
+            {type: query.not(['JavaScriptInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']),
+                                                to: {url: query.not(/^https?:/)}})
+     })
+    .cloneForEachLocale({type: 'Html', isInitial: true}, {
+        localeIds: localeIds,
+        supportedLocaleIds: localeIds,
+        infoObject: localizationInfoObject,
+        defaultLocaleId: defaultLocaleId
+    })
+    .run(function (err) {
+        if (err) {
+            throw err;
+        }
+        var missingKeys = Object.keys(localizationInfoObject.localeIdsByMissingKey || {});
+        if (missingKeys.length > 0) {
+            console.warn('The following keys were missing:\n  ' + missingKeys.map(function (missingKey) {
+                return missingKey + ' (' + localizationInfoObject.localeIdsByMissingKey[missingKey].join(',') + ')';
+            }).join('\n  '));
+        }
+
+        var defaultValueMismatchKeys = Object.keys(localizationInfoObject.defaultValueMismatchesByKey || {});
+        if (defaultValueMismatchKeys.length > 0) {
+            console.warn('The following keys had mismatching default and/or ' + defaultLocaleId + ' values:\n  ' + defaultValueMismatchKeys.map(function (defaultValueMismatchKey) {
+                return defaultValueMismatchKey + ':\n    ' + util.inspect(localizationInfoObject.defaultValueMismatchesByKey[defaultValueMismatchKey], false, 99);
+            }).join('\n  '));
+        }
+        var whitespaceWarningKeys = Object.keys(localizationInfoObject.whitespaceWarningsByKey || {});
+        if (whitespaceWarningKeys.length > 0) {
+            console.warn('The following keys had leading or trailing whitespace:\n  ' + whitespaceWarningKeys.map(function (whitespaceWarningKey) {
+                return whitespaceWarningKey + ':\n    ' + util.inspect(localizationInfoObject.whitespaceWarningsByKey[whitespaceWarningKey], false, 99);
+            }).join('\n  '));
+        }
+    });
