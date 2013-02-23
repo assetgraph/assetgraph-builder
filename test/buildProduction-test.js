@@ -567,5 +567,39 @@ vows.describe('buildProduction').addBatch({
         'no JavaScript asset should contain an include': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'JavaScript', text: /INCLUDE/}).length, 0);
         }
+    },
+    'After loading a test case with a JavaScriptGetStaticUrl relation pointing at an image, then running the buildProduction transform with the cdnRoot option': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/GetStaticUrlImageOnCdn/'})
+                .on('error', this.callback)
+                .registerRequireJsConfig()
+                .loadAssets('index.html')
+                .buildProduction({
+                    cdnRoot: 'http://cdn.example.com/foo/'
+                })
+                .run(this.callback);
+        },
+        'the main Html asset should have the expected contents': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({url: /\/index\.html$/})[0].text, '<!DOCTYPE html>\n<html><head></head><body><script>var imgUrl="http://cdn.example.com/foo/d65dd5318f.png";</script></body></html>');
+        }
+    },
+    'After loading a test case with an @import rule in a stylesheet pulled in via require.js, then running the buildProduction transform': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/requiredCssImport/'})
+                .on('error', this.callback)
+                .registerRequireJsConfig()
+                .loadAssets('index.html')
+                .buildProduction()
+                .run(this.callback);
+        },
+        'the graph should contain no CssImport relations': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'CssImport'}).length, 0);
+        },
+        'the graph should contain a single Css asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Css'}).length, 1);
+        },
+        'the graph should have the expected contents': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Css'})[0].text, 'span{color:green}body{color:red}');
+        }
     }
 })['export'](module);
