@@ -568,9 +568,9 @@ vows.describe('buildProduction').addBatch({
             assert.equal(assetGraph.findAssets({type: 'JavaScript', text: /INCLUDE/}).length, 0);
         }
     },
-    'After loading a test case with a JavaScriptGetStaticUrl relation pointing at an image, then running the buildProduction transform with the cdnRoot option': {
+    'After loading a test case with a JavaScriptGetStaticUrl relation pointing at a flash file, then running the buildProduction transform with the cdnRoot option': {
         topic: function () {
-            new AssetGraph({root: __dirname + '/buildProduction/GetStaticUrlImageOnCdn/'})
+            new AssetGraph({root: __dirname + '/buildProduction/GetStaticUrlFlash/'})
                 .on('error', this.callback)
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
@@ -580,7 +580,23 @@ vows.describe('buildProduction').addBatch({
                 .run(this.callback);
         },
         'the main Html asset should have the expected contents': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({url: /\/index\.html$/})[0].text, '<!DOCTYPE html>\n<html><head></head><body><script>var imgUrl="http://cdn.example.com/foo/d65dd5318f.png";</script></body></html>');
+            assert.equal(assetGraph.findAssets({url: /\/index\.html$/})[0].text, '<!DOCTYPE html>\n<html><head></head><body><script>var swfUrl="static/d41d8cd98f.swf";</script></body></html>');
+        }
+    },
+    'After loading a test case with a JavaScriptGetStaticUrl relation pointing at a flash file, then running the buildProduction transform with the cdnRoot and cdnFlash options': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/GetStaticUrlFlash/'})
+                .on('error', this.callback)
+                .registerRequireJsConfig()
+                .loadAssets('index.html')
+                .buildProduction({
+                    cdnRoot: 'http://cdn.example.com/foo/',
+                    cdnFlash: true
+                })
+                .run(this.callback);
+        },
+        'the main Html asset should have the expected contents': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({url: /\/index\.html$/})[0].text, '<!DOCTYPE html>\n<html><head></head><body><script>var swfUrl="http://cdn.example.com/foo/d41d8cd98f.swf";</script></body></html>');
         }
     },
     'After loading a test case with an @import rule in a stylesheet pulled in via require.js, then running the buildProduction transform': {

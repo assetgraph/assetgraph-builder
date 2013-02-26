@@ -133,6 +133,11 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
+        .options('cdnflash', {
+            describe: 'Put all flash files on the cdnroot as well. WARNING: Might require CORS setup',
+            type: 'boolean',
+            default: false
+        })
         .options('stoponwarning', {
             describe: 'Whether to stop with a non-zero exit code when a warning is encountered',
             type: 'boolean',
@@ -262,6 +267,7 @@ new AssetGraph({root: rootUrl})
         asyncScripts: commandLineOptions.asyncscripts,
         deferScripts: commandLineOptions.deferscripts,
         cdnRoot: cdnRoot,
+        cdnFlash: commandLineOptions.cdnflash,
         prettyPrint: commandLineOptions.prettyprint
     })
     .writeAssetsToDisc({url: /^file:/, isLoaded: true}, outRoot)
