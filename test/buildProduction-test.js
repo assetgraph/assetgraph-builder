@@ -617,5 +617,18 @@ vows.describe('buildProduction').addBatch({
         'the graph should have the expected contents': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'Css'})[0].text, 'span{color:green}body{color:red}');
         }
+    },
+    'After loading a test case with a require.js paths config pointing at an http url': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/requireJsCdnPath/'})
+                .on('error', this.callback)
+                .registerRequireJsConfig()
+                .loadAssets('index.html')
+                .buildProduction()
+                .run(this.callback);
+        },
+        'the graph should contain 1 JavaScript asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 1);
+        }
     }
 })['export'](module);
