@@ -1,6 +1,7 @@
 var vows = require('vows'),
     assert = require('assert'),
     Stream = require('stream'),
+    _ = require('underscore'),
     gm = require('gm'),
     AssetGraph = require('../lib/AssetGraph');
 
@@ -629,6 +630,20 @@ vows.describe('buildProduction').addBatch({
         },
         'the graph should contain 1 JavaScript asset': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 1);
+        }
+    },
+    'After loading a test case using the less! plugin, then running the buildProduction transform': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/lessPlugin/'})
+                .registerRequireJsConfig()
+                .loadAssets('index.html')
+                .buildProduction({less: true})
+                .run(this.callback);
+        },
+        'the graph should contain a single Css asset with the expected contents': function (assetGraph) {
+            var cssAssets = assetGraph.findAssets({type: 'Css'});
+            assert.equal(cssAssets.length, 1);
+            assert.equal(cssAssets[0].text, 'body{color:tan;background-color:beige;text-indent:10px}');
         }
     }
 })['export'](module);
