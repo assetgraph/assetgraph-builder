@@ -30,7 +30,7 @@
         "underscore": "=1.2.0"
     },
     "optionalDependencies": {
-        "assetgraph-sprite": "=0.5.1",
+        "assetgraph-sprite": "=0.5.2",
         "histogram-papandreou": "=0.1.3-patch1"
     },
     "devDependencies": {
