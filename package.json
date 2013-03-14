@@ -31,7 +31,7 @@
     },
     "optionalDependencies": {
         "assetgraph-sprite": "=0.5.2",
-        "histogram-papandreou": "=0.1.3-patch1"
+        "histogram": "=0.1.4"
     },
     "devDependencies": {
         "gm": "=1.6.1",
