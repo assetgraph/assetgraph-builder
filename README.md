@@ -219,9 +219,9 @@ strings within JavaScript, `buildProduction` will also output multiple
 versions of your JavaScript, one per language, and it will be wired up
 so that eg. `index.da.html` will refer to the Danish JavaScript file.
 
-The i18n feature is optional. Enable it by specifying the `--locale`
+The i18n feature is optional. Enable it by specifying the `--locales`
 switch with a comma-separated list of locale ids to compile, for
-example `--locale en_US,da,fr,de`.
+example `--locales en_US,da,fr,de`.
 
 The translations themselves reside in separate JSON files with an
 `i18n` extension. Example syntax (`foo.i18n`):
