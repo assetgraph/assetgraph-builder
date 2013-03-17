@@ -645,5 +645,35 @@ vows.describe('buildProduction').addBatch({
             assert.equal(cssAssets.length, 1);
             assert.equal(cssAssets[0].text, 'body{color:tan;background-color:beige;text-indent:10px}');
         }
+    },
+    'After loading a test case with a GETSTATICURL that has a wildcard value, but only matches a single file': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/GetStaticUrlSingleFileWildcard/'})
+                .registerRequireJsConfig()
+                .loadAssets('index.html')
+                .buildProduction()
+                .run(this.callback);
+        },
+        'the graph should contain a single JavaScript asset with the expected contents': function (assetGraph) {
+            var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
+            assert.equal(javaScriptAssets.length, 1);
+            // assert.equal(javaScriptAssets[0].text, 'var fileName={File:"static/22324131a2.txt"}["File"];');
+            assert.equal(javaScriptAssets[0].text, 'var fileName="static/22324131a2.txt";');
+        }
+    },
+    'After loading a test case with a GETSTATICURL that has two wildcard values, but only matches a single file': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/GetStaticUrlSingleFileAndTwoWildcards/'})
+                .registerRequireJsConfig()
+                .loadAssets('index.html')
+                .buildProduction()
+                .run(this.callback);
+        },
+        'the graph should contain a single JavaScript asset with the expected contents': function (assetGraph) {
+            var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
+            assert.equal(javaScriptAssets.length, 1);
+            // assert.equal(javaScriptAssets[0].text, 'var fileName={dir:{File:"static/22324131a2.txt"}}["dir"]["File"];');
+            assert.equal(javaScriptAssets[0].text, 'var fileName="static/22324131a2.txt";');
+        }
     }
 })['export'](module);
