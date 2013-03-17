@@ -675,5 +675,19 @@ vows.describe('buildProduction').addBatch({
             // assert.equal(javaScriptAssets[0].text, 'var fileName={dir:{File:"static/22324131a2.txt"}}["dir"]["File"];');
             assert.equal(javaScriptAssets[0].text, 'var fileName="static/22324131a2.txt";');
         }
+    },
+    'After loading a test case where the require.js configuration is in an external file, but it is being used in an inline script': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/requireJsConfigurationInExternalFile/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction()
+                .run(this.callback);
+        },
+        'the graph should contain a single JavaScript asset with the contents of foo.js': function (assetGraph) {
+            var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
+            assert.equal(javaScriptAssets.length, 1);
+            assert.matches(javaScriptAssets[0].text, /alert\((['"])foo\1\)/);
+        }
     }
 })['export'](module);

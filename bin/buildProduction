@@ -244,7 +244,7 @@ new AssetGraph({root: rootUrl})
         console.error((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack);
         process.exit(1);
     })
-    .registerRequireJsConfig()
+    .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(inputUrls)
     .buildProduction({
