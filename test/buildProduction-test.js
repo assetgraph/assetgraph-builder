@@ -689,5 +689,19 @@ vows.describe('buildProduction').addBatch({
             assert.equal(javaScriptAssets.length, 1);
             assert.matches(javaScriptAssets[0].text, /alert\((['"])foo\1\)/);
         }
+    },
+    'After loading a test case for issue #54': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/issue54/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction()
+                .run(this.callback);
+        },
+        'the graph should contain a single JavaScript asset with the expected contents': function (assetGraph) {
+            var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
+            assert.equal(javaScriptAssets.length, 1);
+            assert.matches(javaScriptAssets[0].text, /return"backbone".*return"deepmodel".*"Yup/);
+        }
     }
 })['export'](module);
