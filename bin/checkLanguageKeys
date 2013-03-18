@@ -93,9 +93,11 @@ new AssetGraph({root: rootUrl})
         console.error((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack);
         process.exit(1);
     })
-    .registerRequireJsConfig()
+    .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(inputUrls)
+    .populate({from: {type: 'Html'}, followRelations: {type: 'HtmlScript', to: {url: /^file:/}}})
+    .assumeRequireJsConfigHasBeenFound()
     .populate({
         followRelations: query.or(
             {to: {type: 'I18n'}},

@@ -52,9 +52,11 @@ new AssetGraph({root: commandLineOptions.root})
         console.error((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack);
         process.exit(1);
     })
-    .registerRequireJsConfig()
+    .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
+    .populate({from: {type: 'Html'}, followRelations: {type: 'HtmlScript', to: {url: /^file:/}}})
+    .assumeRequireJsConfigHasBeenFound()
     .populate({
         followRelations: {type: AssetGraph.query.not('HtmlAnchor'), to: {url: AssetGraph.query.not(/^https?:/)}}
     })

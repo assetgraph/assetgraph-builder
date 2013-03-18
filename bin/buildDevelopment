@@ -31,7 +31,7 @@ new AssetGraph({root: commandLineOptions.root})
     .if(commandLineOptions.watch)
         .startOverIfAssetSourceFilesChange()
     .endif()
-    .registerRequireJsConfig()
+    .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .buildDevelopment({
