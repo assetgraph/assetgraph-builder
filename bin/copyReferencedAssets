@@ -34,6 +34,11 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
+        .options('less', {
+            describe: 'Translates .less files to CSS (so that the referenced images are found)',
+            type: 'boolean',
+            default: false
+        })
         .wrap(72)
         .argv;
 
@@ -113,6 +118,17 @@ new AssetGraph({root: rootUrl})
         });
     })
     .populate({followRelations: followRelationsQueryObj, startAssets: {type: 'Html', isFragment: true, isInitial: true}})
+    .if(commandLineOptions.less)
+        // Replace Less assets with their Css counterparts:
+        .compileLessToCss({type: 'Less', isLoaded: true})
+
+        // Remove the in-browser less compiler and its incoming relations,
+        // even if it's included from a CDN and thus hasn't been populated:
+        .removeRelations({to: {url: /\/less(?:-\d+\.\d+\.\d+)?(?:\.min)?\.js$/}}, {unresolved: true, detach: true, removeOrphan: true})
+
+        // Find and populate CssImage relations from the compiled Less assets:
+        .populate({from: {type: 'Css'}, followRelations: followRelationsQueryObj})
+    .endif()
     .writeAssetsToDisc({url: /^file:/, isLoaded: true}, outRoot)
     .writeStatsToStderr()
     .run(function (err) {
