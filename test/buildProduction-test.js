@@ -460,7 +460,7 @@ vows.describe('buildProduction').addBatch({
                 assert.equal(assetGraph.findRelations({type: 'HtmlInlineScriptTemplate'}).length, 2);
             },
             'index.html should have the expected contents': function (assetGraph) {
-                assert.equal(assetGraph.findAssets({url: /\/index\.html$/})[0].text, '<!DOCTYPE html>\n<html><head></head><body><script src="static/5f1ee05c9d.js"></script><script type="text/html" id="foo"><img data-bind="attr:{src:\'static/d65dd5318f.png\'}" /></script><script type="text/html" id="bar"><div><h1>bar.ko</h1></div></script></body></html>');
+                assert.equal(assetGraph.findAssets({url: /\/index\.html$/})[0].text, '<!DOCTYPE html>\n<html><head></head><body><script src="static/e40537cac3.js"></script><script type="text/html" id="foo"><img data-bind="attr:{src:\'static/d65dd5318f.png\'}" /></script><script type="text/html" id="bar"><div><h1>bar.ko</h1></div></script></body></html>');
             },
             'one of the HtmlInlineScriptTemplateRelations should have an id of "foo" and point at a KnockoutJsTemplate asset with the correct contents': function (assetGraph) {
                 var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'foo';}})[0];
