@@ -113,11 +113,6 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
-        .options('mangletoplevel', {
-            describe: 'Wraps your javascript code in a function literal that pulls global variables into local variables for better minification. WARNING: This may break your JS',
-            type: 'boolean',
-            default: false
-        })
         .options('manifest', {
             describe: 'Generates an appcache manifest file with all static assets included',
             type: 'boolean',
@@ -160,12 +155,12 @@ if (commandLineOptions.h) {
 
 var _ = require('underscore'),
     util = require('util'),
-    uglifyJs = require('uglify-js-papandreou'),
     AssetGraph = require('../lib/AssetGraph'),
+    uglifyJs = AssetGraph.JavaScript.uglifyJs,
+    uglifyAst = AssetGraph.JavaScript.uglifyAst,
     i18nTools = require('../lib/i18nTools'),
     query = AssetGraph.query,
     urlTools = require('assetgraph/lib/util/urlTools'),
-    uglifyAst = require('uglifyast'),
     outRoot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
     cdnRoot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
     fullCdnRoot = (/^\/\//.test(cdnRoot) ? 'http:' : '') + cdnRoot,
@@ -193,7 +188,7 @@ var _ = require('underscore'),
                 process.exit(1);
             }
         } else {
-            valueAst = ['name', 'true'];
+            valueAst = new uglifyJs.AST_True()
         }
         defines[matchDefine[1]] = valueAst;
     }
@@ -256,7 +251,6 @@ new AssetGraph({root: rootUrl})
         pngcrush: commandLineOptions.pngcrush || commandLineOptions.optimizeimages || commandLineOptions.optimizepngs,
         optipng: commandLineOptions.optipng || commandLineOptions.optimizeimages || commandLineOptions.optimizepngs,
         inlineSize: commandLineOptions.inlinesize,
-        mangleTopLevel: commandLineOptions.mangletoplevel,
         defines: defines,
         localeIds: localeIds,
         localeCookieName: commandLineOptions.localecookiename,

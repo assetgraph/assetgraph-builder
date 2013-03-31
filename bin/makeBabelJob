@@ -5,7 +5,6 @@ var path = require('path'),
     _ = require('underscore'),
     AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
-    uglifyAst = require('uglifyast'),
     urlTools = require('assetgraph/lib/util/urlTools'),
     mkpathSync = require('../lib/mkpathSync'),
     commandLineOptions = require('optimist')
