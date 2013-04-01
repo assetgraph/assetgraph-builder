@@ -760,20 +760,5 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'the Danish Html asset should have two outgoing HtmlImage relations': function (assetGraph) {
             assert.equal(assetGraph.findRelations({type: 'HtmlImage', from: {url: /\/index\.da\.html$/}}).length, 2);
         }
-    },
-    'After loading a test case with a script that uses LOCALEID in a conditional, then run the cloneForEachLocale transform': {
-        topic: function () {
-            new AssetGraph({root: __dirname + '/cloneForEachLocale/constantFoldLocaleId/'})
-                .loadAssets('index.html')
-                .populate()
-                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da']})
-                .run(this.callback);
-        },
-        'the script in the English Html asset should have the expected contents': function (assetGraph) {
-            assert.equal(assetGraph.findRelations({from: {url: /\/index\.en\.html$/}})[0].to.text, 'alert("foo");alert("baz");alert("quux");');
-        },
-        'the script in the Danish Html asset should have the expected contents': function (assetGraph) {
-            assert.equal(assetGraph.findRelations({from: {url: /\/index\.da\.html$/}})[0].to.text, 'alert("foo");alert("bar");alert("boz");alert("quux");');
-        }
     }
 })['export'](module);

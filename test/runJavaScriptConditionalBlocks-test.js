@@ -2,7 +2,7 @@ var vows = require('vows'),
     assert = require('assert'),
     AssetGraph = require('../lib/AssetGraph');
 
-vows.describe('executeJavaScriptConditionalBlocks').addBatch({
+vows.describe('runJavaScriptConditionalBlocks').addBatch({
     'After loading test case': {
         topic: function () {
             new AssetGraph({root: __dirname + '/runJavaScriptConditionalBlocks'})

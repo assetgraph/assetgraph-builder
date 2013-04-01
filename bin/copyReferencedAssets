@@ -49,7 +49,6 @@ if (commandLineOptions.h) {
 
 var _ = require('underscore'),
     util = require('util'),
-    uglifyJs = require('uglify-js-papandreou'),
     AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
     query = AssetGraph.query,

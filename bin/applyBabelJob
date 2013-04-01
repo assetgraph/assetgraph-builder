@@ -5,7 +5,6 @@ var path = require('path'),
     _ = require('underscore'),
     AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
-    uglifyAst = require('uglifyast'),
     urlTools = require('assetgraph/lib/util/urlTools'),
     mkpathSync = require('../lib/mkpathSync'),
     commandLineOptions = require('optimist')
@@ -150,35 +149,8 @@ new AssetGraph({root: commandLineOptions.root})
                 });
             }
         });
-
-        // Find the JavaScript => I18n relations that didn't exist when we started:
-        var newI18nRelationsByJavaScriptId = {};
-        assetGraph.findRelations({to: {type: 'I18n'}, from: {type: 'JavaScript'}}).forEach(function (i18nRelation) {
-            if (existingI18nRelations.indexOf(i18nRelation) === -1) {
-                (newI18nRelationsByJavaScriptId[i18nRelation.from.id] = newI18nRelationsByJavaScriptId[i18nRelation.from.id] || []).push(i18nRelation);
-            }
-        });
-
-        // Hack: Inject the new relations at the top of the file
-        _.each(newI18nRelationsByJavaScriptId, function (i18nRelations, javaScriptId) {
-            var javaScript = assetGraph.idIndex[javaScriptId],
-                originalText = fs.readFileSync(urlTools.fileUrlToFsPath(javaScript.url), javaScript.encoding),
-                oneIncludeStatements = i18nRelations.map(function (i18nRelation) {
-                    return "INCLUDE('" +
-                        urlTools.buildRelativeUrl(i18nRelation.from.url || assetGraph.findBaseAssetForRelation(i18nRelation).url, i18nRelation.to.url) +
-                        "');\n";
-                }).join(""),
-                matchSplitAfterLastOneIncludeLine = originalText.match(/^([\s\S]*one\.include[^\n]*\n)([\s\S]*)$/),
-                patchedText;
-            if (matchSplitAfterLastOneIncludeLine) {
-                patchedText = matchSplitAfterLastOneIncludeLine[1] + "\n" + oneIncludeStatements + matchSplitAfterLastOneIncludeLine[2];
-            } else {
-                patchedText = oneIncludeStatements + originalText;
-            }
-            fs.writeFileSync(urlTools.fileUrlToFsPath(javaScript.url), patchedText, javaScript.encoding);
-        });
     })
     .prettyPrintAssets({type: 'I18n', isDirty: true})
     .writeStatsToStderr()
-    .writeAssetsToDisc({type: 'I18n', isDirty: true})
+    .writeAssetsToDisc({type: ['I18n', 'JavaScript'], isDirty: true})
     .run();
