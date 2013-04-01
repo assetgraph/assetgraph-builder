@@ -717,7 +717,7 @@ vows.describe('buildProduction').addBatch({
         'the graph should contain a single JavaScript asset with the expected contents': function (assetGraph) {
             var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
             assert.equal(javaScriptAssets.length, 1);
-            assert.matches(javaScriptAssets[0].text, /define\(\"\/templates\/header\.html\".*require\(\[\"\/templates\/header\.html/);
+            assert.matches(javaScriptAssets[0].text, /define\(\"..\/templates\/header\.html\".*require\(\[\"..\/templates\/header\.html/);
         }
     }
 })['export'](module);
