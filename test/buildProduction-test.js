@@ -61,19 +61,19 @@ vows.describe('buildProduction').addBatch({
         },
         'the English Html asset should have the expected contents': function (assetGraph) {
             assert.equal(assetGraph.findAssets({url: /\/index\.en\.html$/})[0].text,
-                         '<!DOCTYPE html>\n<html lang="en" manifest="index.appcache"><head><meta http-equiv="Content-Version" content="The version number" /><title>The English title</title><style type="text/css">body{color:teal;color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="http://cdn.example.com/foo/e449e5e94f.js" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">The English link text</a><img src="http://cdn.example.com/foo/3fb51b1ae1.gif" /></script></body></html>');
+                         '<!DOCTYPE html>\n<html lang="en" manifest="index.appcache"><head><meta http-equiv="Content-Version" content="The version number" /><title>The English title</title><style type="text/css">body{color:teal;color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="http://cdn.example.com/foo/08efb11c6c.js" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">The English link text</a><img src="http://cdn.example.com/foo/3fb51b1ae1.gif" /></script></body></html>');
         },
         'the Danish Html asset should have the expected contents': function (assetGraph) {
             assert.equal(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text,
-                         '<!DOCTYPE html>\n<html lang="da" manifest="index.appcache"><head><meta http-equiv="Content-Version" content="The version number" /><title>Den danske titel</title><style type="text/css">body{color:teal;color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="http://cdn.example.com/foo/d6d599334f.js" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/3fb51b1ae1.gif" /></script></body></html>');
+                         '<!DOCTYPE html>\n<html lang="da" manifest="index.appcache"><head><meta http-equiv="Content-Version" content="The version number" /><title>Den danske titel</title><style type="text/css">body{color:teal;color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="http://cdn.example.com/foo/6055ffacf0.js" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/3fb51b1ae1.gif" /></script></body></html>');
         },
         'the English JavaScript should have the expected contents': function (assetGraph) {
             var afterRequireJs = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.text.replace(/^.*req\(cfg\)\}\}\)\(this\),/, '');
-            assert.equal(afterRequireJs, 'alert("something else"),alert("shimmed"),define("amdDependency",function(){console.warn("here I AM(D)")}),require.config({shim:{shimmed:["somethingElse"]}}),require(["amdDependency"],function(){alert("Hello!")});');
+            assert.equal(afterRequireJs, 'alert("something else"),define("somethingElse",function(){}),alert("shimmed"),define("shimmed",function(){}),define("amdDependency",function(){console.warn("here I AM(D)")}),require.config({shim:{shimmed:["somethingElse"]}}),require(["shimmed","amdDependency"],function(){alert("Hello!")}),define("main",function(){});');
         },
         'the Danish JavaScript should have the expected contents': function (assetGraph) {
             var afterRequireJs = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.text.replace(/^.*req\(cfg\)\}\}\)\(this\),/, '');
-            assert.equal(afterRequireJs, 'alert("something else"),alert("shimmed"),define("amdDependency",function(){console.warn("here I AM(D)")}),require.config({shim:{shimmed:["somethingElse"]}}),require(["amdDependency"],function(){alert("Hej!")});');
+            assert.equal(afterRequireJs, 'alert("something else"),define("somethingElse",function(){}),alert("shimmed"),define("shimmed",function(){}),define("amdDependency",function(){console.warn("here I AM(D)")}),require.config({shim:{shimmed:["somethingElse"]}}),require(["shimmed","amdDependency"],function(){alert("Hej!")}),define("main",function(){});');
         },
         'someTextFile.txt should be found at /static/c7429a1035.txt (not on the CDN)': function (assetGraph) {
             assert.equal(assetGraph.findAssets({url: /\/static\/c7429a1035\.txt$/}).length, 1);
@@ -96,8 +96,8 @@ vows.describe('buildProduction').addBatch({
                     '# ' + htmlCacheManifestRelations[0].from.fileName,
                     'static/c7429a1035.txt',
                     htmlAsset.fileName === 'index.da.html' ?
-                        'http://cdn.example.com/foo/d6d599334f.js' :
-                        'http://cdn.example.com/foo/e449e5e94f.js',
+                        'http://cdn.example.com/foo/6055ffacf0.js' :
+                        'http://cdn.example.com/foo/08efb11c6c.js',
                     'http://cdn.example.com/foo/3fb51b1ae1.gif',
                     'NETWORK:',
                     '*',
@@ -717,7 +717,7 @@ vows.describe('buildProduction').addBatch({
         'the graph should contain a single JavaScript asset with the expected contents': function (assetGraph) {
             var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
             assert.equal(javaScriptAssets.length, 1);
-            assert.matches(javaScriptAssets[0].text, /define\(\"..\/templates\/header\.html\".*require\(\[\"..\/templates\/header\.html/);
+            assert.matches(javaScriptAssets[0].text, /define\(\"templates\/header\.html\".*require\(\[\"templates\/header\.html/);
         }
     }
 })['export'](module);
