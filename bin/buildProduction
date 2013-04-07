@@ -268,7 +268,7 @@ new AssetGraph({root: rootUrl})
         deferScripts: commandLineOptions.deferscripts,
         cdnRoot: cdnRoot,
         cdnFlash: commandLineOptions.cdnflash,
-        prettyPrint: commandLineOptions.prettyprint
+        prettyPrint: commandLineOptions.nocompress
     })
     .writeAssetsToDisc({url: /^file:/, isLoaded: true}, outRoot)
     .if(cdnRoot)
