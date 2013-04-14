@@ -6,7 +6,7 @@ var vows = require('vows'),
     AssetGraph = require('../lib/AssetGraph');
 
 vows.describe('buildProduction').addBatch({
-    'After loading test case and running the buildProduction transform': {
+    'After loading a simple test case and running the buildProduction transform': {
         topic: function () {
             new AssetGraph({root: __dirname + '/buildProduction/simple/'})
                 .on('error', this.callback)
@@ -718,6 +718,20 @@ vows.describe('buildProduction').addBatch({
             var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
             assert.equal(javaScriptAssets.length, 1);
             assert.matches(javaScriptAssets[0].text, /define\(\"templates\/header\.html\".*require\(\[\"templates\/header\.html/);
+        }
+    },
+    'After loading a test case for issue #60': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/issue60/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction()
+                .run(this.callback);
+        },
+        'the graph should contain a single JavaScript asset with the expected contents': function (assetGraph) {
+            var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
+            assert.equal(javaScriptAssets.length, 1);
+            assert.matches(javaScriptAssets[0].text, /require.config\(\{baseUrl:"\/js"\}\),define\("modules\/utils",function\(\)\{alert\("These are the utils!"\)\}\),require\(\["modules\/utils"\],function\(\)\{console.log\("Ready."\)\}\),define\("main",function\(\)\{\}\);/);
         }
     }
 })['export'](module);
