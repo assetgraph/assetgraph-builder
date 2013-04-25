@@ -133,6 +133,11 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
+        .options('sharedbundles', {
+            describe: 'Try to create shared bundles including commin files across multiple pages.',
+            type: 'boolean',
+            default: false
+        })
         .options('stoponwarning', {
             describe: 'Whether to stop with a non-zero exit code when a warning is encountered',
             type: 'boolean',
@@ -262,7 +267,8 @@ new AssetGraph({root: rootUrl})
         deferScripts: commandLineOptions.deferscripts,
         cdnRoot: cdnRoot,
         cdnFlash: commandLineOptions.cdnflash,
-        prettyPrint: commandLineOptions.nocompress
+        prettyPrint: commandLineOptions.nocompress,
+        sharedBundles: commandLineOptions.sharedbundles
     })
     .writeAssetsToDisc({url: /^file:/, isLoaded: true}, outRoot)
     .if(cdnRoot)
