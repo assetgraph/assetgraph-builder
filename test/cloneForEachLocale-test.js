@@ -370,7 +370,7 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
                 .populate()
-                .bundleRequireJs()
+                .flattenRequireJs()
                 .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da']})
                 .run(this.callback);
         },
@@ -378,8 +378,11 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             assert.equal(assetGraph.findAssets({type: 'Html', isFragment: true}).length, 2);
         },
         'the TR in the Danish Knockout.js template should be replaced with "Den danske værdi"': function (assetGraph) {
-            var danishRequireJsMain = assetGraph.findAssets({type: 'JavaScript', incoming: {type: 'HtmlRequireJsMain', from: {url: /\/index\.da\.html$/}}})[0],
-                danishKnockoutJsTemplate = assetGraph.findRelations({from: danishRequireJsMain, to: {type: 'Html', isFragment: true}})[0].to;
+            var danishKnockoutJsTemplate = assetGraph.findRelations({type: 'JavaScriptGetText', from: function (asset) {
+                return asset.incomingRelations.some(function (incomingRelation) {
+                    return incomingRelation.from === assetGraph.findAssets({url: /\/index\.da\.html$/})[0];
+                });
+            }})[0].to;
             assert.matches(danishKnockoutJsTemplate.text, /Den danske værdi/);
         }
     },

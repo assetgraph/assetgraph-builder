@@ -61,11 +61,11 @@ vows.describe('buildProduction').addBatch({
         },
         'the English Html asset should have the expected contents': function (assetGraph) {
             assert.equal(assetGraph.findAssets({url: /\/index\.en\.html$/})[0].text,
-                         '<!DOCTYPE html>\n<html lang="en" manifest="index.appcache"><head><meta http-equiv="Content-Version" content="The version number" /><title>The English title</title><style type="text/css">body{color:teal;color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="http://cdn.example.com/foo/fab25e610e.js" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">The English link text</a><img src="http://cdn.example.com/foo/3fb51b1ae1.gif" /></script></body></html>');
+                         '<!DOCTYPE html>\n<html lang="en" manifest="index.appcache"><head><meta http-equiv="Content-Version" content="The version number" /><title>The English title</title><style type="text/css">body{color:teal;color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="http://cdn.example.com/foo/9b681e4578.js" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">The English link text</a><img src="http://cdn.example.com/foo/3fb51b1ae1.gif" /></script></body></html>');
         },
         'the Danish Html asset should have the expected contents': function (assetGraph) {
             assert.equal(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text,
-                         '<!DOCTYPE html>\n<html lang="da" manifest="index.appcache"><head><meta http-equiv="Content-Version" content="The version number" /><title>Den danske titel</title><style type="text/css">body{color:teal;color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="http://cdn.example.com/foo/d874f99b1c.js" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/3fb51b1ae1.gif" /></script></body></html>');
+                         '<!DOCTYPE html>\n<html lang="da" manifest="index.appcache"><head><meta http-equiv="Content-Version" content="The version number" /><title>Den danske titel</title><style type="text/css">body{color:teal;color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="http://cdn.example.com/foo/55219fa076.js" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/3fb51b1ae1.gif" /></script></body></html>');
         },
         'the English JavaScript should have the expected contents': function (assetGraph) {
             var afterRequireJs = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.text.replace(/^.*req\(cfg\)\}\}\)\(this\),/, '');
@@ -96,8 +96,8 @@ vows.describe('buildProduction').addBatch({
                     '# ' + htmlCacheManifestRelations[0].from.fileName,
                     'static/c7429a1035.txt',
                     htmlAsset.fileName === 'index.da.html' ?
-                        'http://cdn.example.com/foo/d874f99b1c.js' :
-                        'http://cdn.example.com/foo/fab25e610e.js',
+                        'http://cdn.example.com/foo/55219fa076.js' :
+                        'http://cdn.example.com/foo/9b681e4578.js',
                     'http://cdn.example.com/foo/3fb51b1ae1.gif',
                     'NETWORK:',
                     '*',
@@ -732,6 +732,37 @@ vows.describe('buildProduction').addBatch({
             var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
             assert.equal(javaScriptAssets.length, 1);
             assert.matches(javaScriptAssets[0].text, /require.config\(\{baseUrl:"\/js"\}\),define\("modules\/utils",function\(\)\{alert\("These are the utils!"\)\}\),require\(\["modules\/utils"\],function\(\)\{console.log\("Ready."\)\}\),define\("main",function\(\)\{\}\);/);
+        }
+    },
+    'After loading a test case with multiple pages pulling in the same AMD modules, then running the buildProduction transform with sharedBundles:true': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/multiPageRequireJs/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index*.html')
+                .buildProduction({sharedBundles: true})
+                .run(this.callback);
+        },
+        'the graph should contain 3 JavaScript assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 3);
+        },
+        'one of the JavaScript assets should be shared and contain require.js and the definitions of the common modules': function (assetGraph) {
+            var commonJavaScripts = assetGraph.findAssets(function (asset) {
+                return asset.type === 'JavaScript' && asset.incomingRelations.length > 1;
+            });
+            assert.equal(commonJavaScripts.length, 1);
+            assert.matches(commonJavaScripts[0].text, /2\.1\.5/);
+            assert.matches(commonJavaScripts[0].text, /alert\(['"]common1/);
+            assert.matches(commonJavaScripts[0].text, /alert\(['"]common2/);
+        },
+        'the two main scripts should be inlined and contain only the require(...) part': function (assetGraph) {
+            [1, 2].forEach(function (pageNumber) {
+                var htmlAsset = assetGraph.findAssets({fileName: 'index' + pageNumber + '.html'})[0];
+                assert.ok(htmlAsset);
+                var htmlScripts = assetGraph.findRelations({type: 'HtmlScript', from: htmlAsset});
+                assert.equal(htmlScripts.length, 2);
+                assert.equal(htmlScripts[1].to.isInline, true);
+                assert.equal(htmlScripts[1].to.text, 'require(["common1","common2"],function(){alert("main' + pageNumber + '")}),define("main' + pageNumber + '",function(){});');
+            });
         }
     }
 })['export'](module);
