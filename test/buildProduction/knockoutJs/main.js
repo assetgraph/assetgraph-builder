@@ -1,3 +1,3 @@
-require(['tpl!templates/foo.ko', 'module', 'tpl!templates/bar.ko'], function () {
+require(['tpl!templates/foo.ko', 'someModule', 'tpl!templates/bar.ko'], function () {
     alert("Alles klar!");
 });
