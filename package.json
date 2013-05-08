@@ -44,6 +44,7 @@
         "lib": "./lib",
         "bin": "./bin"
     },
+    "tag": "v1.7",
     "publishConfig": {
         "registry": "http://registry.npmjs.org/"
     },
