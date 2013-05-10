@@ -213,7 +213,7 @@ AssetGraph-builder supports internationalization of strings in your
 HTML and JavaScript code via a custom syntax. The approach is to do as
 much as possible at "compile time". For each language you want to
 support, `buildProduction` outputs a separate html file,
-eg. `index.en_US.html`, `index.da.html`, and so on. If you're using
+eg. `index.en_us.html`, `index.da.html`, and so on. If you're using
 the `TR`/`TRPAT` syntax for getting language-specific
 strings within JavaScript, `buildProduction` will also output multiple
 versions of your JavaScript, one per language, and it will be wired up
@@ -221,7 +221,7 @@ so that eg. `index.da.html` will refer to the Danish JavaScript file.
 
 The i18n feature is optional. Enable it by specifying the `--locales`
 switch with a comma-separated list of locale ids to compile, for
-example `--locales en_US,da,fr,de`.
+example `--locales en_us,da,fr,de`.
 
 The translations themselves reside in separate JSON files with an
 `i18n` extension. Example syntax (`foo.i18n`):
