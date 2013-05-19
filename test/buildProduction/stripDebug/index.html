@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <script>
+            function foo(console) {
+                console.log("foo"); // Should be left alone
+            }
+            console.warn("foo");
+            var foo = "bar";
+            hey.log("foo");
+            debugger;
+            foo = 123;
+            console.log("foo");
+            alert(console.log("blah")); // This non-statement console.log should be left alone
+        </script>
+    </body>
+</html>

@@ -764,5 +764,18 @@ vows.describe('buildProduction').addBatch({
                 assert.equal(htmlScripts[1].to.text, 'require(["common1","common2"],function(){alert("main' + pageNumber + '")}),define("main' + pageNumber + '",function(){});');
             });
         }
+    },
+    'After loading a with a JavaScript asset that contains debugger statement and console.log, then run buildProduction with stripDebug:true': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/stripDebug/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction({stripDebug: true})
+                .run(this.callback);
+        },
+        'the JavaScript asset should should have the statement-level debugger and console.* calls removed': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript'})[0].text,
+                         'function foo(o){o.log("foo")}var foo="bar";hey.log("foo"),foo=123,alert(console.log("blah"));');
+        }
     }
 })['export'](module);

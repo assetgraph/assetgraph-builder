@@ -138,6 +138,11 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
+        .options('stripdebug', {
+            describe: 'Whether to strip statement level console.*() calls and debugger statements from JavaScript assets',
+            type: 'boolean',
+            default: false
+        })
         .options('stoponwarning', {
             describe: 'Whether to stop with a non-zero exit code when a warning is encountered',
             type: 'boolean',
@@ -268,7 +273,8 @@ new AssetGraph({root: rootUrl})
         cdnRoot: cdnRoot,
         cdnFlash: commandLineOptions.cdnflash,
         prettyPrint: commandLineOptions.nocompress,
-        sharedBundles: commandLineOptions.sharedbundles
+        sharedBundles: commandLineOptions.sharedbundles,
+        stripDebug: commandLineOptions.stripdebug
     })
     .writeAssetsToDisc({url: /^file:/, isLoaded: true}, outRoot)
     .if(cdnRoot)
