@@ -3,6 +3,7 @@ var vows = require('vows'),
     Stream = require('stream'),
     _ = require('underscore'),
     gm = require('gm'),
+    vm = require('vm'),
     AssetGraph = require('../lib/AssetGraph');
 
 vows.describe('buildProduction').addBatch({
@@ -786,6 +787,29 @@ vows.describe('buildProduction').addBatch({
         },
         'the graph should contain one JavaScript asset': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 1);
+        }
+    },
+    'After loading a test case for issue #69': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/issue69/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction()
+                .writeAssetsToDisc({url: /^file:/, isLoaded: true}, 'file://' + __dirname + '/../foo/')
+                .run(this.callback);
+        },
+        'the graph should contain a single JavaScript asset with the expected contents': function (assetGraph) {
+            var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
+            assert.equal(javaScriptAssets.length, 1);
+            assert.matches(javaScriptAssets[0].text, /SockJS=[\s\S]*define\("main",function\(\)\{\}\);/);
+        },
+        'the JavaScript asset should not throw an error when evaluated in a new context': function (assetGraph) {
+            var html = assetGraph.findAssets({type: 'Html'})[0],
+                javaScript = assetGraph.findAssets({type: 'JavaScript'})[0],
+                context = vm.createContext();
+            require('assetgraph/lib/util/extendWithGettersAndSetters')(context, html.parseTree.createWindow());
+            context.window = context;
+            vm.runInContext(javaScript.text, context, javaScript.url);
         }
     }
 })['export'](module);
