@@ -21,7 +21,9 @@ var ignoreByAttributeName = {};
     'translate',
     'seamless', 'src', 'href', 'width', 'height', 'cellspacing', 'cellpadding',
     'data-bind', 'sizes', 'type', 'rel', 'charset', 'for', 'name', 'content', 'rows', 'cols', 'maxlength', 'data-dropdown', 'target', 'disabled', 'enctype',
-    'data-toggle', 'frameborder', 'visible', 'role', 'hidefocus', 'autocomplete', 'data-elastic',
+    'data-toggle',
+    'data-tooltip-placement', // One.com specific
+    'frameborder', 'visible', 'role', 'hidefocus', 'autocomplete', 'data-elastic',
     'data-i18n'
 ].forEach(function (attributeName) {
     ignoreByAttributeName[attributeName] = true;
