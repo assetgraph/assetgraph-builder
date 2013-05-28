@@ -5,7 +5,7 @@ var path = require('path'),
     _ = require('underscore'),
     AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
-    uglifyAst = require('uglifyast'),
+    uglifyAst = AssetGraph.JavaScript.uglifyAst,
     urlTools = require('assetgraph/lib/util/urlTools'),
     mkpathSync = require('../lib/mkpathSync'),
     commandLineOptions = require('optimist')
@@ -64,7 +64,7 @@ new AssetGraph({root: commandLineOptions.root})
         assetGraph.findAssets({isHtml: true}).forEach(function (htmlAsset) {
             var document = htmlAsset.parseTree;
             if (!document.body) {
-                document = new AssetGraph.assets.Html({text: '<html><body>' + document.outerHTML + '</body></html>'}).parseTree;
+                document = new AssetGraph.Html({text: '<html><body>' + document.outerHTML + '</body></html>'}).parseTree;
             }
 
             var occurrences = [];
@@ -76,13 +76,13 @@ new AssetGraph({root: commandLineOptions.root})
 
             var warnings = [];
 
-            document.querySelectorAll('*').forEach(function (element) {
+            Array.prototype.slice.call(document.querySelectorAll('*')).forEach(function (element) {
                 var elementName = element.nodeName.toLowerCase();
                 if (ignoreByTagName[elementName]) {
                     return;
                 }
 
-                var hasNonWhitespaceChildNodes = element.childNodes.some(function (childNode) {
+                var hasNonWhitespaceChildNodes = Array.prototype.slice.call(element.childNodes).some(function (childNode) {
                     return childNode.nodeType === childNode.TEXT_NODE && !/^[\s\n]*$|^\d+$/.test(childNode.nodeValue);
                 });
                 var i18nAttributes = _.toArray(element.attributes).filter(function (attribute) {
