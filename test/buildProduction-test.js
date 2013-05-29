@@ -774,8 +774,8 @@ vows.describe('buildProduction').addBatch({
                 .run(this.callback);
         },
         'the JavaScript asset should should have the statement-level debugger and console.* calls removed': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({type: 'JavaScript'})[0].text,
-                         'function foo(o){o.log("foo")}var foo="bar";hey.log("foo"),foo=123,alert(console.log("blah"));');
+            assert.matches(assetGraph.findAssets({type: 'JavaScript'})[0].text,
+                          /function foo\(([a-z])\)\{\1\.log\("foo"\)\}var foo="bar";hey\.log\("foo"\),foo=123,alert\(console.log\("blah"\)\);/);
         }
     }
 })['export'](module);
