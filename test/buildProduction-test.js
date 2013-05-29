@@ -777,5 +777,17 @@ vows.describe('buildProduction').addBatch({
             assert.matches(assetGraph.findAssets({type: 'JavaScript'})[0].text,
                           /function foo\(([a-z])\)\{\1\.log\("foo"\)\}var foo="bar";hey\.log\("foo"\),foo=123,alert\(console.log\("blah"\)\);/);
         }
+    },
+    'After loading a test where some require.js-loaded JavaScript files could become orphaned, then run the buildProduction transform': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/requireJsOrphans/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction()
+                .run(this.callback);
+        },
+        'the graph should contain one JavaScript asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 1);
+        }
     }
 })['export'](module);
