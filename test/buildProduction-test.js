@@ -803,13 +803,33 @@ vows.describe('buildProduction').addBatch({
             assert.equal(javaScriptAssets.length, 1);
             assert.matches(javaScriptAssets[0].text, /SockJS=[\s\S]*define\("main",function\(\)\{\}\);/);
         },
-        'the JavaScript asset should not throw an error when evaluated in a new context': function (assetGraph) {
-            var html = assetGraph.findAssets({type: 'Html'})[0],
-                javaScript = assetGraph.findAssets({type: 'JavaScript'})[0],
-                context = vm.createContext();
-            require('assetgraph/lib/util/extendWithGettersAndSetters')(context, html.parseTree.createWindow());
-            context.window = context;
-            vm.runInContext(javaScript.text, context, javaScript.url);
+        'then run the JavaScript asset in a jsdom window and wait for the alert call': {
+            topic: function (assetGraph) {
+                var html = assetGraph.findAssets({type: 'Html'})[0],
+                    javaScript = assetGraph.findAssets({type: 'JavaScript'})[0],
+                    context = vm.createContext(),
+                    callback = this.callback;
+                require('assetgraph/lib/util/extendWithGettersAndSetters')(context, html.parseTree.createWindow());
+                context.window = context;
+                context.alert = function (message) {
+                    if (/^got sockjs/.test(message)) {
+                        process.nextTick(function () {
+                            callback(null, null);
+                        });
+                    }
+                };
+                context.errorInstance = null;
+                try {
+                    vm.runInContext(javaScript.text, context, javaScript.url);
+                } catch (e) {
+                    process.nextTick(function () {
+                        callback(e);
+                    });
+                }
+            },
+            'no JavaScript error should have occurred during the execution': function (err, result) {
+                assert.isNull(err);
+            }
         }
     }
 })['export'](module);
