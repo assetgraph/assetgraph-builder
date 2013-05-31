@@ -795,7 +795,6 @@ vows.describe('buildProduction').addBatch({
                 .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
                 .loadAssets('index.html')
                 .buildProduction()
-                .writeAssetsToDisc({url: /^file:/, isLoaded: true}, 'file://' + __dirname + '/../foo/')
                 .run(this.callback);
         },
         'the graph should contain a single JavaScript asset with the expected contents': function (assetGraph) {
