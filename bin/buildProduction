@@ -148,6 +148,10 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
+        .options('repl', {
+            describe: 'Start the REPL after a particular transform (or "error")',
+            type: 'string'
+        })
         .options('version', {
             describe: 'Adds or updates <meta http-equiv="Content-Version" content="..."> to the specified value. Use {0} to refer to the current value, eg. --version {0}/production or --version `git describe --long --tags --always --dirty 2>/dev/null || echo unknown`',
             type: 'string'
@@ -232,22 +236,40 @@ if (commandLineOptions.exclude) {
         ')');
 }
 
+var startReplRegExp;
+if (commandLineOptions.repl) {
+    startReplRegExp = new RegExp(_.flatten(_.flatten([commandLineOptions.repl]).map(function (transformName) {
+        return transformName.split(",");
+    })).map(function (transformName) {
+        return transformName.replace(/[\.\+\{\}\[\]\(\)\?\^\$]/g, '\\$&');
+    }).join('|'));
+}
+
 new AssetGraph({root: rootUrl})
     .on('afterTransform', function (transform, elapsedTime) {
         console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
+        if (startReplRegExp && startReplRegExp.test(transform.name)) {
+            this.transformQueue.transforms.unshift(AssetGraph.transforms.startRepl());
+        }
     })
     .on('warn', function (err) {
         // These are way too noisy
         if (err.relationType !== 'JavaScriptCommonJsRequire') {
             console.warn((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.message);
-            if (commandLineOptions.stoponwarning) {
+            if (startReplRegExp && startReplRegExp.test('warn')) {
+                this.transformQueue.transforms.unshift(AssetGraph.transforms.startRepl());
+            } else if (commandLineOptions.stoponwarning) {
                 process.exit(1);
             }
         }
     })
     .on('error', function (err) {
         console.error((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack);
-        process.exit(1);
+        if (startReplRegExp && startReplRegExp.test('error')) {
+            this.transformQueue.transforms.unshift(AssetGraph.transforms.startRepl());
+        } else {
+            process.exit(1);
+        }
     })
     .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
