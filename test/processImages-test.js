@@ -32,9 +32,9 @@ vows.describe('transforms.processImages').addBatch({
             },
             'the urls of the image assets should have the processing instructions removed from the query string, but added before the extension': function (assetGraph) {
                 assert.deepEqual(_.pluck(assetGraph.findAssets({isImage: true}), 'url').sort(), [
-                    assetGraph.root + 'purplealpha24bit.pngquant-256.png',
+                    assetGraph.root + 'purplealpha24bit.pngquant=256.png',
                     assetGraph.root + 'redalpha24bit.png?irrelevant',
-                    assetGraph.root + 'redalpha24bit.pngquant-128.png'
+                    assetGraph.root + 'redalpha24bit.pngquant=128.png'
                 ]);
             },
             'the first two CssImage relations should be in the same cssRule': function (assetGraph) {
@@ -90,8 +90,8 @@ vows.describe('transforms.processImages').addBatch({
             },
             'the urls of the image assets should have the processing instructions removed from the query string, but added before the extension': function (assetGraph) {
                 assert.deepEqual(_.pluck(assetGraph.findAssets({isImage: true}), 'url').sort(), [
-                    assetGraph.root + 'myImage.resize-200-200.png',
-                    assetGraph.root + 'myImage.resize-400-400.png#foo',
+                    assetGraph.root + 'myImage.resize=200-200.png',
+                    assetGraph.root + 'myImage.resize=400-400.png#foo',
                     assetGraph.root + 'myImage.png'
                 ].sort());
             }
@@ -177,7 +177,7 @@ vows.describe('transforms.processImages').addBatch({
                     .run(this.callback);
             },
             'redalpha24bit.pngquant-256.png should be a smaller PNG': function (assetGraph) {
-                var redAlpha24BitPngquanted = assetGraph.findAssets({url: /\/redalpha24bit\.pngquant-256\.png$/})[0];
+                var redAlpha24BitPngquanted = assetGraph.findAssets({url: /\/redalpha24bit\.pngquant=256\.png$/})[0];
                 assert.deepEqual(_.toArray(redAlpha24BitPngquanted.rawSrc.slice(0, 4)), [0x89, 0x50, 0x4e, 0x47]);
                 assert.lesser(redAlpha24BitPngquanted.rawSrc.length, 6037);
             },
