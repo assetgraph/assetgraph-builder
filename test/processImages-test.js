@@ -127,7 +127,7 @@ vows.describe('transforms.processImages').addBatch({
             },
             'the url of the gif should be updated correctly': function (assetGraph) {
                 assert.deepEqual(_.pluck(assetGraph.findAssets({isImage: true}), 'url').sort(), [
-                    assetGraph.root + 'foo.gif'
+                    assetGraph.root + 'foo.setFormat=gif.gif'
                 ]);
             }
         }
