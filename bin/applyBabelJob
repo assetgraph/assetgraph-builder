@@ -50,7 +50,7 @@ new AssetGraph({root: commandLineOptions.root})
             to: {url: AssetGraph.query.not(/^https?:/)}
         }
     })
-    .queue(function (assetGraph) {
+    .queue(function importLanguageKeys(assetGraph) {
         var translationsByKeyAndLocaleId = {},
             existingI18nRelations = assetGraph.findRelations({to: {type: 'I18n'}, from: {type: 'JavaScript'}}),
             occurrencesByKey = i18nTools.findOccurrences(assetGraph, assetGraph.findAssets({type: 'Html', isInitial: true})),
