@@ -20,7 +20,7 @@ var ignoreByAttributeName = {};
     'accesskey', 'class', 'contenteditable', 'contextmenu', 'dir', 'draggable', 'dropzone', 'hidden', 'id', 'lang', 'spellcheck', 'style', 'tabindex',
     'translate',
     'seamless', 'src', 'href', 'width', 'height', 'cellspacing', 'cellpadding',
-    'data-bind', 'sizes', 'type', 'rel', 'charset', 'for', 'name', 'content', 'rows', 'cols', 'maxlength', 'data-dropdown', 'target', 'disabled', 'enctype', 'action', 'method',
+    'data-bind', 'sizes', 'type', 'rel', 'charset', 'for', 'name', 'content', 'rows', 'cols', 'maxlength', 'data-dropdown', 'target', 'disabled', 'enctype', 'action', 'method', 'http-equiv',
     'data-toggle',
     'data-tooltip-placement', // One.com specific
     'frameborder', 'visible', 'role', 'hidefocus', 'autocomplete', 'data-elastic',
