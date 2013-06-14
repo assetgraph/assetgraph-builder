@@ -763,5 +763,37 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
         'the Danish Html asset should have two outgoing HtmlImage relations': function (assetGraph) {
             assert.equal(assetGraph.findRelations({type: 'HtmlImage', from: {url: /\/index\.da\.html$/}}).length, 2);
         }
+    },
+    'After loading simple test case': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/svg/'})
+                .loadAssets('index.html')
+                .populate()
+                .run(this.callback);
+        },
+        'the graph should contain one Svg asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Svg'}).length, 1);
+        },
+        'then running the cloneForEachLocale transform': {
+            topic: function (assetGraph) {
+                assetGraph
+                    .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da']})
+                    .run(this.callback);
+            },
+            'the graph should contain 2 Html assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
+            },
+            'the graph should contain 2 Svg assets': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Svg'}).length, 2);
+            },
+            'the Danish Svg asset should contain the Danish translation': function (assetGraph) {
+                assert.matches(assetGraph.findRelations({type: 'HtmlImage', from: {url: /\/index\.da\.html$/}})[0].to.text,
+                               /Dansk nøgle/);
+            },
+            'the American English Svg asset should contain the English translation': function (assetGraph) {
+                assert.matches(assetGraph.findRelations({type: 'HtmlImage', from: {url: /\/index\.en_us\.html$/}})[0].to.text,
+                               /English key/);
+            }
+        }
     }
 })['export'](module);
