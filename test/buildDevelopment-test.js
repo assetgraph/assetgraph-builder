@@ -35,8 +35,8 @@ vows.describe('GETTEXT').addBatch({
             assert.matches(bootstrapper.text, /\bwindow\.LOCALECOOKIENAME\s*=\s*(['"])myLocaleCookie\1\s*;/);
             assert.matches(bootstrapper.text, /\bwindow\.I18NKEYS\s*=\s*\{\s*myLanguageKey:\s*\{\s*en:\s*(['"])The English value\1\s*,\s*da:\s*\1Den danske værdi\1\s*\}\s*\}\s*;/);
         },
-        'the Html asset should contain the correct Content-Version meta tag': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({type: 'Html'})[0].parseTree.querySelectorAll('meta[http-equiv="Content-Version"][content="The version number"]').length, 1);
+        'the Html asset should contain the correct data-tag attribute': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html'})[0].parseTree.querySelectorAll('html[data-version="The version number"]').length, 1);
         }
     }
 })['export'](module);

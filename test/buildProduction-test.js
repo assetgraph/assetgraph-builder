@@ -52,9 +52,9 @@ vows.describe('buildProduction').addBatch({
             assert.equal(htmlAsset.parseTree.documentElement.getAttribute('lang'), 'en');
             assert.equal(htmlAsset.parseTree.title, 'The English title');
         },
-        'the Html assets should contain the correct Content-Version meta tags': function (assetGraph) {
+        'the Html assets should contain the correct data-version attribute on the <html> element': function (assetGraph) {
             assetGraph.findAssets({type: 'Html', isInline: false}).forEach(function (htmlAsset) {
-                assert.equal(htmlAsset.parseTree.querySelectorAll('meta[http-equiv="Content-Version"][content="The version number"]').length, 1);
+                assert.equal(htmlAsset.parseTree.querySelectorAll('html[data-version="The version number"]').length, 1);
             });
         },
         'the English Html asset should have 2 outgoing HtmlScript relations': function (assetGraph) {
@@ -62,11 +62,11 @@ vows.describe('buildProduction').addBatch({
         },
         'the English Html asset should have the expected contents': function (assetGraph) {
             assert.equal(assetGraph.findAssets({url: /\/index\.en\.html$/})[0].text,
-                         '<!DOCTYPE html>\n<html lang="en" manifest="index.appcache"><head><meta http-equiv="Content-Version" content="The version number" /><title>The English title</title><style type="text/css">body{color:teal;color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.url + '" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">The English link text</a><img src="http://cdn.example.com/foo/3fb51b1ae1.gif" /></script></body></html>');
+                         '<!DOCTYPE html>\n<html data-version="The version number" lang="en" manifest="index.appcache"><head><title>The English title</title><style type="text/css">body{color:teal;color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.url + '" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">The English link text</a><img src="http://cdn.example.com/foo/3fb51b1ae1.gif" /></script></body></html>');
         },
         'the Danish Html asset should have the expected contents': function (assetGraph) {
             assert.equal(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text,
-                         '<!DOCTYPE html>\n<html lang="da" manifest="index.appcache"><head><meta http-equiv="Content-Version" content="The version number" /><title>Den danske titel</title><style type="text/css">body{color:teal;color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.url + '" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/3fb51b1ae1.gif" /></script></body></html>');
+                         '<!DOCTYPE html>\n<html data-version="The version number" lang="da" manifest="index.appcache"><head><title>Den danske titel</title><style type="text/css">body{color:teal;color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.url + '" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/3fb51b1ae1.gif" /></script></body></html>');
         },
         'the English JavaScript should have the expected contents': function (assetGraph) {
             var afterRequireJs = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.text.replace(/^[\s\S]*req\(cfg\)\}\}\)\(this\),/, '');
@@ -110,7 +110,7 @@ vows.describe('buildProduction').addBatch({
             new AssetGraph({root: __dirname + '/buildProduction/duplicateImports/'})
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
-                .buildProduction()
+                .buildProduction({version: false})
                 .run(this.callback);
         },
         'the rules from the @imported stylesheet should only be included once': function (assetGraph) {
@@ -123,6 +123,7 @@ vows.describe('buildProduction').addBatch({
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
                 .buildProduction({
+                    version: false,
                     less: true
                 })
                 .run(this.callback);
@@ -137,6 +138,7 @@ vows.describe('buildProduction').addBatch({
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
                 .buildProduction({
+                    version: false,
                     less: true
                 })
                 .run(this.callback);
@@ -156,6 +158,7 @@ vows.describe('buildProduction').addBatch({
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
                 .buildProduction({
+                    version: false,
                     less: true
                 })
                 .run(this.callback);
@@ -233,7 +236,7 @@ vows.describe('buildProduction').addBatch({
         },
         'then run the buildProduction transform': {
             topic: function (assetGraph) {
-                assetGraph.buildProduction().run(this.callback);
+                assetGraph.buildProduction({version: false}).run(this.callback);
             },
             'the graph should contain no JavaScriptAngularJsTemplateCacheAssignment relations': function (assetGraph) {
                 assert.equal(assetGraph.findRelations({type: 'JavaScriptAngularJsTemplateCacheAssignment'}).length, 0);
@@ -277,7 +280,7 @@ vows.describe('buildProduction').addBatch({
             new AssetGraph({root: __dirname + '/buildProduction/angularJs/'})
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
-                .buildProduction({localeIds: ['en', 'da']})
+                .buildProduction({version: false, localeIds: ['en', 'da']})
                 .run(this.callback);
         },
         'the graph should contain 2 non-fragment Html assets': function (assetGraph) {
@@ -335,7 +338,7 @@ vows.describe('buildProduction').addBatch({
             new AssetGraph({root: __dirname + '/buildProduction/angularJs/'})
                 .registerRequireJsConfig()
                 .loadAssets('**/*.html')
-                .buildProduction()
+                .buildProduction({version: false})
                 .run(this.callback);
         },
         'the graph should contain no JavaScriptAngularJsTemplateCacheAssignment relations': function (assetGraph) {
@@ -390,7 +393,7 @@ vows.describe('buildProduction').addBatch({
         },
         'then run the buildProduction transform': {
             topic: function (assetGraph) {
-                assetGraph.buildProduction().run(this.callback);
+                assetGraph.buildProduction({version: false}).run(this.callback);
             },
             'the graph should contain 1 HtmlInlineScriptTemplate relations': function (assetGraph) {
                 assert.equal(assetGraph.findRelations({type: 'HtmlInlineScriptTemplate'}).length, 1);
@@ -410,6 +413,7 @@ vows.describe('buildProduction').addBatch({
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
                 .buildProduction({
+                    version: false,
                     localeIds: ['da', 'en']
                 })
                 .run(this.callback);
@@ -450,7 +454,7 @@ vows.describe('buildProduction').addBatch({
         },
         'then run the buildProduction transform': {
             topic: function (assetGraph) {
-                assetGraph.buildProduction().run(this.callback);
+                assetGraph.buildProduction({version: false}).run(this.callback);
             },
             'the graph should contain no JavaScriptAmdRequire/JavaScriptAmdDefine relations pointing at Html assets': function (assetGraph) {
                 assert.equal(assetGraph.findRelations({type: ['JavaScriptAmdRequire', 'JavaScriptAmdDefine'], to: {type: 'Html'}}).length, 0);
@@ -489,7 +493,7 @@ vows.describe('buildProduction').addBatch({
         },
         'then run the buildProduction transform': {
             topic: function (assetGraph) {
-                assetGraph.buildProduction().run(this.callback);
+                assetGraph.buildProduction({version: false}).run(this.callback);
             },
             'the graph should contain 1 Png assets': function (assetGraph) {
                 assert.equal(assetGraph.findAssets({type: 'Png'}).length, 1);
@@ -515,7 +519,7 @@ vows.describe('buildProduction').addBatch({
         },
         'then run the buildProduction transform': {
             topic: function (assetGraph) {
-                assetGraph.buildProduction().run(this.callback);
+                assetGraph.buildProduction({version: false}).run(this.callback);
             },
             'the Html fragment asset should have the expected contents': function (assetGraph) {
                 assert.equal(assetGraph.findAssets({type: 'Html', isInitial: true, isFragment: true})[0].text, '<div><h1>Template with a relative image reference: <img src="foo.png" /></h1></div>');
@@ -535,7 +539,7 @@ vows.describe('buildProduction').addBatch({
         },
         'then run the buildProduction transform': {
             topic: function (assetGraph) {
-                assetGraph.buildProduction().run(this.callback);
+                assetGraph.buildProduction({version: false}).run(this.callback);
             },
             'the main Html asset should have the expected contents': function (assetGraph) {
                 assert.equal(assetGraph.findAssets({url: /\/index\.html$/})[0].text, '<!DOCTYPE html>\n<html><head></head><body><script src="foo"></script></body></html>');
@@ -549,6 +553,7 @@ vows.describe('buildProduction').addBatch({
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
                 .buildProduction({
+                    version: false,
                     cdnRoot: 'http://cdn.example.com/foo/'
                 })
                 .run(this.callback);
@@ -563,7 +568,7 @@ vows.describe('buildProduction').addBatch({
                 .on('error', this.callback)
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
-                .buildProduction()
+                .buildProduction({version: false})
                 .run(this.callback);
         },
         'no JavaScript asset should contain an include': function (assetGraph) {
@@ -577,6 +582,7 @@ vows.describe('buildProduction').addBatch({
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
                 .buildProduction({
+                    version: false,
                     cdnRoot: 'http://cdn.example.com/foo/'
                 })
                 .run(this.callback);
@@ -592,6 +598,7 @@ vows.describe('buildProduction').addBatch({
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
                 .buildProduction({
+                    version: false,
                     cdnRoot: 'http://cdn.example.com/foo/',
                     cdnFlash: true
                 })
@@ -607,7 +614,7 @@ vows.describe('buildProduction').addBatch({
                 .on('error', this.callback)
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
-                .buildProduction()
+                .buildProduction({version: false})
                 .run(this.callback);
         },
         'the graph should contain no CssImport relations': function (assetGraph) {
@@ -626,7 +633,7 @@ vows.describe('buildProduction').addBatch({
                 .on('error', this.callback)
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
-                .buildProduction()
+                .buildProduction({version: false})
                 .run(this.callback);
         },
         'the graph should contain 1 JavaScript asset': function (assetGraph) {
@@ -652,7 +659,7 @@ vows.describe('buildProduction').addBatch({
             new AssetGraph({root: __dirname + '/buildProduction/GetStaticUrlSingleFileWildcard/'})
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
-                .buildProduction()
+                .buildProduction({version: false})
                 .run(this.callback);
         },
         'the graph should contain a single JavaScript asset with the expected contents': function (assetGraph) {
@@ -667,7 +674,7 @@ vows.describe('buildProduction').addBatch({
             new AssetGraph({root: __dirname + '/buildProduction/GetStaticUrlSingleFileAndTwoWildcards/'})
                 .registerRequireJsConfig()
                 .loadAssets('index.html')
-                .buildProduction()
+                .buildProduction({version: false})
                 .run(this.callback);
         },
         'the graph should contain a single JavaScript asset with the expected contents': function (assetGraph) {
@@ -682,7 +689,7 @@ vows.describe('buildProduction').addBatch({
             new AssetGraph({root: __dirname + '/buildProduction/requireJsConfigurationInExternalFile/'})
                 .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
                 .loadAssets('index.html')
-                .buildProduction()
+                .buildProduction({version: false})
                 .run(this.callback);
         },
         'the graph should contain a single JavaScript asset with the contents of foo.js': function (assetGraph) {
@@ -696,7 +703,7 @@ vows.describe('buildProduction').addBatch({
             new AssetGraph({root: __dirname + '/buildProduction/issue54/'})
                 .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
                 .loadAssets('index.html')
-                .buildProduction()
+                .buildProduction({version: false})
                 .run(this.callback);
         },
         'the graph should contain a single JavaScript asset with the expected contents': function (assetGraph) {
@@ -710,7 +717,7 @@ vows.describe('buildProduction').addBatch({
             new AssetGraph({root: __dirname + '/buildProduction/issue58/'})
                 .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
                 .loadAssets('index.html')
-                .buildProduction()
+                .buildProduction({version: false})
                 .run(this.callback);
         },
         'the graph should contain a single JavaScript asset with the expected contents': function (assetGraph) {
@@ -724,7 +731,7 @@ vows.describe('buildProduction').addBatch({
             new AssetGraph({root: __dirname + '/buildProduction/issue60/'})
                 .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
                 .loadAssets('index.html')
-                .buildProduction()
+                .buildProduction({version: false})
                 .run(this.callback);
         },
         'the graph should contain a single JavaScript asset with the expected contents': function (assetGraph) {
@@ -782,7 +789,7 @@ vows.describe('buildProduction').addBatch({
             new AssetGraph({root: __dirname + '/buildProduction/requireJsOrphans/'})
                 .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
                 .loadAssets('index.html')
-                .buildProduction()
+                .buildProduction({version: false})
                 .run(this.callback);
         },
         'the graph should contain one JavaScript asset': function (assetGraph) {
@@ -794,7 +801,7 @@ vows.describe('buildProduction').addBatch({
             new AssetGraph({root: __dirname + '/buildProduction/issue69/'})
                 .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
                 .loadAssets('index.html')
-                .buildProduction()
+                .buildProduction({version: false})
                 .run(this.callback);
         },
         'the graph should contain a single JavaScript asset with the expected contents': function (assetGraph) {
