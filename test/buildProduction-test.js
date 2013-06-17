@@ -837,5 +837,20 @@ vows.describe('buildProduction').addBatch({
                 assert.isNull(err);
             }
         }
+    },
+    'After loading a test case for issue #83': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/issue83/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction({version: false, reservedNames: ['$$super', 'quux']})
+                .run(this.callback);
+        },
+        'the graph should contain a single JavaScript asset with $$super unmangled': function (assetGraph) {
+            var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
+            assert.equal(javaScriptAssets.length, 1);
+            assert.matches(javaScriptAssets[0].text, /\$\$super,\w+,quux/);
+            assert.matches(javaScriptAssets[0].text, /\$\$super\.foo/);
+        }
     }
 })['export'](module);
