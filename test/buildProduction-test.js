@@ -852,5 +852,41 @@ vows.describe('buildProduction').addBatch({
             assert.matches(javaScriptAssets[0].text, /\$\$super,\w+,quux/);
             assert.matches(javaScriptAssets[0].text, /\$\$super\.foo/);
         }
+    },
+    'After loading a test case with a JavaScript that needs a symbol replaced, then running the buildProduction with noCompress:true': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/noCompress/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction({version: false, noCompress: true, defines: {
+                    MYSYMBOL: new AssetGraph.JavaScript.uglifyJs.AST_String({value: 'theValue'}),
+                    MYOTHERSYMBOL: new AssetGraph.JavaScript.uglifyJs.AST_String({value: 'theOtherValue'})
+                }})
+                .run(this.callback);
+        },
+        'the compiled JavaScript should contain the MYSYMBOL replacement string': function (assetGraph) {
+            assert.matches(assetGraph.findAssets({type: 'JavaScript'})[0].text, /theValue/);
+        },
+        'the compiled JavaScript should not contain the MYOTHERSYMBOL replacement string': function (assetGraph) {
+            assert.ok(!/theOtherValue/.test(assetGraph.findAssets({type: 'JavaScript'})[0].text));
+        }
+    },
+    'After loading a test case with a JavaScript that needs a symbol replaced, then running the buildProduction with noCompress:false': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/noCompress/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction({version: false, noCompress: false, defines: {
+                    MYSYMBOL: new AssetGraph.JavaScript.uglifyJs.AST_String({value: 'theValue'}),
+                    MYOTHERSYMBOL: new AssetGraph.JavaScript.uglifyJs.AST_String({value: 'theOtherValue'})
+                }})
+                .run(this.callback);
+        },
+        'the compiled JavaScript should contain the MYSYMBOL replacement string': function (assetGraph) {
+            assert.matches(assetGraph.findAssets({type: 'JavaScript'})[0].text, /theValue/);
+        },
+        'the compiled JavaScript should not contain the MYOTHERSYMBOL replacement string': function (assetGraph) {
+            assert.ok(!/theOtherValue/.test(assetGraph.findAssets({type: 'JavaScript'})[0].text));
+        }
     }
 })['export'](module);

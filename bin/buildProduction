@@ -301,7 +301,7 @@ new AssetGraph({root: rootUrl})
         deferScripts: commandLineOptions.deferscripts,
         cdnRoot: cdnRoot,
         cdnFlash: commandLineOptions.cdnflash,
-        prettyPrint: commandLineOptions.nocompress,
+        noCompress: commandLineOptions.nocompress,
         sharedBundles: commandLineOptions.sharedbundles,
         stripDebug: commandLineOptions.stripdebug
     })
