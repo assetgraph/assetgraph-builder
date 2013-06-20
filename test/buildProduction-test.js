@@ -853,7 +853,7 @@ vows.describe('buildProduction').addBatch({
             assert.matches(javaScriptAssets[0].text, /\$\$super\.foo/);
         }
     },
-    'After loading a test case with a JavaScript that needs a symbol replaced, then running the buildProduction with noCompress:true': {
+    'After loading a test case with a JavaScript that needs a symbol replaced, then running the buildProduction transform with noCompress:true': {
         topic: function () {
             new AssetGraph({root: __dirname + '/buildProduction/noCompress/'})
                 .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
@@ -871,7 +871,7 @@ vows.describe('buildProduction').addBatch({
             assert.ok(!/theOtherValue/.test(assetGraph.findAssets({type: 'JavaScript'})[0].text));
         }
     },
-    'After loading a test case with a JavaScript that needs a symbol replaced, then running the buildProduction with noCompress:false': {
+    'After loading a test case with a JavaScript that needs a symbol replaced, then running the buildProduction transform with noCompress:false': {
         topic: function () {
             new AssetGraph({root: __dirname + '/buildProduction/noCompress/'})
                 .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
@@ -887,6 +887,27 @@ vows.describe('buildProduction').addBatch({
         },
         'the compiled JavaScript should not contain the MYOTHERSYMBOL replacement string': function (assetGraph) {
             assert.ok(!/theOtherValue/.test(assetGraph.findAssets({type: 'JavaScript'})[0].text));
+        }
+    },
+    'After loading a test case with a JavaScript that needs a symbol replaced, then running the buildProduction transform with gzipTextAssets:true': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/gzip/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction({version: false, gzip: true})
+                .run(this.callback);
+        },
+        'the graph should contain 2 .gz assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({url: /\.gz$/}).length, 2);
+        },
+        'the graph should contain one .js.gz asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({url: /\.js\.gz$/}).length, 1);
+        },
+        'the gz asset should be greater than 5 KB and less than 10 KB': function (assetGraph) {
+            var requireJsGz = assetGraph.findAssets({url: /\.js\.gz$/})[0];
+            assert.ok(requireJsGz);
+            assert.greater(requireJsGz.rawSrc.length, 5000);
+            assert.lesser(requireJsGz.rawSrc.length, 10000);
         }
     }
 })['export'](module);

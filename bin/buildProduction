@@ -97,6 +97,10 @@ var optimist = require('optimist'),
             describe: 'Inline CSS backgrounds below this threshold as data-uris',
             default: 8192
         })
+        .options('gzip', {
+            describe: 'Include a gzipped copy of text-based assets > 860 bytes for which it yields a saving',
+            default: false
+        })
         .options('deferscripts', {
             describe: 'Sets the "defer" attribute on all script tags',
             type: 'boolean',
@@ -293,6 +297,7 @@ new AssetGraph({root: rootUrl})
         pngcrush: commandLineOptions.pngcrush || commandLineOptions.optimizeimages || commandLineOptions.optimizepngs,
         optipng: commandLineOptions.optipng || commandLineOptions.optimizeimages || commandLineOptions.optimizepngs,
         inlineSize: commandLineOptions.inlinesize,
+        gzip: commandLineOptions.gzip,
         defines: defines,
         reservedNames: reservedNames,
         localeIds: localeIds,
