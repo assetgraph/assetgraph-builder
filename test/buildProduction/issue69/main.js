@@ -1,3 +1,3 @@
-require(['sockjs'], function (sockjs) {
-    alert("got sockjs: " + sockjs);
+require(['sockjs_handler'], function (sockjsHandler) {
+
 });
