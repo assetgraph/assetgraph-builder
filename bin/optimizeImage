@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+
+var _ = require('underscore'),
+    AssetGraph = require('../lib/AssetGraph'),
+    query = AssetGraph.query,
+    urlTools = require('assetgraph/lib/util/urlTools'),
+    commandLineOptions = require('optimist')
+        .usage('$0 image1 image2...')
+        .demand(1)
+        .argv;
+
+new AssetGraph({root: commandLineOptions.root})
+    .on('warn', function (err) {
+        console.warn((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.message);
+    })
+    .on('error', function (err) {
+        console.error((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack);
+        process.exit(1);
+    })
+    .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
+    .queue(function () {
+        console.warn("BEFORE:");
+    })
+    .writeStatsToStderr()
+    .processImages({isImage: true}, {autoLossless: true})
+    .writeAssetsToDisc({url: /^file:/, isImage: true, isDirty: true})
+    .queue(function () {
+        console.warn("\nAFTER:");
+    })
+    .writeStatsToStderr()
+    .run();
