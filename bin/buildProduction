@@ -59,33 +59,8 @@ var optimist = require('optimist'),
             type: 'string',
             default: 'en'
         })
-        .options('optimizepngs', {
-            describe: '(deprecated, please use --optimizeimages or --pngquant --pngcrush --optipng) Tries optimal palette reduction, removes ancillary chunks and tries for better compression.',
-            type: 'boolean',
-            default: false
-        })
-        .options('optimizejpegs', {
-            describe: '(deprecated, please use --jpegtran or --optimizeimages) Runs jpegtran optimization on all jpeg images',
-            type: 'boolean',
-            default: false
-        })
-        .options('jpegtran', {
-            describe: 'Runs jpegtran optimization on all jpeg images',
-            type: 'boolean',
-            default: false
-        })
-        .options('pngquant', {
-            describe: 'Runs pngquant on all png images',
-            type: 'boolean',
-            default: false
-        })
-        .options('pngcrush', {
-            describe: 'Runs pngcrush on all png images',
-            type: 'boolean',
-            default: false
-        })
-        .options('optipng', {
-            describe: 'Runs optipng on all png images',
+        .options('optimizeimages', {
+            describe: 'Perform automatic lossless optimization of all images using pngcrush, pngquant, optipng, and jpegtran',
             type: 'boolean',
             default: false
         })
@@ -288,10 +263,7 @@ new AssetGraph({root: rootUrl})
         version: commandLineOptions.version,
         less: commandLineOptions.less,
         blacklistUrlRegExp: blacklistUrlRegExp,
-        jpegtran: commandLineOptions.jpegtran || commandLineOptions.optimizeimages || commandLineOptions.optimizejpegs,
-        pngquant: commandLineOptions.pngquant || commandLineOptions.optimizeimages || commandLineOptions.optimizepngs,
-        pngcrush: commandLineOptions.pngcrush || commandLineOptions.optimizeimages || commandLineOptions.optimizepngs,
-        optipng: commandLineOptions.optipng || commandLineOptions.optimizeimages || commandLineOptions.optimizepngs,
+        optimizeImages: commandLineOptions.optimizeimages,
         inlineSize: commandLineOptions.inlinesize,
         gzip: commandLineOptions.gzip,
         defines: defines,

@@ -17,7 +17,7 @@ vows.describe('buildProduction').addBatch({
                     quiet: true,
                     version: "The version number",
                     less: true,
-                    optimizePngs: true, // Test it
+                    optimizeImages: true, // Test it
                     inlineSize: true, // Test it
                     mangleTopLevel: false, // Test it
                     localeIds: ['da', 'en'],
