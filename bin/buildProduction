@@ -34,6 +34,9 @@ var optimist = require('optimist'),
             type: 'string',
             demand: false
         })
+        /*
+        // These are internal One.com options. No reason to expose them to the world.
+        // Might be deprecated in the near future. If in doubt, don't use!
         .options('label', {
             describe: 'Registers labels as custom protocols for path resolving. You can create multiple of these: --label <labelName>=<dir> --label <otherLabelName>=<otherDir>',
             type: 'string',
@@ -44,6 +47,7 @@ var optimist = require('optimist'),
             type: 'boolean',
             demand: false
         })
+        */
         .options('locales', {
             describe: 'Comma-separated list of locales to build seperate versions for',
             type: 'string',
