@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var optimist = require('optimist'),
+    colors = require('colors'),
     commandLineOptions = optimist
         .usage('$0 --root <inputRootDirectory> --outroot <dir> [options] <htmlFile(s)>')
         .options('h', {
@@ -145,22 +146,22 @@ if (commandLineOptions.h) {
 
 // Temporary deprecation message
 if (commandLineOptions.less) {
-    console.warn('INFO: The --less command line option is deprecated. This is now default behavior. Use --noless to keep .less files in build output')
+    console.warn('INFO: The --less command line option is deprecated. This is now default behavior. Use --noless to keep .less files in build output'.yellow)
 }
 
 // Temporary deprecation message
 if (commandLineOptions.stripdebug) {
-    console.warn('INFO: the --stripdebug switch is deprecated. This behavior is now default. Use --debug to keep debugging in build output');
+    console.warn('INFO: the --stripdebug switch is deprecated. This behavior is now default. Use --debug to keep debugging in build output'.yellow);
 }
 
 // Temporary deprecation message
 if (commandLineOptions.cdnflash) {
-    console.warn('INFO: the --cdnflash switch is deprecated. This is now default functionality. Use --nocdnflash to get the old default behavior.')
+    console.warn('INFO: the --cdnflash switch is deprecated. This is now default functionality. Use --nocdnflash to get the old default behavior.'.yellow)
 }
 
 // Temporary deprecation message
 if (commandLineOptions.cdnoutroot) {
-    console.warn('INFO: the --cdnoutroot switch is deprecated. Default location for your cdn assets is now <outroot>/static/cdn');
+    console.warn('INFO: the --cdnoutroot switch is deprecated. Default location for your cdn assets is now <outroot>/static/cdn'.yellow);
 }
 
 var _ = require('underscore'),
@@ -237,7 +238,7 @@ if (commandLineOptions.repl) {
 
 new AssetGraph({root: rootUrl})
     .on('afterTransform', function (transform, elapsedTime) {
-        console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
+        console.log(' ✔ '.green + (elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
         if (startReplRegExp && startReplRegExp.test(transform.name)) {
             this.transformQueue.transforms.unshift(AssetGraph.transforms.startRepl());
         }
@@ -245,7 +246,7 @@ new AssetGraph({root: rootUrl})
     .on('warn', function (err) {
         // These are way too noisy
         if (err.relationType !== 'JavaScriptCommonJsRequire') {
-            console.warn((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.message);
+            console.warn((' ⚠ ' + (err.asset ? err.asset.urlOrDescription + ': ' : '') + err.message).yellow);
             if (startReplRegExp && startReplRegExp.test('warn')) {
                 this.transformQueue.transforms.unshift(AssetGraph.transforms.startRepl());
             } else if (commandLineOptions.stoponwarning) {
@@ -254,7 +255,7 @@ new AssetGraph({root: rootUrl})
         }
     })
     .on('error', function (err) {
-        console.error((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack);
+        console.error((' ✘ ' + (err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack).red);
         if (startReplRegExp && startReplRegExp.test('error')) {
             this.transformQueue.transforms.unshift(AssetGraph.transforms.startRepl());
         } else {
