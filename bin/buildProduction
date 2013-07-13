@@ -24,43 +24,19 @@ var optimist = require('optimist'),
             type: 'string',
             demand: false
         })
-        /*
-        // These are internal One.com options. No reason to expose them to the world.
-        // Might be deprecated in the near future. If in doubt, don't use!
-        .options('label', {
-            describe: 'Registers labels as custom protocols for path resolving. You can create multiple of these: --label <labelName>=<dir> --label <otherLabelName>=<otherDir>',
-            type: 'string',
-            demand: false
-        })
-        .options('parentdir', {
-            describe: 'If an unknown label (scheme) is found, look for at parent dir of that name before failing (breaks custom protocols)',
-            type: 'boolean',
-            demand: false
-        })
-        */
-        .options('locales', {
-            describe: 'Comma-separated list of locales to build seperate versions for',
-            type: 'string',
-            demand: false
-        })
-        .options('defaultlocale', {
-            describe: 'The locale of the default value in TR statements and tags with a data-i18n attribute',
-            type: 'string',
-            default: 'en'
-        })
-        .options('localecookiename', {
-            describe: 'The name of your locale cookie (exposed as LOCALECOOKIENAME)',
-            type: 'string',
-            default: 'en'
-        })
         .options('optimizeimages', {
             describe: 'Perform automatic lossless optimization of all images using pngcrush, pngquant, optipng, and jpegtran',
             type: 'boolean',
             default: false
         })
-        .options('inlinesize', {
-            describe: 'Inline CSS backgrounds below this threshold as data-uris',
-            default: 8192
+        .options('debug', {
+            describe: 'Keep statement level console.*() calls and debugger statements in JavaScript assets',
+            type: 'boolean',
+            default: false
+        })
+        .options('version', {
+            describe: 'Adds or updates <meta http-equiv="Content-Version" content="..."> to the specified value. Use {0} to refer to the current value, eg. --version {0}/production or --version `git describe --long --tags --always --dirty 2>/dev/null || echo unknown`',
+            type: 'string'
         })
         .options('gzip', {
             describe: 'Include a gzipped copy of text-based assets > 860 bytes for which it yields a saving',
@@ -76,26 +52,16 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
-        .options('define', {
-            alias: 'd',
-            describe: '--define SYMBOL[=value] will be passed to UglifyJS as is (see the docs at https://github.com/mishoo/UglifyJS#usage). Remember to protect quotes from the shell, eg. --define foo=\\"bar\\".',
-            type: 'string'
-        })
         .options('reservednames', {
             describe: 'Exclude certain variable names from mangling (equivalent to uglifyjs --reserved-names ...)'
         })
+        .options('stoponwarning', {
+            describe: 'Whether to stop with a non-zero exit code when a warning is encountered',
+            type: 'boolean',
+            default: false
+        })
         .options('nocompress', {
             describe: 'Prettifies HTML, CSS and Javascript for easier debugging',
-            type: 'boolean',
-            default: false
-        })
-        .options('manifest', {
-            describe: 'Generates an appcache manifest file with all static assets included',
-            type: 'boolean',
-            default: false
-        })
-        .options('negotiatemanifest', {
-            describe: 'Removes the locale id from the <html manifest="..."> references so all manifests are assumed to be accessible from the same url. Useful if you want the browser to pick up the right cache manifest and HTML after a locale change (your static file server needs to support content negotiation). Only makes sense when both  --manifest and --locale have been specified',
             type: 'boolean',
             default: false
         })
@@ -109,29 +75,63 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
+        .options('define', {
+            alias: 'd',
+            describe: '--define SYMBOL[=value] will be passed to UglifyJS as is (see the docs at https://github.com/mishoo/UglifyJS#usage). Remember to protect quotes from the shell, eg. --define foo=\\"bar\\".',
+            type: 'string'
+        })
+        .options('inlinesize', {
+            describe: 'Inline CSS backgrounds below this threshold as data-uris',
+            default: 8192
+        })
         .options('sharedbundles', {
             describe: 'Try to create shared bundles including commin files across multiple pages.',
             type: 'boolean',
             default: false
         })
-        .options('debug', {
-            describe: 'Keep statement level console.*() calls and debugger statements in JavaScript assets',
+        .options('manifest', {
+            describe: 'Generates an appcache manifest file with all static assets included',
             type: 'boolean',
             default: false
         })
-        .options('stoponwarning', {
-            describe: 'Whether to stop with a non-zero exit code when a warning is encountered',
+        .options('negotiatemanifest', {
+            describe: 'Removes the locale id from the <html manifest="..."> references so all manifests are assumed to be accessible from the same url. Useful if you want the browser to pick up the right cache manifest and HTML after a locale change (your static file server needs to support content negotiation). Only makes sense when both  --manifest and --locale have been specified',
             type: 'boolean',
             default: false
+        })
+        .options('locales', {
+            describe: 'Comma-separated list of locales to build seperate versions for',
+            type: 'string',
+            demand: false
+        })
+        .options('defaultlocale', {
+            describe: 'The locale of the default value in TR statements and tags with a data-i18n attribute',
+            type: 'string',
+            default: 'en'
+        })
+        .options('localecookiename', {
+            describe: 'The name of your locale cookie (exposed as LOCALECOOKIENAME)',
+            type: 'string',
+            default: 'en'
         })
         .options('repl', {
             describe: 'Start the REPL after a particular transform (or "error")',
             type: 'string'
         })
-        .options('version', {
-            describe: 'Adds or updates <meta http-equiv="Content-Version" content="..."> to the specified value. Use {0} to refer to the current value, eg. --version {0}/production or --version `git describe --long --tags --always --dirty 2>/dev/null || echo unknown`',
-            type: 'string'
+        /*
+        // These are internal One.com options. No reason to expose them to the world.
+        // Might be deprecated in the near future. If in doubt, don't use!
+        .options('label', {
+            describe: 'Registers labels as custom protocols for path resolving. You can create multiple of these: --label <labelName>=<dir> --label <otherLabelName>=<otherDir>',
+            type: 'string',
+            demand: false
         })
+        .options('parentdir', {
+            describe: 'If an unknown label (scheme) is found, look for at parent dir of that name before failing (breaks custom protocols)',
+            type: 'boolean',
+            demand: false
+        })
+        */
         .check(function (argv) {
             return typeof argv.inlinesize === 'number';
         })
