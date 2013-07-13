@@ -119,8 +119,8 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
-        .options('stripdebug', {
-            describe: 'Whether to strip statement level console.*() calls and debugger statements from JavaScript assets',
+        .options('debug', {
+            describe: 'Keep statement level console.*() calls and debugger statements in JavaScript assets',
             type: 'boolean',
             default: false
         })
@@ -151,6 +151,11 @@ if (commandLineOptions.h) {
 // Temporary deprecation message
 if (commandLineOptions.less) {
     console.warn('INFO: The --less command line option is deprecated. This is now default behavior. Use --noless to keep .less files in build output')
+}
+
+// Temporary deprecation message
+if (commandLineOptions.stripdebug) {
+    console.warn('INFO: the --stripdebug switch is deprecated. This behavior is now default. Use --debug to keep debugging in build output');
 }
 
 var _ = require('underscore'),
@@ -274,7 +279,7 @@ new AssetGraph({root: rootUrl})
         cdnFlash: commandLineOptions.cdnflash,
         noCompress: commandLineOptions.nocompress,
         sharedBundles: commandLineOptions.sharedbundles,
-        stripDebug: commandLineOptions.stripdebug
+        stripDebug: !commandLineOptions.debug
     })
     .writeAssetsToDisc({url: /^file:/, isLoaded: true}, outRoot)
     .if(cdnRoot)
