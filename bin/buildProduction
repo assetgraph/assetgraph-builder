@@ -110,8 +110,8 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
-        .options('cdnflash', {
-            describe: 'Put all flash files on the cdnroot as well. WARNING: Might require CORS setup',
+        .options('nocdnflash', {
+            describe: 'Avoid putting flash files on the cdnroot. Use this if you have problems setting up CORS',
             type: 'boolean',
             default: false
         })
@@ -149,6 +149,11 @@ if (commandLineOptions.h) {
     process.exit(1);
 }
 
+// Temporary deprecation message
+if (commandLineOptions.cdnflash) {
+    console.warn('INFO: the --cdnflash switch is deprecated. This is now default functionality. Use --nocdnflash to get the old default behavior.')
+}
+
 var _ = require('underscore'),
     util = require('util'),
     AssetGraph = require('../lib/AssetGraph'),
@@ -160,7 +165,6 @@ var _ = require('underscore'),
     outRoot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
     cdnRoot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
     fullCdnRoot = (/^\/\//.test(cdnRoot) ? 'http:' : '') + cdnRoot,
-    cdnOutRoot = commandLineOptions.cdnoutroot && urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
     blacklistUrlRegExp = /^$/,
     rootUrl = commandLineOptions.root && urlTools.urlOrFsPathToUrl(commandLineOptions.root, true),
     localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
@@ -277,7 +281,7 @@ new AssetGraph({root: rootUrl})
         asyncScripts: commandLineOptions.asyncscripts,
         deferScripts: commandLineOptions.deferscripts,
         cdnRoot: cdnRoot,
-        cdnFlash: commandLineOptions.cdnflash,
+        cdnFlash: !commandLineOptions.nocdnflash,
         noCompress: commandLineOptions.nocompress,
         sharedBundles: commandLineOptions.sharedbundles,
         stripDebug: commandLineOptions.stripdebug
