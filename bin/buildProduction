@@ -105,8 +105,8 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
-        .options('less', {
-            describe: 'Translates .less files to CSS',
+        .options('noless', {
+            describe: 'Keep .less files as they are instead of automatically compiling them to CSS',
             type: 'boolean',
             default: false
         })
@@ -147,6 +147,11 @@ var optimist = require('optimist'),
 if (commandLineOptions.h) {
     optimist.showHelp();
     process.exit(1);
+}
+
+// Temporary deprecation message
+if (commandLineOptions.less) {
+    console.warn('INFO: The --less command line option is deprecated. This is now default behavior. Use --noless to keep .less files in build output')
 }
 
 var _ = require('underscore'),
@@ -261,7 +266,7 @@ new AssetGraph({root: rootUrl})
     .loadAssets(inputUrls)
     .buildProduction({
         version: commandLineOptions.version,
-        less: commandLineOptions.less,
+        less: !commandLineOptions.noless,
         blacklistUrlRegExp: blacklistUrlRegExp,
         optimizeImages: commandLineOptions.optimizeimages,
         inlineSize: commandLineOptions.inlinesize,
