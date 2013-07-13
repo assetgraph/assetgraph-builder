@@ -29,11 +29,6 @@ var optimist = require('optimist'),
             type: 'string',
             demand: false
         })
-        .options('exclude', {
-            describe: 'Url pattern to exclude from the build. Supports * wildcards. You can create multiple of these: --exclude *.php --exclude http://example.com/*.gif',
-            type: 'string',
-            demand: false
-        })
         .options('label', {
             describe: 'Registers labels as custom protocols for path resolving. You can create multiple of these: --label <labelName>=<dir> --label <otherLabelName>=<otherDir>',
             type: 'string',
@@ -161,7 +156,6 @@ var _ = require('underscore'),
     cdnRoot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
     fullCdnRoot = (/^\/\//.test(cdnRoot) ? 'http:' : '') + cdnRoot,
     cdnOutRoot = commandLineOptions.cdnoutroot && urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
-    blacklistUrlRegExp = /^$/,
     rootUrl = commandLineOptions.root && urlTools.urlOrFsPathToUrl(commandLineOptions.root, true),
     localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
         return localeId.split(",");
@@ -213,14 +207,6 @@ if (commandLineOptions._.length > 0) {
     throw new Error("No input files and no --root specified (or it isn't file:), cannot proceed");
 }
 
-if (commandLineOptions.exclude) {
-    blacklistUrlRegExp = new RegExp('(?:' +
-        _.flatten(_.flatten([commandLineOptions.exclude])).map(function (wildcard) {
-            return wildcard.replace(/[\.\+\{\}\[\]\(\)\?\^\$]/g, '\\$&').replace(/\*/g, '.*?');
-        }).join('|') +
-        ')');
-}
-
 var startReplRegExp;
 if (commandLineOptions.repl) {
     startReplRegExp = new RegExp(_.flatten(_.flatten([commandLineOptions.repl]).map(function (transformName) {
@@ -262,7 +248,6 @@ new AssetGraph({root: rootUrl})
     .buildProduction({
         version: commandLineOptions.version,
         less: commandLineOptions.less,
-        blacklistUrlRegExp: blacklistUrlRegExp,
         optimizeImages: commandLineOptions.optimizeimages,
         inlineSize: commandLineOptions.inlinesize,
         gzip: commandLineOptions.gzip,
