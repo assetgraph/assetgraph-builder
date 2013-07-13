@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var optimist = require('optimist'),
+    colors = require('colors'),
     commandLineOptions = optimist
         .usage('$0 --root <inputRootDirectory> --outroot <dir> [options] <htmlFile(s)>')
         .options('h', {
@@ -24,25 +25,80 @@ var optimist = require('optimist'),
             type: 'string',
             demand: false
         })
-        .options('cdnoutroot', {
-            describe: 'Path to the CDN output folder. Will be generated if non-existing',
-            type: 'string',
-            demand: false
-        })
-        .options('exclude', {
-            describe: 'Url pattern to exclude from the build. Supports * wildcards. You can create multiple of these: --exclude *.php --exclude http://example.com/*.gif',
-            type: 'string',
-            demand: false
-        })
-        .options('label', {
-            describe: 'Registers labels as custom protocols for path resolving. You can create multiple of these: --label <labelName>=<dir> --label <otherLabelName>=<otherDir>',
-            type: 'string',
-            demand: false
-        })
-        .options('parentdir', {
-            describe: 'If an unknown label (scheme) is found, look for at parent dir of that name before failing (breaks custom protocols)',
+        .options('optimizeimages', {
+            describe: 'Perform automatic lossless optimization of all images using pngcrush, pngquant, optipng, and jpegtran',
             type: 'boolean',
-            demand: false
+            default: false
+        })
+        .options('debug', {
+            describe: 'Keep statement level console.*() calls and debugger statements in JavaScript assets',
+            type: 'boolean',
+            default: false
+        })
+        .options('version', {
+            describe: 'Adds or updates <meta http-equiv="Content-Version" content="..."> to the specified value. Use {0} to refer to the current value, eg. --version {0}/production or --version `git describe --long --tags --always --dirty 2>/dev/null || echo unknown`',
+            type: 'string'
+        })
+        .options('gzip', {
+            describe: 'Include a gzipped copy of text-based assets > 860 bytes for which it yields a saving',
+            default: false
+        })
+        .options('deferscripts', {
+            describe: 'Sets the "defer" attribute on all script tags',
+            type: 'boolean',
+            default: false
+        })
+        .options('asyncscripts', {
+            describe: 'Sets the "async" attribute on all script tags',
+            type: 'boolean',
+            default: false
+        })
+        .options('reservednames', {
+            describe: 'Exclude certain variable names from mangling (equivalent to uglifyjs --reserved-names ...)'
+        })
+        .options('stoponwarning', {
+            describe: 'Whether to stop with a non-zero exit code when a warning is encountered',
+            type: 'boolean',
+            default: false
+        })
+        .options('nocompress', {
+            describe: 'Prettifies HTML, CSS and Javascript for easier debugging',
+            type: 'boolean',
+            default: false
+        })
+        .options('noless', {
+            describe: 'Keep .less files as they are instead of automatically compiling them to CSS',
+            type: 'boolean',
+            default: false
+        })
+        .options('nocdnflash', {
+            describe: 'Avoid putting flash files on the cdnroot. Use this if you have problems setting up CORS',
+            type: 'boolean',
+            default: false
+        })
+        .options('define', {
+            alias: 'd',
+            describe: '--define SYMBOL[=value] will be passed to UglifyJS as is (see the docs at https://github.com/mishoo/UglifyJS#usage). Remember to protect quotes from the shell, eg. --define foo=\\"bar\\".',
+            type: 'string'
+        })
+        .options('inlinesize', {
+            describe: 'Inline CSS backgrounds below this threshold as data-uris',
+            default: 8192
+        })
+        .options('sharedbundles', {
+            describe: 'Try to create shared bundles including commin files across multiple pages.',
+            type: 'boolean',
+            default: false
+        })
+        .options('manifest', {
+            describe: 'Generates an appcache manifest file with all static assets included',
+            type: 'boolean',
+            default: false
+        })
+        .options('negotiatemanifest', {
+            describe: 'Removes the locale id from the <html manifest="..."> references so all manifests are assumed to be accessible from the same url. Useful if you want the browser to pick up the right cache manifest and HTML after a locale change (your static file server needs to support content negotiation). Only makes sense when both  --manifest and --locale have been specified',
+            type: 'boolean',
+            default: false
         })
         .options('locales', {
             describe: 'Comma-separated list of locales to build seperate versions for',
@@ -59,85 +115,24 @@ var optimist = require('optimist'),
             type: 'string',
             default: 'en'
         })
-        .options('optimizeimages', {
-            describe: 'Perform automatic lossless optimization of all images using pngcrush, pngquant, optipng, and jpegtran',
-            type: 'boolean',
-            default: false
-        })
-        .options('inlinesize', {
-            describe: 'Inline CSS backgrounds below this threshold as data-uris',
-            default: 8192
-        })
-        .options('gzip', {
-            describe: 'Include a gzipped copy of text-based assets > 860 bytes for which it yields a saving',
-            default: false
-        })
-        .options('deferscripts', {
-            describe: 'Sets the "defer" attribute on all script tags',
-            type: 'boolean',
-            default: false
-        })
-        .options('asyncscripts', {
-            describe: 'Sets the "async" attribute on all script tags',
-            type: 'boolean',
-            default: false
-        })
-        .options('define', {
-            alias: 'd',
-            describe: '--define SYMBOL[=value] will be passed to UglifyJS as is (see the docs at https://github.com/mishoo/UglifyJS#usage). Remember to protect quotes from the shell, eg. --define foo=\\"bar\\".',
-            type: 'string'
-        })
-        .options('reservednames', {
-            describe: 'Exclude certain variable names from mangling (equivalent to uglifyjs --reserved-names ...)'
-        })
-        .options('nocompress', {
-            describe: 'Prettifies HTML, CSS and Javascript for easier debugging',
-            type: 'boolean',
-            default: false
-        })
-        .options('manifest', {
-            describe: 'Generates an appcache manifest file with all static assets included',
-            type: 'boolean',
-            default: false
-        })
-        .options('negotiatemanifest', {
-            describe: 'Removes the locale id from the <html manifest="..."> references so all manifests are assumed to be accessible from the same url. Useful if you want the browser to pick up the right cache manifest and HTML after a locale change (your static file server needs to support content negotiation). Only makes sense when both  --manifest and --locale have been specified',
-            type: 'boolean',
-            default: false
-        })
-        .options('less', {
-            describe: 'Translates .less files to CSS',
-            type: 'boolean',
-            default: false
-        })
-        .options('cdnflash', {
-            describe: 'Put all flash files on the cdnroot as well. WARNING: Might require CORS setup',
-            type: 'boolean',
-            default: false
-        })
-        .options('sharedbundles', {
-            describe: 'Try to create shared bundles including commin files across multiple pages.',
-            type: 'boolean',
-            default: false
-        })
-        .options('stripdebug', {
-            describe: 'Whether to strip statement level console.*() calls and debugger statements from JavaScript assets',
-            type: 'boolean',
-            default: false
-        })
-        .options('stoponwarning', {
-            describe: 'Whether to stop with a non-zero exit code when a warning is encountered',
-            type: 'boolean',
-            default: false
-        })
         .options('repl', {
             describe: 'Start the REPL after a particular transform (or "error")',
             type: 'string'
         })
-        .options('version', {
-            describe: 'Adds or updates <meta http-equiv="Content-Version" content="..."> to the specified value. Use {0} to refer to the current value, eg. --version {0}/production or --version `git describe --long --tags --always --dirty 2>/dev/null || echo unknown`',
-            type: 'string'
+        /*
+        // These are internal One.com options. No reason to expose them to the world.
+        // Might be deprecated in the near future. If in doubt, don't use!
+        .options('label', {
+            describe: 'Registers labels as custom protocols for path resolving. You can create multiple of these: --label <labelName>=<dir> --label <otherLabelName>=<otherDir>',
+            type: 'string',
+            demand: false
         })
+        .options('parentdir', {
+            describe: 'If an unknown label (scheme) is found, look for at parent dir of that name before failing (breaks custom protocols)',
+            type: 'boolean',
+            demand: false
+        })
+        */
         .check(function (argv) {
             return typeof argv.inlinesize === 'number';
         })
@@ -147,6 +142,26 @@ var optimist = require('optimist'),
 if (commandLineOptions.h) {
     optimist.showHelp();
     process.exit(1);
+}
+
+// Temporary deprecation message
+if (commandLineOptions.less) {
+    console.warn('INFO: The --less command line option is deprecated. This is now default behavior. Use --noless to keep .less files in build output'.yellow)
+}
+
+// Temporary deprecation message
+if (commandLineOptions.stripdebug) {
+    console.warn('INFO: the --stripdebug switch is deprecated. This behavior is now default. Use --debug to keep debugging in build output'.yellow);
+}
+
+// Temporary deprecation message
+if (commandLineOptions.cdnflash) {
+    console.warn('INFO: the --cdnflash switch is deprecated. This is now default functionality. Use --nocdnflash to get the old default behavior.'.yellow)
+}
+
+// Temporary deprecation message
+if (commandLineOptions.cdnoutroot) {
+    console.warn('INFO: the --cdnoutroot switch is deprecated. Default location for your cdn assets is now <outroot>/static/cdn'.yellow);
 }
 
 var _ = require('underscore'),
@@ -161,7 +176,6 @@ var _ = require('underscore'),
     cdnRoot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
     fullCdnRoot = (/^\/\//.test(cdnRoot) ? 'http:' : '') + cdnRoot,
     cdnOutRoot = commandLineOptions.cdnoutroot && urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
-    blacklistUrlRegExp = /^$/,
     rootUrl = commandLineOptions.root && urlTools.urlOrFsPathToUrl(commandLineOptions.root, true),
     localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
         return localeId.split(",");
@@ -213,14 +227,6 @@ if (commandLineOptions._.length > 0) {
     throw new Error("No input files and no --root specified (or it isn't file:), cannot proceed");
 }
 
-if (commandLineOptions.exclude) {
-    blacklistUrlRegExp = new RegExp('(?:' +
-        _.flatten(_.flatten([commandLineOptions.exclude])).map(function (wildcard) {
-            return wildcard.replace(/[\.\+\{\}\[\]\(\)\?\^\$]/g, '\\$&').replace(/\*/g, '.*?');
-        }).join('|') +
-        ')');
-}
-
 var startReplRegExp;
 if (commandLineOptions.repl) {
     startReplRegExp = new RegExp(_.flatten(_.flatten([commandLineOptions.repl]).map(function (transformName) {
@@ -232,7 +238,7 @@ if (commandLineOptions.repl) {
 
 new AssetGraph({root: rootUrl})
     .on('afterTransform', function (transform, elapsedTime) {
-        console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
+        console.log(' ✔ '.green + (elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
         if (startReplRegExp && startReplRegExp.test(transform.name)) {
             this.transformQueue.transforms.unshift(AssetGraph.transforms.startRepl());
         }
@@ -240,7 +246,7 @@ new AssetGraph({root: rootUrl})
     .on('warn', function (err) {
         // These are way too noisy
         if (err.relationType !== 'JavaScriptCommonJsRequire') {
-            console.warn((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.message);
+            console.warn((' ⚠ ' + (err.asset ? err.asset.urlOrDescription + ': ' : '') + err.message).yellow);
             if (startReplRegExp && startReplRegExp.test('warn')) {
                 this.transformQueue.transforms.unshift(AssetGraph.transforms.startRepl());
             } else if (commandLineOptions.stoponwarning) {
@@ -249,7 +255,7 @@ new AssetGraph({root: rootUrl})
         }
     })
     .on('error', function (err) {
-        console.error((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack);
+        console.error((' ✘ ' + (err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack).red);
         if (startReplRegExp && startReplRegExp.test('error')) {
             this.transformQueue.transforms.unshift(AssetGraph.transforms.startRepl());
         } else {
@@ -261,8 +267,7 @@ new AssetGraph({root: rootUrl})
     .loadAssets(inputUrls)
     .buildProduction({
         version: commandLineOptions.version,
-        less: commandLineOptions.less,
-        blacklistUrlRegExp: blacklistUrlRegExp,
+        less: !commandLineOptions.noless,
         optimizeImages: commandLineOptions.optimizeimages,
         inlineSize: commandLineOptions.inlinesize,
         gzip: commandLineOptions.gzip,
@@ -277,14 +282,14 @@ new AssetGraph({root: rootUrl})
         asyncScripts: commandLineOptions.asyncscripts,
         deferScripts: commandLineOptions.deferscripts,
         cdnRoot: cdnRoot,
-        cdnFlash: commandLineOptions.cdnflash,
+        cdnFlash: !commandLineOptions.nocdnflash,
         noCompress: commandLineOptions.nocompress,
         sharedBundles: commandLineOptions.sharedbundles,
-        stripDebug: commandLineOptions.stripdebug
+        stripDebug: !commandLineOptions.debug
     })
     .writeAssetsToDisc({url: /^file:/, isLoaded: true}, outRoot)
     .if(cdnRoot)
-        .writeAssetsToDisc({url: query.createPrefixMatcher(fullCdnRoot), isLoaded: true}, cdnOutRoot || outRoot, fullCdnRoot)
+        .writeAssetsToDisc({url: query.createPrefixMatcher(fullCdnRoot), isLoaded: true}, outRoot + 'static/cdn/', fullCdnRoot)
     .endif()
     .writeStatsToStderr()
     .run(function (err) {
