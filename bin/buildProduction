@@ -24,11 +24,6 @@ var optimist = require('optimist'),
             type: 'string',
             demand: false
         })
-        .options('cdnoutroot', {
-            describe: 'Path to the CDN output folder. Will be generated if non-existing',
-            type: 'string',
-            demand: false
-        })
         .options('exclude', {
             describe: 'Url pattern to exclude from the build. Supports * wildcards. You can create multiple of these: --exclude *.php --exclude http://example.com/*.gif',
             type: 'string',
@@ -147,6 +142,11 @@ var optimist = require('optimist'),
 if (commandLineOptions.h) {
     optimist.showHelp();
     process.exit(1);
+}
+
+// Temporary deprecation message
+if (commandLineOptions.cdnoutroot) {
+    console.warn('INFO: the --cdnoutroot switch is deprecated. Default location for your cdn assets is now <outroot>/static/cdn');
 }
 
 var _ = require('underscore'),
@@ -284,7 +284,7 @@ new AssetGraph({root: rootUrl})
     })
     .writeAssetsToDisc({url: /^file:/, isLoaded: true}, outRoot)
     .if(cdnRoot)
-        .writeAssetsToDisc({url: query.createPrefixMatcher(fullCdnRoot), isLoaded: true}, cdnOutRoot || outRoot, fullCdnRoot)
+        .writeAssetsToDisc({url: query.createPrefixMatcher(fullCdnRoot), isLoaded: true}, outRoot + 'static/cdn/', fullCdnRoot)
     .endif()
     .writeStatsToStderr()
     .run(function (err) {
