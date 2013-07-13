@@ -109,8 +109,8 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
-        .options('cdnflash', {
-            describe: 'Put all flash files on the cdnroot as well. WARNING: Might require CORS setup',
+        .options('nocdnflash', {
+            describe: 'Avoid putting flash files on the cdnroot. Use this if you have problems setting up CORS',
             type: 'boolean',
             default: false
         })
@@ -156,6 +156,11 @@ if (commandLineOptions.less) {
 // Temporary deprecation message
 if (commandLineOptions.stripdebug) {
     console.warn('INFO: the --stripdebug switch is deprecated. This behavior is now default. Use --debug to keep debugging in build output');
+}
+
+// Temporary deprecation message
+if (commandLineOptions.cdnflash) {
+    console.warn('INFO: the --cdnflash switch is deprecated. This is now default functionality. Use --nocdnflash to get the old default behavior.')
 }
 
 var _ = require('underscore'),
@@ -276,7 +281,7 @@ new AssetGraph({root: rootUrl})
         asyncScripts: commandLineOptions.asyncscripts,
         deferScripts: commandLineOptions.deferscripts,
         cdnRoot: cdnRoot,
-        cdnFlash: commandLineOptions.cdnflash,
+        cdnFlash: !commandLineOptions.nocdnflash,
         noCompress: commandLineOptions.nocompress,
         sharedBundles: commandLineOptions.sharedbundles,
         stripDebug: !commandLineOptions.debug
