@@ -24,11 +24,6 @@ var optimist = require('optimist'),
             type: 'string',
             demand: false
         })
-        .options('cdnoutroot', {
-            describe: 'Path to the CDN output folder. Will be generated if non-existing',
-            type: 'string',
-            demand: false
-        })
         /*
         // These are internal One.com options. No reason to expose them to the world.
         // Might be deprecated in the near future. If in doubt, don't use!
@@ -163,6 +158,11 @@ if (commandLineOptions.cdnflash) {
     console.warn('INFO: the --cdnflash switch is deprecated. This is now default functionality. Use --nocdnflash to get the old default behavior.')
 }
 
+// Temporary deprecation message
+if (commandLineOptions.cdnoutroot) {
+    console.warn('INFO: the --cdnoutroot switch is deprecated. Default location for your cdn assets is now <outroot>/static/cdn');
+}
+
 var _ = require('underscore'),
     util = require('util'),
     AssetGraph = require('../lib/AssetGraph'),
@@ -288,7 +288,7 @@ new AssetGraph({root: rootUrl})
     })
     .writeAssetsToDisc({url: /^file:/, isLoaded: true}, outRoot)
     .if(cdnRoot)
-        .writeAssetsToDisc({url: query.createPrefixMatcher(fullCdnRoot), isLoaded: true}, cdnOutRoot || outRoot, fullCdnRoot)
+        .writeAssetsToDisc({url: query.createPrefixMatcher(fullCdnRoot), isLoaded: true}, outRoot + 'static/cdn/', fullCdnRoot)
     .endif()
     .writeStatsToStderr()
     .run(function (err) {
