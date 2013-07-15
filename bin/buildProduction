@@ -36,7 +36,7 @@ var optimist = require('optimist'),
             default: false
         })
         .options('version', {
-            describe: 'Adds or updates <meta http-equiv="Content-Version" content="..."> to the specified value. Use {0} to refer to the current value, eg. --version {0}/production or --version `git describe --long --tags --always --dirty 2>/dev/null || echo unknown`',
+            describe: 'Adds or updates <html data-version="..."> to the specified value. Use {0} to refer to the current value, eg. --version {0}/production or --version `git describe --long --tags --always --dirty 2>/dev/null || echo unknown`',
             type: 'string'
         })
         .options('gzip', {
