@@ -21,7 +21,7 @@ var optimist = require('optimist'),
             demand: true
         })
         .options('cdnroot', {
-            describe: 'URI root where the static assets will be deployed. Must be either an absolute or a protocol-relative url.',
+            describe: 'URI root where the static assets will be deployed. Must be either an absolute or a protocol-relative url',
             type: 'string',
             demand: false
         })
@@ -78,15 +78,20 @@ var optimist = require('optimist'),
         })
         .options('define', {
             alias: 'd',
-            describe: '--define SYMBOL[=value] will be passed to UglifyJS as is (see the docs at https://github.com/mishoo/UglifyJS#usage). Remember to protect quotes from the shell, eg. --define foo=\\"bar\\".',
+            describe: '--define SYMBOL[=value] will be passed to UglifyJS as is (see the docs at https://github.com/mishoo/UglifyJS#usage). Remember to protect quotes from the shell, eg. --define foo=\\"bar\\"',
             type: 'string'
         })
         .options('inlinesize', {
             describe: 'Inline CSS backgrounds below this threshold as data-uris',
             default: 8192
         })
+        .options('cdnhtml', {
+            describe: 'Put non-initial HTML files on the cdnroot as well. Some CDN packages (such as Akamai\'s cheapest one) don\'t allow this',
+            type: 'boolean',
+            default: false
+        })
         .options('sharedbundles', {
-            describe: 'Try to create shared bundles including commin files across multiple pages.',
+            describe: 'Try to create shared bundles including commin files across multiple pages',
             type: 'boolean',
             default: false
         })
