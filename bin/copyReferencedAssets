@@ -34,8 +34,8 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
-        .options('less', {
-            describe: 'Translates .less files to CSS (so that the referenced images are found)',
+        .options('noless', {
+            describe: 'Keep .less files as they are instead of automatically compiling them to CSS',
             type: 'boolean',
             default: false
         })
@@ -117,7 +117,7 @@ new AssetGraph({root: rootUrl})
         });
     })
     .populate({followRelations: followRelationsQueryObj, startAssets: {type: 'Html', isFragment: true, isInitial: true}})
-    .if(commandLineOptions.less)
+    .if(!commandLineOptions.noless)
         // Replace Less assets with their Css counterparts:
         .compileLessToCss({type: 'Less', isLoaded: true})
 
