@@ -151,7 +151,7 @@ if (commandLineOptions.h) {
 
 // Temporary deprecation message
 if (commandLineOptions.less) {
-    console.warn('INFO: The --less command line option is deprecated. This is now default behavior. Use --noless to keep .less files in build output'.yellow)
+    console.warn('INFO: The --less command line option is deprecated. This is now default behavior. Use --noless to keep .less files in build output'.yellow);
 }
 
 // Temporary deprecation message
@@ -161,7 +161,7 @@ if (commandLineOptions.stripdebug) {
 
 // Temporary deprecation message
 if (commandLineOptions.cdnflash) {
-    console.warn('INFO: the --cdnflash switch is deprecated. This is now default functionality. Use --nocdnflash to get the old default behavior.'.yellow)
+    console.warn('INFO: the --cdnflash switch is deprecated. This is now default functionality. Use --nocdnflash to get the old default behavior.'.yellow);
 }
 
 // Temporary deprecation message
@@ -206,7 +206,7 @@ var _ = require('underscore'),
                 process.exit(1);
             }
         } else {
-            valueAst = new uglifyJs.AST_True()
+            valueAst = new uglifyJs.AST_True();
         }
         defines[matchDefine[1]] = valueAst;
     }
