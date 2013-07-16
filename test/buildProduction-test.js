@@ -909,5 +909,17 @@ vows.describe('buildProduction').addBatch({
             assert.greater(requireJsGz.rawSrc.length, 5000);
             assert.lesser(requireJsGz.rawSrc.length, 10000);
         }
+    },
+    'After loading a test case with an HTML fragment that has an unpopulated relation, then running the buildProduction transform (regression test)': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/fragmentWithUnpopulatedRelation/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('**/*.html')
+                .buildProduction({version: false})
+                .run(this.callback);
+        },
+        'the graph should contain 2 Html asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
+        }
     }
 })['export'](module);
