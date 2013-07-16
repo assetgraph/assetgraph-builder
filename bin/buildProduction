@@ -180,7 +180,6 @@ var _ = require('underscore'),
     outRoot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
     cdnRoot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
     fullCdnRoot = (/^\/\//.test(cdnRoot) ? 'http:' : '') + cdnRoot,
-    cdnOutRoot = commandLineOptions.cdnoutroot && urlTools.fsDirToFileUrl(commandLineOptions.cdnoutroot),
     rootUrl = commandLineOptions.root && urlTools.urlOrFsPathToUrl(commandLineOptions.root, true),
     localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
         return localeId.split(",");
