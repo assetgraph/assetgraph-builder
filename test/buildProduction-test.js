@@ -889,7 +889,7 @@ vows.describe('buildProduction').addBatch({
             assert.ok(!/theOtherValue/.test(assetGraph.findAssets({type: 'JavaScript'})[0].text));
         }
     },
-    'After loading a test case with a JavaScript that needs a symbol replaced, then running the buildProduction transform with gzipTextAssets:true': {
+    'After loading a test case then running the buildProduction transform with gzip:true': {
         topic: function () {
             new AssetGraph({root: __dirname + '/buildProduction/gzip/'})
                 .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
@@ -918,8 +918,20 @@ vows.describe('buildProduction').addBatch({
                 .buildProduction({version: false})
                 .run(this.callback);
         },
-        'the graph should contain 2 Html asset': function (assetGraph) {
+        'the graph should contain 2 Html assets': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'Html'}).length, 2);
+        }
+    },
+    'After loading a test case with an existing source map, then running the buildProduction transform with gzip:true': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/existingSourceMap/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction({version: false, gzip: true})
+                .run(this.callback);
+        },
+        'the graph should contain 1 .gz assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({url: /\.gz$/}).length, 1);
         }
     }
 })['export'](module);
