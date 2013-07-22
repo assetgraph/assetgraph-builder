@@ -12,7 +12,7 @@
     ],
     "main": "lib/AssetGraph.js",
     "dependencies": {
-        "assetgraph": "=1.6.0beta21",
+        "assetgraph": "=1.6.0beta22",
         "async": "=0.2.9",
         "bufferjs": "=1.0.2",
         "colors": "=0.6.0-1",
