@@ -14,11 +14,30 @@ vows.describe('bin/makeBabelJob test').addBatch({
                     '--root', __dirname + '/makeBabelJobAndApplyBabelJob/',
                     __dirname + '/makeBabelJobAndApplyBabelJob/index.html',
                     '--locales', 'en,da,de'
-                ]);
+                ]),
+                buffersByStreamName = {},
+                streamNames = ['stdout', 'stderr'];
+
+            streamNames.forEach(function (streamName) {
+                buffersByStreamName[streamName] = [];
+                makeBabelJobProcess[streamName].on('data', function (chunk) {
+                    buffersByStreamName[streamName].push(chunk);
+                });
+            });
+
+            function getStreamOutputText() {
+                var outputText = '';
+                streamNames.forEach(function (streamName) {
+                    if (buffersByStreamName[streamName].length > 0) {
+                        outputText += '\n' + streamName.toUpperCase() + ': ' + Buffer.concat(buffersByStreamName[streamName]).toString('utf-8') + '\n';
+                    }
+                });
+                return outputText;
+            }
 
             makeBabelJobProcess.on('exit', function (exitCode) {
                 if (exitCode) {
-                    cb(new Error("The makeBabelJob process ended with a non-zero exit code: " + exitCode));
+                    cb(new Error("The makeBabelJob process ended with a non-zero exit code: " + exitCode + getStreamOutputText()));
                 } else {
                     cb(null, babelDir);
                 }
