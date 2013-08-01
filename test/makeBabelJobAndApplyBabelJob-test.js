@@ -49,7 +49,6 @@ vows.describe('bin/makeBabelJob test').addBatch({
         },
         'en.txt should have the correct contents': function (babelDir) {
             var lines = fs.readFileSync(babelDir + '/en.txt', 'utf-8').split(/\n/);
-            assert.equal(lines.length, 14);
             assert.equal(lines.shift(), 'arrayvalue[0]=5');
             assert.equal(lines.shift(), 'arrayvalue[1]=items');
             assert.equal(lines.shift(), 'arrayvalue[2]=in');
@@ -58,6 +57,8 @@ vows.describe('bin/makeBabelJob test').addBatch({
             assert.equal(lines.shift(), 'keywithplaceholdersinhtml=Key with {0} placeholders in HTML, English');
             assert.equal(lines.shift(), 'objectvalue[key1]=value1');
             assert.equal(lines.shift(), 'objectvalue[key2]=value2');
+            assert.equal(lines.shift(), 'objectvaluewithsomemissingkeysinthestructure[foo][bar]=baz');
+            assert.equal(lines.shift(), 'objectvaluewithsomemissingkeysinthestructure[foo][quux]=blah');
             assert.equal(lines.shift(), 'simplekeyinhtml=Simple key in HTML, English');
             assert.equal(lines.shift(), 'simplekeyinhtmlattribute=Simple key in HTML attribute, English');
             assert.equal(lines.shift(), 'simplekeyinknockoutjstemplate=Simple key in a Knockout.js template');
@@ -67,7 +68,6 @@ vows.describe('bin/makeBabelJob test').addBatch({
         },
         'da.txt should have the correct contents': function (babelDir) {
             var lines = fs.readFileSync(babelDir + '/da.txt', 'utf-8').split(/\n/);
-            assert.equal(lines.length, 14);
             assert.equal(lines.shift(), 'arrayvalue[0]=');
             assert.equal(lines.shift(), 'arrayvalue[1]=');
             assert.equal(lines.shift(), 'arrayvalue[2]=');
@@ -76,6 +76,8 @@ vows.describe('bin/makeBabelJob test').addBatch({
             assert.equal(lines.shift(), 'keywithplaceholdersinhtml=');
             assert.equal(lines.shift(), 'objectvalue[key1]=');
             assert.equal(lines.shift(), 'objectvalue[key2]=');
+            assert.equal(lines.shift(), 'objectvaluewithsomemissingkeysinthestructure[foo][bar]=baz');
+            assert.equal(lines.shift(), 'objectvaluewithsomemissingkeysinthestructure[foo][quux]=');
             assert.equal(lines.shift(), 'simplekeyinhtml=');
             assert.equal(lines.shift(), 'simplekeyinhtmlattribute=');
             assert.equal(lines.shift(), 'simplekeyinknockoutjstemplate=');
@@ -85,7 +87,6 @@ vows.describe('bin/makeBabelJob test').addBatch({
         },
         'de.txt should have the correct contents': function (babelDir) {
             var lines = fs.readFileSync(babelDir + '/de.txt', 'utf-8').split(/\n/);
-            assert.equal(lines.length, 14);
             assert.equal(lines.shift(), 'arrayvalue[0]=');
             assert.equal(lines.shift(), 'arrayvalue[1]=');
             assert.equal(lines.shift(), 'arrayvalue[2]=');
@@ -94,6 +95,8 @@ vows.describe('bin/makeBabelJob test').addBatch({
             assert.equal(lines.shift(), 'keywithplaceholdersinhtml=');
             assert.equal(lines.shift(), 'objectvalue[key1]=');
             assert.equal(lines.shift(), 'objectvalue[key2]=');
+            assert.equal(lines.shift(), 'objectvaluewithsomemissingkeysinthestructure[foo][bar]=');
+            assert.equal(lines.shift(), 'objectvaluewithsomemissingkeysinthestructure[foo][quux]=');
             assert.equal(lines.shift(), 'simplekeyinhtml=');
             assert.equal(lines.shift(), 'simplekeyinhtmlattribute=');
             assert.equal(lines.shift(), 'simplekeyinknockoutjstemplate=');
@@ -115,6 +118,8 @@ vows.describe('bin/makeBabelJob test').addBatch({
                         'arrayvalue[4]=array',
                         'objectvalue[key1]=værdi1',
                         'objectvalue[key2]=værdi2',
+                        'objectvaluewithsomemissingkeysinthestructure[foo][bar]=bazbaz',
+                        'objectvaluewithsomemissingkeysinthestructure[foo][quux]=fuzfuz',
                         'withexistingkeys=den opdaterede danske værdi',
                         'simplekeyinhtml=Simpel nøgle på dansk',
                         'simplekeyinhtmlattribute=Simpel nøgle i HTML-attribut på dansk',
@@ -165,6 +170,17 @@ vows.describe('bin/makeBabelJob test').addBatch({
                         de: {
                             key1: '',
                             key2: ''
+                        }
+                    },
+                    objectvaluewithsomemissingkeysinthestructure: {
+                        da: {
+                            foo: { quux: 'fuzfuz', bar: 'bazbaz' }
+                        },
+                        de: {
+                            foo: { quux: '', bar: '' }
+                        },
+                        en: {
+                            foo: { quux: 'blah', bar: 'baz' }
                         }
                     },
                     withexistingkeys: {

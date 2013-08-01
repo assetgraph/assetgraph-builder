@@ -14,6 +14,13 @@ alert(TR('arrayvalue'));
 alert(TR('objectvalue'));
 alert(TR('withexistingkeys'));
 
+alert(TR('objectvaluewithsomemissingkeysinthestructure', {
+    foo: {
+        bar: 'baz',
+        quux: 'blah' // <-- This one isn't in thething.i18n
+    }
+}));
+
 var knockoutTemplate = GETTEXT('template.ko');
 </script>
 </body>

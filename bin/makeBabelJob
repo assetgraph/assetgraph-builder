@@ -19,6 +19,30 @@ var path = require('path'),
 
 mkpathSync(commandLineOptions.babeldir);
 
+function flattenKey(key, value) {
+    var valueByFlattenedKey = {},
+        path = [];
+    (function traverse(obj) {
+        if (Array.isArray(obj)) {
+            for (var i = 0 ; i < obj.length ; i += 1) {
+                path.push(i);
+                traverse(obj[i]);
+                path.pop();
+            }
+        } else if (typeof obj === 'object' && obj !== null) {
+            for (var propertyName in obj) {
+                path.push(propertyName);
+                traverse(obj[propertyName]);
+                path.pop();
+            }
+        } else {
+            // Assume a type that can be stringified using String(obj):
+            valueByFlattenedKey[key + path.map(function (pathComponent) {return '[' + pathComponent + ']';}).join("")] = obj;
+        }
+    }(value));
+    return valueByFlattenedKey;
+}
+
 new AssetGraph({root: commandLineOptions.root})
     .on('afterTransform', function (transform, elapsedTime) {
         console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
@@ -48,48 +72,58 @@ new AssetGraph({root: commandLineOptions.root})
         var initialHtmlAssets = assetGraph.findAssets({type: 'Html', isInitial: true}),
             occurrencesByKey = i18nTools.findOccurrences(assetGraph, initialHtmlAssets),
             allKeys = i18nTools.extractAllKeys(assetGraph),
-            alreadyTranslatedByKey = {};
+            allKeysFlattened = {},
+            alreadyTranslatedByFlattenedKey = {};
 
-        // Note which keys have already been translated to all the locales we've been asked to process:
         Object.keys(allKeys).forEach(function (key) {
-            alreadyTranslatedByKey[key] = true;
+            Object.keys(allKeys[key]).forEach(function (localeId) {
+                var valueByFlattenedKey = flattenKey(key, allKeys[key][localeId]);
+                Object.keys(valueByFlattenedKey).forEach(function (flattenedKey) {
+                    allKeysFlattened[flattenedKey] = allKeysFlattened[flattenedKey] || {};
+                    allKeysFlattened[flattenedKey][localeId] = valueByFlattenedKey[flattenedKey];
+                });
+            });
+        });
+
+        // Note which flattened keys have already been translated to all the locales we've been asked to process:
+        Object.keys(allKeysFlattened).forEach(function (key) {
+            alreadyTranslatedByFlattenedKey[key] = true;
             localeIds.forEach(function (localeId) {
                 var prioritizedLocaleIds = i18nTools.expandLocaleIdToPrioritizedList(localeId);
                 for (var i = 0 ; i < prioritizedLocaleIds.length ; i += 1) {
-                    if (prioritizedLocaleIds[i] in allKeys[key]) {
+                    if (prioritizedLocaleIds[i] in allKeysFlattened[key]) {
                         return;
                     }
                 }
-                alreadyTranslatedByKey[key] = false;
+                alreadyTranslatedByFlattenedKey[key] = false;
             });
         });
 
         localeIds.forEach(function (localeId) {
             var babelSrc = '',
+                isDefaultLocale = localeId === defaultLocaleId || localeId.indexOf(defaultLocaleId + '_') === 0,
                 keys = Object.keys(occurrencesByKey).sort(function (a, b) {
                     var aLowerCase = a.toLowerCase(),
                         bLowerCase = b.toLowerCase();
                     return aLowerCase < bLowerCase ? -1 : (aLowerCase > bLowerCase ? 1 : 0);
                 });
             keys.forEach(function (key) {
-                var occurrences = occurrencesByKey[key];
-                if (alreadyTranslatedByKey[key] && !commandLineOptions.all) {
-                    return;
-                }
-                var value,
+                var occurrences = occurrencesByKey[key],
+                    value,
                     defaultValue,
+                    defaultValueInTheOccurrence,
                     omitExistingValues = false;
+
+                // Look for a default value in the occurrences:
+                occurrences.forEach(function (occurrence) {
+                    // FIXME: Warn about multiple different default values?
+                    defaultValueInTheOccurrence = occurrence.defaultValue;
+                });
 
                 if (key in allKeys && defaultLocaleId in allKeys[key]) {
                     defaultValue = allKeys[key][defaultLocaleId];
                 } else {
-                    // Look for a default value in the occurrences:
-                    occurrences.forEach(function (occurrence) {
-                        // FIXME: Warn about multiple different default values?
-                        if (typeof defaultValue === 'undefined') {
-                            defaultValue = occurrence.defaultValue;
-                        }
-                    });
+                    defaultValue = defaultValueInTheOccurrence;
                 }
 
                 if (key in allKeys && localeId in allKeys[key]) {
@@ -98,33 +132,31 @@ new AssetGraph({root: commandLineOptions.root})
                     value = defaultValue;
                 } else if (defaultValue) {
                     value = defaultValue;
-                    // Use the defaultValue to figure out which babel keys to explode it to (only relevant for structured values):
+                    // Use the defaultValue to figure out which babel keys to flatten it to (only relevant for structured values):
                     omitExistingValues = true;
                 } else {
                     value = '';
                 }
 
-                var path = [];
-                (function serialize (obj) {
-                    if (_.isArray(obj)) {
-                        for (var i = 0 ; i < obj.length ; i += 1) {
-                            path.push(i);
-                            serialize(obj[i]);
-                            path.pop();
-                        }
-                    } else if (typeof obj === 'object' && obj !== null) {
-                        for (var propertyName in obj) {
-                            path.push(propertyName);
-                            serialize(obj[propertyName]);
-                            path.pop();
-                        }
-                    } else {
-                        // Assume a type that can be stringified using String(obj):
-                        babelSrc += key + path.map(function (pathComponent) {
-                            return '[' + pathComponent + ']';
-                        }).join("") + "=" + (omitExistingValues ? '' : String(obj).replace(/\\/g, "\\\\").replace(/\n/g, "\\n")) + "\n";
+                var valueByFlattenedKey = flattenKey(key, value),
+                    defaultValueInTheOccurrenceByFlattenedKey,
+                    flattenedKeysThatMustBePresent = Object.keys(valueByFlattenedKey);
+                // Make sure that all the flattened keys from the actual occurrence are present:
+                if (typeof defaultValueInTheOccurrence !== 'undefined') {
+                    defaultValueInTheOccurrenceByFlattenedKey = flattenKey(key, defaultValueInTheOccurrence);
+                    flattenedKeysThatMustBePresent = _.union(Object.keys(defaultValueInTheOccurrenceByFlattenedKey), flattenedKeysThatMustBePresent);
+                }
+
+                flattenedKeysThatMustBePresent.forEach(function (flattenedKey) {
+                    if (alreadyTranslatedByFlattenedKey[flattenedKey] && !commandLineOptions.all) {
+                        return;
                     }
-                }(value));
+                    var value = valueByFlattenedKey[flattenedKey];
+                    if (typeof value === 'undefined' && defaultValueInTheOccurrenceByFlattenedKey && isDefaultLocale) {
+                        value = defaultValueInTheOccurrenceByFlattenedKey[flattenedKey];
+                    }
+                    babelSrc += flattenedKey + "=" + (omitExistingValues ? '' : String(value || '').replace(/\\/g, "\\\\").replace(/\n/g, "\\n")) + "\n";
+                });
             });
             var targetBabelFileName = path.resolve(commandLineOptions.babeldir, localeId + '.txt');
             if (babelSrc.length) {

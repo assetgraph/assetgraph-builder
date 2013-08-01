@@ -11,6 +11,18 @@
             "key2": "value2"
         }
     },
+    "objectvaluewithsomemissingkeysinthestructure": {
+        "en": {
+            "foo": {
+                "bar": "baz"
+            }
+        },
+        "da": {
+            "foo": {
+                "bar": "baz"
+            }
+        }
+    },
     "withexistingkeys": {
         "en": "the English value",
         "da": "the Danish value"
