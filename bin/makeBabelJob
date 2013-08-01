@@ -8,11 +8,12 @@ var path = require('path'),
     urlTools = require('assetgraph/lib/util/urlTools'),
     mkpathSync = require('../lib/mkpathSync'),
     commandLineOptions = require('optimist')
-        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--all] --babeldir=<dirForBabelFiles> --root <inputRootDirectory> --locales <localeId>,... <htmlFile>...')
+        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--all] [--defaultlocale <localeId>] --babeldir=<dirForBabelFiles> --root <inputRootDirectory> --locales <localeId>,... <htmlFile>...')
         .boolean('parentdir', 'all')
         .demand(['root', 'locales', 'babeldir'])
         .argv,
-    localeIds = _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {return localeId.split(",");}));
+    localeIds = _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {return localeId.split(",");})),
+    defaultLocaleId = commandLineOptions.defaultlocale || localeIds[0];
 
 mkpathSync(commandLineOptions.babeldir);
 
@@ -77,8 +78,8 @@ new AssetGraph({root: commandLineOptions.root})
                     defaultValue,
                     omitExistingValues = false;
 
-                if (key in allKeys && 'en' in allKeys[key]) {
-                    defaultValue = allKeys[key].en;
+                if (key in allKeys && defaultLocaleId in allKeys[key]) {
+                    defaultValue = allKeys[key][defaultLocaleId];
                 } else {
                     // Look for a default value in the occurrences:
                     occurrences.forEach(function (occurrence) {
@@ -91,7 +92,7 @@ new AssetGraph({root: commandLineOptions.root})
 
                 if (key in allKeys && localeId in allKeys[key]) {
                     value = allKeys[key][localeId];
-                } else if (defaultValue && /^en(?:$|_|-)/i.test(localeId)) {
+                } else if (defaultValue && localeId.indexOf(defaultLocaleId) === 0) {
                     value = defaultValue;
                 } else if (defaultValue) {
                     value = defaultValue;
