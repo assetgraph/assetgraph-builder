@@ -12,8 +12,10 @@ var path = require('path'),
         .boolean('parentdir', 'all')
         .demand(['root', 'locales', 'babeldir'])
         .argv,
-    localeIds = _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {return localeId.split(",");})),
-    defaultLocaleId = commandLineOptions.defaultlocale || localeIds[0];
+    localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
+        return localeId.split(",");
+    })).map(i18nTools.normalizeLocaleId),
+    defaultLocaleId = commandLineOptions.defaultlocale ? i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale) : localeIds[0];
 
 mkpathSync(commandLineOptions.babeldir);
 
