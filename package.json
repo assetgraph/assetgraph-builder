@@ -29,7 +29,7 @@
         "histogram": "=0.1.2"
     },
     "devDependencies": {
-        "vows": ">=0.6.3"
+        "vows": "=0.7.0"
     },
     "engines": {
         "node": ">=0.4.8"
