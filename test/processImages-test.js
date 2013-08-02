@@ -187,5 +187,28 @@ vows.describe('transforms.processImages').addBatch({
                 assert.lesser(purpleAlpha24BitPngcrushed.rawSrc.length, 8285);
             }
         }
+    },
+    'After loading test case with an svg': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/processImages/svg/'})
+                .loadAssets('index.html')
+                .populate()
+                .run(this.callback);
+        },
+        'the graph contains the expected assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Svg'}).length, 1);
+            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 1);
+        },
+        'then running the processImages transform': {
+            topic: function (assetGraph) {
+                assetGraph
+                    .processImages({type: 'Svg'})
+                    .run(this.callback);
+            },
+            'the Svg asset should contain an element with an id of theBogusElementId': function (assetGraph) {
+                assert.matches(assetGraph.findAssets({type: 'Svg'})[0].text, /id="theBogusElementId"/);
+            }
+        }
     }
+
 })['export'](module);
