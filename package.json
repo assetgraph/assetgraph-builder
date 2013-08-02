@@ -42,7 +42,5 @@
     "publishConfig": {
         "registry": "http://registry.npmjs.org/"
     },
-    "scripts": {
-        "prepublish": "npm install && vows"
-    }
+    "scripts": {}
 }
