@@ -2,7 +2,6 @@
 
 var path = require('path'),
     fs = require('fs'),
-    _ = require('underscore'),
     AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
     urlTools = require('assetgraph/lib/util/urlTools'),
@@ -102,7 +101,7 @@ new AssetGraph({root: commandLineOptions.root})
                                         // Integer path component, assume that cursor[nextIndex] should be an array
                                         if (typeof cursor[path[0]] === 'undefined') {
                                             cursor[path[0]] = [];
-                                        } else if (!_.isArray(cursor[path[0]])) {
+                                        } else if (!Array.isArray(cursor[path[0]])) {
                                             throw new Error("Error: Expected " + JSON.stringify(cursor) + "['" + path[0] + "'] " +
                                                             "to be undefined or an array while processing line " + lineNumber + " of " + fileName + ":\n" + line);
                                         }
@@ -129,7 +128,7 @@ new AssetGraph({root: commandLineOptions.root})
                 }
             }
         });
-        _.keys(translationsByKeyAndLocaleId).forEach(function (key) {
+        Object.keys(translationsByKeyAndLocaleId).forEach(function (key) {
             var i18nAsset;
             try {
                 i18nAsset = i18nAssetForAllKeys || i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, occurrencesByKey);
@@ -141,7 +140,8 @@ new AssetGraph({root: commandLineOptions.root})
                     i18nAsset.parseTree[key] = {};
                     i18nAsset.markDirty();
                 }
-                _.each(translationsByKeyAndLocaleId[key], function (translation, localeId) {
+                Object.keys(translationsByKeyAndLocaleId[key]).forEach(function (localeId) {
+                    var translation = translationsByKeyAndLocaleId[key][localeId];
                     if (!(localeId in i18nAsset.parseTree[key]) || translation !== i18nAsset.parseTree[key][localeId]) {
                         i18nAsset.parseTree[key][localeId] = translation;
                         i18nAsset.markDirty();
