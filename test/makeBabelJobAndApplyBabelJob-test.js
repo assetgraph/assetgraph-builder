@@ -49,6 +49,7 @@ vows.describe('bin/makeBabelJob test').addBatch({
         },
         'en.txt should have the correct contents': function (babelDir) {
             var lines = fs.readFileSync(babelDir + '/en.txt', 'utf-8').split(/\n/);
+            assert.equal(lines.shift(), 'alreadyPartiallyTranslatedKey[theNotYetTranslatedOne]=yup');
             assert.equal(lines.shift(), 'arrayvalue[0]=5');
             assert.equal(lines.shift(), 'arrayvalue[1]=items');
             assert.equal(lines.shift(), 'arrayvalue[2]=in');
@@ -68,6 +69,7 @@ vows.describe('bin/makeBabelJob test').addBatch({
         },
         'da.txt should have the correct contents': function (babelDir) {
             var lines = fs.readFileSync(babelDir + '/da.txt', 'utf-8').split(/\n/);
+            assert.equal(lines.shift(), 'alreadyPartiallyTranslatedKey[theNotYetTranslatedOne]=');
             assert.equal(lines.shift(), 'arrayvalue[0]=');
             assert.equal(lines.shift(), 'arrayvalue[1]=');
             assert.equal(lines.shift(), 'arrayvalue[2]=');
@@ -87,6 +89,7 @@ vows.describe('bin/makeBabelJob test').addBatch({
         },
         'de.txt should have the correct contents': function (babelDir) {
             var lines = fs.readFileSync(babelDir + '/de.txt', 'utf-8').split(/\n/);
+            assert.equal(lines.shift(), 'alreadyPartiallyTranslatedKey[theNotYetTranslatedOne]=');
             assert.equal(lines.shift(), 'arrayvalue[0]=');
             assert.equal(lines.shift(), 'arrayvalue[1]=');
             assert.equal(lines.shift(), 'arrayvalue[2]=');
@@ -109,6 +112,7 @@ vows.describe('bin/makeBabelJob test').addBatch({
                 var cb = this.callback,
                     tmpTestCaseCopyDir = temp.mkdirSync(),
                     daTxtLines = [
+                        'alreadyPartiallyTranslatedKey[theNotYetTranslatedOne]=nowItIsTranslated',
                         'simplekeyinknockoutjstemplate=Simpel nøgle i en Knockout.js-skabelon',
                         'stringvalue=the Danish stringvalue',
                         'arrayvalue[0]=5',
@@ -207,6 +211,20 @@ vows.describe('bin/makeBabelJob test').addBatch({
                         en: 'Simple key in a Knockout.js template',
                         da: 'Simpel nøgle i en Knockout.js-skabelon',
                         de: ''
+                    },
+                    alreadyPartiallyTranslatedKey: {
+                        en: {
+                            theTranslatedOne: 'yep',
+                            theNotYetTranslatedOne: 'yup'
+                        },
+                        da: {
+                            theTranslatedOne: 'ja',
+                            theNotYetTranslatedOne: 'nowItIsTranslated'
+                        },
+                        de: {
+                            theTranslatedOne: 'Ja',
+                            theNotYetTranslatedOne: ''
+                        }
                     }
                 });
             }

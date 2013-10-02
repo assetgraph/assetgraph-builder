@@ -35,5 +35,16 @@
     },
     "keywithplaceholdersinhtml": {
         "en": "Key with {0} placeholders in HTML, English"
+    },
+    "alreadyPartiallyTranslatedKey": {
+        "en": {
+            "theTranslatedOne": "yep"
+        },
+        "da": {
+            "theTranslatedOne": "ja"
+        },
+        "de": {
+            "theTranslatedOne": "Ja"
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 var path = require('path'),
     fs = require('fs'),
+    extend = require('extend'),
     AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
     urlTools = require('assetgraph/lib/util/urlTools'),
@@ -15,6 +16,9 @@ var path = require('path'),
     i18nUrl,
     i18nAsset;
 
+function isArrayOrObject(obj) {
+    return Array.isArray(obj) || (obj && typeof obj === 'object');
+}
 
 if (commandLineOptions.i18n) {
     i18nUrl = urlTools.fsFilePathToFileUrl(commandLineOptions.i18n);
@@ -141,10 +145,21 @@ new AssetGraph({root: commandLineOptions.root})
                     i18nAsset.markDirty();
                 }
                 Object.keys(translationsByKeyAndLocaleId[key]).forEach(function (localeId) {
-                    var translation = translationsByKeyAndLocaleId[key][localeId];
-                    if (!(localeId in i18nAsset.parseTree[key]) || translation !== i18nAsset.parseTree[key][localeId]) {
-                        i18nAsset.parseTree[key][localeId] = translation;
+                    var newTranslation = translationsByKeyAndLocaleId[key][localeId],
+                        existingTranslation = i18nAsset.parseTree[key][localeId];
+
+                    function setMergedTranslation(mergedTranslation) {
+                        i18nAsset.parseTree[key][localeId] = mergedTranslation;
                         i18nAsset.markDirty();
+                    }
+
+                    if (isArrayOrObject(existingTranslation) && isArrayOrObject(existingTranslation)) {
+                        // Do a 'deep extend' to update existing complex value:
+                        setMergedTranslation(extend(true, existingTranslation, newTranslation));
+                    } else if (typeof existingTranslation === 'undefined' ||
+                               isArrayOrObject(existingTranslation) !== isArrayOrObject(newTranslation) ||
+                               existingTranslation !== newTranslation) {
+                        setMergedTranslation(newTranslation);
                     }
                 });
             }

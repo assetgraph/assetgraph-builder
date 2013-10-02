@@ -21,6 +21,11 @@ alert(TR('objectvaluewithsomemissingkeysinthestructure', {
     }
 }));
 
+alert(TR('alreadyPartiallyTranslatedKey', {
+    theTranslatedOne: 'yep',
+    theNotYetTranslatedOne: 'yup'
+}).theNotYetTranslatedOne);
+
 var knockoutTemplate = GETTEXT('template.ko');
 </script>
 </body>
