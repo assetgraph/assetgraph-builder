@@ -933,5 +933,44 @@ vows.describe('buildProduction').addBatch({
         'the graph should contain 1 .gz assets': function (assetGraph) {
             assert.equal(assetGraph.findAssets({url: /\.gz$/}).length, 1);
         }
+    },
+    'After loading a test case with some assets that can be inlined, then run buildProduction with HtmlScript and HtmlStyline inlining thresholds of 100 bytes': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/inline/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction({version: false, inlineByRelationType: {HtmlScript: 100, HtmlStyle: 100}})
+                .run(this.callback);
+        },
+        'the script and the stylesheet should be inlined': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript'})[0].isInline, true);
+            assert.equal(assetGraph.findAssets({type: 'Css'})[0].isInline, true);
+        }
+    },
+    'After loading a test case with some assets that can be inlined, then run buildProduction with HtmlScript and HtmlStyline inlining thresholds of 5 bytes': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/inline/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction({version: false, inlineByRelationType: {HtmlScript: 5, HtmlStyle: 5}})
+                .run(this.callback);
+        },
+        'the script and the stylesheet should not be inlined': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript'})[0].isInline, false);
+            assert.equal(assetGraph.findAssets({type: 'Css'})[0].isInline, false);
+        }
+    },
+    'After loading a test case with some assets that can be inlined, then run buildProduction with HtmlScript and HtmlStyline inlining thresholds of false': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/inline/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction({version: false, inlineByRelationType: {HtmlScript: false, HtmlStyle: false}})
+                .run(this.callback);
+        },
+        'the script and the stylesheet should not be inlined': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript'})[0].isInline, false);
+            assert.equal(assetGraph.findAssets({type: 'Css'})[0].isInline, false);
+        }
     }
 })['export'](module);

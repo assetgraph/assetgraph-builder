@@ -81,9 +81,9 @@ var optimist = require('optimist'),
             describe: '--define SYMBOL[=value] will be passed to UglifyJS as is (see the docs at https://github.com/mishoo/UglifyJS#usage). Remember to protect quotes from the shell, eg. --define foo=\\"bar\\"',
             type: 'string'
         })
-        .options('inlinesize', {
-            describe: 'Inline CSS backgrounds below this threshold as data-uris',
-            default: 8192
+        .options('inline', {
+            describe: 'Set size threshold for inlining. Supported values: false (never inline), true (always inline), number (inline if target is smaller than this number of bytes). Also supported: --inlinehtmlscript true, --inlinecssimage 8192 etc.',
+            default: false
         })
         .options('cdnhtml', {
             describe: 'Put non-initial HTML files on the cdnroot as well. Some CDN packages (such as Akamai\'s cheapest one) don\'t allow this',
@@ -138,9 +138,6 @@ var optimist = require('optimist'),
             demand: false
         })
         */
-        .check(function (argv) {
-            return typeof argv.inlinesize === 'number';
-        })
         .wrap(72)
         .argv;
 
@@ -190,7 +187,47 @@ var _ = require('underscore'),
     defaultLocaleId = commandLineOptions.defaultlocale && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale),
     localizationInfoObject = {},
     defines = {},
-    inputUrls;
+    inputUrls,
+    inlineByRelationType = {};
+if (commandLineOptions.inline) {
+   inlineByRelationType['*'] = true;
+}
+
+// Doesn't touch non-string values or values that don't look like something boolean:
+function convertStringToBoolean(str) {
+    if (typeof str === 'string') {
+        if (/^(?:on|true|yes|)$/.test(str)) {
+            return true;
+        } else if (/^(?:off|false|no)$/.test(str)) {
+            return false;
+        }
+    }
+    return str;
+}
+
+// Look for --inline<relationType> command line arguments:
+Object.keys(AssetGraph).forEach(function (propertyName) {
+    var inlineThreshold = convertStringToBoolean(commandLineOptions['inline' + propertyName.toLowerCase()]);
+    if (typeof inlineThreshold !== 'undefined') {
+        inlineByRelationType[propertyName] = inlineThreshold;
+    }
+});
+
+// Use a default inline threshold of 8192 bytes for HtmlStyle and HtmlScript, unless --inlinehtmlscript/--inlinehtmlstyle (or --inline) was given
+if (typeof inlineByRelationType['*'] === 'undefined') {
+    ['HtmlScript', 'HtmlStyle'].forEach(function (relationType) {
+        if (typeof inlineByRelationType[relationType] === 'undefined') {
+            inlineByRelationType[relationType] = 8192;
+        }
+    });
+}
+
+if (commandLineOptions.inlinesize) {
+    console.warn('INFO: the --inlinesize switch is deprecated. Please use --inlinecssimage <number> instead'.yellow);
+    inlineByRelationType.CssImage = commandLineOptions.inlinesize;
+} else if (!('CssImage' in inlineByRelationType)) {
+    inlineByRelationType.CssImage = 8192;
+}
 
 (commandLineOptions.define ? _.flatten(_.flatten([commandLineOptions.define])) : []).forEach(function (define) {
     var matchDefine = define.match(/^(\w+)(?:=(.*))?$/);
@@ -273,7 +310,7 @@ new AssetGraph({root: rootUrl})
         version: commandLineOptions.version,
         less: !commandLineOptions.noless,
         optimizeImages: commandLineOptions.optimizeimages,
-        inlineSize: commandLineOptions.inlinesize,
+        inlineByRelationType: inlineByRelationType,
         gzip: commandLineOptions.gzip,
         defines: defines,
         reservedNames: reservedNames,
