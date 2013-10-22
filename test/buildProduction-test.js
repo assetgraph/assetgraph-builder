@@ -69,11 +69,11 @@ vows.describe('buildProduction').addBatch({
                          '<!DOCTYPE html>\n<html data-version="The version number" lang="da" manifest="index.appcache"><head><title>Den danske titel</title><style type="text/css">body{color:teal;color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.url + '" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/3fb51b1ae1.gif" /></script></body></html>');
         },
         'the English JavaScript should have the expected contents': function (assetGraph) {
-            var afterRequireJs = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.text.replace(/^[\s\S]*req\(cfg\)\}\}\)\(this\),/, '');
+            var afterRequireJs = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.text.replace(/^[\s\S]*req\(cfg\)\}\}\(this\),/, '');
             assert.equal(afterRequireJs, 'alert("something else"),define("somethingElse",function(){}),alert("shimmed"),define("shimmed",function(){}),define("amdDependency",function(){console.warn("here I AM(D)")}),require.config({shim:{shimmed:["somethingElse"]}}),require(["shimmed","amdDependency"],function(){alert("Hello!")}),define("main",function(){});');
         },
         'the Danish JavaScript should have the expected contents': function (assetGraph) {
-            var afterRequireJs = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.text.replace(/^[\s\S]*req\(cfg\)\}\}\)\(this\),/, '');
+            var afterRequireJs = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.text.replace(/^[\s\S]*req\(cfg\)\}\}\(this\),/, '');
             assert.equal(afterRequireJs, 'alert("something else"),define("somethingElse",function(){}),alert("shimmed"),define("shimmed",function(){}),define("amdDependency",function(){console.warn("here I AM(D)")}),require.config({shim:{shimmed:["somethingElse"]}}),require(["shimmed","amdDependency"],function(){alert("Hej!")}),define("main",function(){});');
         },
         'someTextFile.txt should be found at /static/c7429a1035.txt (not on the CDN)': function (assetGraph) {
