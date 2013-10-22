@@ -284,6 +284,9 @@ new AssetGraph({root: rootUrl})
             this.transformQueue.transforms.unshift(AssetGraph.transforms.startRepl());
         }
     })
+    .on('info', function (info) {
+        console.warn((' ℹ ' + (info.asset ? info.asset.urlOrDescription + ': ' : '') + info.message).cyan);
+    })
     .on('warn', function (err) {
         // These are way too noisy
         if (err.relationType !== 'JavaScriptCommonJsRequire') {
