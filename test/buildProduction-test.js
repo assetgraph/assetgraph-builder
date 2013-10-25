@@ -1,3 +1,9 @@
+/*global setImmediate:true*/
+// node 0.8 compat
+if (typeof setImmediate === 'undefined') {
+    setImmediate = process.nextTick;
+}
+
 var vows = require('vows'),
     assert = require('assert'),
     Stream = require('stream'),
@@ -179,7 +185,7 @@ vows.describe('buildProduction').addBatch({
                 readStream.readable = true;
                 gm(readStream)
                     .identify(this.callback);
-                process.nextTick(function () {
+                setImmediate(function () {
                     readStream.emit('data', assetGraph.findAssets({type: 'Gif'})[0].rawSrc);
                     readStream.emit('end');
                 });
@@ -819,7 +825,7 @@ vows.describe('buildProduction').addBatch({
                 context.window = context;
                 context.alert = function (message) {
                     if (/^got sockjs/.test(message)) {
-                        process.nextTick(function () {
+                        setImmediate(function () {
                             callback(null, null);
                         });
                     }
@@ -828,7 +834,7 @@ vows.describe('buildProduction').addBatch({
                 try {
                     vm.runInContext(javaScript.text, context, javaScript.url);
                 } catch (e) {
-                    process.nextTick(function () {
+                    setImmediate(function () {
                         callback(e);
                     });
                 }
