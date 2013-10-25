@@ -1,3 +1,9 @@
+/*global setImmediate:true*/
+// node 0.8 compat
+if (typeof setImmediate === 'undefined') {
+    setImmediate = process.nextTick;
+}
+
 var vows = require('vows'),
     assert = require('assert'),
     Stream = require('stream'),
@@ -175,7 +181,7 @@ vows.describe('buildProduction').addBatch({
                 readStream.readable = true;
                 gm(readStream)
                     .identify(this.callback);
-                process.nextTick(function () {
+                setImmediate(function () {
                     readStream.emit('data', assetGraph.findAssets({type: 'Gif'})[0].rawSrc);
                     readStream.emit('end');
                 });
