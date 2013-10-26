@@ -32,7 +32,7 @@
   },
   "optionalDependencies": {
     "assetgraph-sprite": "=0.5.4",
-    "histogram": "=0.1.4"
+    "histogram": "=0.1.5"
   },
   "devDependencies": {
     "gm": "=1.6.1",
