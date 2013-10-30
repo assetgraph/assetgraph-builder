@@ -972,5 +972,39 @@ vows.describe('buildProduction').addBatch({
             assert.equal(assetGraph.findAssets({type: 'JavaScript'})[0].isInline, false);
             assert.equal(assetGraph.findAssets({type: 'Css'})[0].isInline, false);
         }
+    },
+    'After loading a test case with a very big stylesheet that needs to be split up in order to work in old IE versions (#107)': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/issue107/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('falcon.html')
+                .buildProduction({version: false})
+                .run(this.callback);
+        },
+        'the graph should contain 3 HtmlStyle relations': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({type: 'HtmlStyle'}).length, 3);
+        },
+        'the graph should contain 3 Css assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Css'}).length, 3);
+        },
+        'the Html asset should have the expected contents': function (assetGraph) {
+            var htmlAsset = assetGraph.findAssets({type: 'Html'})[0],
+                matchLinkRelStylesheet = htmlAsset.text.match(/<link rel="stylesheet" href="static\/[0-9a-f]{10}\.css" \/>/g);
+            assert.ok(matchLinkRelStylesheet);
+            assert.equal(matchLinkRelStylesheet.length, 3);
+        },
+        'the split stylesheets should have the expected number of outgoing relations': function (assetGraph) {
+            var unresolvedRelationsFromCss = assetGraph.findRelations({from: {type: 'Css'}}, true);
+            assert.equal(unresolvedRelationsFromCss.length, 53); // The number of url(...) occurrences in falcon-example.css
+        },
+        'one of the split stylesheets should have a relation to an inline asset (ie. contain a data: url)': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({from: {type: 'Css'}, to: {isInline: true}}).length, 1);
+        },
+        'the split stylesheets should have the expected number of resolved outgoing relations (all pointing to the asset previously known as fake.png)': function (assetGraph) {
+            var relationsFromCssToLoadedAssets = assetGraph.findRelations({from: {type: 'Css'}, to: {isLoaded: true, isInline: false}});
+            assert.ok(relationsFromCssToLoadedAssets.every(function (relationFromCssToLoadedAsset) {
+                return /\/static\/d65dd5318f\.png$/.test(relationFromCssToLoadedAsset.to.url);
+            }));
+        }
     }
 })['export'](module);
