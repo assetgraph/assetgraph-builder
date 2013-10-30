@@ -23,7 +23,7 @@
     "memoizesync": "=0.2.0",
     "optimist": "=0.2.6",
     "optipng": "=0.0.4",
-    "passerror": "=0.0.1",
+    "passerror": "=1.0.0",
     "pngcrush": "=0.0.3",
     "pngquant": "=0.0.3",
     "seq": "=0.3.5",
