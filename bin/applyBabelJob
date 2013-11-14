@@ -167,5 +167,5 @@ new AssetGraph({root: commandLineOptions.root})
     })
     .prettyPrintAssets({type: 'I18n', isDirty: true})
     .writeStatsToStderr()
-    .writeAssetsToDisc({type: ['I18n', 'JavaScript'], isDirty: true})
+    .writeAssetsToDisc({type: 'I18n', isDirty: true})
     .run();
