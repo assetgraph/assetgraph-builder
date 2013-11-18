@@ -50,6 +50,6 @@
   },
   "scripts": {
     "prepublish": "vows",
-    "travis": "apt-get install -y libcairo2-dev libjpeg8-dev libgif-dev optipng pngcrush pngquant libpango1.0-dev && vows --spec"
+    "travis": "vows --spec"
   }
 }
