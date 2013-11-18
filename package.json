@@ -19,7 +19,7 @@
     "colors": "=0.6.0-1",
     "express-processimage": "=0.1.12",
     "jpegtran": "=0.0.4",
-    "less": "=1.4.2",
+    "less": "=1.5.1",
     "memoizesync": "=0.2.0",
     "optimist": "=0.2.6",
     "optipng": "=0.0.4",
