@@ -17,7 +17,7 @@
     "bufferjs": "=1.0.2",
     "extend": "=1.2.1",
     "colors": "=0.6.0-1",
-    "express-processimage": "=0.1.8",
+    "express-processimage": "=0.1.12",
     "jpegtran": "=0.0.4",
     "less": "=1.4.2",
     "memoizesync": "=0.2.0",
