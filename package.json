@@ -49,6 +49,7 @@
     "registry": "http://registry.npmjs.org/"
   },
   "scripts": {
-    "prepublish": "vows"
+    "prepublish": "vows",
+    "travis": "vows --spec"
   }
 }

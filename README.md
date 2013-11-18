@@ -1,3 +1,7 @@
+[![NPM version](https://badge.fury.io/js/assetgraph-builder.png)](http://badge.fury.io/js/assetgraph-builder)
+[![Build Status](https://travis-ci.org/One-com/assetgraph-builder.png?branch=master)](https://travis-ci.org/One-com/assetgraph-builder)
+[![Dependency Status](https://david-dm.org/One-com/assetgraph-builder.png)](https://david-dm.org/One-com/assetgraph-builder)
+
 AssetGraph-builder
 ==================
 
