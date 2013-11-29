@@ -93,6 +93,19 @@ distribution at the root of your origin server. As long as you serve `/static` a
 below it with a far-future expires, you won't need to touch your CDN config or manually
 upload anything to your CDN provider.
 
+
+Replacing require.js with almond.js on build
+--------------------------------------------
+Simply add a `data-almond`-attribute to the script tag that has `require.js` as it's source.
+The value should be the path to `almond.js` like so:
+
+``` html
+<script data-main="app/main" data-almond="path/to/almond.js" src="path/to/require.js"></script>
+```
+
+When you do this you should not use require as an external script loader, since almond does not support this.
+
+
 Referring to static files in JavaScript using GETSTATICURL
 ----------------------------------------------------------
 
