@@ -33,7 +33,6 @@
   "dependencies": {
     "assetgraph": "=1.6.0",
     "async": "=0.2.9",
-    "bufferjs": "=1.0.2",
     "extend": "=1.2.1",
     "colors": "=0.6.0-1",
     "express-processimage": "=0.1.12",
@@ -58,7 +57,7 @@
     "vows": "=0.7.0"
   },
   "engines": {
-    "node": ">=0.4.8"
+    "node": ">=0.8.0"
   },
   "directories": {
     "lib": "./lib",
