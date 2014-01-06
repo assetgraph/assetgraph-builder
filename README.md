@@ -50,7 +50,7 @@ applications.
  * Helps getting your static assets on a CDN by rewriting the
    references to them (controlled by the `--cdnroot` and
    `--cdnoutroot` switches).
- * Supports internationalization of HTML, JavaScript, and Knockout.js
+ * Supports internationalization of HTML, JavaScript, SVG, and Knockout.js
    templates (support for more template formats will be added on demand).
  * Very customizable, the entire build script is only around 100 lines
    of code due to the reliance on high level <a
