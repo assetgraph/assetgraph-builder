@@ -8,6 +8,11 @@ AssetGraph-builder
 AssetGraph-based build system (mostly) for single-page web
 applications.
 
+Looking for a Grunt integration? Try [grunt-reduce](https://github.com/Munter/grunt-reduce)
+
+Features
+--------
+
  * Requires no build manifest. All information about your project is
    gathered from the HTML/CSS/JavaScript itself. Just tell it where to
    find your HTML file(s), and it will find the referenced JavaScript,
