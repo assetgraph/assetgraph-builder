@@ -528,7 +528,7 @@ vows.describe('buildProduction').addBatch({
                 assetGraph.buildProduction({version: false}).run(this.callback);
             },
             'the Html fragment asset should have the expected contents': function (assetGraph) {
-                assert.equal(assetGraph.findAssets({type: 'Html', isInitial: true, isFragment: true})[0].text, '<div><h1>Template with a relative image reference: <img src="foo.png" /></h1></div>');
+                assert.equal(assetGraph.findAssets({type: 'Html', url: /\/myTemplate\.html$/})[0].text, '<div><h1>Template with a relative image reference: <img src="foo.png" /></h1></div>');
             }
         }
     },
