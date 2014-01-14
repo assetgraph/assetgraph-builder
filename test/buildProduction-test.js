@@ -1012,5 +1012,20 @@ vows.describe('buildProduction').addBatch({
                 return /\/static\/d65dd5318f\.png$/.test(relationFromCssToLoadedAsset.to.url);
             }));
         }
+    },
+    'After loading a test case where an initial asset has no <html> element and no incoming relations, then run the buildProduction transform (#109)': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/initialAssetWithoutHtmlElement/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction({version: false})
+                .run(this.callback);
+        },
+        'the graph should contain one Html asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 1);
+        },
+        'the graph should contain one inline JavaScript asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript', isInline: true}).length, 1);
+        }
     }
 })['export'](module);
