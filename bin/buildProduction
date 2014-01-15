@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var optimist = require('optimist'),
-    colors = require('colors'),
+    chalk = require('chalk'),
     commandLineOptions = optimist
         .usage('$0 --root <inputRootDirectory> --outroot <dir> [options] <htmlFile(s)>')
         .options('h', {
@@ -148,22 +148,22 @@ if (commandLineOptions.h) {
 
 // Temporary deprecation message
 if (commandLineOptions.less) {
-    console.warn('INFO: The --less command line option is deprecated. This is now default behavior. Use --noless to keep .less files in build output'.yellow);
+    console.warn(chalk.yellow('INFO: The --less command line option is deprecated. This is now default behavior. Use --noless to keep .less files in build output'));
 }
 
 // Temporary deprecation message
 if (commandLineOptions.stripdebug) {
-    console.warn('INFO: the --stripdebug switch is deprecated. This behavior is now default. Use --debug to keep debugging in build output'.yellow);
+    console.warn(chalk.yellow('INFO: the --stripdebug switch is deprecated. This behavior is now default. Use --debug to keep debugging in build output'));
 }
 
 // Temporary deprecation message
 if (commandLineOptions.cdnflash) {
-    console.warn('INFO: the --cdnflash switch is deprecated. This is now default functionality. Use --nocdnflash to get the old default behavior.'.yellow);
+    console.warn(chalk.yellow('INFO: the --cdnflash switch is deprecated. This is now default functionality. Use --nocdnflash to get the old default behavior.'));
 }
 
 // Temporary deprecation message
 if (commandLineOptions.cdnoutroot) {
-    console.warn('INFO: the --cdnoutroot switch is deprecated. Default location for your cdn assets is now <outroot>/static/cdn'.yellow);
+    console.warn(chalk.yellow('INFO: the --cdnoutroot switch is deprecated. Default location for your cdn assets is now <outroot>/static/cdn'));
 }
 
 var _ = require('underscore'),
@@ -223,7 +223,7 @@ if (typeof inlineByRelationType['*'] === 'undefined') {
 }
 
 if (commandLineOptions.inlinesize) {
-    console.warn('INFO: the --inlinesize switch is deprecated. Please use --inlinecssimage <number> instead'.yellow);
+    console.warn(chalk.yellow('INFO: the --inlinesize switch is deprecated. Please use --inlinecssimage <number> instead'));
     inlineByRelationType.CssImage = commandLineOptions.inlinesize;
 } else if (!('CssImage' in inlineByRelationType)) {
     inlineByRelationType.CssImage = 8192;
@@ -279,18 +279,18 @@ if (commandLineOptions.repl) {
 
 new AssetGraph({root: rootUrl})
     .on('afterTransform', function (transform, elapsedTime) {
-        console.log(' ✔ '.green + (elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
+        console.log(chalk.green(' ✔ ') + (elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
         if (startReplRegExp && startReplRegExp.test(transform.name)) {
             this.transformQueue.transforms.unshift(AssetGraph.transforms.startRepl());
         }
     })
     .on('info', function (info) {
-        console.warn((' ℹ ' + (info.asset ? info.asset.urlOrDescription + ': ' : '') + info.message).cyan);
+        console.warn(chalk.cyan(' ℹ ' + (info.asset ? info.asset.urlOrDescription + ': ' : '') + info.message));
     })
     .on('warn', function (err) {
         // These are way too noisy
         if (err.relationType !== 'JavaScriptCommonJsRequire') {
-            console.warn((' ⚠ ' + (err.asset ? err.asset.urlOrDescription + ': ' : '') + err.message).yellow);
+            console.warn(chalk.yellow(' ⚠ ' + (err.asset ? err.asset.urlOrDescription + ': ' : '') + err.message));
             if (startReplRegExp && startReplRegExp.test('warn')) {
                 this.transformQueue.transforms.unshift(AssetGraph.transforms.startRepl());
             } else if (commandLineOptions.stoponwarning) {
@@ -299,7 +299,7 @@ new AssetGraph({root: rootUrl})
         }
     })
     .on('error', function (err) {
-        console.error((' ✘ ' + (err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack).red);
+        console.error(chalk.red(' ✘ ' + (err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack));
         if (startReplRegExp && startReplRegExp.test('error')) {
             this.transformQueue.transforms.unshift(AssetGraph.transforms.startRepl());
         } else {
