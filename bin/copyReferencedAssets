@@ -52,7 +52,7 @@ var _ = require('underscore'),
     AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
     query = AssetGraph.query,
-    urlTools = require('assetgraph/lib/util/urlTools'),
+    urlTools = require('url-tools'),
     outRoot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
     rootUrl = commandLineOptions.root && urlTools.urlOrFsPathToUrl(commandLineOptions.root, true),
     inputUrls;

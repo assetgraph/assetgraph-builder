@@ -4,7 +4,7 @@ var _ = require('underscore'),
     AssetGraph = require('../lib/AssetGraph'),
     query = AssetGraph.query,
     i18nTools = require('../lib/i18nTools'),
-    urlTools = require('assetgraph/lib/util/urlTools'),
+    urlTools = require('url-tools'),
     commandLineOptions = require('optimist')
         .usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] [--parentdir] [--locales <localeId>,...] [--defaultlocale <localeId>] [--localecookiename <cookieName>] [--cssimports] [--inline <wildCard>] [--watch] [--version <versionTag>] <htmlFile> ...')
         .boolean('cssimports', 'parentdir')

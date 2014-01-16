@@ -4,7 +4,7 @@ var _ = require('underscore'),
     AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
     uglifyAst = require('uglifyast'),
-    urlTools = require('assetgraph/lib/util/urlTools'),
+    urlTools = require('url-tools'),
     commandLineOptions = require('optimist')
         .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] --root <inputRootDirectory> --locales <localeId>,... <htmlFile>...')
         .boolean('parentdir')

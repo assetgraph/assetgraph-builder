@@ -47,7 +47,8 @@
     "pngquant": "=0.0.3",
     "seq": "=0.3.5",
     "temp": "=0.4.0",
-    "underscore": "=1.2.0"
+    "underscore": "=1.2.0",
+    "url-tools": "git://github.com/slang800/url-tools.git"
   },
   "optionalDependencies": {
     "assetgraph-sprite": "=0.5.5",
