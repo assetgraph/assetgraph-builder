@@ -795,5 +795,25 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                                /English key/);
             }
         }
+    },
+    'After loading a test case with a JavaScript that contains only LOCALECOOKIENAME, then running the cloneForEachLocale transform': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/cloneForEachLocale/localeCookieName/'})
+                .loadAssets('index.html')
+                .populate()
+                .cloneForEachLocale({type: 'Html'}, {localeCookieName: 'MyCookie', localeIds: ['en', 'da']})
+                .run(this.callback);
+        },
+        // TODO: The presence of only LOCALECOOKIENAME/SUPPORTEDLOCALEIDS/DEFAULTLOCALEID don't really require the asset to be cloned as
+        // they just need to be replaced to the same value in each locale.
+        'the graph should contain one or two JavaScript asset': function (assetGraph) {
+            var numJavaScriptAssets = assetGraph.findAssets({type: 'JavaScript'}).length;
+            assert.ok(numJavaScriptAssets === 1 || numJavaScriptAssets === 2);
+        },
+        'the JavaScript asset(s) should have LOCALECOOKIENAME replaced with MyCookie': function (assetGraph) {
+            assetGraph.findAssets({type: 'JavaScript'}).forEach(function (javaScriptAsset) {
+                assert.matches(javaScriptAsset.text, /MyCookie/);
+            });
+        }
     }
 })['export'](module);
