@@ -3,7 +3,7 @@
 var _ = require('underscore'),
     AssetGraph = require('../lib/AssetGraph'),
     query = AssetGraph.query,
-    urlTools = require('url-tools'),
+    urlTools = require('urltools'),
     commandLineOptions = require('optimist')
         .usage('$0 image1 image2...')
         .demand(1)

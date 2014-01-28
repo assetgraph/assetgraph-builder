@@ -5,7 +5,7 @@ var path = require('path'),
     extend = require('extend'),
     AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
-    urlTools = require('url-tools'),
+    urlTools = require('urltools'),
     mkpathSync = require('../lib/mkpathSync'),
     commandLineOptions = require('optimist')
         .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--i18n <pathToI18nFile>] --babeldir=<dirContainingTheBabelFilesToApply> --root <inputRootDirectory> <htmlFile>...')

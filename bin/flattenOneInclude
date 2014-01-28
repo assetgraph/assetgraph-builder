@@ -4,7 +4,7 @@ var fs = require('fs'),
     _ = require('underscore'),
     seq = require('seq'),
     AssetGraph = require('../lib/AssetGraph'),
-    urlTools = require('url-tools'),
+    urlTools = require('urltools'),
     commandLineOptions = require('optimist')
         .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--root <dir>] [-o <outputJavaScriptFile>] <inputJavaScriptFile>')
         .boolean('parentdir')

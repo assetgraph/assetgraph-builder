@@ -2,7 +2,7 @@
 
 var AssetGraph = require('../lib/AssetGraph'),
     _ = require('underscore'),
-    urlTools = require('url-tools'),
+    urlTools = require('urltools'),
     commandLineOptions = require('optimist')
         .usage('$0 [--root <inputRootDirectory>] <htmlFile>...')
         .demand(1)
