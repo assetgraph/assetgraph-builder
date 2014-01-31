@@ -859,6 +859,21 @@ vows.describe('buildProduction').addBatch({
             assert.matches(javaScriptAssets[0].text, /\$\$super\.foo/);
         }
     },
+    'After loading a test case where multiple HTML files reference the same require.js config in an external JavaScript file, then run the buildProduction transform': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/multipleHtmlsReferencingTheSameExternalRequireJsConfig/'})
+                .on('warn', function (err) {
+                    (this._emittedWarnings = this._emittedWarnings || []).push(err);
+                })
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('*.html')
+                .buildProduction({version: false})
+                .run(this.callback);
+        },
+        'no warnings should be emitted': function (assetGraph) {
+            assert.equal((assetGraph._emittedWarnings || []).length, 0);
+        }
+    },
     'After loading a test case with a JavaScript that needs a symbol replaced, then running the buildProduction transform with noCompress:true': {
         topic: function () {
             new AssetGraph({root: __dirname + '/buildProduction/noCompress/'})
