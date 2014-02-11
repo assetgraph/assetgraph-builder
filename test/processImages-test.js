@@ -209,6 +209,30 @@ vows.describe('transforms.processImages').addBatch({
                 assert.matches(assetGraph.findAssets({type: 'Svg'})[0].text, /id="theBogusElementId"/);
             }
         }
+    },
+    'After loading test case with dots in the path (regression test for a regexp issue)': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/processImages/dot.in.path/'})
+                .loadAssets('style.css')
+                .populate()
+                .run(this.callback);
+        },
+        'the graph contains the expected assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Css'}).length, 1);
+            assert.equal(assetGraph.findAssets({type: 'Png'}).length, 1);
+        },
+        'then running the processImages transform': {
+            topic: function (assetGraph) {
+                assetGraph
+                    .processImages()
+                    .run(this.callback);
+            },
+            'the url of the Png asset should be correct': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Png'})[0].url, assetGraph.root + 'redalpha24bit.optipng.png');
+            },
+            'the path to the Png should be correct': function (assetGraph) {
+                assert.matches(assetGraph.findAssets({type: 'Css'})[0].text, /url\(redalpha24bit\.optipng\.png\)/);
+            }
+        }
     }
-
 })['export'](module);
