@@ -1042,5 +1042,18 @@ vows.describe('buildProduction').addBatch({
         'the graph should contain one inline JavaScript asset': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'JavaScript', isInline: true}).length, 1);
         }
+    },
+    'After loading a test case with a web component that has a stylesheet reference inside a template tag': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/styleSheetInTemplate/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction({version: false})
+                .run(this.callback);
+        },
+        'the web component asset should not refer to the original file name of the stylesheet': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({url: /static\/.*\.html/})[0].text.indexOf('style.css'), -1);
+        }
     }
+
 })['export'](module);
