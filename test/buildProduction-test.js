@@ -1024,7 +1024,7 @@ vows.describe('buildProduction').addBatch({
         'the split stylesheets should have the expected number of resolved outgoing relations (all pointing to the asset previously known as fake.png)': function (assetGraph) {
             var relationsFromCssToLoadedAssets = assetGraph.findRelations({from: {type: 'Css'}, to: {isLoaded: true, isInline: false}});
             assert.ok(relationsFromCssToLoadedAssets.every(function (relationFromCssToLoadedAsset) {
-                return /\/static\/d65dd5318f\.png$/.test(relationFromCssToLoadedAsset.to.url);
+                return (/\/static\/d65dd5318f\.png$/).test(relationFromCssToLoadedAsset.to.url);
             }));
         }
     },
