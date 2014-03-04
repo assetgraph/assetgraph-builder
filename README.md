@@ -173,7 +173,7 @@ delimiter.
 
 For `GETSTATICURL` to work in development mode the function needs to
 be declared. The `buildDevelopment` script adds a bootstrapper script
-that includes GETSTATICURL, but you can also put this into your main
+that includes `GETSTATICURL`, but you can also put this into your main
 HTML before all your other scripts:
 
 ```html
@@ -193,10 +193,8 @@ doesn't clutter your production code.
 Image optimization and processing
 ---------------------------------
 
-The `buildProduction` switches `--pngquant`, `--pngcrush`,
-`--optipng`, and `--jpegtran` turn on automatic lossless optimization
-of all images of the relevant type in the graph. The
-`--optimizeimages` switch is shorthand for all of them.
+The `buildProduction` switch `--optimizeimages` turns on automatic lossless
+optimization of all images of the relevant type in the graph.
 
 Additionally, you can specify individual processing instructions for
 each image using custom GET parameters. For example you might want to
@@ -228,8 +226,8 @@ ones dynamically.
 The processing instructions are executed using the same engine that
 powers <a
 href="https://github.com/papandreou/express-processimage">express-processimage</a>
-and <a href="https://github.com/One-com/LiveStyle">livestyle with the
---processimage</a> switch. You can use one of those to have the image
+and <a href="https://github.com/One-com/LiveStyle">livestyle</a> with the
+`--processimage` switch. You can use one of those to have the image
 processing instructions applied on your development setup.
 
 Internationalization
@@ -287,7 +285,7 @@ bootstrapper code that implements them. The bootstrapper will be
 removed by `buildProduction`.
 
 The second argument for `TR` and `TRPAT` is optional. It
-will be used as the default value if the key isn't found in an .i18n
+will be used as the default translated value if the key isn't found in an .i18n
 file. This is very useful when you haven't yet translated your
 project. That way you don't need to create the .i18n files before you
 actually have something to put in them.
@@ -325,7 +323,7 @@ And the Danish version:
     var myRenderer = function (a0, a1, a2) {return 'Der er ' + a3 + ' i alt, viser nr. ' + a0 + ' til nr. ' + a1;};
     alert(myRenderer(1, 50, 100));
 
-As the translation files consist of plain JSON, translated values does
+As the translation files consist of plain JSON, translated values do
 not have to be strings. This enables more advanced features, that you
 would otherwise have to implement with string concatenation. The
 feature is best explained with an example. Let's say we would like to
