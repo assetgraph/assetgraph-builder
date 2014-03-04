@@ -1054,6 +1054,20 @@ vows.describe('buildProduction').addBatch({
         'the web component asset should not refer to the original file name of the stylesheet': function (assetGraph) {
             assert.equal(assetGraph.findAssets({url: /static\/.*\.html/})[0].text.indexOf('style.css'), -1);
         }
+    },
+    'After loading a test case where a JavaScript is eliminated by stripDebug and uglifiction (#114), then run the buildProduction transform': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/issue114/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction({stripDebug: true, version: false})
+                .run(this.callback);
+        },
+        'the graph should contain no JavaScript assets': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 0);
+        },
+        'the Html asset should have the expected contents': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html'})[0].text, '<!DOCTYPE html>\n<html><head></head><body><div>Text</div></body></html>');
+        }
     }
-
 })['export'](module);
