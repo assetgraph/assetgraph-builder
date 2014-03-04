@@ -528,7 +528,7 @@ vows.describe('buildProduction').addBatch({
                 assetGraph.buildProduction({version: false}).run(this.callback);
             },
             'the Html fragment asset should have the expected contents': function (assetGraph) {
-                assert.equal(assetGraph.findAssets({type: 'Html', url: /\/myTemplate\.html$/})[0].text, '<div><h1>Template with a relative image reference: <img src="foo.png" /></h1></div>');
+                assert.equal(assetGraph.findAssets({type: 'Html', url: /\/myTemplate\.html$/})[0].text, '<div><h1>Template with a relative image reference: <img src="static/d65dd5318f.png" /></h1></div>');
             }
         }
     },
@@ -1068,6 +1068,30 @@ vows.describe('buildProduction').addBatch({
         },
         'the Html asset should have the expected contents': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'Html'})[0].text, '<!DOCTYPE html>\n<html><head></head><body><div>Text</div></body></html>');
+        }
+    },
+    'After loading a test case with an HTML fragment that has bundleable scripts and stylesheets, then run the buildProduction transform': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/bundlingInHtmlFragments/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction({version: false})
+                .run(this.callback);
+        },
+        'the graph should contain one HtmlStyle relation': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({type: 'HtmlStyle'}).length, 1);
+        },
+        'the graph should contain one Css asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Css'}).length, 1);
+        },
+        'the graph should contain one HtmlScript relation': function (assetGraph) {
+            assert.equal(assetGraph.findRelations({type: 'HtmlScript'}).length, 1);
+        },
+        'the graph should contain one JavaScript asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 1);
+        },
+        'the Html asset should have the expected contents': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'Html'})[0].text, '<style type="text/css">body{color:#aaa;color:#bbb}</style><script>alert("a"),alert("b");</script>');
         }
     }
 })['export'](module);
