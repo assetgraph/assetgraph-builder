@@ -8,14 +8,21 @@ var path = require('path'),
     urlTools = require('urltools'),
     mkpathSync = require('../lib/mkpathSync'),
     commandLineOptions = require('optimist')
-        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--all] [--defaultlocale <localeId>] --babeldir=<dirForBabelFiles> --root <inputRootDirectory> --locales <localeId>,... <htmlFile>...')
+        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--i18n <pathToI18nFile>] [--all] [--defaultlocale <localeId>] --babeldir=<dirForBabelFiles> --root <inputRootDirectory> --locales <localeId>,... <htmlFile>...')
         .boolean('parentdir', 'all')
         .demand(['root', 'locales', 'babeldir'])
         .argv,
     localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
         return localeId.split(",");
     })).map(i18nTools.normalizeLocaleId),
-    defaultLocaleId = commandLineOptions.defaultlocale ? i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale) : localeIds[0];
+    defaultLocaleId = commandLineOptions.defaultlocale ? i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale) : localeIds[0],
+    initialAssetUrls = commandLineOptions._.map(urlTools.fsFilePathToFileUrl),
+    i18nUrl;
+
+if (commandLineOptions.i18n) {
+    i18nUrl = urlTools.fsFilePathToFileUrl(commandLineOptions.i18n);
+    initialAssetUrls.push(i18nUrl);
+}
 
 mkpathSync(commandLineOptions.babeldir);
 
@@ -62,7 +69,7 @@ new AssetGraph({root: commandLineOptions.root})
     })
     .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
-    .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
+    .loadAssets(initialAssetUrls)
     .populate({from: {type: 'Html'}, followRelations: {type: 'HtmlScript', to: {url: /^file:/}}})
     .assumeRequireJsConfigHasBeenFound()
     .fixBaseAssetsOfUnresolvedOutgoingRelationsFromHtmlFragments({isInitial: true})
@@ -75,7 +82,16 @@ new AssetGraph({root: commandLineOptions.root})
             occurrencesByKey = i18nTools.findOccurrences(assetGraph, initialHtmlAssets),
             allKeys = i18nTools.extractAllKeys(assetGraph),
             allKeysFlattened = {},
-            alreadyTranslatedByFlattenedKey = {};
+            alreadyTranslatedByFlattenedKey = {},
+            i18nAssetForAllKeys;
+
+        if (i18nUrl) {
+            i18nAssetForAllKeys = assetGraph.findAssets({url: i18nUrl})[0];
+            if (!i18nAssetForAllKeys) {
+                console.error('--i18n ' + commandLineOptions.i18n + ': not found');
+                process.exit(1);
+            }
+        }
 
         Object.keys(allKeys).forEach(function (key) {
             Object.keys(allKeys[key]).forEach(function (localeId) {
@@ -100,6 +116,13 @@ new AssetGraph({root: commandLineOptions.root})
                 alreadyTranslatedByFlattenedKey[key] = false;
             });
         });
+
+        var i18nAsset;
+        try {
+            i18nAsset = i18nAssetForAllKeys || i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, occurrencesByKey);
+        } catch (e) {
+            console.warn("Skipping language key: " + e.message);
+        }
 
         localeIds.forEach(function (localeId) {
             var babelSrc = '',
@@ -137,7 +160,7 @@ new AssetGraph({root: commandLineOptions.root})
                     // Use the defaultValue to figure out which babel keys to flatten it to (only relevant for structured values):
                     omitExistingValues = true;
                 } else {
-                    value = '';
+                    value = null;
                 }
 
                 var valueByFlattenedKey = flattenKey(key, value),
@@ -159,6 +182,18 @@ new AssetGraph({root: commandLineOptions.root})
                     }
                     babelSrc += flattenedKey + "=" + (omitExistingValues ? '' : String(value || '').replace(/\\/g, "\\\\").replace(/\n/g, "\\n")) + "\n";
                 });
+
+                if (i18nAsset) {
+                    i18nAsset.parseTree[key] = i18nAsset.parseTree[key] || {};
+                    if (!(localeId in i18nAsset.parseTree[key])) {
+                        if (localeId.indexOf(defaultLocaleId) === 0) {
+                            i18nAsset.parseTree[key][localeId] = defaultValue;
+                        } else {
+                            i18nAsset.parseTree[key][localeId] = null;
+                        }
+                    }
+                    i18nAsset.markDirty();
+                }
             });
             var targetBabelFileName = path.resolve(commandLineOptions.babeldir, localeId + '.txt');
             if (babelSrc.length) {
@@ -169,4 +204,6 @@ new AssetGraph({root: commandLineOptions.root})
             }
         });
     })
+    .prettyPrintAssets({type: 'I18n', isDirty: true})
+    .writeAssetsToDisc({type: 'I18n', isDirty: true})
     .run();
