@@ -13,8 +13,7 @@ var path = require('path'),
         .demand(['root', 'babeldir'])
         .argv,
     initialAssetUrls = commandLineOptions._.map(urlTools.fsFilePathToFileUrl),
-    i18nUrl,
-    i18nAsset;
+    i18nUrl;
 
 function isArrayOrObject(obj) {
     return Array.isArray(obj) || (obj && typeof obj === 'object');
