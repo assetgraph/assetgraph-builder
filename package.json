@@ -48,7 +48,7 @@
     "optipng": "=0.0.5",
     "passerror": "=1.0.0",
     "pngcrush": "=0.0.4",
-    "pngquant": "=0.1.3",
+    "pngquant": "=0.1.4",
     "seq": "=0.3.5",
     "temp": "=0.4.0",
     "underscore": "=1.2.0",
