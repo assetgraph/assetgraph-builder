@@ -1091,5 +1091,22 @@ vows.describe('buildProduction').addBatch({
         'the Html asset should have the expected contents': function (assetGraph) {
             assert.equal(assetGraph.findAssets({type: 'Html'})[0].text, '<style type="text/css">body{color:#aaa}body{color:#bbb}</style><script>alert("a"),alert("b");</script>');
         }
-    }
+    },
+    'After loading a test case with require.js, a data-main and a data-almond': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/dataMainAndAlmondJs/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .buildProduction({version: false})
+                .run(this.callback);
+        },
+        'the graph should contain a single JavaScript asset': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript'}).length, 1);
+        },
+        'the statements in the bundled JavaScript should come in the correct order': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({type: 'JavaScript'})[0].text,
+                'alert("a"),alert("b"),alert("almond"),alert("d"),alert("e");'
+            );
+        }
+    },
 })['export'](module);
