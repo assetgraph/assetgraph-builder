@@ -2,16 +2,20 @@
 
 var path = require('path'),
     fs = require('fs'),
+    _ = require('underscore'),
     extend = require('extend'),
     AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
     urlTools = require('urltools'),
     mkpathSync = require('../lib/mkpathSync'),
     commandLineOptions = require('optimist')
-        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--i18n <pathToI18nFile>] --babeldir=<dirContainingTheBabelFilesToApply> --root <inputRootDirectory> <htmlFile>...')
+        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--i18n <pathToI18nFile>] [--locales <localeId>[,<localeId>...]] --babeldir=<dirContainingTheBabelFilesToApply> --root <inputRootDirectory> <htmlFile>...')
         .boolean('parentdir')
         .demand(['root', 'babeldir'])
         .argv,
+    localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
+        return localeId.split(",");
+    })).map(i18nTools.normalizeLocaleId),
     initialAssetUrls = commandLineOptions._.map(urlTools.fsFilePathToFileUrl),
     i18nUrl;
 
@@ -68,14 +72,23 @@ new AssetGraph({root: commandLineOptions.root})
             }
         }
 
+        var isSeenByLocaleId = {};
+
         fs.readdirSync(commandLineOptions.babeldir).forEach(function (fileName) {
             if (fileName === 'SOURCE.txt') {
                 console.warn("Skipping " + fileName);
             } else {
                 var matchLocaleId = fileName.match(/^([a-zA-Z0-9\-\_]+)\.(?:txt|babel)$/);
                 if (matchLocaleId) {
-                    var localeId = matchLocaleId[1].replace(/-/g, "_"),
+                    var localeId = i18nTools.normalizeLocaleId(matchLocaleId[1]),
                         babelBody = fs.readFileSync(path.resolve(commandLineOptions.babeldir, fileName), 'utf-8');
+
+                    isSeenByLocaleId[localeId] = true;
+
+                    if (localeIds && localeIds.indexOf(localeId) === -1) {
+                        console.warn('Skipping ' + fileName + ' because ' + localeId + ' was not mentioned in --locales');
+                        return;
+                    }
 
                     babelBody.split(/\r?\n|\r\n?/).forEach(function (line, lineNumber) {
                         if (!/^\s*\#|^\s*$/.test(line)) { // Skip comments and empty lines
@@ -130,9 +143,18 @@ new AssetGraph({root: commandLineOptions.root})
                             }
                         }
                     });
+                } else {
+                    console.warn('Skipping file whose basename does not look like a locale id: ' + fileName);
                 }
             }
         });
+        if (localeIds) {
+            localeIds.forEach(function (localeId) {
+                if (!isSeenByLocaleId[localeId]) {
+                    console.warn(localeId + '.txt was not found although --locales ' + localeId + ' was specified');
+                }
+            });
+        }
         Object.keys(translationsByKeyAndLocaleId).forEach(function (key) {
             var i18nAsset;
             try {
