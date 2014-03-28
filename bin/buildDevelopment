@@ -8,6 +8,11 @@ var _ = require('underscore'),
     commandLineOptions = require('optimist')
         .usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] [--parentdir] [--locales <localeId>,...] [--defaultlocale <localeId>] [--localecookiename <cookieName>] [--cssimports] [--inline <wildCard>] [--watch] [--version <versionTag>] <htmlFile> ...')
         .boolean('cssimports', 'parentdir')
+        .options('stoponwarning', {
+            describe: 'Whether to stop with a non-zero exit code when a warning is encountered',
+            type: 'boolean',
+            default: false
+        })
         .demand(['root'])
         .argv;
 
