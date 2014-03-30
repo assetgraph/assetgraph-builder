@@ -1,0 +1,3 @@
+foo=FooOversat
+bar=BarOversat
+placeholders=Denne oversatte nøgle har {0} pladsholdere

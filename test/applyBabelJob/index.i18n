@@ -1,0 +1,14 @@
+{
+    "foo": {
+        "en": "Foo",
+        "da": null
+    },
+    "bar": {
+        "en": "Bar",
+        "da": null
+    },
+    "placeholders": {
+        "en": "This key has {0} placeholders",
+        "da": null
+    }
+}

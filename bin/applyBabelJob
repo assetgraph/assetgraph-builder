@@ -2,6 +2,7 @@
 
 var path = require('path'),
     fs = require('fs'),
+    util = require('util'),
     _ = require('underscore'),
     extend = require('extend'),
     AssetGraph = require('../lib/AssetGraph'),
@@ -9,14 +10,26 @@ var path = require('path'),
     urlTools = require('urltools'),
     mkpathSync = require('../lib/mkpathSync'),
     commandLineOptions = require('optimist')
-        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--i18n <pathToI18nFile>] [--locales <localeId>[,<localeId>...]] --babeldir=<dirContainingTheBabelFilesToApply> --root <inputRootDirectory> <htmlFile>...')
+        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--i18n <pathToI18nFile>] [--locales <localeId>[,<localeId>...]] [--defaultlocale <localeId>] --babeldir=<dirContainingTheBabelFilesToApply> --root <inputRootDirectory> <htmlFile>...')
         .boolean('parentdir')
+        .options('defaultlocale', {
+            describe: 'The locale of the default value in TR statements and tags with a data-i18n attribute',
+            type: 'string',
+            default: 'en'
+        })
+        .options('replace', {
+            describe: 'Replace the data-i18n attributes, TR and TRPAT expressions in the original source code with the default locale keys in the translation job (experimental)',
+            type: 'boolean',
+            default: false
+        })
         .demand(['root', 'babeldir'])
         .argv,
     localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
         return localeId.split(",");
     })).map(i18nTools.normalizeLocaleId),
+    defaultLocaleId = commandLineOptions.defaultlocale && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale),
     initialAssetUrls = commandLineOptions._.map(urlTools.fsFilePathToFileUrl),
+    originalTextByAssetId = {},
     i18nUrl;
 
 function isArrayOrObject(obj) {
@@ -44,6 +57,11 @@ new AssetGraph({root: commandLineOptions.root})
     .on('error', function (err) {
         console.error((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack);
         process.exit(1);
+    })
+    .on('addAsset', function (asset) {
+        asset.once('load', function () {
+            originalTextByAssetId[asset.id] = asset.text;
+        });
     })
     .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
@@ -187,8 +205,61 @@ new AssetGraph({root: commandLineOptions.root})
                 });
             }
         });
+
+        if (commandLineOptions.replace) {
+            var allKeysInDefaultLocale = {};
+            Object.keys(translationsByKeyAndLocaleId).forEach(function (key) {
+                allKeysInDefaultLocale[key] = translationsByKeyAndLocaleId[key][defaultLocaleId];
+            });
+
+            // Replace data-i18n in Html assets first:
+            var i18nTagReplacer = i18nTools.createI18nTagReplacer({
+                allKeysForLocale: allKeysInDefaultLocale,
+                localeId: defaultLocaleId,
+                keepSpans: true,
+                keepI18nAttributes: true
+            });
+            assetGraph.findAssets({type: 'Html'}).forEach(function (htmlAsset) {
+                var hasOccurrences = false;
+                i18nTools.eachI18nTagInHtmlDocument(htmlAsset.parseTree, function (options) {
+                    if (options.key in allKeysInDefaultLocale) {
+                        hasOccurrences = true;
+                        i18nTagReplacer(options);
+                    }
+                });
+                if (hasOccurrences) {
+                    htmlAsset.hasReplacedLanguageKeys = true;
+                    htmlAsset.markDirty();
+                }
+            });
+
+            // Then regexp TR and TRPAT in JavaScript assets. This has to happen last because it regexps directly on the source:
+            replacedTextByAssetId = {};
+            Object.keys(translationsByKeyAndLocaleId).forEach(function (key) {
+                if (defaultLocaleId && defaultLocaleId in translationsByKeyAndLocaleId[key]) {
+                    var occurrences = occurrencesByKey[key] || [];
+                    (occurrences || []).forEach(function (occurrence) {
+                        if (occurrence.type === 'TR') {
+                            var asset = occurrence.asset.nonInlineAncestor,
+                                replaceRegExp = new RegExp('(TR(?:PAT)?\\(([\'"])' + key.replace(/[\[\]\*\+\?\{\}\(\)\^\$]/g, '\\$&') + '[^\'"]*\\2\\s*,\\s*)[^)]*?\\)', 'g');
+                                replacedTextByAssetId[asset.id] = (replacedTextByAssetId[asset.id] || originalTextByAssetId[asset.id] || asset.text)
+                                    .replace(replaceRegExp,
+                                             "$1" + util.inspect(translationsByKeyAndLocaleId[key][defaultLocaleId]) + ")");
+                        }
+                    });
+                }
+            });
+            Object.keys(replacedTextByAssetId).forEach(function (assetId) {
+                var asset = assetGraph.idIndex[assetId];
+                asset._rawSrc = replacedTextByAssetId[assetId].toString('utf-8');
+                asset.hasReplacedLanguageKeys = true;
+            });
+        }
     })
     .prettyPrintAssets({type: 'I18n', isDirty: true})
     .writeStatsToStderr()
-    .writeAssetsToDisc({type: 'I18n', isDirty: true})
+    .writeAssetsToDisc({type: ['I18n'], isDirty: true})
+    .if(commandLineOptions.replace)
+        .writeAssetsToDisc({type: ['JavaScript', 'Html'], hasReplacedLanguageKeys: true})
+    .endif()
     .run();

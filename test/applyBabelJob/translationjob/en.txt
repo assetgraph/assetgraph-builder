@@ -1,0 +1,3 @@
+foo=FooProofRead
+bar=BarProofRead
+placeholders=This proofread key has {0} proofread placeholders
