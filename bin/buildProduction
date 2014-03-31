@@ -194,6 +194,7 @@ var _ = require('underscore'),
     defines = {},
     inputUrls,
     inlineByRelationType = {};
+
 if (commandLineOptions.inline) {
    inlineByRelationType['*'] = true;
 }
