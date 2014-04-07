@@ -68,11 +68,11 @@ vows.describe('buildProduction').addBatch({
         },
         'the English Html asset should have the expected contents': function (assetGraph) {
             assert.equal(assetGraph.findAssets({url: /\/index\.en\.html$/})[0].text,
-                         '<!DOCTYPE html>\n<html data-version="The version number" lang="en" manifest="index.appcache"><head><title>The English title</title><style type="text/css">body{color:teal}body{color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.url + '" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">The English link text</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif" /></script></body></html>');
+                         '<!DOCTYPE html>\n<html data-version="The version number" lang="en" manifest="index.appcache"><head><title>The English title</title><style type="text/css">body{color:teal}body{color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.url + '" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">The English link text</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif"></script></body></html>');
         },
         'the Danish Html asset should have the expected contents': function (assetGraph) {
             assert.equal(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text,
-                         '<!DOCTYPE html>\n<html data-version="The version number" lang="da" manifest="index.appcache"><head><title>Den danske titel</title><style type="text/css">body{color:teal}body{color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.url + '" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif" /></script></body></html>');
+                         '<!DOCTYPE html>\n<html data-version="The version number" lang="da" manifest="index.appcache"><head><title>Den danske titel</title><style type="text/css">body{color:teal}body{color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.url + '" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif"></script></body></html>');
         },
         'the English JavaScript should have the expected contents': function (assetGraph) {
             var afterRequireJs = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.text.replace(/^[\s\S]*req\(cfg\)\}\}\(this\),/, '');
@@ -248,7 +248,7 @@ vows.describe('buildProduction').addBatch({
                 assert.equal(assetGraph.findRelations({type: 'JavaScriptAngularJsTemplateCacheAssignment'}).length, 0);
             },
             'the Html asset should have the expected contents': function (assetGraph) {
-                assert.equal(assetGraph.findAssets({type: 'Html'})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), '<!doctype html>\n<html ng-app="myApp"><head><title>My AngularJS App</title></head><body><ul class="menu"><li><a href="#/view1">view1</a></li> <li><a href="#/view2">view2</a></li> <li><a href="#/view3">view3</a></li> <li><a href="#/view4">view4</a></li></ul><div ng-view=""></div><script src="MD5.js"></script><script type="text/ng-template" id="partials/2.html"><h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1></script><script type="text/ng-template" id="partials/1.html"><h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1></script><script type="text/ng-template" id="partials/4.html"><h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png" />) injected <span data-i18n="foo">directly</span> into <code>$templateCache</code></h1></script><script type="text/ng-template" id="partials/5.html"><h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png" />) injected directly into <code>$templateCache</code>, but using a different variable name</h1></script></body></html>');
+                assert.equal(assetGraph.findAssets({type: 'Html'})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), '<!doctype html>\n<html ng-app="myApp"><head><title>My AngularJS App</title></head><body><ul class="menu"><li><a href="#/view1">view1</a></li> <li><a href="#/view2">view2</a></li> <li><a href="#/view3">view3</a></li> <li><a href="#/view4">view4</a></li></ul><div ng-view=""></div><script src="MD5.js"></script><script type="text/ng-template" id="partials/2.html"><h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1></script><script type="text/ng-template" id="partials/1.html"><h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1></script><script type="text/ng-template" id="partials/4.html"><h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected <span data-i18n="foo">directly</span> into <code>$templateCache</code></h1></script><script type="text/ng-template" id="partials/5.html"><h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png">) injected directly into <code>$templateCache</code>, but using a different variable name</h1></script></body></html>');
             },
             'the graph should contain a single loaded non-inline Html (or subclass) asset': function (assetGraph) {
                 assert.equal(assetGraph.findAssets({isHtml: true, isInline: false, isLoaded: true}).length, 1);
@@ -272,12 +272,12 @@ vows.describe('buildProduction').addBatch({
             'one of the HtmlInlineScriptTemplateRelations should have an id of "partials/4.html" and point at an Html asset with the correct contents': function (assetGraph) {
                 var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'partials/4.html';}})[0];
                 assert.ok(relation);
-                assert.equal(relation.to.text, '<h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png" />) injected <span data-i18n="foo">directly</span> into <code>$templateCache</code></h1>');
+                assert.equal(relation.to.text, '<h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected <span data-i18n="foo">directly</span> into <code>$templateCache</code></h1>');
             },
             'one of the HtmlInlineScriptTemplateRelations should have an id of "partials/5.html" and point at an Html asset with the correct contents': function (assetGraph) {
                 var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'partials/5.html';}})[0];
                 assert.ok(relation);
-                assert.equal(relation.to.text, '<h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png" />) injected directly into <code>$templateCache</code>, but using a different variable name</h1>');
+                assert.equal(relation.to.text, '<h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png">) injected directly into <code>$templateCache</code>, but using a different variable name</h1>');
             }
         }
     },
@@ -299,10 +299,10 @@ vows.describe('buildProduction').addBatch({
             assert.equal(assetGraph.findRelations({type: 'JavaScriptAngularJsTemplateCacheAssignment'}).length, 0);
         },
         'index.en.html should have the expected contents': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({type: 'Html', url: /\/index\.en\.html$/})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), '<!doctype html>\n<html ng-app="myApp" lang="en"><head><title>My AngularJS App</title></head><body><ul class="menu"><li><a href="#/view1">view1</a></li> <li><a href="#/view2">view2</a></li> <li><a href="#/view3">view3</a></li> <li><a href="#/view4">view4</a></li></ul><div ng-view=""></div><script src="MD5.js"></script><script type="text/ng-template" id="partials/2.html"><h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1></script><script type="text/ng-template" id="partials/1.html"><h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1></script><script type="text/ng-template" id="partials/4.html"><h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png" />) injected directly into <code>$templateCache</code></h1></script><script type="text/ng-template" id="partials/5.html"><h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png" />) injected directly into <code>$templateCache</code>, but using a different variable name</h1></script></body></html>');
+            assert.equal(assetGraph.findAssets({type: 'Html', url: /\/index\.en\.html$/})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), '<!doctype html>\n<html ng-app="myApp" lang="en"><head><title>My AngularJS App</title></head><body><ul class="menu"><li><a href="#/view1">view1</a></li> <li><a href="#/view2">view2</a></li> <li><a href="#/view3">view3</a></li> <li><a href="#/view4">view4</a></li></ul><div ng-view=""></div><script src="MD5.js"></script><script type="text/ng-template" id="partials/2.html"><h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1></script><script type="text/ng-template" id="partials/1.html"><h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1></script><script type="text/ng-template" id="partials/4.html"><h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected directly into <code>$templateCache</code></h1></script><script type="text/ng-template" id="partials/5.html"><h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png">) injected directly into <code>$templateCache</code>, but using a different variable name</h1></script></body></html>');
         },
         'index.da.html should have the expected contents': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({type: 'Html', url: /\/index\.da\.html$/})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), '<!doctype html>\n<html ng-app="myApp" lang="da"><head><title>My AngularJS App</title></head><body><ul class="menu"><li><a href="#/view1">view1</a></li> <li><a href="#/view2">view2</a></li> <li><a href="#/view3">view3</a></li> <li><a href="#/view4">view4</a></li></ul><div ng-view=""></div><script src="MD5.js"></script><script type="text/ng-template" id="partials/2.html"><h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1></script><script type="text/ng-template" id="partials/1.html"><h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1></script><script type="text/ng-template" id="partials/4.html"><h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png" />) injected lige direkte into <code>$templateCache</code></h1></script><script type="text/ng-template" id="partials/5.html"><h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png" />) injected directly into <code>$templateCache</code>, but using a different variable name</h1></script></body></html>');
+            assert.equal(assetGraph.findAssets({type: 'Html', url: /\/index\.da\.html$/})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), '<!doctype html>\n<html ng-app="myApp" lang="da"><head><title>My AngularJS App</title></head><body><ul class="menu"><li><a href="#/view1">view1</a></li> <li><a href="#/view2">view2</a></li> <li><a href="#/view3">view3</a></li> <li><a href="#/view4">view4</a></li></ul><div ng-view=""></div><script src="MD5.js"></script><script type="text/ng-template" id="partials/2.html"><h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1></script><script type="text/ng-template" id="partials/1.html"><h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1></script><script type="text/ng-template" id="partials/4.html"><h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected lige direkte into <code>$templateCache</code></h1></script><script type="text/ng-template" id="partials/5.html"><h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png">) injected directly into <code>$templateCache</code>, but using a different variable name</h1></script></body></html>');
         },
         'the graph should contain 2 loaded non-inline Html (or subclass) asset': function (assetGraph) {
             assert.equal(assetGraph.findAssets({isHtml: true, isInline: false, isLoaded: true}).length, 2);
@@ -326,17 +326,17 @@ vows.describe('buildProduction').addBatch({
         'one of the HtmlInlineScriptTemplateRelations from index.en.html should have an id of "partials/4.html" and point at an Html asset with the correct contents': function (assetGraph) {
             var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', from: {url: /\/index\.en\.html$/}, node: function (node) {return node.getAttribute('id') === 'partials/4.html';}})[0];
             assert.ok(relation);
-            assert.equal(relation.to.text, '<h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png" />) injected directly into <code>$templateCache</code></h1>');
+            assert.equal(relation.to.text, '<h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected directly into <code>$templateCache</code></h1>');
         },
         'one of the HtmlInlineScriptTemplateRelations from index.da.html should have an id of "partials/4.html" and point at an Html asset with the correct contents': function (assetGraph) {
             var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', from: {url: /\/index\.da\.html$/}, node: function (node) {return node.getAttribute('id') === 'partials/4.html';}})[0];
             assert.ok(relation);
-            assert.equal(relation.to.text, '<h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png" />) injected lige direkte into <code>$templateCache</code></h1>');
+            assert.equal(relation.to.text, '<h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected lige direkte into <code>$templateCache</code></h1>');
         },
         'one of the HtmlInlineScriptTemplateRelations should have an id of "partials/5.html" and point at an Html asset with the correct contents': function (assetGraph) {
             var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'partials/5.html';}})[0];
             assert.ok(relation);
-            assert.equal(relation.to.text, '<h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png" />) injected directly into <code>$templateCache</code>, but using a different variable name</h1>');
+            assert.equal(relation.to.text, '<h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png">) injected directly into <code>$templateCache</code>, but using a different variable name</h1>');
         }
     },
     'After loading the same test Angular.js test case by loading **/*.html and populating, then running the buildProduction transform': {
@@ -351,7 +351,7 @@ vows.describe('buildProduction').addBatch({
             assert.equal(assetGraph.findRelations({type: 'JavaScriptAngularJsTemplateCacheAssignment'}).length, 0);
         },
         'the Html asset should have the expected contents': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({type: 'Html'})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), '<!doctype html>\n<html ng-app="myApp"><head><title>My AngularJS App</title></head><body><ul class="menu"><li><a href="#/view1">view1</a></li> <li><a href="#/view2">view2</a></li> <li><a href="#/view3">view3</a></li> <li><a href="#/view4">view4</a></li></ul><div ng-view=""></div><script src="MD5.js"></script><script type="text/ng-template" id="partials/2.html"><h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1></script><script type="text/ng-template" id="partials/1.html"><h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1></script><script type="text/ng-template" id="partials/4.html"><h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png" />) injected <span data-i18n="foo">directly</span> into <code>$templateCache</code></h1></script><script type="text/ng-template" id="partials/5.html"><h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png" />) injected directly into <code>$templateCache</code>, but using a different variable name</h1></script></body></html>');
+            assert.equal(assetGraph.findAssets({type: 'Html'})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), '<!doctype html>\n<html ng-app="myApp"><head><title>My AngularJS App</title></head><body><ul class="menu"><li><a href="#/view1">view1</a></li> <li><a href="#/view2">view2</a></li> <li><a href="#/view3">view3</a></li> <li><a href="#/view4">view4</a></li></ul><div ng-view=""></div><script src="MD5.js"></script><script type="text/ng-template" id="partials/2.html"><h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1></script><script type="text/ng-template" id="partials/1.html"><h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1></script><script type="text/ng-template" id="partials/4.html"><h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected <span data-i18n="foo">directly</span> into <code>$templateCache</code></h1></script><script type="text/ng-template" id="partials/5.html"><h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png">) injected directly into <code>$templateCache</code>, but using a different variable name</h1></script></body></html>');
         },
         'the graph should contain a single loaded non-inline Html (or subclass) asset': function (assetGraph) {
             assert.equal(assetGraph.findAssets({isHtml: true, isInline: false, isLoaded: true}).length, 1);
@@ -375,12 +375,12 @@ vows.describe('buildProduction').addBatch({
         'one of the HtmlInlineScriptTemplateRelations should have an id of "partials/4.html" and point at an Html asset with the correct contents': function (assetGraph) {
             var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'partials/4.html';}})[0];
             assert.ok(relation);
-            assert.equal(relation.to.text, '<h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png" />) injected <span data-i18n="foo">directly</span> into <code>$templateCache</code></h1>');
+            assert.equal(relation.to.text, '<h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected <span data-i18n="foo">directly</span> into <code>$templateCache</code></h1>');
         },
         'one of the HtmlInlineScriptTemplateRelations should have an id of "partials/5.html" and point at an Html asset with the correct contents': function (assetGraph) {
             var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'partials/5.html';}})[0];
             assert.ok(relation);
-            assert.equal(relation.to.text, '<h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png" />) injected directly into <code>$templateCache</code>, but using a different variable name</h1>');
+            assert.equal(relation.to.text, '<h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png">) injected directly into <code>$templateCache</code>, but using a different variable name</h1>');
         }
     },
     'After loading an Angular.js test case with multiple references to the same template': {
@@ -469,12 +469,12 @@ vows.describe('buildProduction').addBatch({
                 assert.equal(assetGraph.findRelations({type: 'HtmlInlineScriptTemplate'}).length, 2);
             },
             'index.html should have the expected contents': function (assetGraph) {
-                assert.equal(assetGraph.findAssets({url: /\/index\.html$/})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), '<!DOCTYPE html>\n<html><head></head><body><script src="MD5.js"></script><script type="text/html" id="foo"><img data-bind="attr:{src:\'static/foo.d65dd5318f.png\'}" /></script><script type="text/html" id="bar"><div><h1>bar.ko</h1></div></script></body></html>');
+                assert.equal(assetGraph.findAssets({url: /\/index\.html$/})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), '<!DOCTYPE html>\n<html><head></head><body><script src="MD5.js"></script><script type="text/html" id="foo"><img data-bind="attr:{src:\'static/foo.d65dd5318f.png\'}"></script><script type="text/html" id="bar"><div><h1>bar.ko</h1></div></script></body></html>');
             },
             'one of the HtmlInlineScriptTemplateRelations should have an id of "foo" and point at a KnockoutJsTemplate asset with the correct contents': function (assetGraph) {
                 var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'foo';}})[0];
                 assert.ok(relation);
-                assert.equal(relation.to.text, '<img data-bind="attr:{src:\'static/foo.d65dd5318f.png\'}" />');
+                assert.equal(relation.to.text, '<img data-bind="attr:{src:\'static/foo.d65dd5318f.png\'}">');
             },
             'one of the HtmlInlineScriptTemplateRelations should have an id of "bar" and point at a KnockoutJsTemplate asset with the correct contents': function (assetGraph) {
                 var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'bar';}})[0];
@@ -505,7 +505,7 @@ vows.describe('buildProduction').addBatch({
                 assert.equal(assetGraph.findAssets({type: 'Png'}).length, 1);
             },
             'the main Html asset should have the expected contents': function (assetGraph) {
-                assert.equal(assetGraph.findAssets({type: 'Html', isInitial: true, isFragment: false})[0].text, '<!DOCTYPE html>\n<html><head></head><body><script>var myTemplateUrl="static/myTemplate.d548bb27ed.html";</script></body></html>');
+                assert.equal(assetGraph.findAssets({type: 'Html', isInitial: true, isFragment: false})[0].text, '<!DOCTYPE html>\n<html><head></head><body><script>var myTemplateUrl="static/myTemplate.3b2865806b.html";</script></body></html>');
             }
         }
     },
@@ -528,7 +528,7 @@ vows.describe('buildProduction').addBatch({
                 assetGraph.buildProduction({version: false}).run(this.callback);
             },
             'the Html fragment asset should have the expected contents': function (assetGraph) {
-                assert.equal(assetGraph.findAssets({type: 'Html', url: /\/myTemplate\.html$/})[0].text, '<div><h1>Template with a relative image reference: <img src="static/foo.d65dd5318f.png" /></h1></div>');
+                assert.equal(assetGraph.findAssets({type: 'Html', url: /\/myTemplate\.html$/})[0].text, '<div><h1>Template with a relative image reference: <img src="static/foo.d65dd5318f.png"></h1></div>');
             }
         }
     },
@@ -1008,7 +1008,7 @@ vows.describe('buildProduction').addBatch({
         },
         'the Html asset should have the expected contents': function (assetGraph) {
             var htmlAsset = assetGraph.findAssets({type: 'Html'})[0],
-                matchLinkRelStylesheet = htmlAsset.text.match(/<link rel="stylesheet" href="static\/falcon-example-\d\.[0-9a-f]{10}\.css" \/>/g);
+                matchLinkRelStylesheet = htmlAsset.text.match(/<link rel="stylesheet" href="static\/falcon-example-\d\.[0-9a-f]{10}\.css">/g);
             assert.ok(matchLinkRelStylesheet);
             assert.equal(matchLinkRelStylesheet.length, 3);
         },
