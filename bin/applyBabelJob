@@ -250,8 +250,17 @@ new AssetGraph({root: commandLineOptions.root})
                 }
             });
             Object.keys(replacedTextByAssetId).forEach(function (assetId) {
-                var asset = assetGraph.idIndex[assetId];
-                asset._rawSrc = replacedTextByAssetId[assetId].toString('utf-8');
+                var asset = assetGraph.idIndex[assetId],
+                    replacedText = replacedTextByAssetId[assetId];
+                asset.keepUnpopulated = true;
+                if (asset.type === 'Html') {
+                    // Un-entitify < > & in data-bind attributes (common intentional spec breakage in development):
+                    asset.keepUnpopulated = true;
+                    replacedText = replacedText.replace(/data-bind="[^"]*"/g, function ($0) {
+                        return $0.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, "&");
+                    });
+                }
+                asset._rawSrc = replacedText.toString('utf-8');
                 asset.hasReplacedLanguageKeys = true;
             });
         }

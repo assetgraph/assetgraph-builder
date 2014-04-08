@@ -62,6 +62,7 @@ vows.describe('applyBabelJob').addBatch({
                 '            alert(TR(\'bar\', \'BarProofRead\'));\n' +
                 '        </script>\n' +
                 '        <span data-i18n="placeholders">This proofread key has <span>some</span> proofread placeholders</span>\n' +
+                '        <span data-bind="text: foo < 4 && bar > 2"></span>\n' +
                 '    </body>\n' +
                 '</html>\n'
             );
