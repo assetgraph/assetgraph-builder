@@ -341,7 +341,8 @@ new AssetGraph({root: rootUrl})
         cdnHtml: commandLineOptions.cdnhtml,
         noCompress: commandLineOptions.nocompress,
         sharedBundles: commandLineOptions.sharedbundles,
-        stripDebug: !commandLineOptions.debug
+        stripDebug: !commandLineOptions.debug,
+        addInitialHtmlExtension: commandLineOptions.addinitialhtmlextension
     })
     .writeAssetsToDisc({url: /^file:/, isLoaded: true}, outRoot)
     .if(cdnRoot)
