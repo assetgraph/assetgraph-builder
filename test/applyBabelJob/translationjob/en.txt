@@ -1,3 +1,6 @@
 foo=FooProofRead
 bar=BarProofRead
 placeholders=This proofread key has {0} proofread placeholders
+WeirdlyFormattedKey=that comes back the same in the translation job
+ComplexKey[that]=also comes
+ComplexKey[back]=the same

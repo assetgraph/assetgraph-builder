@@ -222,7 +222,7 @@ new AssetGraph({root: commandLineOptions.root})
             assetGraph.findAssets({type: 'Html'}).forEach(function (htmlAsset) {
                 var hasOccurrences = false;
                 i18nTools.eachI18nTagInHtmlDocument(htmlAsset.parseTree, function (options) {
-                    if (options.key in allKeysInDefaultLocale) {
+                    if (options.key in allKeysInDefaultLocale && !_.isEqual(options.defaultValue, allKeysInDefaultLocale[options.key])) {
                         hasOccurrences = true;
                         i18nTagReplacer(options);
                     }
@@ -239,12 +239,14 @@ new AssetGraph({root: commandLineOptions.root})
                 if (defaultLocaleId && defaultLocaleId in translationsByKeyAndLocaleId[key]) {
                     var occurrences = occurrencesByKey[key] || [];
                     (occurrences || []).forEach(function (occurrence) {
-                        if (occurrence.type === 'TR') {
-                            var asset = occurrence.asset.nonInlineAncestor,
-                                replaceRegExp = new RegExp('(TR(?:PAT)?\\(([\'"])' + key.replace(/[\[\]\*\+\?\{\}\(\)\^\$]/g, '\\$&') + '[^\'"]*\\2\\s*,\\s*)[^)]*?\\)', 'g');
-                                replacedTextByAssetId[asset.id] = (replacedTextByAssetId[asset.id] || originalTextByAssetId[asset.id] || asset.text)
-                                    .replace(replaceRegExp,
-                                             "$1" + util.inspect(translationsByKeyAndLocaleId[key][defaultLocaleId]) + ")");
+                        if (!_.isEqual(occurrence.defaultValue, allKeysInDefaultLocale[occurrence.key])) {
+                            if (occurrence.type === 'TR') {
+                                var asset = occurrence.asset.nonInlineAncestor,
+                                    replaceRegExp = new RegExp('(TR(?:PAT)?\\(([\'"])' + key.replace(/[\[\]\*\+\?\{\}\(\)\^\$]/g, '\\$&') + '[^\'"]*\\2\\s*,\\s*)[^)]*?\\)', 'g');
+                                    replacedTextByAssetId[asset.id] = (replacedTextByAssetId[asset.id] || originalTextByAssetId[asset.id] || asset.text)
+                                        .replace(replaceRegExp,
+                                                 "$1" + util.inspect(translationsByKeyAndLocaleId[key][defaultLocaleId]) + ")");
+                            }
                         }
                     });
                 }

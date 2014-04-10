@@ -6,8 +6,17 @@
     <body>
         <script>
             alert(TR('bar', 'Bar'));
+            alert(TR('WeirdlyFormattedKey', 'that ' + 'comes ' + 'back the same in the translation job'));
+            alert(TR('ComplexKey', {
+                that: 'also comes',
+                back: 'the same'
+            }));
         </script>
         <span data-i18n="placeholders">This key has <span>some</span> placeholders</span>
         <span data-bind="text: foo < 4 && bar > 2"></span>
+        <span data-i18n="WeirdlyFormattedKey">
+            that comes back the same
+            in the translation job
+        </span>
     </body>
 </html>
