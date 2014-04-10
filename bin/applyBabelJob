@@ -207,7 +207,8 @@ new AssetGraph({root: commandLineOptions.root})
         });
 
         if (commandLineOptions.replace) {
-            var allKeysInDefaultLocale = {};
+            var allKeysInDefaultLocale = {},
+                replacedTextByAssetId = {};
             Object.keys(translationsByKeyAndLocaleId).forEach(function (key) {
                 allKeysInDefaultLocale[key] = translationsByKeyAndLocaleId[key][defaultLocaleId];
             });
@@ -230,11 +231,11 @@ new AssetGraph({root: commandLineOptions.root})
                 if (hasOccurrences) {
                     htmlAsset.hasReplacedLanguageKeys = true;
                     htmlAsset.markDirty();
+                    replacedTextByAssetId[htmlAsset.id] = htmlAsset.text;
                 }
             });
 
             // Then regexp TR and TRPAT in JavaScript assets. This has to happen last because it regexps directly on the source:
-            replacedTextByAssetId = {};
             Object.keys(translationsByKeyAndLocaleId).forEach(function (key) {
                 if (defaultLocaleId && defaultLocaleId in translationsByKeyAndLocaleId[key]) {
                     var occurrences = occurrencesByKey[key] || [];
