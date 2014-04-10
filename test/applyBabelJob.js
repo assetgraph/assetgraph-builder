@@ -22,8 +22,6 @@ describe('applyBabelJob', function () {
                 '--replace',
                 tmpTestCaseCopyDir + '/index.html'
             ]);
-applyBabelJobProcess.stdout.pipe(process.stdout);
-applyBabelJobProcess.stderr.pipe(process.stdout);
             applyBabelJobProcess.on('exit', function (exitCode) {
                 if (exitCode) {
                     done(new Error("The applyBabelJob process ended with a non-zero exit code: " + exitCode));
