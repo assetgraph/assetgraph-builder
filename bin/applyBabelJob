@@ -231,7 +231,7 @@ new AssetGraph({root: commandLineOptions.root})
                 if (hasOccurrences) {
                     htmlAsset.hasReplacedLanguageKeys = true;
                     htmlAsset.markDirty();
-                    replacedTextByAssetId[htmlAsset.id] = htmlAsset.text;
+                    replacedTextByAssetId[htmlAsset.nonInlineAncestor.id] = htmlAsset.nonInlineAncestor.text;
                 }
             });
 
@@ -244,9 +244,10 @@ new AssetGraph({root: commandLineOptions.root})
                             if (occurrence.type === 'TR') {
                                 var asset = occurrence.asset.nonInlineAncestor,
                                     replaceRegExp = new RegExp('(TR(?:PAT)?\\(([\'"])' + key.replace(/[\[\]\*\+\?\{\}\(\)\^\$]/g, '\\$&') + '[^\'"]*\\2\\s*,\\s*)[^)]*?\\)', 'g');
-                                    replacedTextByAssetId[asset.id] = (replacedTextByAssetId[asset.id] || originalTextByAssetId[asset.id] || asset.text)
-                                        .replace(replaceRegExp,
-                                                 "$1" + util.inspect(translationsByKeyAndLocaleId[key][defaultLocaleId]) + ")");
+
+                                replacedTextByAssetId[asset.id] = (replacedTextByAssetId[asset.id] || originalTextByAssetId[asset.id] || asset.text)
+                                    .replace(replaceRegExp,
+                                             "$1" + util.inspect(translationsByKeyAndLocaleId[key][defaultLocaleId]) + ")");
                             }
                         }
                     });
