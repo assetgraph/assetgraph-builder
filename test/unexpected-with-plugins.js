@@ -3,6 +3,9 @@ var expect = module.exports = require('unexpected').clone(),
 
 expect.addAssertion('to contain (asset|assets)', function (expect, subject, queryObj, number) {
     this.errorMode = 'nested';
+    if (typeof queryObj === 'string') {
+        queryObj = {type: queryObj};
+    }
     expect(subject.findAssets(queryObj).length, 'to equal', typeof number === 'number' ? number : 1);
 });
 
