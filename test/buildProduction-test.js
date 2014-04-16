@@ -1109,4 +1109,48 @@ vows.describe('buildProduction').addBatch({
             );
         }
     },
+    'After loading a test case with some assets that should remain at the root (see assetgraph#185)': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/assetsThatShouldNotBeMoved/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets(['index.html'])
+                .populate()
+                .run(this.callback);
+        },
+        'the graph should have robots.txt at the root': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({url: assetGraph.root + 'robots.txt'}).length, 1);
+        },
+        'the graph should have humans.txt at the root': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({url: assetGraph.root + 'humans.txt'}).length, 1);
+        },
+        'the graph should have .htaccess at the root': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({url: assetGraph.root + '.htaccess'}).length, 1);
+        },
+        'the graph should have favicon.ico at the root': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({url: assetGraph.root + 'favicon.ico'}).length, 1);
+        },
+        'then run the buildProduction transform': {
+            topic: function (assetGraph) {
+                assetGraph.buildProduction({version: false}).run(this.callback);
+            },
+            'the graph should still have robots.txt at the root': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({url: assetGraph.root + 'robots.txt'}).length, 1);
+            },
+            'the graph should still have humans.txt at the root': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({url: assetGraph.root + 'humans.txt'}).length, 1);
+            },
+            'the graph should still have .htaccess at the root': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({url: assetGraph.root + '.htaccess'}).length, 1);
+            },
+            'the graph should still have favicon.ico at the root': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({url: assetGraph.root + 'favicon.ico'}).length, 1);
+            },
+            'the graph should have a copy of favicon.ico in the static directory': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({url: assetGraph.root + 'static/favicon.9f0922f8d9.ico'}).length, 1);
+            },
+            'the Html file should have the expected contents': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({type: 'Html'})[0].text, '<!DOCTYPE html>\n<html><head><link rel="author" href="humans.txt" type="text/plain"><link rel="icon" href="static/favicon.9f0922f8d9.ico" type="image/x-icon"></head><body>Here\'s my <a href=".htaccess">.htaccess file</a>, grab it if you can! If you\'re a robot, please refer to <a href="robots.txt">robots.txt</a>.</body></html>');
+            }
+        }
+    }
 })['export'](module);
