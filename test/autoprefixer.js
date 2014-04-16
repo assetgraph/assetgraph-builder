@@ -1,5 +1,4 @@
 var expect = require('./unexpected-with-plugins'),
-    passError = require('passerror'),
     AssetGraph = require('../lib/AssetGraph');
 
 describe('transforms.autoprefixer', function () {
@@ -12,11 +11,11 @@ describe('transforms.autoprefixer', function () {
                  expect(assetGraph, 'to contain relations', 'CssImage', 1);
             })
             .autoprefixer()
-            .run(passError(done, function (assetGraph) {
+            .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain relations', 'HtmlStyle', 2);
                 expect(assetGraph, 'to contain relations', 'CssImage', 3);
-                done();
-            }));
+            })
+            .run(done);
     });
 
     it('should remove prefixfree.js and prefixfree.min.js', function (done) {
@@ -27,9 +26,9 @@ describe('transforms.autoprefixer', function () {
                 expect(assetGraph, 'to contain relations', 'HtmlScript', 2);
             })
             .autoprefixer()
-            .run(passError(done, function (assetGraph) {
+            .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain relations', 'HtmlScript', 0);
-                done();
-            }));
+            })
+            .run(done);
     });
 });

@@ -1,15 +1,17 @@
 var expect = module.exports = require('unexpected').clone(),
     urlTools = require('urltools');
 
-expect.addAssertion('to contain (asset|assets)', function (expect, subject, queryObj, number) {
+expect.addAssertion('to contain [no] (asset|assets)', function (expect, subject, queryObj, number) {
     this.errorMode = 'nested';
     if (typeof queryObj === 'string') {
         queryObj = {type: queryObj};
     }
-    if (typeof number === 'undefined') {
+    if (this.flags.no) {
+        number = 0;
+    } else if (typeof number === 'undefined') {
         number = 1;
     }
-    expect(subject.findAssets(queryObj).length, 'to equal', typeof number === 'number' ? number : 1);
+    expect(subject.findAssets(queryObj).length, 'to equal', number);
 });
 
 expect.addAssertion('to contain (url|urls)', function (expect, subject, urls) {
@@ -25,11 +27,13 @@ expect.addAssertion('to contain (url|urls)', function (expect, subject, urls) {
     });
 });
 
-expect.addAssertion('to contain (relation|relations)', function (expect, subject, queryObj, number) {
+expect.addAssertion('to contain [no] (relation|relations)', function (expect, subject, queryObj, number) {
     if (typeof queryObj === 'string') {
         queryObj = {type: queryObj};
     }
-    if (typeof number === 'undefined') {
+    if (this.flags.no) {
+        number = 0;
+    } else if (typeof number === 'undefined') {
         number = 1;
     }
     this.errorMode = 'nested';
