@@ -6,6 +6,9 @@ expect.addAssertion('to contain (asset|assets)', function (expect, subject, quer
     if (typeof queryObj === 'string') {
         queryObj = {type: queryObj};
     }
+    if (typeof number === 'undefined') {
+        number = 1;
+    }
     expect(subject.findAssets(queryObj).length, 'to equal', typeof number === 'number' ? number : 1);
 });
 
@@ -25,6 +28,9 @@ expect.addAssertion('to contain (url|urls)', function (expect, subject, urls) {
 expect.addAssertion('to contain (relation|relations)', function (expect, subject, queryObj, number) {
     if (typeof queryObj === 'string') {
         queryObj = {type: queryObj};
+    }
+    if (typeof number === 'undefined') {
+        number = 1;
     }
     this.errorMode = 'nested';
     expect(subject.findRelations(queryObj).length, 'to equal', number);
