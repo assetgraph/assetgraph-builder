@@ -38,4 +38,18 @@ describe('buildDevelopment', function () {
                 done();
             }));
     });
+
+    it('should not mangle an inline stylesheet with a data-bind attribute', function (done) {
+        new AssetGraph({root: __dirname + '/buildDevelopment/dataBindOnHtmlStyle/'})
+            .registerRequireJsConfig()
+            .loadAssets('index.html.template')
+            .populate()
+            .buildDevelopment({
+                version: 'The version number'
+            })
+            .queue(function (assetGraph) {
+                expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to contain', '<style data-bind="text: dynamicStyle"></style>');
+            })
+            .run(done);
+    });
 });

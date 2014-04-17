@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <div>
+            <style data-bind="text: dynamicStyle"></style>
+            <h1 data-i18n="shop.Heading">My Shop</h1>
+        </div>
+    </body>
+</html>
