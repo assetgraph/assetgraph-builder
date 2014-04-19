@@ -1152,5 +1152,25 @@ vows.describe('buildProduction').addBatch({
                 assert.equal(assetGraph.findAssets({type: 'Html'})[0].text, '<!DOCTYPE html>\n<html><head><link rel="author" href="humans.txt" type="text/plain"><link rel="icon" href="static/favicon.9f0922f8d9.ico" type="image/x-icon"></head><body>Here\'s my <a href=".htaccess">.htaccess file</a>, grab it if you can! If you\'re a robot, please refer to <a href="robots.txt">robots.txt</a>.</body></html>');
             }
         }
+    },
+    'After loading a test case with an RSS feed (#118)': {
+        topic: function () {
+            new AssetGraph({root: __dirname + '/buildProduction/rss/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets(['index.html'])
+                .populate()
+                .run(this.callback);
+        },
+        'the graph should contain one Xml asset with a Content-Type of application/rss+xml': function (assetGraph) {
+            assert.equal(assetGraph.findAssets({contentType: 'application/rss+xml', type: 'Rss'}).length, 1);
+        },
+        'then run the buildProduction transform': {
+            topic: function (assetGraph) {
+                assetGraph.buildProduction({version: false}).run(this.callback);
+            },
+            'the graph should still have rssFeed.xml at the root': function (assetGraph) {
+                assert.equal(assetGraph.findAssets({url: assetGraph.root + 'rssFeed.xml'}).length, 1);
+            }
+        }
     }
 })['export'](module);
