@@ -81,7 +81,7 @@ new AssetGraph({root: rootUrl})
             {type: query.not(['JavaScriptInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']),
                                                 to: {url: query.not(/^https?:/)}})
      })
-    .queue(function outputWarningsAboutLanguageKeys() {
+    .queue(function outputWarningsAboutLanguageKeys(assetGraph) {
         var infoObject = {};
         localeIds.forEach(function (localeId) {
             var allKeysForLocale = i18nTools.extractAllKeysForLocale(assetGraph, localeId),
