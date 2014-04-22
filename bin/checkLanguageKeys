@@ -81,10 +81,7 @@ new AssetGraph({root: rootUrl})
             {type: query.not(['JavaScriptInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']),
                                                 to: {url: query.not(/^https?:/)}})
      })
-    .run(function (err, assetGraph) {
-        if (err) {
-            throw err;
-        }
+    .queue(function outputWarningsAboutLanguageKeys() {
         var infoObject = {};
         localeIds.forEach(function (localeId) {
             var allKeysForLocale = i18nTools.extractAllKeysForLocale(assetGraph, localeId),
@@ -117,6 +114,6 @@ new AssetGraph({root: rootUrl})
                 });
             });
         });
-
         console.warn(i18nTools.formatWarningsAboutLanguageKeys(infoObject, defaultLocaleId));
-    });
+    })
+    .run();
