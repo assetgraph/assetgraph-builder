@@ -32,7 +32,6 @@ var _ = require('underscore'),
         return localeId.split(",");
     })).map(i18nTools.normalizeLocaleId),
     defaultLocaleId = commandLineOptions.defaultlocale && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale),
-    localizationInfoObject = {},
     inputUrls;
 
 if (commandLineOptions._.length > 0) {
@@ -82,15 +81,42 @@ new AssetGraph({root: rootUrl})
             {type: query.not(['JavaScriptInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']),
                                                 to: {url: query.not(/^https?:/)}})
      })
-    .cloneForEachLocale({type: 'Html', isInitial: true}, {
-        localeIds: localeIds,
-        supportedLocaleIds: localeIds,
-        infoObject: localizationInfoObject,
-        defaultLocaleId: defaultLocaleId
-    })
-    .run(function (err) {
+    .run(function (err, assetGraph) {
         if (err) {
             throw err;
         }
-        console.warn(i18nTools.formatWarningsAboutLanguageKeys(localizationInfoObject, defaultLocaleId));
+        var infoObject = {};
+        localeIds.forEach(function (localeId) {
+            var allKeysForLocale = i18nTools.extractAllKeysForLocale(assetGraph, localeId),
+                trReplacer = i18nTools.createTrReplacer({
+                    allKeysForLocale: allKeysForLocale,
+                    localeId: localeId,
+                    defaultLocaleId: defaultLocaleId,
+                    infoObject: infoObject
+                }),
+                i18nTagReplacer = i18nTools.createI18nTagReplacer({
+                    allKeysForLocale: allKeysForLocale,
+                    localeId: localeId,
+                    defaultLocaleId: defaultLocaleId,
+                    infoObject: infoObject
+                });
+
+            infoObjectUpdater = i18nTools.createInfoObjectUpdater(infoObject, allKeysForLocale, localeId, defaultLocaleId);
+            assetGraph.findAssets({type: assetGraph.query.or('Html', 'Svg', 'Htc')}).forEach(function (asset) {
+                i18nTools.eachI18nTagInHtmlDocument(asset.parseTree, function (options) {
+                    if (options.type) {
+                        // Don't update the info object if it's one of the "fake" occurrences output by i18nTools.eachI18nTagInHtmlDocument
+                        // when there's no i18n of the text contents:
+                        infoObjectUpdater(options, options.key, allKeysForLocale[options.key]);
+                    }
+                });
+            });
+            assetGraph.findAssets({type: 'JavaScript'}).forEach(function (asset) {
+                i18nTools.eachTrInAst(asset.parseTree, function (options) {
+                    infoObjectUpdater(options, options.key, allKeysForLocale[options.key]);
+                });
+            });
+        });
+
+        console.warn(i18nTools.formatWarningsAboutLanguageKeys(infoObject, defaultLocaleId));
     });
