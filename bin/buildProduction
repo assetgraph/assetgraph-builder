@@ -190,7 +190,6 @@ var _ = require('underscore'),
         return reservedName.split(",");
     })),
     defaultLocaleId = commandLineOptions.defaultlocale && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale),
-    localizationInfoObject = {},
     defines = {},
     inputUrls,
     inlineByRelationType = {};
@@ -278,44 +277,8 @@ if (commandLineOptions._.length > 0) {
     throw new Error("No input files and no --root specified (or it isn't file:), cannot proceed");
 }
 
-var startReplRegExp;
-if (commandLineOptions.repl) {
-    startReplRegExp = new RegExp(_.flatten(_.flatten([commandLineOptions.repl]).map(function (transformName) {
-        return transformName.split(",");
-    })).map(function (transformName) {
-        return transformName.replace(/[\.\+\{\}\[\]\(\)\?\^\$]/g, '\\$&');
-    }).join('|'));
-}
-
 new AssetGraph({root: rootUrl})
-    .on('afterTransform', function (transform, elapsedTime) {
-        console.log(chalk.green(' ✔ ') + (elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
-        if (startReplRegExp && startReplRegExp.test(transform.name)) {
-            this.transformQueue.transforms.unshift(AssetGraph.transforms.startRepl());
-        }
-    })
-    .on('info', function (info) {
-        console.warn(chalk.cyan(' ℹ ' + (info.asset ? info.asset.urlOrDescription + ': ' : '') + info.message));
-    })
-    .on('warn', function (err) {
-        // These are way too noisy
-        if (err.relationType !== 'JavaScriptCommonJsRequire') {
-            console.warn(chalk.yellow(' ⚠ ' + (err.asset ? err.asset.urlOrDescription + ': ' : '') + err.message));
-            if (startReplRegExp && startReplRegExp.test('warn')) {
-                this.transformQueue.transforms.unshift(AssetGraph.transforms.startRepl());
-            } else if (commandLineOptions.stoponwarning) {
-                process.exit(1);
-            }
-        }
-    })
-    .on('error', function (err) {
-        console.error(chalk.red(' ✘ ' + (err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack));
-        if (startReplRegExp && startReplRegExp.test('error')) {
-            this.transformQueue.transforms.unshift(AssetGraph.transforms.startRepl());
-        } else {
-            process.exit(1);
-        }
-    })
+    .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
     .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(inputUrls)
@@ -330,7 +293,6 @@ new AssetGraph({root: rootUrl})
         reservedNames: reservedNames,
         localeIds: localeIds,
         localeCookieName: commandLineOptions.localecookiename,
-        localizationInfoObject: localizationInfoObject,
         defaultLocaleId: defaultLocaleId,
         manifest: commandLineOptions.manifest,
         negotiateManifest: commandLineOptions.negotiatemanifest,
@@ -352,8 +314,5 @@ new AssetGraph({root: rootUrl})
     .run(function (err) {
         if (err) {
             throw err;
-        }
-        if (localeIds) {
-            console.warn(i18nTools.formatWarningsAboutLanguageKeys(localizationInfoObject, defaultLocaleId));
         }
     });

@@ -16,19 +16,7 @@ var fs = require('fs'),
         .argv;
 
 new AssetGraph({root: commandLineOptions.root})
-    .on('warn', function (err) {
-        // These are way too noisy
-        if (err.relationType !== 'JavaScriptCommonJsRequire') {
-            console.warn((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.message);
-            if (commandLineOptions.stoponwarning) {
-                process.exit(1);
-            }
-        }
-    })
-    .on('error', function (err) {
-        console.error((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack);
-        process.exit(1);
-    })
+    .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .populate({followRelations: {type: 'JavaScriptInclude'}})

@@ -315,43 +315,6 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
             }
         }
     },
-    'After loading test case with missing keys and default values': {
-        topic: function () {
-            new AssetGraph({root: __dirname + '/cloneForEachLocale/missingKeysAndWrongDefaultValues/'})
-                .loadAssets('index.html')
-                .populate()
-                .run(this.callback);
-        },
-        'the graph should contain one Html asset': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({type: 'Html'}).length, 1);
-        },
-        'the graph should contain one inline JavaScript asset': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({type: 'JavaScript', isInline: true}).length, 1);
-        },
-        'the graph should contain one I18n asset': function (assetGraph) {
-            assert.equal(assetGraph.findAssets({type: 'I18n'}).length, 1);
-        },
-        'then running the cloneForEachLocale transform': {
-            topic: function (assetGraph) {
-                assetGraph._cloneForEachLocaleInfo = {};
-                assetGraph
-                    .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da'], infoObject: assetGraph._cloneForEachLocaleInfo})
-                    .run(this.callback);
-            },
-            'assetGraph._cloneForEachLocaleInfo should have a localeIdsByMissingKey property with the expected values': function (assetGraph) {
-                assert.deepEqual(assetGraph._cloneForEachLocaleInfo.localeIdsByMissingKey, {
-                    TheMissingTitle: ['da'],
-                    AnotherMissingKey: ['da']
-                });
-            },
-            'assetGraph._cloneForEachLocaleInfo should have a defaultValueMismatchesByKey property with the expected values': function (assetGraph) {
-                assert.deepEqual(assetGraph._cloneForEachLocaleInfo.defaultValueMismatchesByKey, {
-                    KeyWithMismatchingDefaultValue: {defaultValues: ['The default heading'], en: 'The default heading2'},
-                    AnotherKeyWithMismatchingDefaultValue: {defaultValues: ['Default value'], en: 'Default value2'}
-                });
-            }
-        }
-    },
     'After loading test case with a TR in a data-bind attribute and run the cloneForEachLocale transform': {
         topic: function () {
             new AssetGraph({root: __dirname + '/cloneForEachLocale/trInHtmlDataBindAttribute/'})
@@ -617,47 +580,6 @@ vows.describe('Make a clone of each Html file for each language').addBatch({
                     }
                 }
             }
-        }
-    },
-    'After loading test case with inconsistent default values in TR calls and running the cloneForEachLocale transform': {
-        topic: function () {
-            var assetGraph = new AssetGraph({root: __dirname + '/cloneForEachLocale/inconsistentTrDefaultValues/'});
-            assetGraph._cloneForEachLocaleInfo = {};
-            assetGraph
-                .loadAssets('index.html')
-                .populate()
-                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da'], infoObject: assetGraph._cloneForEachLocaleInfo})
-                .run(this.callback);
-        },
-        'assetGraph._cloneForEachLocaleInfo should have a defaultValueMismatchesByKey property with the expected values': function (assetGraph) {
-            assert.deepEqual(assetGraph._cloneForEachLocaleInfo.defaultValueMismatchesByKey, {
-                keyname: {defaultValues: ['defaultValue1', 'defaultValue2']},
-                keyname2: {defaultValues: ['defaultValue3', 'defaultValue4']}
-            });
-        }
-    },
-    'After loading test case with whitespace bugs in language key values and running the cloneForEachLocale transform': {
-        topic: function () {
-            var assetGraph = new AssetGraph({root: __dirname + '/cloneForEachLocale/whitespaceInDefaultValues/'});
-            assetGraph._cloneForEachLocaleInfo = {};
-            assetGraph
-                .loadAssets('index.html')
-                .populate()
-                .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da'], infoObject: assetGraph._cloneForEachLocaleInfo})
-                .run(this.callback);
-        },
-        'assetGraph._cloneForEachLocaleInfo should have a whitespaceWarningsByKey property with the expected values': function (assetGraph) {
-            assert.deepEqual(assetGraph._cloneForEachLocaleInfo.whitespaceWarningsByKey, {
-                trKeyWithLeadingWhitespaceInTheDefaultValue: [{type: 'defaultValue', localeId: 'en', value: ' foo'}],
-                trKeyWithTrailingWhitespaceInTheDefaultValue: [{type: 'defaultValue', localeId: 'en', value: 'foo '}],
-                trKeyWithLeadingWhitespaceInTheDanishValue: [{type: 'value', localeId: 'da', value: ' foo'}],
-                trKeyWithTrailingWhitespaceInTheDanishValue: [{type: 'value', localeId: 'da', value: 'foo '}],
-                dataI18nKeyWithLeadingWhitespaceInTheDanishValue: [{type: 'value', localeId: 'da', value: ' foo'}],
-                dataI18nKeyWithTrailingWhitespaceInTheDanishValue: [{type: 'value', localeId: 'da', value: 'foo '}]
-                // These are stripped by eachI18nTagInHtmlDocument:
-                // dataI18nKeyWithLeadingWhitespaceInTheDefaultValue: [{type: 'defaultValue', localeId: 'en', value: ' foo'}],
-                // dataI18nKeyWithTrailingWhitespaceInTheDefaultValue: [{type: 'defaultValue', localeId: 'en', value: 'foo '}],
-            });
         }
     },
     'After loading test case with a Css asset that needs localization and running the cloneForEachLocale transform': {

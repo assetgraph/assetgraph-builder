@@ -10,13 +10,7 @@ var _ = require('underscore'),
         .argv;
 
 new AssetGraph({root: commandLineOptions.root})
-    .on('warn', function (err) {
-        console.warn((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.message);
-    })
-    .on('error', function (err) {
-        console.error((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack);
-        process.exit(1);
-    })
+    .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .queue(function () {
         console.warn("BEFORE:");
