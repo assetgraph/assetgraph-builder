@@ -77,9 +77,14 @@ new AssetGraph({root: rootUrl})
     .assumeRequireJsConfigHasBeenFound()
     .populate({
         followRelations: query.or(
-            {to: {type: 'I18n'}},
-            {type: query.not(['JavaScriptInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']),
-                                                to: {url: query.not(/^https?:/)}})
+            {
+                to: {type: 'I18n'}
+            },
+            {
+                type: query.not(['JavaScriptCommonJsRequire', 'HtmlAnchor', 'SvgAnchor', 'JavaScriptSourceMappingUrl', 'JavaScriptSourceUrl']),
+                to: {url: query.not(/^https?:/)}
+            }
+        )
      })
     .queue(function outputWarningsAboutLanguageKeys(assetGraph) {
         var infoObject = {};
