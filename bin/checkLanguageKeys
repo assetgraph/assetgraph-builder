@@ -8,6 +8,10 @@ var optimist = require('optimist'),
             type: 'string',
             demand: true
         })
+        .options('removeunused', {
+            describe: 'Remove unused language keys from .i18n files',
+            type: 'boolean'
+        })
         .options('ignore', {
             describe: "Type(s) of messages to suppress (supported: 'missing', 'untranslated', 'defaultValueMismatch', 'whitespace', 'unused')",
             type: 'string'
@@ -90,5 +94,9 @@ new AssetGraph({root: rootUrl})
             }
         )
     })
-    .checkLanguageKeys({supportedLocaleIds: localeIds, defaultLocaleId: defaultLocaleId, ignoreMessageTypes: ignoreMessageTypes, warnMessageTypes: warnMessageTypes})
+    .checkLanguageKeys({supportedLocaleIds: localeIds, defaultLocaleId: defaultLocaleId, ignoreMessageTypes: ignoreMessageTypes, warnMessageTypes: warnMessageTypes, removeUnused: commandLineOptions.removeunused})
+    .if(commandLineOptions.removeunused)
+        .prettyPrintAssets({type: ['I18n'], isDirty: true})
+        .writeAssetsToDisc({type: ['I18n'], isDirty: true})
+    .endif()
     .run();
