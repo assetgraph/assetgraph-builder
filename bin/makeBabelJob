@@ -62,7 +62,7 @@ new AssetGraph({root: commandLineOptions.root})
     .populate({
         followRelations: {type: AssetGraph.query.not('HtmlAnchor'), to: {url: AssetGraph.query.not(/^https?:/)}}
     })
-    .checkLanguageKeys({supportedLocaleIds: localeIds, defaultLocaleId: defaultLocaleId})
+    .checkLanguageKeys({supportedLocaleIds: localeIds, defaultLocaleId: defaultLocaleId, ignore: 'missing'})
     .queue(function exportLanguageKeys(assetGraph) {
         var initialHtmlAssets = assetGraph.findAssets({type: 'Html', isInitial: true}),
             occurrencesByKey = i18nTools.findOccurrences(assetGraph, initialHtmlAssets),
