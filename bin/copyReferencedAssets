@@ -115,8 +115,4 @@ new AssetGraph({root: rootUrl})
     .endif()
     .writeAssetsToDisc({url: /^file:/, isLoaded: true}, outRoot)
     .writeStatsToStderr()
-    .run(function (err) {
-        if (err) {
-            throw err;
-        }
-    });
+    .run();

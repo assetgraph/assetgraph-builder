@@ -311,8 +311,4 @@ new AssetGraph({root: rootUrl})
         .writeAssetsToDisc({url: query.createPrefixMatcher(fullCdnRoot), isLoaded: true}, outRoot + 'static/cdn/', fullCdnRoot)
     .endif()
     .writeStatsToStderr()
-    .run(function (err) {
-        if (err) {
-            throw err;
-        }
-    });
+    .run();
