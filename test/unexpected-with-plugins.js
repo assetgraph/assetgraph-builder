@@ -1,4 +1,5 @@
 var expect = module.exports = require('unexpected').clone(),
+    URL = require('url'),
     urlTools = require('urltools');
 
 expect.addAssertion('to contain [no] (asset|assets)', function (expect, subject, queryObj, number) {
