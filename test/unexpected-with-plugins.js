@@ -73,13 +73,13 @@ expect.addType({
     },
     inspect: function (assetGraph) {
         return ['AssetGraph'].concat(assetGraph.findAssets({isInline: false}).map(function (asset) {
-            return '  ' + (asset.isLoaded ? ' ' : '!') + ' ' + urlTools.buildRelativeUrl(assetGraph.root, asset.url);
+            return '  ' + (asset.isLoaded ? ' ' : '!') + ' ' + asset.urlOrDescription;
         }, this)).join('\n  ');
     },
     toJSON: function (assetGraph) {
         return {
             $AssetGraph: {
-                assets: assetGraph.findAssets({isInline: false}),
+                assets: assetGraph.findAssets({isInline: false})
             }
         }
     }
