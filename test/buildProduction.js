@@ -945,4 +945,21 @@ describe('buildProduction', function () {
             })
             .run(done);
     });
+
+    it('should handle a test case with an I18n asset being referenced from a script with an id of "bootstrapper"', function (done) {
+        new AssetGraph({root: __dirname + '/buildProduction/bootstrapperI18n/'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets(['index.html'])
+            .populate()
+            .buildProduction({version: false, localeIds: ['da', 'en']})
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', {fileName: 'index.da.html'});
+                expect(assetGraph, 'to contain asset', {fileName: 'index.en.html'});
+
+                expect(assetGraph.findAssets({fileName: 'index.en.html'})[0].text, 'to contain', '<title>The title</title>');
+                expect(assetGraph.findAssets({fileName: 'index.da.html'})[0].text, 'to contain', '<title>Titelen</title>');
+
+            })
+            .run(done);
+    });
 });
