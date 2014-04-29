@@ -5,6 +5,8 @@ var childProcess = require('child_process'),
     temp = require('temp');
 
 describe('applyBabelJob', function () {
+    this.timeout(20000);
+
     it('should handle a complex test case', function (done) {
         var babelDir = Path.resolve(__dirname, 'applyBabelJob/translationjob'),
             tmpTestCaseCopyDir = temp.mkdirSync(),
