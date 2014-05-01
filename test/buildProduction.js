@@ -975,4 +975,17 @@ describe('buildProduction', function () {
             })
             .run(done);
     });
+
+    it('should not rename Html assets that are linked to with HtmlAnchor relations', function (done) {
+        new AssetGraph({root: __dirname + '/buildProduction/nonInitialAssetWithIncomingHtmlAnchor/'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets(['index.html'])
+            .populate()
+            .buildProduction({version: false})
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', {fileName: 'index.html'});
+                expect(assetGraph, 'to contain asset', {fileName: 'index2.html'});
+            })
+            .run(done);
+    });
 });
