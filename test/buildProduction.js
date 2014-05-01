@@ -962,4 +962,17 @@ describe('buildProduction', function () {
             })
             .run(done);
     });
+
+    it('should keep identical inline styles in svg files inlined', function (done) {
+        new AssetGraph({root: __dirname + '/buildProduction/svgsWithIdenticalInlineStyle/'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets(['*.svg'])
+            .populate()
+            .buildProduction({version: false})
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain assets', 'Svg', 2);
+                expect(assetGraph, 'to contain no assets', {type: 'Css', isInline: false});
+            })
+            .run(done);
+    });
 });
