@@ -7,103 +7,110 @@ describe('makeBabelJob and applyBabelJob', function () {
     this.timeout(20000);
     it('should extract and reimport a translation job', function (done) {
         var babelDir = temp.mkdirSync(),
-            makeBabelJobProcess = childProcess.spawn(__dirname + '/../bin/makeBabelJob', [
-                '--babeldir', babelDir,
-                '--root', __dirname + '/makeBabelJobAndApplyBabelJob/',
-                __dirname + '/makeBabelJobAndApplyBabelJob/index.html',
-                '--locales', 'en,da,de'
-            ]),
-            buffersByStreamName = {},
-            streamNames = ['stdout', 'stderr'];
+            tmpTestCaseCopyDir = temp.mkdirSync(),
+            copyCommand = "cp '" + __dirname + "'/makeBabelJobAndApplyBabelJob/* " + tmpTestCaseCopyDir;
 
-        streamNames.forEach(function (streamName) {
-            buffersByStreamName[streamName] = [];
-            makeBabelJobProcess[streamName].on('data', function (chunk) {
-                buffersByStreamName[streamName].push(chunk);
-            });
-        });
-
-        function getStreamOutputText() {
-            var outputText = '';
-            streamNames.forEach(function (streamName) {
-                if (buffersByStreamName[streamName].length > 0) {
-                    outputText += '\n' + streamName.toUpperCase() + ': ' + Buffer.concat(buffersByStreamName[streamName]).toString('utf-8') + '\n';
-                }
-            });
-            return outputText;
-        }
-
-        makeBabelJobProcess.on('exit', function (exitCode) {
-            if (exitCode) {
-                return done(new Error("The makeBabelJob process ended with a non-zero exit code: " + exitCode + getStreamOutputText()));
+        childProcess.exec(copyCommand, function (err, stdout, stderr) {
+            if (err) {
+                return done(new Error(copyCommand + " failed: STDERR:" + stderr + "\nSTDOUT:" + stdout));
             }
 
-            expect(fs.readdirSync(babelDir).sort(), 'to equal', ['da.txt', 'de.txt', 'en.txt']);
+            var makeBabelJobProcess = childProcess.spawn(__dirname + '/../bin/makeBabelJob', [
+                    '--babeldir', babelDir,
+                    '--root', tmpTestCaseCopyDir,
+                    '--locales', 'en,da,de',
+                    tmpTestCaseCopyDir + '/index.html'
+                ]),
+                buffersByStreamName = {},
+                streamNames = ['stdout', 'stderr'];
 
-            expect(fs.readFileSync(babelDir + '/en.txt', 'utf-8').split(/\n/), 'to equal', [
-                'alreadyPartiallyTranslatedKey[theNotYetTranslatedOne]=yup',
-                'arrayvalue[0]=5',
-                'arrayvalue[1]=items',
-                'arrayvalue[2]=in',
-                'arrayvalue[3]=an',
-                'arrayvalue[4]=array',
-                'keywithplaceholdersinhtml=Key with {0} placeholders in HTML, English',
-                'objectvalue[key1]=value1',
-                'objectvalue[key2]=value2',
-                'objectvaluewithsomemissingkeysinthestructure[foo][bar]=baz',
-                'objectvaluewithsomemissingkeysinthestructure[foo][quux]=blah',
-                'simplekeyinhtml=Simple key in HTML, English',
-                'simplekeyinhtmlattribute=Simple key in HTML attribute, English',
-                'simplekeyinknockoutjstemplate=Simple key in a Knockout.js template',
-                'stringvalue=value',
-                'withexistingkeys=the English value',
-                ''
-            ]);
+            streamNames.forEach(function (streamName) {
+                buffersByStreamName[streamName] = [];
+                makeBabelJobProcess[streamName].on('data', function (chunk) {
+                    buffersByStreamName[streamName].push(chunk);
+                });
+            });
 
-            expect(fs.readFileSync(babelDir + '/da.txt', 'utf-8').split(/\n/), 'to equal', [
-                'alreadyPartiallyTranslatedKey[theNotYetTranslatedOne]=',
-                'arrayvalue[0]=',
-                'arrayvalue[1]=',
-                'arrayvalue[2]=',
-                'arrayvalue[3]=',
-                'arrayvalue[4]=',
-                'keywithplaceholdersinhtml=',
-                'objectvalue[key1]=',
-                'objectvalue[key2]=',
-                'objectvaluewithsomemissingkeysinthestructure[foo][bar]=baz',
-                'objectvaluewithsomemissingkeysinthestructure[foo][quux]=',
-                'simplekeyinhtml=',
-                'simplekeyinhtmlattribute=',
-                'simplekeyinknockoutjstemplate=',
-                'stringvalue=',
-                'withexistingkeys=the Danish value',
-                ''
-            ]);
+            function getStreamOutputText() {
+                var outputText = '';
+                streamNames.forEach(function (streamName) {
+                    if (buffersByStreamName[streamName].length > 0) {
+                        outputText += '\n' + streamName.toUpperCase() + ': ' + Buffer.concat(buffersByStreamName[streamName]).toString('utf-8') + '\n';
+                    }
+                });
+                return outputText;
+            }
 
-            expect(fs.readFileSync(babelDir + '/de.txt', 'utf-8').split(/\n/), 'to equal', [
-                'alreadyPartiallyTranslatedKey[theNotYetTranslatedOne]=',
-                'arrayvalue[0]=',
-                'arrayvalue[1]=',
-                'arrayvalue[2]=',
-                'arrayvalue[3]=',
-                'arrayvalue[4]=',
-                'keywithplaceholdersinhtml=',
-                'objectvalue[key1]=',
-                'objectvalue[key2]=',
-                'objectvaluewithsomemissingkeysinthestructure[foo][bar]=',
-                'objectvaluewithsomemissingkeysinthestructure[foo][quux]=',
-                'simplekeyinhtml=',
-                'simplekeyinhtmlattribute=',
-                'simplekeyinknockoutjstemplate=',
-                'stringvalue=',
-                'withexistingkeys=',
-                ''
-            ]);
+            makeBabelJobProcess.on('exit', function (exitCode) {
+                if (exitCode) {
+                    return done(new Error("The makeBabelJob process ended with a non-zero exit code: " + exitCode + getStreamOutputText()));
+                }
 
-            // Add translations to da.txt, duplicate the test case and run applyBabelJob on it:
+                expect(fs.readdirSync(babelDir).sort(), 'to equal', ['da.txt', 'de.txt', 'en.txt']);
 
-            var tmpTestCaseCopyDir = temp.mkdirSync(),
-                daTxtLines = [
+                expect(fs.readFileSync(babelDir + '/en.txt', 'utf-8').split(/\n/), 'to equal', [
+                    'alreadyPartiallyTranslatedKey[theNotYetTranslatedOne]=yup',
+                    'arrayvalue[0]=5',
+                    'arrayvalue[1]=items',
+                    'arrayvalue[2]=in',
+                    'arrayvalue[3]=an',
+                    'arrayvalue[4]=array',
+                    'keywithplaceholdersinhtml=Key with {0} placeholders in HTML, English',
+                    'objectvalue[key1]=value1',
+                    'objectvalue[key2]=value2',
+                    'objectvaluewithsomemissingkeysinthestructure[foo][bar]=baz',
+                    'objectvaluewithsomemissingkeysinthestructure[foo][quux]=blah',
+                    'simplekeyinhtml=Simple key in HTML, English',
+                    'simplekeyinhtmlattribute=Simple key in HTML attribute, English',
+                    'simplekeyinknockoutjstemplate=Simple key in a Knockout.js template',
+                    'stringvalue=value',
+                    'withexistingkeys=the English value',
+                    ''
+                ]);
+
+                expect(fs.readFileSync(babelDir + '/da.txt', 'utf-8').split(/\n/), 'to equal', [
+                    'alreadyPartiallyTranslatedKey[theNotYetTranslatedOne]=',
+                    'arrayvalue[0]=',
+                    'arrayvalue[1]=',
+                    'arrayvalue[2]=',
+                    'arrayvalue[3]=',
+                    'arrayvalue[4]=',
+                    'keywithplaceholdersinhtml=',
+                    'objectvalue[key1]=',
+                    'objectvalue[key2]=',
+                    'objectvaluewithsomemissingkeysinthestructure[foo][bar]=baz',
+                    'objectvaluewithsomemissingkeysinthestructure[foo][quux]=',
+                    'simplekeyinhtml=',
+                    'simplekeyinhtmlattribute=',
+                    'simplekeyinknockoutjstemplate=',
+                    'stringvalue=',
+                    'withexistingkeys=the Danish value',
+                    ''
+                ]);
+
+                expect(fs.readFileSync(babelDir + '/de.txt', 'utf-8').split(/\n/), 'to equal', [
+                    'alreadyPartiallyTranslatedKey[theNotYetTranslatedOne]=',
+                    'arrayvalue[0]=',
+                    'arrayvalue[1]=',
+                    'arrayvalue[2]=',
+                    'arrayvalue[3]=',
+                    'arrayvalue[4]=',
+                    'keywithplaceholdersinhtml=',
+                    'objectvalue[key1]=',
+                    'objectvalue[key2]=',
+                    'objectvaluewithsomemissingkeysinthestructure[foo][bar]=',
+                    'objectvaluewithsomemissingkeysinthestructure[foo][quux]=',
+                    'simplekeyinhtml=',
+                    'simplekeyinhtmlattribute=',
+                    'simplekeyinknockoutjstemplate=',
+                    'stringvalue=',
+                    'withexistingkeys=',
+                    ''
+                ]);
+
+                // Add translations to da.txt, duplicate the test case and run applyBabelJob on it:
+
+                fs.writeFileSync(babelDir + '/da.txt', [
                     'alreadyPartiallyTranslatedKey[theNotYetTranslatedOne]=nowItIsTranslated',
                     'simplekeyinknockoutjstemplate=Simpel nøgle i en Knockout.js-skabelon',
                     'stringvalue=the Danish stringvalue',
@@ -120,13 +127,8 @@ describe('makeBabelJob and applyBabelJob', function () {
                     'simplekeyinhtml=Simpel nøgle på dansk',
                     'simplekeyinhtmlattribute=Simpel nøgle i HTML-attribut på dansk',
                     'keywithplaceholdersinhtml=Nøgle med pladsholdere på dansk'
-                ],
-                copyCommand = "cp '" + __dirname + "/makeBabelJobAndApplyBabelJob'/* " + tmpTestCaseCopyDir;
-            fs.writeFileSync(babelDir + '/da.txt', daTxtLines.join("\n"), 'utf-8');
-            childProcess.exec(copyCommand, function (err, stdout, stderr) {
-                if (err) {
-                    return cb(new Error(copyCommand + " failed: STDERR:" + stderr + "\nSTDOUT:" + stdout));
-                }
+                ].join("\n"), 'utf-8');
+
                 var applyBabelJobProcess = childProcess.spawn(__dirname + '/../bin/applyBabelJob', [
                     '--babeldir', babelDir,
                     '--root', tmpTestCaseCopyDir,
@@ -138,7 +140,7 @@ describe('makeBabelJob and applyBabelJob', function () {
                         return done(new Error("The applyBabelJob process ended with a non-zero exit code: " + exitCode));
                     }
 
-                    expect(JSON.parse(fs.readFileSync(tmpTestCaseCopyDir + '/thething.i18n')), 'to equal', {
+                    expect(JSON.parse(fs.readFileSync(tmpTestCaseCopyDir + '/thething.i18n', 'utf-8')), 'to equal', {
                         stringvalue: {
                             en: 'value',
                             da: 'the Danish stringvalue',

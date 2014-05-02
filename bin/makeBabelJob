@@ -169,16 +169,17 @@ new AssetGraph({root: commandLineOptions.root})
                     babelSrc += flattenedKey + "=" + (omitExistingValues ? '' : String(value || '').replace(/\\/g, "\\\\").replace(/\n/g, "\\n")) + "\n";
                 });
 
-                if (i18nAsset) {
-                    i18nAsset.parseTree[key] = i18nAsset.parseTree[key] || {};
-                    if (!(localeId in i18nAsset.parseTree[key])) {
+                var i18nAssetForKey = assetGraph.findAssets({type: 'I18n', isLoaded: true, parseTree: function (parseTree) {return key in parseTree;}})[0] || i18nAsset;
+                if (i18nAssetForKey) {
+                    i18nAssetForKey.parseTree[key] = i18nAssetForKey.parseTree[key] || {};
+                    if (!(localeId in i18nAssetForKey.parseTree[key])) {
                         if (localeId.indexOf(defaultLocaleId) === 0) {
-                            i18nAsset.parseTree[key][localeId] = defaultValue;
+                            i18nAssetForKey.parseTree[key][localeId] = defaultValue;
                         } else {
-                            i18nAsset.parseTree[key][localeId] = null;
+                            i18nAssetForKey.parseTree[key][localeId] = null;
                         }
                     }
-                    i18nAsset.markDirty();
+                    i18nAssetForKey.markDirty();
                 }
             });
             var targetBabelFileName = path.resolve(commandLineOptions.babeldir, localeId + '.txt');
