@@ -1,6 +1,7 @@
 var expect = require('./unexpected-with-plugins'),
     childProcess = require('child_process'),
     fs = require('fs'),
+    Path = require('path'),
     temp = require('temp');
 
 describe('makeBabelJob and applyBabelJob', function () {
@@ -15,11 +16,11 @@ describe('makeBabelJob and applyBabelJob', function () {
                 return done(new Error(copyCommand + " failed: STDERR:" + stderr + "\nSTDOUT:" + stdout));
             }
 
-            var makeBabelJobProcess = childProcess.spawn(__dirname + '/../bin/makeBabelJob', [
+            var makeBabelJobProcess = childProcess.spawn(Path.resolve(__dirname, '..', 'bin', 'makeBabelJob'), [
                     '--babeldir', babelDir,
                     '--root', tmpTestCaseCopyDir,
                     '--locales', 'en,da,de',
-                    tmpTestCaseCopyDir + '/index.html'
+                    Path.resolve(tmpTestCaseCopyDir, 'index.html')
                 ]),
                 buffersByStreamName = {},
                 streamNames = ['stdout', 'stderr'];
@@ -48,7 +49,7 @@ describe('makeBabelJob and applyBabelJob', function () {
 
                 expect(fs.readdirSync(babelDir).sort(), 'to equal', ['da.txt', 'de.txt', 'en.txt']);
 
-                expect(fs.readFileSync(babelDir + '/en.txt', 'utf-8').split(/\n/), 'to equal', [
+                expect(fs.readFileSync(Path.resolve(babelDir, 'en.txt'), 'utf-8').split(/\n/), 'to equal', [
                     'alreadyPartiallyTranslatedKey[theNotYetTranslatedOne]=yup',
                     'arrayvalue[0]=5',
                     'arrayvalue[1]=items',
@@ -68,7 +69,7 @@ describe('makeBabelJob and applyBabelJob', function () {
                     ''
                 ]);
 
-                expect(fs.readFileSync(babelDir + '/da.txt', 'utf-8').split(/\n/), 'to equal', [
+                expect(fs.readFileSync(Path.resolve(babelDir, 'da.txt'), 'utf-8').split(/\n/), 'to equal', [
                     'alreadyPartiallyTranslatedKey[theNotYetTranslatedOne]=',
                     'arrayvalue[0]=',
                     'arrayvalue[1]=',
@@ -88,7 +89,7 @@ describe('makeBabelJob and applyBabelJob', function () {
                     ''
                 ]);
 
-                expect(fs.readFileSync(babelDir + '/de.txt', 'utf-8').split(/\n/), 'to equal', [
+                expect(fs.readFileSync(Path.resolve(babelDir, 'de.txt'), 'utf-8').split(/\n/), 'to equal', [
                     'alreadyPartiallyTranslatedKey[theNotYetTranslatedOne]=',
                     'arrayvalue[0]=',
                     'arrayvalue[1]=',
@@ -110,7 +111,7 @@ describe('makeBabelJob and applyBabelJob', function () {
 
                 // Add translations to da.txt, duplicate the test case and run applyBabelJob on it:
 
-                fs.writeFileSync(babelDir + '/da.txt', [
+                fs.writeFileSync(Path.resolve(babelDir, 'da.txt'), [
                     'alreadyPartiallyTranslatedKey[theNotYetTranslatedOne]=nowItIsTranslated',
                     'simplekeyinknockoutjstemplate=Simpel nøgle i en Knockout.js-skabelon',
                     'stringvalue=the Danish stringvalue',
@@ -129,18 +130,18 @@ describe('makeBabelJob and applyBabelJob', function () {
                     'keywithplaceholdersinhtml=Nøgle med pladsholdere på dansk'
                 ].join("\n"), 'utf-8');
 
-                var applyBabelJobProcess = childProcess.spawn(__dirname + '/../bin/applyBabelJob', [
+                var applyBabelJobProcess = childProcess.spawn(Path.resolve(__dirname, '..', 'bin', 'applyBabelJob'), [
                     '--babeldir', babelDir,
                     '--root', tmpTestCaseCopyDir,
                     '--locales', 'en,da,de',
-                    tmpTestCaseCopyDir + '/index.html'
+                    Path.resolve(tmpTestCaseCopyDir, 'index.html')
                 ]);
                 applyBabelJobProcess.on('exit', function (exitCode) {
                     if (exitCode) {
                         return done(new Error("The applyBabelJob process ended with a non-zero exit code: " + exitCode));
                     }
 
-                    expect(JSON.parse(fs.readFileSync(tmpTestCaseCopyDir + '/thething.i18n', 'utf-8')), 'to equal', {
+                    expect(JSON.parse(fs.readFileSync(Path.resolve(tmpTestCaseCopyDir, 'thething.i18n'), 'utf-8')), 'to equal', {
                         stringvalue: {
                             en: 'value',
                             da: 'the Danish stringvalue',

@@ -1,6 +1,7 @@
 var expect = require('./unexpected-with-plugins'),
     childProcess = require('child_process'),
     fs = require('fs'),
+    Path = require('path'),
     temp = require('temp');
 
 describe('makeBabelJob', function () {
@@ -18,8 +19,8 @@ describe('makeBabelJob', function () {
             var makeBabelJobProcess = childProcess.spawn(__dirname + '/../bin/makeBabelJob', [
                     '--babeldir', babelDir,
                     '--root', tmpTestCaseCopyDir,
-                    '--i18n', tmpTestCaseCopyDir + '/index.i18n',
-                    tmpTestCaseCopyDir + '/index.html',
+                    '--i18n', Path.resolve(tmpTestCaseCopyDir, 'index.i18n'),
+                    Path.resolve(tmpTestCaseCopyDir, 'index.html'),
                     '--defaultlocale', 'en',
                     '--locales', 'en,da,de'
                 ]),
@@ -50,28 +51,28 @@ describe('makeBabelJob', function () {
 
                 expect(fs.readdirSync(babelDir).sort(), 'to equal', ['da.txt', 'de.txt', 'en.txt']);
 
-                expect(fs.readFileSync(babelDir + '/en.txt', 'utf-8').split(/\n/), 'to equal', [
+                expect(fs.readFileSync(Path.resolve(babelDir, 'en.txt'), 'utf-8').split(/\n/), 'to equal', [
                     'KeyAlreadyPartiallyTranslatedInIndexI18n=Key already partially translated in index.i18n',
                     'KeyAlreadyPartiallyTranslatedInOtherI18n=Key already partially translated in other.i18n',
                     'KeyDestinedForIndexI18n=Key destined for index.i18n',
                     ''
                 ]);
 
-                expect(fs.readFileSync(babelDir + '/da.txt', 'utf-8').split(/\n/), 'to equal', [
+                expect(fs.readFileSync(Path.resolve(babelDir, 'da.txt'), 'utf-8').split(/\n/), 'to equal', [
                     'KeyAlreadyPartiallyTranslatedInIndexI18n=',
                     'KeyAlreadyPartiallyTranslatedInOtherI18n=',
                     'KeyDestinedForIndexI18n=',
                     ''
                 ]);
 
-                expect(fs.readFileSync(babelDir + '/de.txt', 'utf-8').split(/\n/), 'to equal', [
+                expect(fs.readFileSync(Path.resolve(babelDir, 'de.txt'), 'utf-8').split(/\n/), 'to equal', [
                     'KeyAlreadyPartiallyTranslatedInIndexI18n=Existing translation to German',
                     'KeyAlreadyPartiallyTranslatedInOtherI18n=Existing translation to German',
                     'KeyDestinedForIndexI18n=',
                     ''
                 ]);
 
-                expect(JSON.parse(fs.readFileSync(tmpTestCaseCopyDir + '/index.i18n', 'utf-8')), 'to equal', {
+                expect(JSON.parse(fs.readFileSync(Path.resolve(tmpTestCaseCopyDir, 'index.i18n'), 'utf-8')), 'to equal', {
                     KeyDestinedForIndexI18n: {
                         en: 'Key destined for index.i18n',
                         de: null,
@@ -84,7 +85,7 @@ describe('makeBabelJob', function () {
                     }
                 });
 
-                expect(JSON.parse(fs.readFileSync(tmpTestCaseCopyDir + '/other.i18n', 'utf-8')), 'to equal', {
+                expect(JSON.parse(fs.readFileSync(Path.resolve(tmpTestCaseCopyDir, 'other.i18n'), 'utf-8')), 'to equal', {
                     KeyAlreadyPartiallyTranslatedInOtherI18n: {
                         en: 'Key already partially translated in other.i18n',
                         de: 'Existing translation to German',
