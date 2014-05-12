@@ -98,7 +98,7 @@ new AssetGraph({root: commandLineOptions.root})
                             var matchKeyValue = line.match(/^([^=]+)=(.*)$/);
                             if (matchKeyValue) {
                                 var key = matchKeyValue[1].trim(),
-                                    value = matchKeyValue[2].trim().replace(/\\([n\\])/, function ($0, ch) {
+                                    value = matchKeyValue[2].trim().replace(/\\([n\\])/g, function ($0, ch) {
                                         return ch === "n" ? "\n" : ch;
                                     }),
                                     path = [];
