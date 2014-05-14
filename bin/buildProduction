@@ -234,10 +234,6 @@ if (commandLineOptions.inlinesize) {
     inlineByRelationType.CssImage = 8192;
 }
 
-if (commandLineOptions.autoprefix && typeof commandLineOptions === 'string') {
-    commandLineOptions.autoprefix = [commandLineOptions.autoprefix];
-}
-
 (commandLineOptions.define ? _.flatten(_.flatten([commandLineOptions.define])) : []).forEach(function (define) {
     var matchDefine = define.match(/^(\w+)(?:=(.*))?$/);
     if (matchDefine) {
