@@ -18,6 +18,26 @@ describe('transforms.autoprefixer', function () {
             .run(done);
     });
 
+    it('should handle a simple option case', function (done) {
+        expect(function () {
+            new AssetGraph({root: __dirname + '/autoprefixer/'})
+                .loadAssets('index.html')
+                .populate()
+                .autoprefixer('last 2 versions')
+                .run(done);
+        }, 'not to throw');
+    });
+
+    it('should handle a complex option case', function (done) {
+        expect(function () {
+            new AssetGraph({root: __dirname + '/autoprefixer/'})
+                .loadAssets('index.html')
+                .populate()
+                .autoprefixer('last 2 versions, ie > 8,ff > 28')
+                .run(done);
+        }, 'not to throw');
+    });
+
     it('should remove prefixfree.js and prefixfree.min.js', function (done) {
         new AssetGraph({root: __dirname + '/autoprefixer/'})
             .loadAssets('prefixfree.html')
