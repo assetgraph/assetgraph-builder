@@ -37,7 +37,7 @@
   "dependencies": {
     "assetgraph": "=1.6.28",
     "async": "=0.2.9",
-    "autoprefixer": "~1.0.20140117",
+    "autoprefixer": "~1.1.20140512",
     "chalk": "=0.4.0",
     "express-processimage": "=0.1.18",
     "extend": "=1.2.1",
