@@ -90,6 +90,11 @@ var optimist = require('optimist'),
             describe: 'Set size threshold for inlining. Supported values: false (never inline), true (always inline), number (inline if target is smaller than this number of bytes). Also supported: --inlinehtmlscript true, --inlinecssimage 8192 etc.',
             default: false
         })
+        options('noinlinecssimageswithlegacyfallback', {
+            describe: 'Do not run the transform that inlines CSS images and creates an alternative stylesheet for IE8',
+            type: 'boolean',
+            default: false
+        })
         .options('cdnhtml', {
             describe: 'Put non-initial HTML files on the cdnroot as well. Some CDN packages (such as Akamai\'s cheapest one) don\'t allow this',
             type: 'boolean',
@@ -192,6 +197,7 @@ var _ = require('underscore'),
     defaultLocaleId = commandLineOptions.defaultlocale && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale),
     defines = {},
     inputUrls,
+    noInlineCssImagesWithLegacyFallback = commandLineOptions.noinlinecssimageswithlegacyfallback,
     inlineByRelationType = {};
 
 if (commandLineOptions.inline) {
@@ -230,7 +236,7 @@ if (typeof inlineByRelationType['*'] === 'undefined') {
 if (commandLineOptions.inlinesize) {
     console.warn(chalk.yellow('INFO: the --inlinesize switch is deprecated. Please use --inlinecssimage <number> instead'));
     inlineByRelationType.CssImage = commandLineOptions.inlinesize;
-} else if (!('CssImage' in inlineByRelationType)) {
+} else if (!('CssImage' in inlineByRelationType) && !noInlineCssImagesWithLegacyFallback) {
     inlineByRelationType.CssImage = 8192;
 }
 
@@ -283,6 +289,7 @@ new AssetGraph({root: rootUrl})
         less: !commandLineOptions.noless,
         optimizeImages: commandLineOptions.optimizeimages,
         inlineByRelationType: inlineByRelationType,
+        noInlineCssImagesWithLegacyFallback: noInlineCssImagesWithLegacyFallback,
         autoprefix: commandLineOptions.autoprefix,
         gzip: commandLineOptions.gzip,
         defines: defines,
