@@ -435,7 +435,7 @@ describe('buildProduction', function () {
             .on('error', done)
             .registerRequireJsConfig()
             .loadAssets('index.html')
-            .buildProduction({version: false})
+            .buildProduction({version: false, localeIds: ['da', 'en_US']})
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain no assets', {type: 'JavaScript', text: /INCLUDE/});
             })
