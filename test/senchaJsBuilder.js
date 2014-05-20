@@ -5,9 +5,9 @@ var expect = require('./unexpected-with-plugins'),
 
 describe('resolvers.senchaJsBuilder', function () {
     it('should handle a test case with 3 assets', function (done) {
-        new AssetGraph({root: __dirname + '/senchaJsBuilder/rewriteBackgroundImageUrls/'})
+        new AssetGraph({root: __dirname + '/../testdata/senchaJsBuilder/rewriteBackgroundImageUrls/'})
             .registerLabelsAsCustomProtocols([
-                {name: 'mylabel', url: __dirname + '/senchaJsBuilder/rewriteBackgroundImageUrls/foo.jsb2'}
+                {name: 'mylabel', url: __dirname + '/../testdata/senchaJsBuilder/rewriteBackgroundImageUrls/foo.jsb2'}
             ])
             .loadAssets('index.html')
             .populate()
@@ -39,9 +39,9 @@ describe('resolvers.senchaJsBuilder', function () {
     });
 
     it('should handle an Html asset and a jsb2 describing packages that depend on each other', function (done) {
-        new AssetGraph({root: __dirname + '/senchaJsBuilder/dependentPackages/'})
+        new AssetGraph({root: __dirname + '/../testdata/senchaJsBuilder/dependentPackages/'})
             .registerLabelsAsCustomProtocols([
-                {name: 'mylabel', url: __dirname + '/senchaJsBuilder/dependentPackages/foo.jsb2'}
+                {name: 'mylabel', url: __dirname + '/../testdata/senchaJsBuilder/dependentPackages/foo.jsb2'}
             ])
             .loadAssets('index.html')
             .populate()
@@ -66,9 +66,9 @@ describe('resolvers.senchaJsBuilder', function () {
     });
 
     it('should handle overlapping jsb2 packages', function (done) {
-        new AssetGraph({root: __dirname + '/senchaJsBuilder/dependentPackages/'})
+        new AssetGraph({root: __dirname + '/../testdata/senchaJsBuilder/dependentPackages/'})
             .registerLabelsAsCustomProtocols([
-                {name: 'mylabel', url: __dirname + '/senchaJsBuilder/dependentPackages/foo.jsb2'}
+                {name: 'mylabel', url: __dirname + '/../testdata/senchaJsBuilder/dependentPackages/foo.jsb2'}
             ])
             .loadAssets('overlappingIncludes.html')
             .populate()

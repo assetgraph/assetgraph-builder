@@ -10,7 +10,7 @@ describe('makeBabelJob and applyBabelJob', function () {
     it('should extract and reimport a translation job', function (done) {
         var babelDir = temp.mkdirSync(),
             tmpTestCaseCopyDir = temp.mkdirSync(),
-            copyCommand = 'cp \'' + __dirname + '\'/makeBabelJobAndApplyBabelJob/* ' + tmpTestCaseCopyDir;
+            copyCommand = 'cp \'' + __dirname + '/../testdata\'/makeBabelJobAndApplyBabelJob/* ' + tmpTestCaseCopyDir;
 
         childProcess.exec(copyCommand, function (err, stdout, stderr) {
             if (err) {

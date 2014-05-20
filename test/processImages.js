@@ -1,13 +1,14 @@
 /*global describe, it*/
 var expect = require('./unexpected-with-plugins'),
     _ = require('underscore'),
-    AssetGraph = require('../lib/AssetGraph');
+    AssetGraph = require('../lib/AssetGraph'),
+    urlTools = require('urltools');
 
 describe('processImages', function () {
     this.timeout(20000);
 
     it('should handle a Css test case', function (done) {
-        new AssetGraph({root: __dirname + '/processImages/css/'})
+        new AssetGraph({root: __dirname + '/../testdata/processImages/css/'})
             .loadAssets('style.css')
             .populate()
             .queue(function (assetGraph) {
@@ -20,9 +21,9 @@ describe('processImages', function () {
                 expect(assetGraph, 'to contain assets', 'Png', 3);
 
                 expect(_.pluck(assetGraph.findAssets({isImage: true}), 'url').sort(), 'to equal', [
-                    assetGraph.root + 'purplealpha24bit.pngquant=256.png',
-                    assetGraph.root + 'redalpha24bit.png?irrelevant',
-                    assetGraph.root + 'redalpha24bit.pngquant=128.png'
+                    urlTools.resolveUrl(assetGraph.root, 'purplealpha24bit.pngquant=256.png'),
+                    urlTools.resolveUrl(assetGraph.root, 'redalpha24bit.png?irrelevant'),
+                    urlTools.resolveUrl(assetGraph.root, 'redalpha24bit.pngquant=128.png')
                 ]);
                 // The first two CssImage relations should be in the same cssRule
                 var cssBackgroundImages = assetGraph.findRelations({type: 'CssImage'});
@@ -44,16 +45,16 @@ describe('processImages', function () {
     });
 
     it('should handle an Html test case', function (done) {
-        new AssetGraph({root: __dirname + '/processImages/html/'})
+        new AssetGraph({root: __dirname + '/../testdata/processImages/html/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain assets', 'Png', 3);
 
                 expect(_.pluck(assetGraph.findAssets({isImage: true}), 'url').sort(), 'to equal', [
-                    assetGraph.root + 'myImage.png',
-                    assetGraph.root + 'myImage.png?resize=200+200',
-                    assetGraph.root + 'myImage.png?resize=400+400#foo'
+                    urlTools.resolveUrl(assetGraph.root, 'myImage.png'),
+                    urlTools.resolveUrl(assetGraph.root, 'myImage.png?resize=200+200'),
+                    urlTools.resolveUrl(assetGraph.root, 'myImage.png?resize=400+400#foo')
                 ]);
                 assetGraph.findAssets({type: 'Png'}).forEach(function (pngAsset) {
                     expect(pngAsset.rawSrc, 'to have length', 8285);
@@ -64,16 +65,16 @@ describe('processImages', function () {
             .queue(function (assetGraph) {
                 // The urls of the image assets should have the processing instructions removed from the query string, but added before the extension:
                 expect(_.pluck(assetGraph.findAssets({isImage: true}), 'url').sort(), 'to equal', [
-                    assetGraph.root + 'myImage.resize=200-200.png',
-                    assetGraph.root + 'myImage.resize=400-400.png#foo',
-                    assetGraph.root + 'myImage.png'
+                    urlTools.resolveUrl(assetGraph.root, 'myImage.resize=200-200.png'),
+                    urlTools.resolveUrl(assetGraph.root, 'myImage.resize=400-400.png#foo'),
+                    urlTools.resolveUrl(assetGraph.root, 'myImage.png')
                 ].sort());
             })
             .run(done);
     });
 
     it('should handlea Css test case with a setFormat instruction in the query string of a background-image url', function (done) {
-        new AssetGraph({root: __dirname + '/processImages/setFormat/'})
+        new AssetGraph({root: __dirname + '/../testdata/processImages/setFormat/'})
             .loadAssets('index.css')
             .populate()
             .queue(function (assetGraph) {
@@ -86,14 +87,14 @@ describe('processImages', function () {
                 expect(assetGraph, 'to contain no assets', 'Png');
                 expect(assetGraph, 'to contain asset', 'Gif');
                 expect(_.pluck(assetGraph.findAssets({isImage: true}), 'url').sort(), 'to equal', [
-                    assetGraph.root + 'foo.setFormat=gif.gif'
+                    urlTools.resolveUrl(assetGraph.root, 'foo.setFormat=gif.gif')
                 ]);
             })
             .run(done);
     });
 
     it('should handle a test case with a Jpeg', function (done) {
-        new AssetGraph({root: __dirname + '/processImages/jpeg/'})
+        new AssetGraph({root: __dirname + '/../testdata/processImages/jpeg/'})
             .loadAssets('style.css')
             .populate()
             .queue(function (assetGraph) {
@@ -110,7 +111,7 @@ describe('processImages', function () {
     });
 
     it('should handle a test case with a couple of pngs', function (done) {
-        new AssetGraph({root: __dirname + '/processImages/pngs/'})
+        new AssetGraph({root: __dirname + '/../testdata/processImages/pngs/'})
             .loadAssets('style.css')
             .populate()
             .queue(function (assetGraph) {
@@ -133,7 +134,7 @@ describe('processImages', function () {
     });
 
     it('should handle a test case with a Svg', function (done) {
-        new AssetGraph({root: __dirname + '/processImages/svg/'})
+        new AssetGraph({root: __dirname + '/../testdata/processImages/svg/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -148,7 +149,7 @@ describe('processImages', function () {
     });
 
     it('should handle dots in urls (regression test for a regexp issue)', function (done) {
-        new AssetGraph({root: __dirname + '/processImages/dot.in.path/'})
+        new AssetGraph({root: __dirname + '/../testdata/processImages/dot.in.path/'})
             .loadAssets('style.css')
             .populate()
             .queue(function (assetGraph) {
@@ -157,7 +158,7 @@ describe('processImages', function () {
             })
             .processImages()
             .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({type: 'Png'})[0].url, 'to equal', assetGraph.root + 'redalpha24bit.optipng.png');
+                expect(assetGraph.findAssets({type: 'Png'})[0].url, 'to equal', urlTools.resolveUrl(assetGraph.root, 'redalpha24bit.optipng.png'));
                 expect(assetGraph.findAssets({type: 'Css'})[0].text, 'to match', /url\(redalpha24bit\.optipng\.png\)/);
             })
             .run(done);

@@ -4,7 +4,7 @@ var expect = require('./unexpected-with-plugins'),
 
 describe('runJavaScriptConditionalBlocks', function () {
     it('shold handle a simple test case with some code that alters the DOM', function (done) {
-        new AssetGraph({root: __dirname + '/runJavaScriptConditionalBlocks'})
+        new AssetGraph({root: __dirname + '/../testdata/runJavaScriptConditionalBlocks'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {

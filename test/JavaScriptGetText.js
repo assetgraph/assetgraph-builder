@@ -4,7 +4,7 @@ var expect = require('./unexpected-with-plugins'),
 
 describe('GETTEXT', function () {
     it('should handle a simple test case', function (done) {
-        new AssetGraph({root: __dirname + '/JavaScriptGetText/'})
+        new AssetGraph({root: __dirname + '/../testdata/JavaScriptGetText/'})
             .loadAssets('index.html.template')
             .populate()
             .injectBootstrapper({isInitial: true})

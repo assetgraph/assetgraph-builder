@@ -1,11 +1,12 @@
 /*global describe, it*/
 var expect = require('./unexpected-with-plugins'),
     passError = require('passerror'),
-    AssetGraph = require('../lib/AssetGraph');
+    AssetGraph = require('../lib/AssetGraph'),
+    urlTools = require('urltools');
 
 describe('transforms.duplicateFavicon', function () {
     it('should handle a referenced favicon.ico', function (done) {
-        new AssetGraph({root: __dirname + '/duplicateFavicon/referencedFavicon'})
+        new AssetGraph({root: __dirname + '/../testdata/duplicateFavicon/referencedFavicon'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -16,8 +17,8 @@ describe('transforms.duplicateFavicon', function () {
                 expect(assetGraph, 'to contain relation', 'HtmlShortcutIcon');
                 expect(assetGraph, 'to contain relation', {type: 'HtmlShortcutIcon', href: 'favicon.copy.ico'});
                 expect(assetGraph, 'to contain assets', 'Ico', 2);
-                expect(assetGraph, 'to contain asset', {url: assetGraph.root + 'favicon.ico'});
-                expect(assetGraph, 'to contain asset', {url: assetGraph.root + 'favicon.copy.ico'});
+                expect(assetGraph, 'to contain asset', {url: urlTools.resolveUrl(assetGraph.root, 'favicon.ico')});
+                expect(assetGraph, 'to contain asset', {url: urlTools.resolveUrl(assetGraph.root, 'favicon.copy.ico')});
                 expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to equal',
                     '<!DOCTYPE html>\n' +
                     '<html>\n' +
@@ -32,7 +33,7 @@ describe('transforms.duplicateFavicon', function () {
     });
 
     it('should handle an unreferenced favicon.ico', function (done) {
-        new AssetGraph({root: __dirname + '/duplicateFavicon/unreferencedFavicon'})
+        new AssetGraph({root: __dirname + '/../testdata/duplicateFavicon/unreferencedFavicon'})
             .loadAssets('index.html', 'noHead.html', 'favicon.ico')
             .populate()
             .queue(function (assetGraph) {
@@ -42,8 +43,8 @@ describe('transforms.duplicateFavicon', function () {
             .run(passError(done, function (assetGraph) {
                 expect(assetGraph, 'to contain relation', 'HtmlShortcutIcon', 2);
                 expect(assetGraph, 'to contain assets', 'Ico', 2);
-                expect(assetGraph, 'to contain asset', {url: assetGraph.root + 'favicon.ico', isInitial: true});
-                expect(assetGraph, 'to contain asset', {url: assetGraph.root + 'favicon.copy.ico', isInitial: function (isInitial) {return !isInitial; }});
+                expect(assetGraph, 'to contain asset', {url: urlTools.resolveUrl(assetGraph.root, 'favicon.ico'), isInitial: true});
+                expect(assetGraph, 'to contain asset', {url: urlTools.resolveUrl(assetGraph.root, 'favicon.copy.ico'), isInitial: function (isInitial) {return !isInitial; }});
                 expect(assetGraph.findAssets({type: 'Html', fileName: 'index.html'})[0].text, 'to equal',
                     '<!DOCTYPE html>\n' +
                     '<html>\n' +

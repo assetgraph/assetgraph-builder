@@ -29,7 +29,7 @@ function evaluateInContext(src, context) {
 
 describe('cloneForEachLocale', function () {
     it('should make a clone of each Html file for each language', function (done) {
-        new AssetGraph({root: __dirname + '/cloneForEachLocale/simple/'})
+        new AssetGraph({root: __dirname + '/../testdata/cloneForEachLocale/simple/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -57,7 +57,7 @@ describe('cloneForEachLocale', function () {
     });
 
     it('should handle multiple locales', function (done) {
-        new AssetGraph({root: __dirname + '/cloneForEachLocale/multipleLocales/'})
+        new AssetGraph({root: __dirname + '/../testdata/cloneForEachLocale/multipleLocales/'})
             .loadAssets('index.html')
             .populate()
             .injectBootstrapper({type: 'Html', isInitial: true})
@@ -110,7 +110,7 @@ describe('cloneForEachLocale', function () {
     });
 
     it('should handle a test case with an externalized inline HtmlStyle and inlineCssImagesWithLegacyFallback', function (done) {
-        new AssetGraph({root: __dirname + '/cloneForEachLocale/inlineCssCombo/'})
+        new AssetGraph({root: __dirname + '/../testdata/cloneForEachLocale/inlineCssCombo/'})
             .loadAssets('index.html')
             .populate()
             .externalizeRelations({type: 'HtmlStyle'})
@@ -125,7 +125,7 @@ describe('cloneForEachLocale', function () {
     });
 
     it('should handle Knockout.js templates', function (done) {
-        new AssetGraph({root: __dirname + '/cloneForEachLocale/knockoutTemplate/'})
+        new AssetGraph({root: __dirname + '/../testdata/cloneForEachLocale/knockoutTemplate/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -178,7 +178,7 @@ describe('cloneForEachLocale', function () {
     });
 
     it('should handle a TR in a data-bind attribute', function (done) {
-        new AssetGraph({root: __dirname + '/cloneForEachLocale/trInHtmlDataBindAttribute/'})
+        new AssetGraph({root: __dirname + '/../testdata/cloneForEachLocale/trInHtmlDataBindAttribute/'})
             .loadAssets('index.html')
             .populate()
             .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da']})
@@ -189,7 +189,7 @@ describe('cloneForEachLocale', function () {
     });
 
     it('should handle a TR in a data-bind attribute in a .ko template', function (done) {
-        new AssetGraph({root: __dirname + '/cloneForEachLocale/trInHtmlDataBindAttributeInKoTemplate/'})
+        new AssetGraph({root: __dirname + '/../testdata/cloneForEachLocale/trInHtmlDataBindAttributeInKoTemplate/'})
             .registerRequireJsConfig()
             .loadAssets('index.html')
             .populate()
@@ -209,7 +209,7 @@ describe('cloneForEachLocale', function () {
     });
 
     it('should handle a JavaScript asset that uses LOCALEID, DEFAULTLOCALE, LOCALECOOKIENAME, and SUPPORTEDLOCALEIDS', function (done) {
-        new AssetGraph({root: __dirname + '/cloneForEachLocale/globalVarUsageInJavaScript/'})
+        new AssetGraph({root: __dirname + '/../testdata/cloneForEachLocale/globalVarUsageInJavaScript/'})
             .loadAssets('index.html')
             .populate()
             .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da'], defaultLocaleId: 'en_US', localeCookieName: 'myCookie'})
@@ -223,7 +223,7 @@ describe('cloneForEachLocale', function () {
     });
 
     it('should handle a template in an inline script', function (done) {
-        new AssetGraph({root: __dirname + '/cloneForEachLocale/inlineScriptTemplate/'})
+        new AssetGraph({root: __dirname + '/../testdata/cloneForEachLocale/inlineScriptTemplate/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -244,7 +244,7 @@ describe('cloneForEachLocale', function () {
     });
 
     it('should handle a template in an inline script in a Knockout.js template', function (done) {
-        new AssetGraph({root: __dirname + '/cloneForEachLocale/inlineScriptTemplateInKnockoutJsTemplate/'})
+        new AssetGraph({root: __dirname + '/../testdata/cloneForEachLocale/inlineScriptTemplateInKnockoutJsTemplate/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -271,7 +271,7 @@ describe('cloneForEachLocale', function () {
     });
 
     it('should handle a TRHTML expression', function (done) {
-        new AssetGraph({root: __dirname + '/cloneForEachLocale/JavaScriptTrHtml/'})
+        new AssetGraph({root: __dirname + '/../testdata/cloneForEachLocale/JavaScriptTrHtml/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -297,7 +297,7 @@ describe('cloneForEachLocale', function () {
     });
 
     it('should handle a TRHTML(GETTEXT(...)) expression', function (done) {
-        new AssetGraph({root: __dirname + '/cloneForEachLocale/JavaScriptTrHtmlAndJavaScriptGetText/'})
+        new AssetGraph({root: __dirname + '/../testdata/cloneForEachLocale/JavaScriptTrHtmlAndJavaScriptGetText/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -333,7 +333,7 @@ describe('cloneForEachLocale', function () {
     });
 
     it('should handle Css asset that needs localization', function (done) {
-        new AssetGraph({root: __dirname + '/cloneForEachLocale/css/'})
+        new AssetGraph({root: __dirname + '/../testdata/cloneForEachLocale/css/'})
             .loadAssets('index.html')
             .populate()
             .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da', 'de']})
@@ -375,7 +375,7 @@ describe('cloneForEachLocale', function () {
     });
 
     it('should handle two Html assets that include references to the same JavaScripts', function (done) {
-        new AssetGraph({root: __dirname + '/cloneForEachLocale/multipleHtmls/'})
+        new AssetGraph({root: __dirname + '/../testdata/cloneForEachLocale/multipleHtmls/'})
             .loadAssets('1.html', '2.html')
             .populate()
             .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da']})
@@ -398,7 +398,7 @@ describe('cloneForEachLocale', function () {
     });
 
     it('should handle a language key that uses the same placeholder twice in the Danish translation', function (done) {
-        new AssetGraph({root: __dirname + '/cloneForEachLocale/reusePlaceHolder/'})
+        new AssetGraph({root: __dirname + '/../testdata/cloneForEachLocale/reusePlaceHolder/'})
             .loadAssets('index.html')
             .populate()
             .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da']})
@@ -409,7 +409,7 @@ describe('cloneForEachLocale', function () {
     });
 
     it('should handle a language key that uses the same placeholder twice in the Danish translation when the placeholder in the Html has a relation in it', function (done) {
-        new AssetGraph({root: __dirname + '/cloneForEachLocale/relationInPlaceHolder/'})
+        new AssetGraph({root: __dirname + '/../testdata/cloneForEachLocale/relationInPlaceHolder/'})
             .loadAssets('index.html')
             .populate()
             .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da']})
@@ -422,7 +422,7 @@ describe('cloneForEachLocale', function () {
 
 
     it('should localize Svg assets', function (done) {
-        new AssetGraph({root: __dirname + '/cloneForEachLocale/svg/'})
+        new AssetGraph({root: __dirname + '/../testdata/cloneForEachLocale/svg/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -439,7 +439,7 @@ describe('cloneForEachLocale', function () {
     });
 
     it('should handle a JavaScript asset that contains only LOCALECOOKIENAME', function (done) {
-        new AssetGraph({root: __dirname + '/cloneForEachLocale/localeCookieName/'})
+        new AssetGraph({root: __dirname + '/../testdata/cloneForEachLocale/localeCookieName/'})
             .loadAssets('index.html')
             .populate()
             .cloneForEachLocale({type: 'Html'}, {localeCookieName: 'MyCookie', localeIds: ['en', 'da']})

@@ -3,7 +3,8 @@ var expect = require('./unexpected-with-plugins'),
     passError = require('passerror'),
     AssetGraph = require('../lib/AssetGraph'),
     resolvers = require('../lib/resolvers'),
-    assetGraphRoot = __dirname + '/findParentDirectory/';
+    Path = require('path'),
+    assetGraphRoot = Path.resolve(__dirname, '..', 'testdata', 'findParentDirectory') + '/';
 
 function resolveAssetConfig(assetConfig, fromUrl, cb) {
     var assetGraph = new AssetGraph({root: assetGraphRoot});

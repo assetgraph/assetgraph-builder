@@ -4,7 +4,7 @@ var expect = require('./unexpected-with-plugins'),
 
 describe('replaceDartWithJavaScript', function (done) {
     it('should handle a test case with 2 Dart assets', function (done) {
-        new AssetGraph({root: __dirname + '/replaceDartWithJavaScript/'})
+        new AssetGraph({root: __dirname + '/../testdata/replaceDartWithJavaScript/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
