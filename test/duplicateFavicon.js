@@ -1,3 +1,4 @@
+/*global describe, it*/
 var expect = require('./unexpected-with-plugins'),
     passError = require('passerror'),
     AssetGraph = require('../lib/AssetGraph');
@@ -8,7 +9,7 @@ describe('transforms.duplicateFavicon', function () {
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
-                 expect(assetGraph, 'to contain relations', 'HtmlShortcutIcon', 1);
+                expect(assetGraph, 'to contain relations', 'HtmlShortcutIcon', 1);
             })
             .duplicateFavicon()
             .run(passError(done, function (assetGraph) {
@@ -42,7 +43,7 @@ describe('transforms.duplicateFavicon', function () {
                 expect(assetGraph, 'to contain relation', 'HtmlShortcutIcon', 2);
                 expect(assetGraph, 'to contain assets', 'Ico', 2);
                 expect(assetGraph, 'to contain asset', {url: assetGraph.root + 'favicon.ico', isInitial: true});
-                expect(assetGraph, 'to contain asset', {url: assetGraph.root + 'favicon.copy.ico', isInitial: function (isInitial) {return !isInitial;}});
+                expect(assetGraph, 'to contain asset', {url: assetGraph.root + 'favicon.copy.ico', isInitial: function (isInitial) {return !isInitial; }});
                 expect(assetGraph.findAssets({type: 'Html', fileName: 'index.html'})[0].text, 'to equal',
                     '<!DOCTYPE html>\n' +
                     '<html>\n' +

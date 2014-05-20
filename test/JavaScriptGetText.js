@@ -1,6 +1,6 @@
+/*global describe, it*/
 var expect = require('./unexpected-with-plugins'),
-    AssetGraph = require('../lib/AssetGraph'),
-    query = AssetGraph.query;
+    AssetGraph = require('../lib/AssetGraph');
 
 describe('GETTEXT', function () {
     it('should handle a simple test case', function (done) {

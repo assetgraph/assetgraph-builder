@@ -1,6 +1,5 @@
 var expect = module.exports = require('unexpected').clone(),
-    URL = require('url'),
-    urlTools = require('urltools');
+    URL = require('url');
 
 expect.addAssertion('to contain [no] (asset|assets)', function (expect, subject, queryObj, number) {
     this.errorMode = 'nested';
@@ -63,7 +62,7 @@ expect.addType({
                 urlOrDescription: asset.urlOrDescription,
                 outgoingRelations: asset.outgoingRelations
             }
-        }
+        };
     }
 });
 
@@ -81,6 +80,6 @@ expect.addType({
             $AssetGraph: {
                 assets: assetGraph.findAssets({isInline: false})
             }
-        }
+        };
     }
 });

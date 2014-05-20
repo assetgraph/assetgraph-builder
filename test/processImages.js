@@ -1,3 +1,4 @@
+/*global describe, it*/
 var expect = require('./unexpected-with-plugins'),
     _ = require('underscore'),
     AssetGraph = require('../lib/AssetGraph');
@@ -36,7 +37,7 @@ describe('processImages', function () {
                 expect(_.toArray(rawSrcs[1].slice(0, 4)), 'to equal', [0x89, 0x50, 0x4e, 0x47]);
                 expect(rawSrcs[1].length, 'to be less than', rawSrcs[0].length);
 
-                var cssBackgroundImages = assetGraph.findRelations({type: 'CssImage'});
+                cssBackgroundImages = assetGraph.findRelations({type: 'CssImage'});
                 expect(cssBackgroundImages[0].cssRule, 'to equal', cssBackgroundImages[1].cssRule);
             })
             .run(done);

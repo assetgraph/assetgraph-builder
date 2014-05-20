@@ -1,3 +1,4 @@
+/*global describe, it*/
 var expect = require('./unexpected-with-plugins'),
     AssetGraph = require('../lib/AssetGraph');
 
@@ -7,8 +8,8 @@ describe('transforms.autoprefixer', function () {
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
-                 expect(assetGraph, 'to contain relations', 'HtmlStyle', 2);
-                 expect(assetGraph, 'to contain relations', 'CssImage', 1);
+                expect(assetGraph, 'to contain relations', 'HtmlStyle', 2);
+                expect(assetGraph, 'to contain relations', 'CssImage', 1);
             })
             .autoprefixer()
             .queue(function (assetGraph) {

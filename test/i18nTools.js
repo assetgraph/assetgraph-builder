@@ -1,3 +1,4 @@
+/*global describe, it*/
 var unexpected = require('./unexpected-with-plugins'),
     i18nTools = require('../lib/i18nTools');
 

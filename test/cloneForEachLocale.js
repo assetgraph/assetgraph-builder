@@ -1,9 +1,8 @@
+/*global describe, it*/
 var expect = require('./unexpected-with-plugins'),
     vm = require('vm'),
     _ = require('underscore'),
     AssetGraph = require('../lib/AssetGraph'),
-    passError = require('passerror'),
-    i18nTools = require('../lib/i18nTools'),
     bootstrapper = require('../lib/bootstrapper');
 
 function getJavaScriptTextAndBootstrappedContext(assetGraph, htmlQueryObj) {
@@ -24,7 +23,7 @@ function getJavaScriptTextAndBootstrappedContext(assetGraph, htmlQueryObj) {
 }
 
 function evaluateInContext(src, context) {
-    vm.runInContext("result = (function () {" + src + "}());", context);
+    vm.runInContext('result = (function () {' + src + '}());', context);
     return context.result;
 }
 
@@ -70,9 +69,9 @@ describe('cloneForEachLocale', function () {
                 expect(assetGraph, 'to contain asset', 'I18n');
 
                 var obj = getJavaScriptTextAndBootstrappedContext(assetGraph, {type: 'Html'});
-                expect(evaluateInContext(obj.text + "; return plainTr()", obj.context), 'to equal', 'Plain English');
-                expect(evaluateInContext(obj.text + "; return callTRPAT()", obj.context), 'to equal', 'Boring and stupid English pattern');
-                expect(evaluateInContext(obj.text + "; return nonInvokedTrPattern('X')", obj.context), 'to equal', 'Welcome to America, Mr. X');
+                expect(evaluateInContext(obj.text + '; return plainTr()', obj.context), 'to equal', 'Plain English');
+                expect(evaluateInContext(obj.text + '; return callTRPAT()', obj.context), 'to equal', 'Boring and stupid English pattern');
+                expect(evaluateInContext(obj.text + '; return nonInvokedTrPattern(\'X\')', obj.context), 'to equal', 'Welcome to America, Mr. X');
             })
             .cloneForEachLocale({isInitial: true}, {localeIds: ['da', 'en_US', 'en_GB']})
             .prettyPrintAssets({type: 'JavaScript'})
@@ -93,14 +92,14 @@ describe('cloneForEachLocale', function () {
                 expect(paragraphs[1].innerHTML, 'to equal', 'A <span>beautiful</span> text with <span>lovely</span> placeholders in it');
 
                 var obj = getJavaScriptTextAndBootstrappedContext(assetGraph, {type: 'Html', url: /\/index\.en_us\.html$/});
-                expect(evaluateInContext(obj.text + "; return plainTr()", obj.context), 'to equal', 'Plain English');
-                expect(evaluateInContext(obj.text + "; return callTRPAT();", obj.context), 'to equal', 'Boring and stupid English pattern');
-                expect(evaluateInContext(obj.text + "; return nonInvokedTrPattern('X');", obj.context), 'to equal', 'Welcome to America, Mr. X');
+                expect(evaluateInContext(obj.text + '; return plainTr()', obj.context), 'to equal', 'Plain English');
+                expect(evaluateInContext(obj.text + '; return callTRPAT();', obj.context), 'to equal', 'Boring and stupid English pattern');
+                expect(evaluateInContext(obj.text + '; return nonInvokedTrPattern(\'X\');', obj.context), 'to equal', 'Welcome to America, Mr. X');
 
                 obj = getJavaScriptTextAndBootstrappedContext(assetGraph, {type: 'Html', url: /\/index\.da\.html$/});
-                expect(evaluateInContext(obj.text + "; return plainTr()", obj.context), 'to equal', 'Jævnt dansk');
-                expect(evaluateInContext(obj.text + "; return callTRPAT();", obj.context), 'to equal', 'Kedeligt and stupid dansk mønster');
-                expect(evaluateInContext(obj.text + "; return nonInvokedTrPattern('X');", obj.context), 'to equal', 'Velkommen til Danmark, hr. X');
+                expect(evaluateInContext(obj.text + '; return plainTr()', obj.context), 'to equal', 'Jævnt dansk');
+                expect(evaluateInContext(obj.text + '; return callTRPAT();', obj.context), 'to equal', 'Kedeligt and stupid dansk mønster');
+                expect(evaluateInContext(obj.text + '; return nonInvokedTrPattern(\'X\');', obj.context), 'to equal', 'Velkommen til Danmark, hr. X');
             })
             .runJavaScriptConditionalBlocks({isInitial: true}, 'buildDevelopment')
             .queue(function (assetGraph) {
@@ -156,7 +155,7 @@ describe('cloneForEachLocale', function () {
                     'to equal',
                     '\n' +
                     '    <div>Min sprognøgle</div>\n' +
-                    '    <span id="bar">Min anden sprognøgle</span>\n'+
+                    '    <span id="bar">Min anden sprognøgle</span>\n' +
                     '    quux på dansk\n' +
                     '    <span title="blah på dansk">baz på dansk</span>\n' +
                     '    Her er en rar dyb i18n-struktur på dansk\n'
@@ -328,7 +327,6 @@ describe('cloneForEachLocale', function () {
                     htmlAsset.markDirty();
                 });
 
-                var danishHtml = assetGraph.findAssets({url: /\/index\.da\.html$/})[0];
                 expect(assetGraph.findRelations({from: danishHtml, type: 'HtmlScript'})[0].to.text, 'to match', /var myHtmlString\s*=\s*TRHTML\((['"])Den danske værdi\\n<div>foo<\/div>\1\)/);
             })
             .run(done);
@@ -350,23 +348,22 @@ describe('cloneForEachLocale', function () {
                 expect(cssRules[1].selectorText, 'to equal', 'html .theThing');
                 var outgoingRelations = assetGraph.findRelations({from: danishCss});
                 expect(outgoingRelations, 'to have length', 1);
-                expect(outgoingRelations[0].href,'to equal',  'foo.png');
+                expect(outgoingRelations[0].href, 'to equal',  'foo.png');
 
-                var germanCss = assetGraph.findAssets({url: /\/needsLocalization\.de\.css$/})[0],
-                    cssRules = germanCss.parseTree.cssRules;
-                expect(cssRules, 'to have length', 2);
-                expect(cssRules[0].selectorText, 'to equal', 'body');
-                expect(cssRules[1].selectorText, 'to equal', 'html.anotherClassOnHtml .theGermanThing');
-                var outgoingRelations = assetGraph.findRelations({from: germanCss});
+                var germanCss = assetGraph.findAssets({url: /\/needsLocalization\.de\.css$/})[0];
+                expect(germanCss.parseTree.cssRules, 'to have length', 2);
+                expect(germanCss.parseTree.cssRules[0].selectorText, 'to equal', 'body');
+                expect(germanCss.parseTree.cssRules[1].selectorText, 'to equal', 'html.anotherClassOnHtml .theGermanThing');
+
+                outgoingRelations = assetGraph.findRelations({from: germanCss});
                 expect(outgoingRelations, 'to have length', 1);
                 expect(outgoingRelations[0].to, 'to have property', 'isImage', true);
 
-                var englishCss = assetGraph.findAssets({url: /\/needsLocalization\.en\.css$/})[0],
-                    cssRules = englishCss.parseTree.cssRules;
-                expect(cssRules, 'to have length', 1);
-                expect(cssRules[0].selectorText, 'to equal', 'body');
-                var outgoingRelations = assetGraph.findRelations({from: englishCss});
-                expect(outgoingRelations, 'to have length', 0);
+                var englishCss = assetGraph.findAssets({url: /\/needsLocalization\.en\.css$/})[0];
+                expect(englishCss.parseTree.cssRules, 'to have length', 1);
+                expect(englishCss.parseTree.cssRules[0].selectorText, 'to equal', 'body');
+
+                expect(assetGraph, 'to contain no relations', {from: englishCss});
 
                 expect(assetGraph, 'to contain no relations', {to: {url: /\/bar\.png$/}});
 

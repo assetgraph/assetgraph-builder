@@ -1,3 +1,4 @@
+/*global describe, it*/
 var expect = require('./unexpected-with-plugins'),
     passError = require('passerror'),
     AssetGraph = require('../lib/AssetGraph');
@@ -17,7 +18,7 @@ describe('buildDevelopment', function () {
                 inlineUrlWildCard: false // Test it
             })
             .run(passError(done, function (assetGraph) {
-                expect(assetGraph, 'to contain asset', 'Html', 1)
+                expect(assetGraph, 'to contain asset', 'Html', 1);
 
                 expect(assetGraph.findAssets({type: 'Html'})[0].parseTree.title, 'to equal', 'The default title');
 
@@ -28,7 +29,7 @@ describe('buildDevelopment', function () {
                     }
                 }, 1);
 
-                var bootstrapperText = assetGraph.findRelations({type: 'HtmlScript', node: function (node) {return node.getAttribute('id') === 'bootstrapper';}})[0].to.text;
+                var bootstrapperText = assetGraph.findRelations({type: 'HtmlScript', node: function (node) {return node.getAttribute('id') === 'bootstrapper'; }})[0].to.text;
                 expect(bootstrapperText, 'to match', /\bwindow\.SUPPORTEDLOCALEIDS\s*=\s*\[\s*(['"])en\1\s*,\s*\1da\1\s*\]\s*;/);
                 expect(bootstrapperText, 'to match', /\bwindow\.DEFAULTLOCALEID\s*=\s*(['"])en\1\s*;/);
                 expect(bootstrapperText, 'to match', /\bwindow\.LOCALECOOKIENAME\s*=\s*(['"])myLocaleCookie\1\s*;/);

@@ -1,3 +1,4 @@
+/*global describe, it*/
 var expect = require('./unexpected-with-plugins'),
     childProcess = require('child_process'),
     fs = require('fs'),
@@ -9,11 +10,11 @@ describe('makeBabelJob and applyBabelJob', function () {
     it('should extract and reimport a translation job', function (done) {
         var babelDir = temp.mkdirSync(),
             tmpTestCaseCopyDir = temp.mkdirSync(),
-            copyCommand = "cp '" + __dirname + "'/makeBabelJobAndApplyBabelJob/* " + tmpTestCaseCopyDir;
+            copyCommand = 'cp \'' + __dirname + '\'/makeBabelJobAndApplyBabelJob/* ' + tmpTestCaseCopyDir;
 
         childProcess.exec(copyCommand, function (err, stdout, stderr) {
             if (err) {
-                return done(new Error(copyCommand + " failed: STDERR:" + stderr + "\nSTDOUT:" + stdout));
+                return done(new Error(copyCommand + ' failed: STDERR:' + stderr + '\nSTDOUT:' + stdout));
             }
 
             var makeBabelJobProcess = childProcess.spawn(Path.resolve(__dirname, '..', 'bin', 'makeBabelJob'), [
@@ -44,7 +45,7 @@ describe('makeBabelJob and applyBabelJob', function () {
 
             makeBabelJobProcess.on('exit', function (exitCode) {
                 if (exitCode) {
-                    return done(new Error("The makeBabelJob process ended with a non-zero exit code: " + exitCode + getStreamOutputText()));
+                    return done(new Error('The makeBabelJob process ended with a non-zero exit code: ' + exitCode + getStreamOutputText()));
                 }
 
                 expect(fs.readdirSync(babelDir).sort(), 'to equal', ['da.txt', 'de.txt', 'en.txt']);
@@ -128,7 +129,7 @@ describe('makeBabelJob and applyBabelJob', function () {
                     'simplekeyinhtml=Simpel nøgle på dansk',
                     'simplekeyinhtmlattribute=Simpel nøgle i HTML-attribut på dansk',
                     'keywithplaceholdersinhtml=Nøgle med pladsholdere på dansk'
-                ].join("\n"), 'utf-8');
+                ].join('\n'), 'utf-8');
 
                 var applyBabelJobProcess = childProcess.spawn(Path.resolve(__dirname, '..', 'bin', 'applyBabelJob'), [
                     '--babeldir', babelDir,
@@ -138,7 +139,7 @@ describe('makeBabelJob and applyBabelJob', function () {
                 ]);
                 applyBabelJobProcess.on('exit', function (exitCode) {
                     if (exitCode) {
-                        return done(new Error("The applyBabelJob process ended with a non-zero exit code: " + exitCode));
+                        return done(new Error('The applyBabelJob process ended with a non-zero exit code: ' + exitCode));
                     }
 
                     expect(JSON.parse(fs.readFileSync(Path.resolve(tmpTestCaseCopyDir, 'thething.i18n'), 'utf-8')), 'to equal', {

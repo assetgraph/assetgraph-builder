@@ -1,4 +1,4 @@
-/*global setImmediate:true*/
+/*global describe, it, setImmediate:true*/
 // node 0.8 compat
 if (typeof setImmediate === 'undefined') {
     setImmediate = process.nextTick;
@@ -6,7 +6,6 @@ if (typeof setImmediate === 'undefined') {
 
 var expect = require('./unexpected-with-plugins'),
     Stream = require('stream'),
-    _ = require('underscore'),
     gm = require('gm'),
     vm = require('vm'),
     passError = require('passerror'),
@@ -22,7 +21,7 @@ describe('buildProduction', function () {
             .loadAssets('index.html')
             .buildProduction({
                 quiet: true,
-                version: "The version number",
+                version: 'The version number',
                 less: true,
                 optimizeImages: true, // Test it
                 inlineSize: true, // Test it
@@ -190,8 +189,8 @@ describe('buildProduction', function () {
                 expect(assetGraph, 'to contain relations', {type: 'JavaScriptAngularJsTemplate'}, 4);
                 expect(assetGraph, 'to contain asset', {type: 'Html', isInline: true, text: /<img src="foo.png">/});
                 expect(assetGraph, 'to contain relations', {type: 'JavaScriptAngularJsTemplateCacheAssignment'}, 2);
-                expect(assetGraph, 'to contain asset', {type: 'Html', isInline: true, text: "<h1>4: Template with a relation (<img src='bar.png'>) injected <span data-i18n='foo'>directly</span> into <code>$templateCache</code></h1>"});
-                expect(assetGraph, 'to contain asset', {type: 'Html', isInline: true, text: "<h1>5: Template with a relation (<img src='quux.png'>) injected directly into <code>$templateCache</code>, but using a different variable name</h1>"});
+                expect(assetGraph, 'to contain asset', {type: 'Html', isInline: true, text: '<h1>4: Template with a relation (<img src=\'bar.png\'>) injected <span data-i18n=\'foo\'>directly</span> into <code>$templateCache</code></h1>'});
+                expect(assetGraph, 'to contain asset', {type: 'Html', isInline: true, text: '<h1>5: Template with a relation (<img src=\'quux.png\'>) injected directly into <code>$templateCache</code>, but using a different variable name</h1>'});
                 expect(assetGraph, 'to contain asset', {type: 'Png', url: /\/foo\.png$/});
                 expect(assetGraph, 'to contain asset', {type: 'Png', url: /\/bar\.png$/});
                 expect(assetGraph, 'to contain asset', {type: 'Png', url: /\/quux\.png$/});
@@ -203,21 +202,21 @@ describe('buildProduction', function () {
                 expect(assetGraph, 'to contain asset', {isHtml: true, isInline: false, isLoaded: true});
                 expect(assetGraph, 'to contain relations', {type: 'HtmlInlineScriptTemplate'}, 4);
 
-                var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'partials/1.html';}})[0];
+                var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) { return node.getAttribute('id') === 'partials/1.html'; }})[0];
                 expect(relation, 'to be truthy');
                 expect(relation.to.text, 'to equal', '<h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1>');
 
                 expect(assetGraph, 'to contain no relations', {type: 'HtmlInlineScriptTemplate', to: {text: /3: Template/}});
 
-                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'partials/2.html';}})[0];
+                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) { return node.getAttribute('id') === 'partials/2.html'; }})[0];
                 expect(relation, 'to be truthy');
                 expect(relation.to.text, 'to equal', '<h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1>');
 
-                var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'partials/4.html';}})[0];
+                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) { return node.getAttribute('id') === 'partials/4.html'; }})[0];
                 expect(relation, 'to be truthy');
                 expect(relation.to.text, 'to equal', '<h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected <span data-i18n="foo">directly</span> into <code>$templateCache</code></h1>');
 
-                var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'partials/5.html';}})[0];
+                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) { return node.getAttribute('id') === 'partials/5.html'; }})[0];
                 expect(relation, 'to be truthy');
                 expect(relation.to.text, 'to equal', '<h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png">) injected directly into <code>$templateCache</code>, but using a different variable name</h1>');
             })
@@ -238,25 +237,25 @@ describe('buildProduction', function () {
                 expect(assetGraph, 'to contain assets', {isHtml: true, isInline: false, isLoaded: true}, 2);
                 expect(assetGraph, 'to contain relations', {type: 'HtmlInlineScriptTemplate'}, 8);
 
-                var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'partials/1.html';}})[0];
+                var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) { return node.getAttribute('id') === 'partials/1.html'; }})[0];
                 expect(relation, 'to be truthy');
                 expect(relation.to.text, 'to equal', '<h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1>');
 
                 expect(assetGraph, 'to contain no relations', {type: 'HtmlInlineScriptTemplate', to: {text: /3: Template/}});
 
-                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'partials/2.html';}})[0];
+                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) { return node.getAttribute('id') === 'partials/2.html'; }})[0];
                 expect(relation, 'to be truthy');
                 expect(relation.to.text, 'to equal', '<h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1>');
 
-                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', from: {url: /\/index\.en\.html$/}, node: function (node) {return node.getAttribute('id') === 'partials/4.html';}})[0];
+                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', from: {url: /\/index\.en\.html$/}, node: function (node) { return node.getAttribute('id') === 'partials/4.html'; }})[0];
                 expect(relation, 'to be truthy');
                 expect(relation.to.text, 'to equal', '<h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected directly into <code>$templateCache</code></h1>');
 
-                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', from: {url: /\/index\.da\.html$/}, node: function (node) {return node.getAttribute('id') === 'partials/4.html';}})[0];
+                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', from: {url: /\/index\.da\.html$/}, node: function (node) { return node.getAttribute('id') === 'partials/4.html'; }})[0];
                 expect(relation, 'to be truthy');
                 expect(relation.to.text, 'to equal', '<h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected lige direkte into <code>$templateCache</code></h1>');
 
-                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'partials/5.html';}})[0];
+                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) { return node.getAttribute('id') === 'partials/5.html'; }})[0];
                 expect(relation, 'to be truthy');
                 expect(relation.to.text, 'to equal', '<h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png">) injected directly into <code>$templateCache</code>, but using a different variable name</h1>');
 
@@ -276,21 +275,21 @@ describe('buildProduction', function () {
                 expect(assetGraph, 'to contain asset', {isHtml: true, isInline: false, isLoaded: true});
                 expect(assetGraph, 'to contain relations', {type: 'HtmlInlineScriptTemplate'}, 4);
 
-                var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'partials/1.html';}})[0];
+                var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) { return node.getAttribute('id') === 'partials/1.html'; }})[0];
                 expect(relation, 'to be truthy');
                 expect(relation.to.text, 'to equal', '<h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1>');
 
                 expect(assetGraph, 'to contain no relations', {type: 'HtmlInlineScriptTemplate', to: {text: /3: Template/}});
 
-                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'partials/2.html';}})[0];
+                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) { return node.getAttribute('id') === 'partials/2.html'; }})[0];
                 expect(relation, 'to be truthy');
                 expect(relation.to.text, 'to equal', '<h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1>');
 
-                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'partials/4.html';}})[0];
+                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) { return node.getAttribute('id') === 'partials/4.html'; }})[0];
                 expect(relation, 'to be truthy');
                 expect(relation.to.text, 'to equal', '<h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected <span data-i18n="foo">directly</span> into <code>$templateCache</code></h1>');
 
-                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'partials/5.html';}})[0];
+                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) { return node.getAttribute('id') === 'partials/5.html'; }})[0];
                 expect(relation, 'to be truthy');
                 expect(relation.to.text, 'to equal', '<h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png">) injected directly into <code>$templateCache</code>, but using a different variable name</h1>');
             })
@@ -356,11 +355,11 @@ describe('buildProduction', function () {
 
                 expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), 'to equal', '<!DOCTYPE html>\n<html><head></head><body><script src="MD5.js"></script><script type="text/html" id="foo"><img data-bind="attr:{src:\'static/foo.d65dd5318f.png\'}"></script><script type="text/html" id="bar"><div><h1>bar.ko</h1></div></script></body></html>');
 
-                var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'foo';}})[0];
+                var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) { return node.getAttribute('id') === 'foo'; }})[0];
                 expect(relation, 'to be truthy');
                 expect(relation.to.text, 'to equal', '<img data-bind="attr:{src:\'static/foo.d65dd5318f.png\'}">');
 
-                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) {return node.getAttribute('id') === 'bar';}})[0];
+                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) { return node.getAttribute('id') === 'bar'; }})[0];
                 expect(relation, 'to be truthy');
                 expect(relation.to.text, 'to equal', '<div><h1>bar.ko</h1></div>');
             })
@@ -513,16 +512,16 @@ describe('buildProduction', function () {
     });
 
     it('should handle a test case with a GETSTATICURL that has a wildcard value, but only matches a single file', function (done) {
-            new AssetGraph({root: __dirname + '/buildProduction/GetStaticUrlSingleFileWildcard/'})
-                .registerRequireJsConfig()
-                .loadAssets('index.html')
-                .buildProduction({version: false})
-                .queue(function (assetGraph) {
-                    var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
-                    expect(javaScriptAssets, 'to have length', 1);
-                    expect(javaScriptAssets[0].text, 'to equal', 'var fileName="static/justThisOneFile.22324131a2.txt";');
-                })
-                .run(done);
+        new AssetGraph({root: __dirname + '/buildProduction/GetStaticUrlSingleFileWildcard/'})
+            .registerRequireJsConfig()
+            .loadAssets('index.html')
+            .buildProduction({version: false})
+            .queue(function (assetGraph) {
+                var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
+                expect(javaScriptAssets, 'to have length', 1);
+                expect(javaScriptAssets[0].text, 'to equal', 'var fileName="static/justThisOneFile.22324131a2.txt";');
+            })
+            .run(done);
     });
 
     it('should handle a test case with a GETSTATICURL that has two wildcard values, but only matches a single file', function (done) {
@@ -937,7 +936,7 @@ describe('buildProduction', function () {
             .loadAssets(['index.html'])
             .populate()
             .queue(function (assetGraph) {
-                 expect(assetGraph, 'to contain asset', {contentType: 'application/rss+xml', type: 'Rss'});
+                expect(assetGraph, 'to contain asset', {contentType: 'application/rss+xml', type: 'Rss'});
             })
             .buildProduction({version: false})
             .queue(function (assetGraph) {

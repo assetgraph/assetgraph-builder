@@ -1,3 +1,4 @@
+/*global describe, it*/
 var childProcess = require('child_process'),
     fs = require('fs'),
     Path = require('path'),
@@ -10,10 +11,10 @@ describe('applyBabelJob', function () {
     it('should handle a complex test case', function (done) {
         var babelDir = Path.resolve(__dirname, 'applyBabelJob/translationjob'),
             tmpTestCaseCopyDir = temp.mkdirSync(),
-            copyCommand = "cp '" + __dirname + "/applyBabelJob'/index.* " + tmpTestCaseCopyDir;
+            copyCommand = 'cp \'' + __dirname + '/applyBabelJob\'/index.* ' + tmpTestCaseCopyDir;
         childProcess.exec(copyCommand, function (err, stdout, stderr) {
             if (err) {
-                return done(new Error(copyCommand + " failed: STDERR:" + stderr + "\nSTDOUT:" + stdout));
+                return done(new Error(copyCommand + ' failed: STDERR:' + stderr + '\nSTDOUT:' + stdout));
             }
             var applyBabelJobProcess = childProcess.spawn(__dirname + '/../bin/applyBabelJob', [
                 '--babeldir', babelDir,
@@ -26,7 +27,7 @@ describe('applyBabelJob', function () {
             ]);
             applyBabelJobProcess.on('exit', function (exitCode) {
                 if (exitCode) {
-                    done(new Error("The applyBabelJob process ended with a non-zero exit code: " + exitCode));
+                    done(new Error('The applyBabelJob process ended with a non-zero exit code: ' + exitCode));
                 } else {
                     expect(JSON.parse(fs.readFileSync(tmpTestCaseCopyDir + '/index.i18n')), 'to equal', {
                         ComplexKey: {
