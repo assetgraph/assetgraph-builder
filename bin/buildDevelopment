@@ -2,7 +2,6 @@
 
 var _ = require('underscore'),
     AssetGraph = require('../lib/AssetGraph'),
-    query = AssetGraph.query,
     i18nTools = require('../lib/i18nTools'),
     urlTools = require('urltools'),
     commandLineOptions = require('optimist')
@@ -27,7 +26,7 @@ new AssetGraph({root: commandLineOptions.root})
     .buildDevelopment({
         version: commandLineOptions.version,
         supportedLocaleIds: commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
-            return localeId.split(",");
+            return localeId.split(',');
         })).map(i18nTools.normalizeLocaleId),
         defaultLocaleId: commandLineOptions.defaultlocale && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale),
         localeCookieName: commandLineOptions.localecookiename,

@@ -47,10 +47,7 @@ if (commandLineOptions.h) {
     process.exit(1);
 }
 
-var _ = require('underscore'),
-    util = require('util'),
-    AssetGraph = require('../lib/AssetGraph'),
-    i18nTools = require('../lib/i18nTools'),
+var AssetGraph = require('../lib/AssetGraph'),
     query = AssetGraph.query,
     urlTools = require('urltools'),
     outRoot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
@@ -63,17 +60,17 @@ if (commandLineOptions._.length > 0) {
     });
     if (!rootUrl) {
         rootUrl = urlTools.findCommonUrlPrefix(inputUrls.filter(function (inputUrl) {
-            return /^file:/.test(inputUrl);
+            return (/^file:/).test(inputUrl);
         }));
         if (rootUrl) {
-            console.warn("Guessing --root from input files: " + rootUrl);
+            console.warn('Guessing --root from input files: ' + rootUrl);
         }
     }
 } else if (rootUrl && /^file:/.test(rootUrl)) {
     inputUrls = [rootUrl + '**/*.html'];
     console.warn('No input files specified, defaulting to ' + inputUrls[0]);
 } else {
-    throw new Error("No input files and no --root specified (or it isn't file:), cannot proceed");
+    throw new Error('No input files and no --root specified (or it isn\'t file:), cannot proceed');
 }
 
 var followRelationsQueryObj = query.or(

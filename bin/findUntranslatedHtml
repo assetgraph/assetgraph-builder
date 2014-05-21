@@ -1,13 +1,9 @@
 #!/usr/bin/env node
 
-var path = require('path'),
-    fs = require('fs'),
-    _ = require('underscore'),
+var _ = require('underscore'),
     AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
-    uglifyAst = AssetGraph.JavaScript.uglifyAst,
     urlTools = require('urltools'),
-    mkpathSync = require('../lib/mkpathSync'),
     commandLineOptions = require('optimist')
         .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] --root <inputRootDirectory><htmlFile>...')
         .boolean('parentdir')
@@ -86,15 +82,15 @@ new AssetGraph({root: commandLineOptions.root})
                     var matchingOccurrences = occurrences.filter(function (occurrence) {
                         return occurrence.node === element;
                     });
-                    if (hasNonWhitespaceChildNodes && !matchingOccurrences.some(function (matchingOccurrence) {return matchingOccurrence.type === 'i18nTagText';})) {
-                        warnings.push("No data-i18n attribute for contents of " + element.outerHTML);
+                    if (hasNonWhitespaceChildNodes && !matchingOccurrences.some(function (matchingOccurrence) { return matchingOccurrence.type === 'i18nTagText'; })) {
+                        warnings.push('No data-i18n attribute for contents of ' + element.outerHTML);
                     }
                     i18nAttributes.forEach(function (i18nAttribute) {
                         if (!matchingOccurrences.some(function (matchingOccurrence) {
                             return matchingOccurrence.type === 'i18nTagAttribute' &&
                             matchingOccurrence.attributeName.toLowerCase() === i18nAttribute.nodeName.toLowerCase();
                         })) {
-                            warnings.push("No data-i18n attribute for '" + i18nAttribute.nodeName + "' attribute of " + element.outerHTML);
+                            warnings.push('No data-i18n attribute for \'' + i18nAttribute.nodeName + '\' attribute of ' + element.outerHTML);
                         }
                     });
                 }
@@ -102,7 +98,9 @@ new AssetGraph({root: commandLineOptions.root})
             if (warnings.length > 0) {
                 console.warn(htmlAsset.urlOrDescription + ':');
                 warnings.forEach(function (warning) {
-                    console.warn(warning.split(/\n/).map(function (line) {return "    " + line;}).join("\n"));
+                    console.warn(warning.split(/\n/).map(function (line) {
+                        return '    ' + line;
+                    }).join('\n'));
                 });
             }
         });

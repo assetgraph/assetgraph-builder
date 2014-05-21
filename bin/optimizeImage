@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 
-var _ = require('underscore'),
-    AssetGraph = require('../lib/AssetGraph'),
-    query = AssetGraph.query,
+var AssetGraph = require('../lib/AssetGraph'),
     urlTools = require('urltools'),
     commandLineOptions = require('optimist')
         .usage('$0 image1 image2...')
@@ -13,13 +11,13 @@ new AssetGraph({root: commandLineOptions.root})
     .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .queue(function () {
-        console.warn("BEFORE:");
+        console.warn('BEFORE:');
     })
     .writeStatsToStderr()
     .processImages({isImage: true}, {autoLossless: true})
     .writeAssetsToDisc({url: /^file:/, isImage: true, isDirty: true})
     .queue(function () {
-        console.warn("\nAFTER:");
+        console.warn('\nAFTER:');
     })
     .writeStatsToStderr()
     .run();

@@ -8,7 +8,6 @@ var path = require('path'),
     AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
     urlTools = require('urltools'),
-    mkpathSync = require('../lib/mkpathSync'),
     commandLineOptions = require('optimist')
         .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--i18n <pathToI18nFile>] [--locales <localeId>[,<localeId>...]] [--defaultlocale <localeId>] --babeldir=<dirContainingTheBabelFilesToApply> --root <inputRootDirectory> <htmlFile>...')
         .boolean('parentdir')
@@ -25,7 +24,7 @@ var path = require('path'),
         .demand(['root', 'babeldir'])
         .argv,
     localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
-        return localeId.split(",");
+        return localeId.split(',');
     })).map(i18nTools.normalizeLocaleId),
     defaultLocaleId = commandLineOptions.defaultlocale && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale),
     initialAssetUrls = commandLineOptions._.map(urlTools.fsFilePathToFileUrl),
@@ -63,7 +62,6 @@ new AssetGraph({root: commandLineOptions.root})
     })
     .queue(function importLanguageKeys(assetGraph) {
         var translationsByKeyAndLocaleId = {},
-            existingI18nRelations = assetGraph.findRelations({to: {type: 'I18n'}, from: {type: 'JavaScript'}}),
             occurrencesByKey = i18nTools.findOccurrences(assetGraph, assetGraph.findAssets({type: 'Html', isInitial: true})),
             i18nAssetForAllKeys;
 
@@ -79,7 +77,7 @@ new AssetGraph({root: commandLineOptions.root})
 
         fs.readdirSync(commandLineOptions.babeldir).forEach(function (fileName) {
             if (fileName === 'SOURCE.txt') {
-                console.warn("Skipping " + fileName);
+                console.warn('Skipping ' + fileName);
             } else {
                 var matchLocaleId = fileName.match(/^([a-zA-Z0-9\-\_]+)\.(?:txt|babel)$/);
                 if (matchLocaleId) {
@@ -99,7 +97,7 @@ new AssetGraph({root: commandLineOptions.root})
                             if (matchKeyValue) {
                                 var key = matchKeyValue[1].trim(),
                                     value = matchKeyValue[2].trim().replace(/\\([n\\])/g, function ($0, ch) {
-                                        return ch === "n" ? "\n" : ch;
+                                        return ch === 'n' ? '\n' : ch;
                                     }),
                                     path = [];
 
@@ -110,7 +108,7 @@ new AssetGraph({root: commandLineOptions.root})
                                 // Chop off [x][y]... suffix and note the components in the 'path' array
                                 key = key.replace(/\[([^\]]+)\]/g, function ($0, pathComponent) {
                                     path.push(pathComponent);
-                                    return "";
+                                    return '';
                                 });
                                 if (!(key in translationsByKeyAndLocaleId)) {
                                     translationsByKeyAndLocaleId[key] = {};
@@ -123,26 +121,26 @@ new AssetGraph({root: commandLineOptions.root})
                                         if (typeof cursor[path[0]] === 'undefined') {
                                             cursor[path[0]] = [];
                                         } else if (!Array.isArray(cursor[path[0]])) {
-                                            throw new Error("Error: Expected " + JSON.stringify(cursor) + "['" + path[0] + "'] " +
-                                                            "to be undefined or an array while processing line " + lineNumber + " of " + fileName + ":\n" + line);
+                                            throw new Error('Error: Expected ' + JSON.stringify(cursor) + '[\'' + path[0] + '\'] ' +
+                                                            'to be undefined or an array while processing line ' + lineNumber + ' of ' + fileName + ':\n' + line);
                                         }
                                     } else {
                                         // typeof path[1] === 'string', assume that cursor[path[0]] should be an object
                                         if (typeof cursor[path[0]] === 'undefined') {
                                             cursor[path[0]] = {};
                                         } else if (typeof cursor[path[0]] !== 'object' || cursor[path[0]] === null) {
-                                            throw new Error("Error: Expected " + JSON.stringify(cursor) + "['" + path[0] + "'] " +
-                                                            "to be undefined or an object while processing line " + lineNumber + " of " + fileName + ":\n" + line);
+                                            throw new Error('Error: Expected ' + JSON.stringify(cursor) + '[\'' + path[0] + '\'] ' +
+                                                            'to be undefined or an object while processing line ' + lineNumber + ' of ' + fileName + ':\n' + line);
                                         }
                                     }
                                     cursor = cursor[path.shift()];
                                 }
                                 if (path[0] in cursor) {
-                                    throw new Error("Error: Found double declaration of key in line " + lineNumber + " of " + fileName + ":\n" + line);
+                                    throw new Error('Error: Found double declaration of key in line ' + lineNumber + ' of ' + fileName + ':\n' + line);
                                 }
                                 cursor[path[0]] = value;
                             } else {
-                                console.warn("Couldn't parse line " + (lineNumber + 1) + " of the " + localeId + " file: " + line);
+                                console.warn('Couldn\'t parse line ' + (lineNumber + 1) + ' of the ' + localeId + ' file: ' + line);
                             }
                         }
                     });
@@ -163,7 +161,7 @@ new AssetGraph({root: commandLineOptions.root})
             try {
                 i18nAsset = i18nAssetForAllKeys || i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, occurrencesByKey);
             } catch (e) {
-                console.warn("Skipping language key: " + e.message);
+                console.warn('Skipping language key: ' + e.message);
             }
             if (i18nAsset) {
                 if (!(key in i18nAsset.parseTree)) {
@@ -232,7 +230,7 @@ new AssetGraph({root: commandLineOptions.root})
 
                                 replacedTextByAssetId[asset.id] = (replacedTextByAssetId[asset.id] || originalTextByAssetId[asset.id] || asset.text)
                                     .replace(replaceRegExp,
-                                             "$1" + util.inspect(translationsByKeyAndLocaleId[key][defaultLocaleId]) + ")");
+                                             '$1' + util.inspect(translationsByKeyAndLocaleId[key][defaultLocaleId]) + ')');
                             }
                         }
                     });
@@ -246,7 +244,7 @@ new AssetGraph({root: commandLineOptions.root})
                     // Un-entitify < > & in data-bind attributes (common intentional spec breakage in development):
                     asset.keepUnpopulated = true;
                     replacedText = replacedText.replace(/data-bind="[^"]*"/g, function ($0) {
-                        return $0.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, "&");
+                        return $0.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
                     });
                 }
                 asset._rawSrc = replacedText.toString('utf-8');

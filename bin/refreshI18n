@@ -5,12 +5,15 @@ var _ = require('underscore'),
     i18nTools = require('../lib/i18nTools'),
     uglifyAst = require('uglifyast'),
     urlTools = require('urltools'),
+    fs = require('fs'),
     commandLineOptions = require('optimist')
         .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] --root <inputRootDirectory> --locales <localeId>,... <htmlFile>...')
         .boolean('parentdir')
         .demand(['root', 'locales'])
         .argv,
-    localeIds = _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {return localeId.split(",");}));
+    localeIds = _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
+        return localeId.split(',');
+    }));
 
 new AssetGraph({root: commandLineOptions.root})
     .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
@@ -38,7 +41,7 @@ new AssetGraph({root: commandLineOptions.root})
             if (occurrences.length > 1) {
                 for (var i = 1 ; i < occurrences.length ; i += 1) {
                     if (!_.isEqual(occurrences[0].defaultValue, occurrences[1].defaultValue)) {
-                        console.warn("Default values for " + key + " are different");
+                        console.warn('Default values for ' + key + ' are different');
                     }
                 }
             }
@@ -60,7 +63,7 @@ new AssetGraph({root: commandLineOptions.root})
                     value = /^i18nTag/.test(occurrences[0].type) ? occurrences[0].defaultValue : uglifyAst.astToObj(occurrences[0].defaultValue);
                 }
                 i18nAsset.parseTree[key][leastSpecificLocaleId] = value;
-                console.log(i18nAsset.url + ": " + key + " already found, added entry for " + leastSpecificLocaleId);
+                console.log(i18nAsset.url + ': ' + key + ' already found, added entry for ' + leastSpecificLocaleId);
                 i18nAsset.markDirty();
             });
         });
@@ -78,14 +81,14 @@ new AssetGraph({root: commandLineOptions.root})
             var javaScript = assetGraph.idIndex[javaScriptId],
                 originalText = fs.readFileSync(urlTools.fileUrlToFsPath(javaScript.url), javaScript.encoding),
                 oneIncludeStatements = i18nRelations.map(function (i18nRelation) {
-                    return "INCLUDE('" +
+                    return 'INCLUDE(\'' +
                         urlTools.buildRelativeUrl(i18nRelation.from.url || assetGraph.findBaseAssetForRelation(i18nRelation).url, i18nRelation.to.url) +
-                        "');\n";
-                }).join(""),
+                        '\');\n';
+                }).join(''),
                 matchSplitAfterLastOneIncludeLine = originalText.match(/^([\s\S]*one\.include[^\n]*\n)([\s\S]*)$/),
                 patchedText;
             if (matchSplitAfterLastOneIncludeLine) {
-                patchedText = matchSplitAfterLastOneIncludeLine[1] + "\n" + oneIncludeStatements + matchSplitAfterLastOneIncludeLine[2];
+                patchedText = matchSplitAfterLastOneIncludeLine[1] + '\n' + oneIncludeStatements + matchSplitAfterLastOneIncludeLine[2];
             } else {
                 patchedText = oneIncludeStatements + originalText;
             }

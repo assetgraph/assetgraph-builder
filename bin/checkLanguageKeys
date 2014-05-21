@@ -13,11 +13,11 @@ var optimist = require('optimist'),
             type: 'boolean'
         })
         .options('ignore', {
-            describe: "Type(s) of messages to suppress (supported: 'missing', 'untranslated', 'defaultValueMismatch', 'whitespace', 'unused')",
+            describe: 'Type(s) of messages to suppress (supported: \'missing\', \'untranslated\', \'defaultValueMismatch\', \'whitespace\', \'unused\')',
             type: 'string'
         })
         .options('warn', {
-            describe: "Type(s) of messages that should be emitted with 'warning' status (supported: 'missing', 'untranslated', 'defaultValueMismatch', 'whitespace', 'unused'). Intended for use with --stoponwarning",
+            descrbe: 'Type(s) of messages that should be emitted with \'warning\' status (supported: \'missing\', \'untranslated\', \'defaultValueMismatch\', \'whitespace\', \'unused\'). Intended for use with --stoponwarning',
             type: 'string'
         })
         .options('stoponwarning', {
@@ -39,21 +39,20 @@ if (commandLineOptions.h) {
 }
 
 var _ = require('underscore'),
-    util = require('util'),
     AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
     query = AssetGraph.query,
     urlTools = require('urltools'),
     rootUrl = commandLineOptions.root && urlTools.urlOrFsPathToUrl(commandLineOptions.root, true),
     localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
-        return localeId.split(",");
+        return localeId.split(',');
     })).map(i18nTools.normalizeLocaleId),
     defaultLocaleId = commandLineOptions.defaultlocale && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale),
     ignoreMessageTypes = commandLineOptions.ignore && _.flatten(_.flatten([commandLineOptions.ignore]).map(function (ignoreMessageType) {
-        return ignoreMessageType.split(",");
+        return ignoreMessageType.split(',');
     })),
     warnMessageTypes = commandLineOptions.warn && _.flatten(_.flatten([commandLineOptions.warn]).map(function (warnMessageType) {
-        return warnMessageType.split(",");
+        return warnMessageType.split(',');
     })),
     inputUrls;
 
@@ -66,14 +65,14 @@ if (commandLineOptions._.length > 0) {
             return /^file:/.test(inputUrl);
         }));
         if (rootUrl) {
-            console.warn("Guessing --root from input files: " + rootUrl);
+            console.warn('Guessing --root from input files: ' + rootUrl);
         }
     }
 } else if (rootUrl && /^file:/.test(rootUrl)) {
     inputUrls = [rootUrl + '**/*.html'];
     console.warn('No input files specified, defaulting to ' + inputUrls[0]);
 } else {
-    throw new Error("No input files and no --root specified (or it isn't file:), cannot proceed");
+    throw new Error('No input files and no --root specified (or it isn\'t file:), cannot proceed');
 }
 
 new AssetGraph({root: rootUrl})

@@ -13,7 +13,7 @@ var path = require('path'),
         .demand(['root', 'locales', 'babeldir'])
         .argv,
     localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
-        return localeId.split(",");
+        return localeId.split(',');
     })).map(i18nTools.normalizeLocaleId),
     defaultLocaleId = commandLineOptions.defaultlocale ? i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale) : localeIds[0],
     initialAssetUrls = commandLineOptions._.map(urlTools.fsFilePathToFileUrl),
@@ -37,14 +37,16 @@ function flattenKey(key, value) {
                 path.pop();
             }
         } else if (typeof obj === 'object' && obj !== null) {
-            for (var propertyName in obj) {
+            Object.keys(obj).forEach(function (propertyName) {
                 path.push(propertyName);
                 traverse(obj[propertyName]);
                 path.pop();
-            }
+            });
         } else {
             // Assume a type that can be stringified using String(obj):
-            valueByFlattenedKey[key + path.map(function (pathComponent) {return '[' + pathComponent + ']';}).join("")] = obj;
+            valueByFlattenedKey[key + path.map(function (pathComponent) {
+                return '[' + pathComponent + ']';
+            }).join('')] = obj;
         }
     }(value));
     return valueByFlattenedKey;
@@ -103,13 +105,6 @@ new AssetGraph({root: commandLineOptions.root})
             });
         });
 
-        var i18nAsset;
-        try {
-            i18nAsset = i18nAssetForAllKeys || i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, occurrencesByKey);
-        } catch (e) {
-            console.warn("Skipping language key: " + e.message);
-        }
-
         localeIds.forEach(function (localeId) {
             var babelSrc = '',
                 isDefaultLocale = localeId === defaultLocaleId || localeId.indexOf(defaultLocaleId + '_') === 0,
@@ -120,10 +115,16 @@ new AssetGraph({root: commandLineOptions.root})
                 });
             keys.forEach(function (key) {
                 var occurrences = occurrencesByKey[key],
+                    omitExistingValues = false,
                     value,
                     defaultValue,
                     defaultValueInTheOccurrence,
-                    omitExistingValues = false;
+                    i18nAsset;
+                try {
+                    i18nAsset = i18nAssetForAllKeys || i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, occurrencesByKey);
+                } catch (e) {
+                    console.warn('Skipping language key: ' + e.message);
+                }
 
                 // Look for a default value in the occurrences:
                 occurrences.forEach(function (occurrence) {
@@ -166,10 +167,13 @@ new AssetGraph({root: commandLineOptions.root})
                     if (typeof value === 'undefined' && defaultValueInTheOccurrenceByFlattenedKey && isDefaultLocale) {
                         value = defaultValueInTheOccurrenceByFlattenedKey[flattenedKey];
                     }
-                    babelSrc += flattenedKey + "=" + (omitExistingValues ? '' : String(value || '').replace(/\\/g, "\\\\").replace(/\n/g, "\\n")) + "\n";
+                    babelSrc += flattenedKey + '=' + (omitExistingValues ? '' : String(value || '').replace(/\\/g, '\\\\').replace(/\n/g, '\\n')) + '\n';
                 });
 
-                var i18nAssetForKey = assetGraph.findAssets({type: 'I18n', isLoaded: true, parseTree: function (parseTree) {return key in parseTree;}})[0] || i18nAsset;
+                var i18nAssetForKey = assetGraph.findAssets({type: 'I18n', isLoaded: true, parseTree: function (parseTree) {
+                    return key in parseTree;
+                }})[0] || i18nAsset;
+
                 if (i18nAssetForKey) {
                     i18nAssetForKey.parseTree[key] = i18nAssetForKey.parseTree[key] || {};
                     if (!(localeId in i18nAssetForKey.parseTree[key])) {
@@ -184,10 +188,10 @@ new AssetGraph({root: commandLineOptions.root})
             });
             var targetBabelFileName = path.resolve(commandLineOptions.babeldir, localeId + '.txt');
             if (babelSrc.length) {
-                console.warn("Writing " + targetBabelFileName);
+                console.warn('Writing ' + targetBabelFileName);
                 fs.writeFileSync(targetBabelFileName, babelSrc, 'utf-8');
             } else {
-                console.warn("No existing keys for " + localeId + ", not writing " + targetBabelFileName);
+                console.warn('No existing keys for ' + localeId + ', not writing ' + targetBabelFileName);
             }
         });
     })

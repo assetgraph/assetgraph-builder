@@ -76,7 +76,7 @@
     "registry": "http://registry.npmjs.org/"
   },
   "scripts": {
-    "lint": "jshint .",
+    "lint": "jshint . bin/*",
     "test": "npm run lint && mocha",
     "travis": "npm run lint && mocha -R spec"
   }

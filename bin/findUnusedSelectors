@@ -25,7 +25,7 @@ new AssetGraph({root: commandLineOptions.root})
             cssAsset.constructor.eachRuleInParseTree(cssAsset.parseTree, function (cssRule) {
                 if (cssRule.type === 1) { // STYLE_RULE
                     if (isSelectorUsed(cssRule.selectorText)) {
-                        //console.warn("IN USE: " + cssRule.cssText);
+                        //console.warn('IN USE: ' + cssRule.cssText);
                         if (cssRule.selectorText.indexOf(',') !== -1) {
                             cssRule.selectorText.split(',').forEach(function (subSelector) {
                                 subSelector = subSelector.replace(/^\s+|\s+$/g, ''); // Trim
@@ -35,7 +35,7 @@ new AssetGraph({root: commandLineOptions.root})
                             });
                         }
                     } else {
-                        console.warn("NOT IN USE: " + cssRule.cssText);
+                        console.warn('NOT IN USE: ' + cssRule.cssText);
                     }
                 }
             });

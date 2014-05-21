@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 var fs = require('fs'),
-    _ = require('underscore'),
     seq = require('seq'),
     AssetGraph = require('../lib/AssetGraph'),
     urlTools = require('urltools'),
@@ -10,7 +9,7 @@ var fs = require('fs'),
         .boolean('parentdir')
         .check(function (argv) {
             if (argv._.length !== 1 || !/\.js$/.test(argv._[0])) {
-                throw "Please specify a single JavaScript file on the command line";
+                throw 'Please specify a single JavaScript file on the command line';
             }
         })
         .argv;
@@ -23,13 +22,15 @@ new AssetGraph({root: commandLineOptions.root})
     .queue(function (assetGraph) {
         assetGraph.findAssets({isInitial: true}).forEach(function (initialAsset) {
             // Get the original text including comments etc.:
-            seq(assetGraph.collectAssetsPostOrder(initialAsset, {to: {type: 'JavaScript'}}).filter(function(asset) {return !asset.isInline;}))
+            seq(assetGraph.collectAssetsPostOrder(initialAsset, {to: {type: 'JavaScript'}}).filter(function (asset) {
+                return !asset.isInline;
+            }))
                 .parMap(function (asset) {
                     fs.readFile(urlTools.fileUrlToFsPath(asset.url), 'utf-8', this);
                 })
                 .unflatten()
                 .seq(function (texts) {
-                    var flattenedText = texts.join("\n").replace(/INCLUDE\(([^\)]*)\);?\n?/g, "");
+                    var flattenedText = texts.join('\n').replace(/INCLUDE\(([^\)]*)\);?\n?/g, '');
                     if ('o' in commandLineOptions) {
                         fs.writeFileSync(commandLineOptions.o, flattenedText, AssetGraph.assets.JavaScript.prototype.encoding);
                     } else {
