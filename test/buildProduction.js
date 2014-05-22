@@ -987,4 +987,23 @@ describe('buildProduction', function () {
             })
             .run(done);
     });
+
+    it('should only remove empty scripts and stylesheets without extra attributes', function (done) {
+        new AssetGraph({root: __dirname + '/../testdata/buildProduction/emptyScriptsAndStylesheetsWithAttributes/'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets(['index.html'])
+            .populate()
+            .buildProduction({version: false})
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain relations', 'HtmlStyle', 2);
+                var htmlStyles = assetGraph.findRelations({type: 'HtmlStyle'});
+                expect(htmlStyles[0].node.outerHTML, 'to equal', '<style type="text/css" foo="bar"></style>');
+                expect(htmlStyles[1].node.outerHTML, 'to equal', '<style type="text/css" media="screen" foo="bar"></style>');
+
+                expect(assetGraph, 'to contain relations', 'HtmlScript', 1);
+                var htmlScripts = assetGraph.findRelations({type: 'HtmlScript'});
+                expect(htmlScripts[0].node.outerHTML, 'to equal', '<script foo="bar"></script>');
+            })
+            .run(done);
+    });
 });
