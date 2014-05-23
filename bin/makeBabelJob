@@ -175,6 +175,10 @@ new AssetGraph({root: commandLineOptions.root})
                 }})[0] || i18nAsset;
 
                 if (i18nAssetForKey) {
+                    if (!(key in i18nAssetForKey.parseTree)) {
+                        i18nAssetForKey.parseTree[key] = {};
+                        i18nAssetForKey.markDirty();
+                    }
                     i18nAssetForKey.parseTree[key] = i18nAssetForKey.parseTree[key] || {};
                     if (!(localeId in i18nAssetForKey.parseTree[key])) {
                         if (localeId.indexOf(defaultLocaleId) === 0) {
@@ -182,8 +186,8 @@ new AssetGraph({root: commandLineOptions.root})
                         } else {
                             i18nAssetForKey.parseTree[key][localeId] = null;
                         }
+                        i18nAssetForKey.markDirty();
                     }
-                    i18nAssetForKey.markDirty();
                 }
             });
             var targetBabelFileName = path.resolve(commandLineOptions.babeldir, localeId + '.txt');
