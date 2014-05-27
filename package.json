@@ -41,7 +41,7 @@
     "chalk": "=0.4.0",
     "express-processimage": "=0.1.18",
     "extend": "=1.2.1",
-    "jpegtran": "=0.0.5",
+    "jpegtran": "=0.0.6",
     "memoizesync": "=0.2.0",
     "ngmin": "=0.4.0",
     "optimist": "=0.2.6",
