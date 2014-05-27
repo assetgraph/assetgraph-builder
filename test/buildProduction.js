@@ -176,7 +176,7 @@ describe('buildProduction', function () {
             .run(done);
     });
 
-    it('should handle atest case with Angular.js templates', function (done) {
+    it('should handle a test case with Angular.js templates', function (done) {
         new AssetGraph({root: __dirname + '/../testdata/buildProduction/angularJs/'})
             .registerRequireJsConfig()
             .loadAssets('index.html')
@@ -778,7 +778,7 @@ describe('buildProduction', function () {
             .run(done);
     });
 
-    it('should handle a test case with some assets that can be inlined, with HtmlScript and HtmlStyline inlining thresholds of 100 bytes', function (done) {
+    it('should handle a test case with some assets that can be inlined, with HtmlScript and HtmlStyle inlining thresholds of 100 bytes', function (done) {
         new AssetGraph({root: __dirname + '/../testdata/buildProduction/inline/'})
             .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
@@ -790,7 +790,7 @@ describe('buildProduction', function () {
             .run(done);
     });
 
-    it('should handle a test case with some assets that can be inlined, with HtmlScript and HtmlStyline inlining thresholds of 5 bytes', function (done) {
+    it('should handle a test case with some assets that can be inlined, with HtmlScript and HtmlStyle inlining thresholds of 5 bytes', function (done) {
         new AssetGraph({root: __dirname + '/../testdata/buildProduction/inline/'})
             .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
@@ -802,7 +802,7 @@ describe('buildProduction', function () {
             .run(done);
     });
 
-    it('should handle a test case with some assets that can be inlined, with HtmlScript and HtmlStyline inlining thresholds of false', function (done) {
+    it('should handle a test case with some assets that can be inlined, with HtmlScript and HtmlStyle inlining thresholds of false', function (done) {
         new AssetGraph({root: __dirname + '/../testdata/buildProduction/inline/'})
             .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
