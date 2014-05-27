@@ -1006,4 +1006,34 @@ describe('buildProduction', function () {
             })
             .run(done);
     });
+
+    it('should handle images with wrong extensions', function (done) {
+        new AssetGraph({root: __dirname + '/../testdata/buildProduction/imagesWithWrongExtensions/'})
+            .on('warn', function (err) {
+                (this._emittedWarnings = this._emittedWarnings || []).push(err);
+            })
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets(['index.html'])
+            .populate()
+            .buildProduction({version: false, optimizeImages: true})
+            .queue(function (assetGraph) {
+                expect(assetGraph._emittedWarnings, 'to be an array whose items satisfy', 'to be an', Error);
+                expect(assetGraph._emittedWarnings, 'to have length', 2);
+                assetGraph._emittedWarnings.sort(function (a, b) {
+                    return a.message < b.message ? -1 : (a.message > b.message ? 1 : 0);
+                });
+                expect(
+                    assetGraph._emittedWarnings[0].message,
+                    'to contain',
+                    'testdata/buildProduction/imagesWithWrongExtensions/actuallyAJpeg.png: Error executing PngCrush: pngcrush did not write an output file, stdout output:'
+                );
+                expect(
+                    assetGraph._emittedWarnings[1].message,
+                    'to contain',
+                    'testdata/buildProduction/imagesWithWrongExtensions/actuallyAPng.jpg: Error executing /usr/bin/jpegtran -optimize: JpegTran: The stdout stream ended without emitting any data'
+                );
+                expect(assetGraph, 'to contain relation', 'HtmlStyle');
+            })
+            .run(done);
+    });
 });
