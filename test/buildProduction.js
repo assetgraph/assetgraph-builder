@@ -1025,7 +1025,7 @@ describe('buildProduction', function () {
                 expect(
                     assetGraph._emittedWarnings[0].message,
                     'to contain',
-                    'testdata/buildProduction/imagesWithWrongExtensions/actuallyAJpeg.png: Error executing PngCrush: pngcrush did not write an output file, stdout output:'
+                    'testdata/buildProduction/imagesWithWrongExtensions/actuallyAJpeg.png: Error executing pngcrush -rem alla'
                 );
                 expect(
                     assetGraph._emittedWarnings[1].message,

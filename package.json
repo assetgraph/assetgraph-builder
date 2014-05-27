@@ -47,7 +47,7 @@
     "optimist": "=0.2.6",
     "optipng": "=0.0.5",
     "passerror": "=1.0.0",
-    "pngcrush": "=0.0.4",
+    "pngcrush": "=0.0.5",
     "pngquant": "=0.1.4",
     "seq": "=0.3.5",
     "temp": "=0.4.0",
