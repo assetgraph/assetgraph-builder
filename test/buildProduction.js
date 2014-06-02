@@ -714,11 +714,13 @@ describe('buildProduction', function () {
             .loadAssets('index.html')
             .buildProduction({version: false, noCompress: true, defines: {
                 MYSYMBOL: new AssetGraph.JavaScript.uglifyJs.AST_String({value: 'theValue'}),
-                MYOTHERSYMBOL: new AssetGraph.JavaScript.uglifyJs.AST_String({value: 'theOtherValue'})
+                MYOTHERSYMBOL: new AssetGraph.JavaScript.uglifyJs.AST_String({value: 'theOtherValue'}),
+                MYOBJECT: {foo: 'bar'}
             }})
             .queue(function (assetGraph) {
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to match', /theValue/);
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'not to match', /theOtherValue/);
+                expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to match', /alert\("bar"\);/);
             })
             .run(done);
     });
@@ -729,11 +731,13 @@ describe('buildProduction', function () {
             .loadAssets('index.html')
             .buildProduction({version: false, noCompress: false, defines: {
                 MYSYMBOL: new AssetGraph.JavaScript.uglifyJs.AST_String({value: 'theValue'}),
-                MYOTHERSYMBOL: new AssetGraph.JavaScript.uglifyJs.AST_String({value: 'theOtherValue'})
+                MYOTHERSYMBOL: new AssetGraph.JavaScript.uglifyJs.AST_String({value: 'theOtherValue'}),
+                MYOBJECT: {foo: 'bar'}
             }})
             .queue(function (assetGraph) {
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to match', /theValue/);
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'not to match', /theOtherValue/);
+                expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to match', /alert\("bar"\);/);
             })
             .run(done);
     });
