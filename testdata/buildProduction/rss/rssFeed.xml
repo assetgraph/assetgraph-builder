@@ -9,7 +9,7 @@
  <ttl>1800</ttl>
  <item>
   <title>Example entry</title>
-  <description>Here is some text containing an interesting description.</description>
+  <description>Here is some text containing an interesting description and an image: &lt;img src="foo.png" /&gt;.</description>
   <link>http://www.wikipedia.org/</link>
   <guid>unique string per item</guid>
   <pubDate>Mon, 06 Sep 2009 16:20:00 +0000 </pubDate>
