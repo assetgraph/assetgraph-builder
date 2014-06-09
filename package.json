@@ -52,12 +52,12 @@
     "seq": "=0.3.5",
     "temp": "=0.4.0",
     "underscore": "=1.2.0",
-    "urltools": "=0.1.0",
-    "node-zopfli": "=1.1.4"
+    "urltools": "=0.1.0"
   },
   "optionalDependencies": {
     "assetgraph-sprite": "=0.5.5",
-    "histogram": "=0.1.5"
+    "histogram": "=0.1.5",
+    "node-zopfli": "=1.1.4"
   },
   "devDependencies": {
     "gm": "=1.6.1",
