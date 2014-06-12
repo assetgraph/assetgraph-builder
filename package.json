@@ -59,11 +59,13 @@
     "histogram": "=0.1.5"
   },
   "devDependencies": {
+    "coveralls": "2.10.0",
     "gm": "=1.6.1",
     "istanbul": "=0.2.10",
     "jshint": "=2.5.1",
     "less": "=1.6.3",
     "mocha": "=1.20.0",
+    "mocha-lcov-reporter": "=0.0.1",
     "unexpected": "=3.2.0"
   },
   "engines": {
@@ -79,7 +81,7 @@
   "scripts": {
     "lint": "jshint . bin/*",
     "test": "npm run lint && mocha",
-    "travis": "npm run lint && mocha -R spec",
+    "travis": "npm run lint && NODE_ENV=development ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha -- --reporter spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "coverage": "NODE_ENV=development ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha -- --reporter dot"
   }
 }
