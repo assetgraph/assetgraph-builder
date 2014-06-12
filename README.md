@@ -2,7 +2,6 @@ AssetGraph-builder
 ==================
 [![NPM version](https://badge.fury.io/js/assetgraph-builder.png)](http://badge.fury.io/js/assetgraph-builder)
 [![Build Status](https://travis-ci.org/assetgraph/assetgraph-builder.png?branch=master)](https://travis-ci.org/assetgraph/assetgraph-builder)
-[![Coverage Status](https://coveralls.io/repos/assetgraph/assetgraph-builder/badge.png)](https://coveralls.io/r/assetgraph/assetgraph-builder)
 [![Dependency Status](https://david-dm.org/assetgraph/assetgraph-builder.png)](https://david-dm.org/assetgraph/assetgraph-builder)
 
 AssetGraph-based build system (mostly) for single-page web
