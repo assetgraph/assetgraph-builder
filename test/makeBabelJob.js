@@ -26,7 +26,6 @@ describe('makeBabelJob', function () {
                 ]),
                 buffersByStreamName = {},
                 streamNames = ['stdout', 'stderr'];
-
             streamNames.forEach(function (streamName) {
                 buffersByStreamName[streamName] = [];
                 makeBabelJobProcess[streamName].on('data', function (chunk) {

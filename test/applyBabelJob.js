@@ -76,6 +76,9 @@ describe('applyBabelJob', function () {
                         '            that comes back the same\n' +
                         '            in the translation job\n' +
                         '        </span>\n' +
+                        '        <span data-i18n="text: null">data-i18n specifying that the contents of the tag should not be translated</span>\n' +
+                        '        <span data-i18n="">data-i18n specifying that the contents of the tag should not be translated</span>\n' +
+                        '        <span data-i18n="attr: {title: null}" title="data-i18n specifiying that the title attribute should not be translated"></span>\n' +
                         '    </body>\n' +
                         '</html>\n'
                     );
