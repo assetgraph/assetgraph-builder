@@ -12,8 +12,6 @@ var expect = require('./unexpected-with-plugins'),
     AssetGraph = require('../lib/AssetGraph');
 
 describe('buildProduction', function () {
-    this.timeout(100000);
-
     it('should handle a simple test case', function (done) {
         new AssetGraph({root: __dirname + '/../testdata/buildProduction/simple/'})
             .on('error', done)
@@ -819,7 +817,6 @@ describe('buildProduction', function () {
     });
 
     it('should handle a test case with a very big stylesheet that needs to be split up in order to work in old IE versions (#107)', function (done) {
-        this.timeout(20000);
         new AssetGraph({root: __dirname + '/../testdata/buildProduction/issue107/'})
             .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('falcon.html')

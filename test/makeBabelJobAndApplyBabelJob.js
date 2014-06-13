@@ -6,7 +6,6 @@ var expect = require('./unexpected-with-plugins'),
     temp = require('temp');
 
 describe('makeBabelJob and applyBabelJob', function () {
-    this.timeout(20000);
     it('should extract and reimport a translation job', function (done) {
         var babelDir = temp.mkdirSync(),
             tmpTestCaseCopyDir = temp.mkdirSync(),

@@ -5,8 +5,6 @@ var expect = require('./unexpected-with-plugins'),
     urlTools = require('urltools');
 
 describe('processImages', function () {
-    this.timeout(20000);
-
     it('should handle a Css test case', function (done) {
         new AssetGraph({root: __dirname + '/../testdata/processImages/css/'})
             .loadAssets('style.css')
