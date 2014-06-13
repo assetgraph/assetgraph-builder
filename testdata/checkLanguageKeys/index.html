@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <span>This should be translated, but there is no data-i18n attribute for the text contents</span>
+        <span title="This should be translated, but there is no data-i18n attribute for the title attribute"></span>
+        <span title="This should be translated, but there is no data-i18n attribute for the title attribute">This should be translated, but there is no data-i18n attribute for the text contents</span>
+        <span title="This should be translated, but the data-i18n attribute does not cover the title attribute" data-i18n="ThisIsTranslated">This is 
+        translated</span>
+        <span title="The title" data-i18n="attr: {title: 'TheTitle'}">This should be translated, but there is no data-i18n attribute for the text contents, although there is one for the title attribute</span>
+        <span data-i18n="text: null">data-i18n specifying that the contents of the tag should not be translated</span>
+        <span data-i18n="">data-i18n specifying that the contents of the tag should not be translated</span>
+        <span data-i18n="attr: {title: null}" title="data-i18n specifiying that the title attribute should not be translated"></span>
+    </body>
+</html>
