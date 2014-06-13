@@ -25,6 +25,11 @@ var optimist = require('optimist'),
             type: 'string',
             demand: false
         })
+        .options('canonicalurl', {
+            describe: 'URI root where the project being built will be deployed (experimental)',
+            type: 'string',
+            demand: false
+        })
         .options('optimizeimages', {
             describe: 'Perform automatic lossless optimization of all images using pngcrush, pngquant, optipng, and jpegtran',
             type: 'boolean',
@@ -186,6 +191,7 @@ var _ = require('underscore'),
     outRoot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
     cdnRoot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
     fullCdnRoot = (/^\/\//.test(cdnRoot) ? 'http:' : '') + cdnRoot,
+    canonicalUrl = commandLineOptions.canonicalurl && urlTools.ensureTrailingSlash(commandLineOptions.canonicalurl),
     rootUrl = commandLineOptions.root && urlTools.urlOrFsPathToUrl(commandLineOptions.root, true),
     localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
         return localeId.split(',');
@@ -306,9 +312,10 @@ new AssetGraph({root: rootUrl})
         noCompress: commandLineOptions.nocompress,
         sharedBundles: commandLineOptions.sharedbundles,
         stripDebug: !commandLineOptions.debug,
-        addInitialHtmlExtension: commandLineOptions.addinitialhtmlextension
+        addInitialHtmlExtension: commandLineOptions.addinitialhtmlextension,
+        canonicalUrl: canonicalUrl
     })
-    .writeAssetsToDisc({url: /^file:/, isLoaded: true}, outRoot)
+    .writeAssetsToDisc({url: canonicalUrl ? query.createPrefixMatcher(canonicalUrl) : /^file:/, isLoaded: true}, outRoot)
     .if(cdnRoot)
         .writeAssetsToDisc({url: query.createPrefixMatcher(fullCdnRoot), isLoaded: true}, outRoot + 'static/cdn/', fullCdnRoot)
     .endif()
