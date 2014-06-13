@@ -315,7 +315,7 @@ new AssetGraph({root: rootUrl})
         addInitialHtmlExtension: commandLineOptions.addinitialhtmlextension,
         canonicalUrl: canonicalUrl
     })
-    .writeAssetsToDisc({url: canonicalUrl ? query.createPrefixMatcher(canonicalUrl) : /^file:/, isLoaded: true}, outRoot)
+    .writeAssetsToDisc({url: canonicalUrl ? query.createPrefixMatcher(canonicalUrl) : /^file:/, isLoaded: true}, outRoot, canonicalUrl)
     .if(cdnRoot)
         .writeAssetsToDisc({url: query.createPrefixMatcher(fullCdnRoot), isLoaded: true}, outRoot + 'static/cdn/', fullCdnRoot)
     .endif()
