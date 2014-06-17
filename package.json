@@ -35,7 +35,7 @@
   ],
   "main": "lib/AssetGraph.js",
   "dependencies": {
-    "assetgraph": "=1.6.37",
+    "assetgraph": "=1.6.38",
     "async": "=0.2.9",
     "autoprefixer": "~1.1.20140512",
     "chalk": "=0.4.0",
