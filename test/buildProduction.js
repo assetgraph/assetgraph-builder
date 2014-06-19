@@ -58,12 +58,12 @@ describe('buildProduction', function () {
 
                 expect(assetGraph, 'to contain asset', {
                     url: /\/index\.en\.html$/,
-                    text: '<!DOCTYPE html>\n<html data-version="The version number" lang="en" manifest="index.appcache"><head><title>The English title</title><style type="text/css">body{color:teal}body{color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.url + '" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">The English link text</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif"></script></body></html>'
+                    text: '<!DOCTYPE html><html data-version="The version number" lang="en" manifest="index.appcache"><head><title>The English title</title><style type="text/css">body{color:teal}body{color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.url + '" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">The English link text</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif"></script></body></html>'
                 });
 
                 expect(assetGraph, 'to contain asset', {
                     url: /\/index\.da\.html$/,
-                    text: '<!DOCTYPE html>\n<html data-version="The version number" lang="da" manifest="index.appcache"><head><title>Den danske titel</title><style type="text/css">body{color:teal}body{color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.url + '" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif"></script></body></html>'
+                    text: '<!DOCTYPE html><html data-version="The version number" lang="da" manifest="index.appcache"><head><title>Den danske titel</title><style type="text/css">body{color:teal}body{color:maroon}</style><style type="text/css">body{color:tan}</style><style type="text/css">body div{width:100px}</style></head><body><script src="' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.url + '" async="async" defer="defer"></script><script>alert("script3");</script><script type="text/html" id="template"><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif"></script></body></html>'
                 });
 
                 var afterRequireJs = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.text.replace(/^[\s\S]*req\(cfg\)\}\}\(this\),/, '');
@@ -196,7 +196,7 @@ describe('buildProduction', function () {
             .buildProduction({version: false})
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain no relations', {type: 'JavaScriptAngularJsTemplateCacheAssignment'});
-                expect(assetGraph.findAssets({type: 'Html'})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), 'to equal', '<!doctype html>\n<html ng-app="myApp"><head><title>My AngularJS App</title></head><body><ul class="menu"><li><a href="#/view1">view1</a></li> <li><a href="#/view2">view2</a></li> <li><a href="#/view3">view3</a></li> <li><a href="#/view4">view4</a></li></ul><div ng-view=""></div><script src="MD5.js"></script><script type="text/ng-template" id="partials/2.html"><h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1></script><script type="text/ng-template" id="partials/1.html"><h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1></script><script type="text/ng-template" id="partials/4.html"><h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected <span data-i18n="foo">directly</span> into <code>$templateCache</code></h1></script><script type="text/ng-template" id="partials/5.html"><h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png">) injected directly into <code>$templateCache</code>, but using a different variable name</h1></script></body></html>');
+                expect(assetGraph.findAssets({type: 'Html'})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), 'to equal', '<!DOCTYPE html><html ng-app="myApp"><head><title>My AngularJS App</title></head><body><ul class="menu"><li><a href="#/view1">view1</a></li> <li><a href="#/view2">view2</a></li> <li><a href="#/view3">view3</a></li> <li><a href="#/view4">view4</a></li></ul><div ng-view=""></div><script src="MD5.js"></script><script type="text/ng-template" id="partials/2.html"><h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1></script><script type="text/ng-template" id="partials/1.html"><h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1></script><script type="text/ng-template" id="partials/4.html"><h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected <span data-i18n="foo">directly</span> into <code>$templateCache</code></h1></script><script type="text/ng-template" id="partials/5.html"><h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png">) injected directly into <code>$templateCache</code>, but using a different variable name</h1></script></body></html>');
                 expect(assetGraph, 'to contain asset', {isHtml: true, isInline: false, isLoaded: true});
                 expect(assetGraph, 'to contain relations', {type: 'HtmlInlineScriptTemplate'}, 4);
 
@@ -230,8 +230,8 @@ describe('buildProduction', function () {
                 expect(assetGraph, 'to contain assets', {type: 'Html', isFragment: false}, 2);
                 expect(assetGraph, 'to contain assets', {type: 'JavaScript'}, 2);
                 expect(assetGraph, 'to contain no relations', {type: 'JavaScriptAngularJsTemplateCacheAssignment'});
-                expect(assetGraph.findAssets({type: 'Html', url: /\/index\.en\.html$/})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), 'to equal', '<!doctype html>\n<html ng-app="myApp" lang="en"><head><title>My AngularJS App</title></head><body><ul class="menu"><li><a href="#/view1">view1</a></li> <li><a href="#/view2">view2</a></li> <li><a href="#/view3">view3</a></li> <li><a href="#/view4">view4</a></li></ul><div ng-view=""></div><script src="MD5.js"></script><script type="text/ng-template" id="partials/2.html"><h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1></script><script type="text/ng-template" id="partials/1.html"><h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1></script><script type="text/ng-template" id="partials/4.html"><h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected directly into <code>$templateCache</code></h1></script><script type="text/ng-template" id="partials/5.html"><h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png">) injected directly into <code>$templateCache</code>, but using a different variable name</h1></script></body></html>');
-                expect(assetGraph.findAssets({type: 'Html', url: /\/index\.da\.html$/})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), 'to equal', '<!doctype html>\n<html ng-app="myApp" lang="da"><head><title>My AngularJS App</title></head><body><ul class="menu"><li><a href="#/view1">view1</a></li> <li><a href="#/view2">view2</a></li> <li><a href="#/view3">view3</a></li> <li><a href="#/view4">view4</a></li></ul><div ng-view=""></div><script src="MD5.js"></script><script type="text/ng-template" id="partials/2.html"><h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1></script><script type="text/ng-template" id="partials/1.html"><h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1></script><script type="text/ng-template" id="partials/4.html"><h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected lige direkte into <code>$templateCache</code></h1></script><script type="text/ng-template" id="partials/5.html"><h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png">) injected directly into <code>$templateCache</code>, but using a different variable name</h1></script></body></html>');
+                expect(assetGraph.findAssets({type: 'Html', url: /\/index\.en\.html$/})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), 'to equal', '<!DOCTYPE html><html ng-app="myApp" lang="en"><head><title>My AngularJS App</title></head><body><ul class="menu"><li><a href="#/view1">view1</a></li> <li><a href="#/view2">view2</a></li> <li><a href="#/view3">view3</a></li> <li><a href="#/view4">view4</a></li></ul><div ng-view=""></div><script src="MD5.js"></script><script type="text/ng-template" id="partials/2.html"><h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1></script><script type="text/ng-template" id="partials/1.html"><h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1></script><script type="text/ng-template" id="partials/4.html"><h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected directly into <code>$templateCache</code></h1></script><script type="text/ng-template" id="partials/5.html"><h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png">) injected directly into <code>$templateCache</code>, but using a different variable name</h1></script></body></html>');
+                expect(assetGraph.findAssets({type: 'Html', url: /\/index\.da\.html$/})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), 'to equal', '<!DOCTYPE html><html ng-app="myApp" lang="da"><head><title>My AngularJS App</title></head><body><ul class="menu"><li><a href="#/view1">view1</a></li> <li><a href="#/view2">view2</a></li> <li><a href="#/view3">view3</a></li> <li><a href="#/view4">view4</a></li></ul><div ng-view=""></div><script src="MD5.js"></script><script type="text/ng-template" id="partials/2.html"><h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1></script><script type="text/ng-template" id="partials/1.html"><h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1></script><script type="text/ng-template" id="partials/4.html"><h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected lige direkte into <code>$templateCache</code></h1></script><script type="text/ng-template" id="partials/5.html"><h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png">) injected directly into <code>$templateCache</code>, but using a different variable name</h1></script></body></html>');
                 expect(assetGraph, 'to contain assets', {isHtml: true, isInline: false, isLoaded: true}, 2);
                 expect(assetGraph, 'to contain relations', {type: 'HtmlInlineScriptTemplate'}, 8);
 
@@ -268,7 +268,7 @@ describe('buildProduction', function () {
             .buildProduction({version: false})
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain no relations', {type: 'JavaScriptAngularJsTemplateCacheAssignment'});
-                expect(assetGraph.findAssets({type: 'Html'})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), 'to equal', '<!doctype html>\n<html ng-app="myApp"><head><title>My AngularJS App</title></head><body><ul class="menu"><li><a href="#/view1">view1</a></li> <li><a href="#/view2">view2</a></li> <li><a href="#/view3">view3</a></li> <li><a href="#/view4">view4</a></li></ul><div ng-view=""></div><script src="MD5.js"></script><script type="text/ng-template" id="partials/2.html"><h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1></script><script type="text/ng-template" id="partials/1.html"><h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1></script><script type="text/ng-template" id="partials/4.html"><h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected <span data-i18n="foo">directly</span> into <code>$templateCache</code></h1></script><script type="text/ng-template" id="partials/5.html"><h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png">) injected directly into <code>$templateCache</code>, but using a different variable name</h1></script></body></html>');
+                expect(assetGraph.findAssets({type: 'Html'})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), 'to equal', '<!DOCTYPE html><html ng-app="myApp"><head><title>My AngularJS App</title></head><body><ul class="menu"><li><a href="#/view1">view1</a></li> <li><a href="#/view2">view2</a></li> <li><a href="#/view3">view3</a></li> <li><a href="#/view4">view4</a></li></ul><div ng-view=""></div><script src="MD5.js"></script><script type="text/ng-template" id="partials/2.html"><h1>2: Template in a &lt;script type="text/ng-template"&gt;-tag</h1></script><script type="text/ng-template" id="partials/1.html"><h1>1: External template loaded asynchronously with <code>templateUrl: \'partials/1.html\'</code></h1></script><script type="text/ng-template" id="partials/4.html"><h1>4: Template with a relation (<img src="static/bar.d65dd5318f.png">) injected <span data-i18n="foo">directly</span> into <code>$templateCache</code></h1></script><script type="text/ng-template" id="partials/5.html"><h1>5: Template with a relation (<img src="static/quux.d65dd5318f.png">) injected directly into <code>$templateCache</code>, but using a different variable name</h1></script></body></html>');
 
                 expect(assetGraph, 'to contain asset', {isHtml: true, isInline: false, isLoaded: true});
                 expect(assetGraph, 'to contain relations', {type: 'HtmlInlineScriptTemplate'}, 4);
@@ -328,7 +328,7 @@ describe('buildProduction', function () {
                 expect(htmlAssets, 'to have length', 1);
                 var htmlAsset = htmlAssets[0];
                 expect(htmlAsset.parseTree.documentElement.getAttribute('lang'), 'to equal', 'da');
-                expect(htmlAsset.text, 'to equal', '<!DOCTYPE html>\n<html lang="da"><head><title>Ja, <!--#echo "exactly" --> sådan</title></head><body><div><!--#echo "Here" --> er tingen</div></body></html>');
+                expect(htmlAsset.text, 'to equal', '<!DOCTYPE html><html lang="da"><head><title>Ja, <!--#echo "exactly" --> sådan</title></head><body><div><!--#echo "Here" --> er tingen</div></body></html>');
             })
             .run(done);
     });
@@ -351,7 +351,7 @@ describe('buildProduction', function () {
 
                 expect(assetGraph, 'to contain relations', {type: 'HtmlInlineScriptTemplate'}, 2);
 
-                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), 'to equal', '<!DOCTYPE html>\n<html><head></head><body><script src="MD5.js"></script><script type="text/html" id="foo"><img data-bind="attr:{src:\'static/foo.d65dd5318f.png\'}"></script><script type="text/html" id="bar"><div><h1>bar.ko</h1></div></script></body></html>');
+                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text.replace(/src="static\/bundle-\d+\.[a-f0-9]{10}\.js"/, 'src="MD5.js"'), 'to equal', '<!DOCTYPE html><html><head></head><body><script src="MD5.js"></script><script type="text/html" id="foo"><img data-bind="attr:{src:\'static/foo.d65dd5318f.png\'}"></script><script type="text/html" id="bar"><div><h1>bar.ko</h1></div></script></body></html>');
 
                 var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) { return node.getAttribute('id') === 'foo'; }})[0];
                 expect(relation, 'to be truthy');
@@ -376,7 +376,7 @@ describe('buildProduction', function () {
             .buildProduction({version: false})
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', {type: 'Png'});
-                expect(assetGraph, 'to contain asset', {type: 'Html', isInitial: true, isFragment: false, text: '<!DOCTYPE html>\n<html><head></head><body><script>var myTemplateUrl="static/myTemplate.3b2865806b.html";</script></body></html>'});
+                expect(assetGraph, 'to contain asset', {type: 'Html', isInitial: true, isFragment: false, text: '<!DOCTYPE html><html><head></head><body><script>var myTemplateUrl="static/myTemplate.3b2865806b.html";</script></body></html>'});
             })
             .run(done);
     });
@@ -407,7 +407,7 @@ describe('buildProduction', function () {
             })
             .buildProduction({version: false})
             .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html>\n<html><head></head><body><script src="foo"></script></body></html>');
+                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script src="foo"></script></body></html>');
             })
             .run(done);
     });
@@ -422,7 +422,7 @@ describe('buildProduction', function () {
                 cdnRoot: 'http://cdn.example.com/foo/'
             })
             .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html>\n<html><head></head><body><script>var imgUrl="http://cdn.example.com/foo/test.d65dd5318f.png";</script></body></html>');
+                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var imgUrl="http://cdn.example.com/foo/test.d65dd5318f.png";</script></body></html>');
             })
             .run(done);
     });
@@ -449,7 +449,7 @@ describe('buildProduction', function () {
                 cdnRoot: 'http://cdn.example.com/foo/'
             })
             .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html>\n<html><head></head><body><script>var swfUrl="static/foo.d41d8cd98f.swf";</script></body></html>');
+                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var swfUrl="static/foo.d41d8cd98f.swf";</script></body></html>');
             })
             .run(done);
     });
@@ -465,7 +465,7 @@ describe('buildProduction', function () {
                 cdnFlash: true
             })
             .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html>\n<html><head></head><body><script>var swfUrl="http://cdn.example.com/foo/foo.d41d8cd98f.swf";</script></body></html>');
+                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var swfUrl="http://cdn.example.com/foo/foo.d41d8cd98f.swf";</script></body></html>');
             })
             .run(done);
     });
@@ -873,7 +873,7 @@ describe('buildProduction', function () {
             .buildProduction({stripDebug: true, version: false})
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain no assets', {type: 'JavaScript'});
-                expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to equal', '<!DOCTYPE html>\n<html><head></head><body><div>Text</div></body></html>');
+                expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><div>Text</div></body></html>');
             })
             .run(done);
     });
@@ -926,7 +926,7 @@ describe('buildProduction', function () {
                 expect(assetGraph, 'to contain asset', {url: assetGraph.root + '.htaccess'});
                 expect(assetGraph, 'to contain asset', {url: assetGraph.root + 'favicon.ico'});
                 expect(assetGraph, 'to contain asset', {url: assetGraph.root + 'static/favicon.9f0922f8d9.ico'});
-                expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to equal', '<!DOCTYPE html>\n<html><head><link rel="author" href="humans.txt" type="text/plain"><link rel="icon" href="static/favicon.9f0922f8d9.ico" type="image/x-icon"></head><body>Here\'s my <a href=".htaccess">.htaccess file</a>, grab it if you can! If you\'re a robot, please refer to <a href="robots.txt">robots.txt</a>.</body></html>');
+                expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to equal', '<!DOCTYPE html><html><head><link rel="author" href="humans.txt" type="text/plain"><link rel="icon" href="static/favicon.9f0922f8d9.ico" type="image/x-icon"></head><body>Here\'s my <a href=".htaccess">.htaccess file</a>, grab it if you can! If you\'re a robot, please refer to <a href="robots.txt">robots.txt</a>.</body></html>');
             })
             .run(done);
     });
