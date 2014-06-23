@@ -73,7 +73,7 @@ utilities installed. On Ubuntu you can grab them all by running:
 
 Or on OS X, with [homebrew](http://brew.sh/):
 
-   brew install cairo jpeg giflib optipng pngcrush pngquant pango graphicsmagick jpeg-turbo inkscape
+    brew install cairo jpeg giflib optipng pngcrush pngquant pango graphicsmagick jpeg-turbo inkscape
 
 
 Then make sure you have node.js and <a href="http://npmjs.org/">npm</a> installed,
