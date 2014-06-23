@@ -71,6 +71,11 @@ utilities installed. On Ubuntu you can grab them all by running:
 
     sudo apt-get install -y libcairo2-dev libjpeg8-dev libgif-dev optipng pngcrush pngquant libpango1.0-dev graphicsmagick libjpeg-turbo-progs inkscape
 
+Or on OS X, with [homebrew](http://brew.sh/):
+
+   brew install cairo jpeg giflib optipng pngcrush pngquant pango graphicsmagick jpeg-turbo inkscape
+
+
 Then make sure you have node.js and <a href="http://npmjs.org/">npm</a> installed,
 then run:
 
