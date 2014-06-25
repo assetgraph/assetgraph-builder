@@ -267,7 +267,7 @@ if (commandLineOptions.inlinesize) {
 
 if (commandLineOptions._.length > 0) {
     inputUrls = commandLineOptions._.map(function (urlOrFsPath) {
-        return urlTools.urlOrFsPathToUrl(urlOrFsPath, false);
+        return urlTools.urlOrFsPathToUrl(String(urlOrFsPath), false);
     });
     if (!rootUrl) {
         rootUrl = urlTools.findCommonUrlPrefix(inputUrls.filter(function (inputUrl) {
