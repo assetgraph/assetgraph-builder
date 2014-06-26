@@ -931,6 +931,19 @@ describe('buildProduction', function () {
             .run(done);
     });
 
+    it('should move a favicon.ico file not located at the root to /static/', function (done) {
+        new AssetGraph({root: __dirname + '/../testdata/buildProduction/faviconOutsideRoot/'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets(['index.html'])
+            .populate()
+            .buildProduction({version: false})
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', {url: assetGraph.root + 'static/favicon.9f0922f8d9.ico'});
+                expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to equal', '<!DOCTYPE html><html><head><link rel="shortcut icon" type="image/vnd.microsoft.icon" href="static/favicon.9f0922f8d9.ico"></head><body></body></html>');
+            })
+            .run(done);
+    });
+
     it('should handle a test case with an RSS feed (#118)', function (done) {
         new AssetGraph({root: __dirname + '/../testdata/buildProduction/rss/'})
             .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
