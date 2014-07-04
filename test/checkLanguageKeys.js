@@ -29,4 +29,21 @@ describe('checkLanguageKeys', function () {
             })
             .run(done);
     });
+    it('a space at the end of a TR original text', function (done) {
+        var infos = [];
+        new AssetGraph({root: __dirname + '/../testdata/checkLanguageKeysNeverEndingSpaceLoop/'})
+            .on('info', function (err) {
+                infos.push(err);
+            })
+            .loadAssets('index.html')
+            .populate()
+            .checkLanguageKeys({
+                supportedLocaleIds: ['en_us', 'da'],
+                defaultLocaleId: 'en_us'
+            })
+            .queue(function (assetGraph) {
+                expect(infos.length, 'to be', 0);
+            })
+            .run(done);
+    });
 });
