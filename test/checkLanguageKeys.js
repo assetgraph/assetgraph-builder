@@ -42,7 +42,7 @@ describe('checkLanguageKeys', function () {
                 defaultLocaleId: 'en_us'
             })
             .queue(function (assetGraph) {
-                expect(infos.length, 'to be', 0);
+                expect(infos, 'to have length', 2);
             })
             .run(done);
     });
