@@ -27,5 +27,9 @@ describe('i18nTools', function () {
         it('should support curly brace followed by number followed by non-curly end brace in text tokens', function () {
             expect('foo {5 bar', 'to tokenize as', [{type: 'text', value: 'foo {5 bar'}]);
         });
+
+        it('should work even with a space at the end of a string', function () {
+            expect('foo bar ', 'to tokenize as', [{type: 'text', value: 'foo bar '}]);
+        });
     });
 });
