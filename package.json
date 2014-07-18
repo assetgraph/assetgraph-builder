@@ -54,7 +54,7 @@
     "urltools": "=0.1.0"
   },
   "optionalDependencies": {
-    "assetgraph-sprite": "=0.5.5",
+    "assetgraph-sprite": "=0.6.1",
     "histogram": "=0.1.5",
     "node-zopfli": "=1.1.4"
   },
