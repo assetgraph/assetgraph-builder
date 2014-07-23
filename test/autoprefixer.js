@@ -38,18 +38,4 @@ describe('transforms.autoprefixer', function () {
                 .run(done);
         }, 'not to throw');
     });
-
-    it('should remove prefixfree.js and prefixfree.min.js', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/autoprefixer/'})
-            .loadAssets('prefixfree.html')
-            .populate()
-            .queue(function (assetGraph) {
-                expect(assetGraph, 'to contain relations', 'HtmlScript', 2);
-            })
-            .autoprefixer()
-            .queue(function (assetGraph) {
-                expect(assetGraph, 'to contain relations', 'HtmlScript', 0);
-            })
-            .run(done);
-    });
 });
