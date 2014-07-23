@@ -63,7 +63,7 @@
     "node-zopfli": "=1.1.4"
   },
   "devDependencies": {
-    "autoprefixer": "=2.1",
+    "autoprefixer": "=2.1.1",
     "gm": "=1.6.1",
     "istanbul": "=0.2.10",
     "jshint": "=2.5.1",
