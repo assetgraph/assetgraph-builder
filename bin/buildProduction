@@ -35,8 +35,9 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
-        .options('autoprefix', {
-            describe: 'Automatically prefix all css based on the rules supplied. See https://github.com/ai/autoprefixer#browsers',
+        .options('browsers', {
+            alias: 'b',
+            describe: 'Specify which browsers to support. Configures autoprefixer and controls which IE hacks to apply. Syntax: https://github.com/ai/autoprefixer#browsers',
             type: 'string',
             demand: false
         })
@@ -291,6 +292,7 @@ new AssetGraph({root: rootUrl})
     .loadAssets(inputUrls)
     .buildProduction({
         version: commandLineOptions.version,
+        browsers: commandLineOptions.browsers,
         less: !commandLineOptions.noless,
         optimizeImages: commandLineOptions.optimizeimages,
         inlineByRelationType: inlineByRelationType,
