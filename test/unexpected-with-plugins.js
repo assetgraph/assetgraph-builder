@@ -1,4 +1,4 @@
-var expect = module.exports = require('unexpected').clone().installPlugin(require('unexpected-jsdom')),
+var expect = module.exports = require('unexpected').clone().installPlugin(require('unexpected-jsdom')).installPlugin(require('unexpected-sinon')),
     URL = require('url');
 
 expect.addAssertion('to contain [no] (asset|assets)', function (expect, subject, queryObj, number) {

@@ -69,8 +69,10 @@
     "jshint": "=2.5.1",
     "less": "=1.6.3",
     "mocha": "=1.20.0",
+    "sinon": "=1.10.3",
     "unexpected": "=3.2.0",
-    "unexpected-jsdom": "=0.1.0"
+    "unexpected-jsdom": "=0.1.0",
+    "unexpected-sinon": "=3.0.2"
   },
   "engines": {
     "node": ">=0.8.0"
