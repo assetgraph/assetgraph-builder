@@ -822,8 +822,8 @@ describe('buildProduction', function () {
             .loadAssets('falcon.html')
             .buildProduction({version: false, browsers: 'ie >= 8'})
             .queue(function (assetGraph) {
-                expect(assetGraph, 'to contain relations', {type: 'HtmlStyle'}, 3);
-                expect(assetGraph, 'to contain assets', {type: 'Css'}, 3);
+                expect(assetGraph, 'to contain relations', 'HtmlStyle', 3);
+                expect(assetGraph, 'to contain assets', 'Css', 3);
 
                 var htmlAsset = assetGraph.findAssets({type: 'Html'})[0],
                     matchLinkRelStylesheet = htmlAsset.text.match(/<link rel="stylesheet" href="static\/falcon-example-\d\.[0-9a-f]{10}\.css">/g);
@@ -839,18 +839,6 @@ describe('buildProduction', function () {
                 expect(relationsFromCssToLoadedAssets, 'to be an array whose items satisfy', function (relationFromCssToLoadedAsset) {
                     expect(relationFromCssToLoadedAsset.to.url, 'to match', /\/static\/fake.d65dd5318f\.png$/);
                 });
-            })
-            .run(done);
-    });
-
-    it('should leave the big stylesheet alone if IE < 10 does not need to be supported', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/buildProduction/issue107/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
-            .loadAssets('falcon.html')
-            .buildProduction({version: false, browsers: 'ie >= 10'})
-            .queue(function (assetGraph) {
-                expect(assetGraph, 'to contain relations', {type: 'HtmlStyle'}, 1);
-                expect(assetGraph, 'to contain assets', {type: 'Css'}, 1);
             })
             .run(done);
     });
