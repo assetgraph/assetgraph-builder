@@ -35,8 +35,9 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
-        .options('autoprefix', {
-            describe: 'Automatically prefix all css based on the rules supplied. See https://github.com/ai/autoprefixer#browsers',
+        .options('browsers', {
+            alias: 'b',
+            describe: 'Specify which browsers to support. Configures autoprefixer and controls which IE hacks to apply. Syntax: https://github.com/ai/autoprefixer#browsers',
             type: 'string',
             demand: false
         })
@@ -93,11 +94,6 @@ var optimist = require('optimist'),
         })
         .options('inline', {
             describe: 'Set size threshold for inlining. Supported values: false (never inline), true (always inline), number (inline if target is smaller than this number of bytes). Also supported: --inlinehtmlscript true, --inlinecssimage 8192 etc.',
-            default: false
-        })
-        .options('noinlinecssimageswithlegacyfallback', {
-            describe: 'Do not run the transform that inlines CSS images and creates an alternative stylesheet for IE8',
-            type: 'boolean',
             default: false
         })
         .options('cdnhtml', {
@@ -202,7 +198,6 @@ var _ = require('underscore'),
     defaultLocaleId = commandLineOptions.defaultlocale && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale),
     defines = {},
     inputUrls,
-    noInlineCssImagesWithLegacyFallback = commandLineOptions.noinlinecssimageswithlegacyfallback,
     inlineByRelationType = {};
 
 if (commandLineOptions.inline) {
@@ -241,7 +236,7 @@ if (typeof inlineByRelationType['*'] === 'undefined') {
 if (commandLineOptions.inlinesize) {
     console.warn(chalk.yellow('INFO: the --inlinesize switch is deprecated. Please use --inlinecssimage <number> instead'));
     inlineByRelationType.CssImage = commandLineOptions.inlinesize;
-} else if (!('CssImage' in inlineByRelationType) && !noInlineCssImagesWithLegacyFallback) {
+} else if (!('CssImage' in inlineByRelationType)) {
     inlineByRelationType.CssImage = 8192;
 }
 
@@ -291,10 +286,10 @@ new AssetGraph({root: rootUrl})
     .loadAssets(inputUrls)
     .buildProduction({
         version: commandLineOptions.version,
+        browsers: commandLineOptions.browsers,
         less: !commandLineOptions.noless,
         optimizeImages: commandLineOptions.optimizeimages,
         inlineByRelationType: inlineByRelationType,
-        noInlineCssImagesWithLegacyFallback: noInlineCssImagesWithLegacyFallback,
         autoprefix: commandLineOptions.autoprefix,
         gzip: commandLineOptions.gzip,
         defines: defines,

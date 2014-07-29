@@ -9,6 +9,7 @@ var expect = require('./unexpected-with-plugins'),
     gm = require('gm'),
     vm = require('vm'),
     passError = require('passerror'),
+    sinon = require('sinon'),
     AssetGraph = require('../lib/AssetGraph');
 
 describe('buildProduction', function () {
@@ -816,29 +817,18 @@ describe('buildProduction', function () {
             .run(done);
     });
 
-    it('should handle a test case with a very big stylesheet that needs to be split up in order to work in old IE versions (#107)', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/buildProduction/issue107/'})
+    it('should call splitCssIfIeLimitIsReached unconditionally and correctly when IE >= 8 is to be supported', function (done) {
+        var stub = sinon.stub(require('assetgraph/lib/TransformQueue').prototype, 'splitCssIfIeLimitIsReached', function (queryObj, options) {
+            expect(options, 'to equal', {minimumIeVersion: 8});
+            return this;
+        });
+        new AssetGraph()
             .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
-            .loadAssets('falcon.html')
-            .buildProduction({version: false})
-            .queue(function (assetGraph) {
-                expect(assetGraph, 'to contain relations', {type: 'HtmlStyle'}, 3);
-                expect(assetGraph, 'to contain assets', {type: 'Css'}, 3);
-
-                var htmlAsset = assetGraph.findAssets({type: 'Html'})[0],
-                    matchLinkRelStylesheet = htmlAsset.text.match(/<link rel="stylesheet" href="static\/falcon-example-\d\.[0-9a-f]{10}\.css">/g);
-                expect(matchLinkRelStylesheet, 'to be truthy');
-                expect(matchLinkRelStylesheet, 'to have length', 3);
-
-                var unresolvedRelationsFromCss = assetGraph.findRelations({from: {type: 'Css'}}, true);
-                expect(unresolvedRelationsFromCss, 'to have length', 53); // The number of url(...) occurrences in falcon-example.css
-
-                expect(assetGraph, 'to contain relation', {from: {type: 'Css'}, to: {isInline: true}});
-
-                var relationsFromCssToLoadedAssets = assetGraph.findRelations({from: {type: 'Css'}, to: {isLoaded: true, isInline: false}});
-                expect(relationsFromCssToLoadedAssets, 'to be an array whose items satisfy', function (relationFromCssToLoadedAsset) {
-                    expect(relationFromCssToLoadedAsset.to.url, 'to match', /\/static\/fake.d65dd5318f\.png$/);
-                });
+            .loadAssets({url: 'http://example.com/index.html', type: 'Html', text: '<!DOCTYPE html>'})
+            .buildProduction({version: false, browsers: 'ie >= 8'})
+            .queue(function () {
+                expect(stub, 'was called once');
+                stub.restore();
             })
             .run(done);
     });
