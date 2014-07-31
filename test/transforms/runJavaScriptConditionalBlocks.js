@@ -1,10 +1,10 @@
 /*global describe, it*/
-var expect = require('./unexpected-with-plugins'),
-    AssetGraph = require('../lib/AssetGraph');
+var expect = require('../unexpected-with-plugins'),
+    AssetGraph = require('../../lib/AssetGraph');
 
 describe('runJavaScriptConditionalBlocks', function () {
     it('shold handle a simple test case with some code that alters the DOM', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/runJavaScriptConditionalBlocks'})
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/runJavaScriptConditionalBlocks'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {

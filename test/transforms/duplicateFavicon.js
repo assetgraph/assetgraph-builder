@@ -1,12 +1,12 @@
 /*global describe, it*/
-var expect = require('./unexpected-with-plugins'),
+var expect = require('../unexpected-with-plugins'),
     passError = require('passerror'),
-    AssetGraph = require('../lib/AssetGraph'),
+    AssetGraph = require('../../lib/AssetGraph'),
     urlTools = require('urltools');
 
 describe('transforms.duplicateFavicon', function () {
     it('should handle a referenced favicon.ico', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/duplicateFavicon/referencedFavicon'})
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/duplicateFavicon/referencedFavicon'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -33,7 +33,7 @@ describe('transforms.duplicateFavicon', function () {
     });
 
     it('should handle an unreferenced favicon.ico', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/duplicateFavicon/unreferencedFavicon'})
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/duplicateFavicon/unreferencedFavicon'})
             .loadAssets('index.html', 'noHead.html', 'favicon.ico')
             .populate()
             .queue(function (assetGraph) {

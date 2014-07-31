@@ -1,12 +1,12 @@
 /*global describe, it*/
-var expect = require('./unexpected-with-plugins'),
+var expect = require('../unexpected-with-plugins'),
     _ = require('underscore'),
-    AssetGraph = require('../lib/AssetGraph'),
+    AssetGraph = require('../../lib/AssetGraph'),
     urlTools = require('urltools');
 
 describe('processImages', function () {
     it('should handle a Css test case', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/processImages/css/'})
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/css/'})
             .loadAssets('style.css')
             .populate()
             .queue(function (assetGraph) {
@@ -43,7 +43,7 @@ describe('processImages', function () {
     });
 
     it('should handle an Html test case', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/processImages/html/'})
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/html/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -72,7 +72,7 @@ describe('processImages', function () {
     });
 
     it('should handlea Css test case with a setFormat instruction in the query string of a background-image url', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/processImages/setFormat/'})
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/setFormat/'})
             .loadAssets('index.css')
             .populate()
             .queue(function (assetGraph) {
@@ -92,7 +92,7 @@ describe('processImages', function () {
     });
 
     it('should handle a test case with a Jpeg', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/processImages/jpeg/'})
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/jpeg/'})
             .loadAssets('style.css')
             .populate()
             .queue(function (assetGraph) {
@@ -109,7 +109,7 @@ describe('processImages', function () {
     });
 
     it('should handle a test case with a couple of pngs', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/processImages/pngs/'})
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/pngs/'})
             .loadAssets('style.css')
             .populate()
             .queue(function (assetGraph) {
@@ -132,7 +132,7 @@ describe('processImages', function () {
     });
 
     it('should handle a test case with a Svg', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/processImages/svg/'})
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/svg/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -147,7 +147,7 @@ describe('processImages', function () {
     });
 
     it('should handle dots in urls (regression test for a regexp issue)', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/processImages/dot.in.path/'})
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/dot.in.path/'})
             .loadAssets('style.css')
             .populate()
             .queue(function (assetGraph) {

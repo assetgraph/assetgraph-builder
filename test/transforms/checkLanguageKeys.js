@@ -1,11 +1,11 @@
 /*global describe, it*/
-var expect = require('./unexpected-with-plugins'),
-    AssetGraph = require('../lib/AssetGraph');
+var expect = require('../unexpected-with-plugins'),
+    AssetGraph = require('../../lib/AssetGraph');
 
 describe('checkLanguageKeys', function () {
     it('should handle a combo test case', function (done) {
         var infos = [];
-        new AssetGraph({root: __dirname + '/../testdata/checkLanguageKeys/'})
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/checkLanguageKeys/combo/'})
             .on('info', function (err) {
                 infos.push(err);
             })
@@ -31,7 +31,7 @@ describe('checkLanguageKeys', function () {
     });
     it('a space at the end of a TR original text', function (done) {
         var infos = [];
-        new AssetGraph({root: __dirname + '/../testdata/checkLanguageKeysNeverEndingSpaceLoop/'})
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/checkLanguageKeys/neverEndingSpaceLoop/'})
             .on('info', function (err) {
                 infos.push(err);
             })

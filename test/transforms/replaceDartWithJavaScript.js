@@ -1,10 +1,10 @@
 /*global describe, it*/
-var expect = require('./unexpected-with-plugins'),
-    AssetGraph = require('../lib/AssetGraph');
+var expect = require('../unexpected-with-plugins'),
+    AssetGraph = require('../../lib/AssetGraph');
 
 describe('replaceDartWithJavaScript', function (done) {
     it('should handle a test case with 2 Dart assets', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/replaceDartWithJavaScript/'})
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/replaceDartWithJavaScript/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {

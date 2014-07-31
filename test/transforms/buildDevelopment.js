@@ -1,11 +1,11 @@
 /*global describe, it*/
-var expect = require('./unexpected-with-plugins'),
+var expect = require('../unexpected-with-plugins'),
     passError = require('passerror'),
-    AssetGraph = require('../lib/AssetGraph');
+    AssetGraph = require('../../lib/AssetGraph');
 
 describe('buildDevelopment', function () {
     it('should handle a simple test case', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/buildDevelopment/simple/'})
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildDevelopment/simple/'})
             .registerRequireJsConfig()
             .loadAssets('index.html.template')
             .populate()
@@ -41,7 +41,7 @@ describe('buildDevelopment', function () {
     });
 
     it('should not mangle an inline stylesheet with a data-bind attribute', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/buildDevelopment/dataBindOnHtmlStyle/'})
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildDevelopment/dataBindOnHtmlStyle/'})
             .registerRequireJsConfig()
             .loadAssets('index.html.template')
             .populate()
