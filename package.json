@@ -64,6 +64,7 @@
   },
   "devDependencies": {
     "autoprefixer": "=2.1.1",
+    "coveralls": "=2.11.1",
     "gm": "=1.6.1",
     "istanbul": "=0.2.10",
     "jshint": "=2.5.1",
@@ -87,7 +88,7 @@
   "scripts": {
     "lint": "jshint . bin/*",
     "test": "npm run lint && mocha",
-    "travis": "npm run lint && npm run coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "travis": "npm run lint && npm run coverage && <coverage/lcov.info ./node_modules/coveralls/bin/coveralls.js",
     "coverage": "NODE_ENV=development ./node_modules/.bin/istanbul cover -x lib/i18nTools.js -x lib/bootstrapper.js ./node_modules/mocha/bin/_mocha -- --reporter dot"
   }
 }
