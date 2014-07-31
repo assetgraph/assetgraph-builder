@@ -1,13 +1,13 @@
 /*global describe, it*/
-var expect = require('./unexpected-with-plugins'),
+var expect = require('../unexpected-with-plugins'),
     _ = require('underscore'),
-    AssetGraph = require('../lib/AssetGraph');
+    AssetGraph = require('../../lib/AssetGraph');
 
-describe('resolvers.senchaJsBuilder', function () {
+describe('resolvers/senchaJsBuilder', function () {
     it('should handle a test case with 3 assets', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/senchaJsBuilder/rewriteBackgroundImageUrls/'})
+        new AssetGraph({root: __dirname + '/../../testdata/resolvers/senchaJsBuilder/rewriteBackgroundImageUrls/'})
             .registerLabelsAsCustomProtocols([
-                {name: 'mylabel', url: __dirname + '/../testdata/senchaJsBuilder/rewriteBackgroundImageUrls/foo.jsb2'}
+                {name: 'mylabel', url: __dirname + '/../../testdata/resolvers/senchaJsBuilder/rewriteBackgroundImageUrls/foo.jsb2'}
             ])
             .loadAssets('index.html')
             .populate()
@@ -39,9 +39,9 @@ describe('resolvers.senchaJsBuilder', function () {
     });
 
     it('should handle an Html asset and a jsb2 describing packages that depend on each other', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/senchaJsBuilder/dependentPackages/'})
+        new AssetGraph({root: __dirname + '/../../testdata/resolvers/senchaJsBuilder/dependentPackages/'})
             .registerLabelsAsCustomProtocols([
-                {name: 'mylabel', url: __dirname + '/../testdata/senchaJsBuilder/dependentPackages/foo.jsb2'}
+                {name: 'mylabel', url: __dirname + '/../../testdata/resolvers/senchaJsBuilder/dependentPackages/foo.jsb2'}
             ])
             .loadAssets('index.html')
             .populate()
@@ -66,9 +66,9 @@ describe('resolvers.senchaJsBuilder', function () {
     });
 
     it('should handle overlapping jsb2 packages', function (done) {
-        new AssetGraph({root: __dirname + '/../testdata/senchaJsBuilder/dependentPackages/'})
+        new AssetGraph({root: __dirname + '/../../testdata/resolvers/senchaJsBuilder/dependentPackages/'})
             .registerLabelsAsCustomProtocols([
-                {name: 'mylabel', url: __dirname + '/../testdata/senchaJsBuilder/dependentPackages/foo.jsb2'}
+                {name: 'mylabel', url: __dirname + '/../../testdata/resolvers/senchaJsBuilder/dependentPackages/foo.jsb2'}
             ])
             .loadAssets('overlappingIncludes.html')
             .populate()
