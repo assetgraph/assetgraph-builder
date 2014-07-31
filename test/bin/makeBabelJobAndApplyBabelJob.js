@@ -1,5 +1,5 @@
 /*global describe, it*/
-var expect = require('./unexpected-with-plugins'),
+var expect = require('../unexpected-with-plugins'),
     childProcess = require('child_process'),
     fs = require('fs'),
     Path = require('path'),
@@ -9,14 +9,14 @@ describe('makeBabelJob and applyBabelJob', function () {
     it('should extract and reimport a translation job', function (done) {
         var babelDir = temp.mkdirSync(),
             tmpTestCaseCopyDir = temp.mkdirSync(),
-            copyCommand = 'cp \'' + __dirname + '/../testdata\'/makeBabelJobAndApplyBabelJob/* ' + tmpTestCaseCopyDir;
+            copyCommand = 'cp \'' + __dirname + '/../../testdata/bin\'/makeBabelJobAndApplyBabelJob/* ' + tmpTestCaseCopyDir;
 
         childProcess.exec(copyCommand, function (err, stdout, stderr) {
             if (err) {
                 return done(new Error(copyCommand + ' failed: STDERR:' + stderr + '\nSTDOUT:' + stdout));
             }
 
-            var makeBabelJobProcess = childProcess.spawn(Path.resolve(__dirname, '..', 'bin', 'makeBabelJob'), [
+            var makeBabelJobProcess = childProcess.spawn(Path.resolve(__dirname, '..', '..', 'bin', 'makeBabelJob'), [
                     '--babeldir', babelDir,
                     '--root', tmpTestCaseCopyDir,
                     '--locales', 'en,da,de',
@@ -130,7 +130,7 @@ describe('makeBabelJob and applyBabelJob', function () {
                     'keywithplaceholdersinhtml=Nøgle med pladsholdere på dansk'
                 ].join('\n'), 'utf-8');
 
-                var applyBabelJobProcess = childProcess.spawn(Path.resolve(__dirname, '..', 'bin', 'applyBabelJob'), [
+                var applyBabelJobProcess = childProcess.spawn(Path.resolve(__dirname, '..', '..', 'bin', 'applyBabelJob'), [
                     '--babeldir', babelDir,
                     '--root', tmpTestCaseCopyDir,
                     '--locales', 'en,da,de',

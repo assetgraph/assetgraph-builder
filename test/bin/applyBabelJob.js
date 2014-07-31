@@ -7,14 +7,14 @@ var childProcess = require('child_process'),
 
 describe('applyBabelJob', function () {
     it('should handle a complex test case', function (done) {
-        var babelDir = Path.resolve(__dirname, '..', 'testdata', 'applyBabelJob', 'translationjob'),
+        var babelDir = Path.resolve(__dirname, '..', '..', 'testdata', 'bin', 'applyBabelJob', 'translationjob'),
             tmpTestCaseCopyDir = temp.mkdirSync(),
-            copyCommand = 'cp \'' + __dirname + '/../testdata/applyBabelJob\'/index.* ' + tmpTestCaseCopyDir;
+            copyCommand = 'cp \'' + __dirname + '/../../testdata/bin/applyBabelJob\'/index.* ' + tmpTestCaseCopyDir;
         childProcess.exec(copyCommand, function (err, stdout, stderr) {
             if (err) {
                 return done(new Error(copyCommand + ' failed: STDERR:' + stderr + '\nSTDOUT:' + stdout));
             }
-            var applyBabelJobProcess = childProcess.spawn(__dirname + '/../bin/applyBabelJob', [
+            var applyBabelJobProcess = childProcess.spawn(__dirname + '/../../bin/applyBabelJob', [
                 '--babeldir', babelDir,
                 '--root', tmpTestCaseCopyDir,
                 '--defaultlocale', 'en',

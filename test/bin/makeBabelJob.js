@@ -1,5 +1,5 @@
 /*global describe, it*/
-var expect = require('./unexpected-with-plugins'),
+var expect = require('../unexpected-with-plugins'),
     childProcess = require('child_process'),
     fs = require('fs'),
     Path = require('path'),
@@ -9,14 +9,14 @@ describe('makeBabelJob', function () {
     it('should extract a translation job and set null values in the correct places in the existing i18n files', function (done) {
         var babelDir = temp.mkdirSync(),
             tmpTestCaseCopyDir = temp.mkdirSync(),
-            copyCommand = 'cp \'' + __dirname + '/../testdata\'/makeBabelJob/* ' + tmpTestCaseCopyDir;
+            copyCommand = 'cp \'' + __dirname + '/../../testdata/bin\'/makeBabelJob/* ' + tmpTestCaseCopyDir;
 
         childProcess.exec(copyCommand, function (err, stdout, stderr) {
             if (err) {
                 return done(new Error(copyCommand + ' failed: STDERR:' + stderr + '\nSTDOUT:' + stdout));
             }
 
-            var makeBabelJobProcess = childProcess.spawn(__dirname + '/../testdata/../bin/makeBabelJob', [
+            var makeBabelJobProcess = childProcess.spawn(__dirname + '/../../bin/makeBabelJob', [
                     '--babeldir', babelDir,
                     '--root', tmpTestCaseCopyDir,
                     '--i18n', Path.resolve(tmpTestCaseCopyDir, 'index.i18n'),
