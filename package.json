@@ -87,7 +87,7 @@
   "scripts": {
     "lint": "jshint . bin/*",
     "test": "npm run lint && mocha",
-    "travis": "npm run lint && mocha -R spec",
-    "coverage": "NODE_ENV=development COVERAGE=yes ./node_modules/.bin/istanbul cover -x lib/i18nTools.js -x lib/bootstrapper.js ./node_modules/mocha/bin/_mocha -- --reporter dot"
+    "travis": "npm run lint && npm run coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "coverage": "NODE_ENV=development ./node_modules/.bin/istanbul cover -x lib/i18nTools.js -x lib/bootstrapper.js ./node_modules/mocha/bin/_mocha -- --reporter dot"
   }
 }
