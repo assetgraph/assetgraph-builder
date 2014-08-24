@@ -72,6 +72,11 @@ var optimist = require('optimist'),
             type: 'boolean',
             default: false
         })
+        .options('norecursive', {
+            describe: 'Don\'t follow local HTML anchors when populating the graph',
+            type: 'boolean',
+            deafult: false
+        })
         .options('nocompress', {
             describe: 'Prettifies HTML, CSS and Javascript for easier debugging',
             type: 'boolean',
@@ -302,6 +307,7 @@ new AssetGraph({root: rootUrl})
         asyncScripts: commandLineOptions.asyncscripts,
         deferScripts: commandLineOptions.deferscripts,
         cdnRoot: cdnRoot,
+        recursive: !commandLineOptions.norecursive,
         cdnFlash: !commandLineOptions.nocdnflash,
         cdnHtml: commandLineOptions.cdnhtml,
         noCompress: commandLineOptions.nocompress,
