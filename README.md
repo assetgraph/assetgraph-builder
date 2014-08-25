@@ -10,6 +10,16 @@ applications.
 
 Looking for a Grunt integration? Try [grunt-reduce](https://github.com/Munter/grunt-reduce)
 
+Quick start
+-----------
+
+```
+npm install -g assetgraph-builder
+buildProduction path/to/your/index.html --outroot path/to/output/directory
+```
+
+Congratulations, you just optimized your web page!
+
 Features
 --------
 
