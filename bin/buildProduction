@@ -295,7 +295,6 @@ new AssetGraph({root: rootUrl})
         less: !commandLineOptions.noless,
         optimizeImages: commandLineOptions.optimizeimages,
         inlineByRelationType: inlineByRelationType,
-        autoprefix: commandLineOptions.autoprefix,
         gzip: commandLineOptions.gzip,
         defines: defines,
         reservedNames: reservedNames,
