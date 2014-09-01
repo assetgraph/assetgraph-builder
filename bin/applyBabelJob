@@ -26,10 +26,19 @@ var path = require('path'),
     localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
         return localeId.split(',');
     })).map(i18nTools.normalizeLocaleId),
-    defaultLocaleId = commandLineOptions.defaultlocale && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale),
     initialAssetUrls = commandLineOptions._.map(urlTools.fsFilePathToFileUrl),
     originalTextByAssetId = {},
+    defaultLocaleId,
     i18nUrl;
+
+if (commandLineOptions.defaultlocale) {
+    defaultLocaleId = i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale);
+    if (localeIds.indexOf(defaultLocaleId) === -1) {
+        throw new Error('The default locale id (' + defaultLocaleId + ') is not among the locales listed with the --locales switch (' + localeIds.join(', ') + ')');
+    }
+} else {
+    defaultLocaleId = localeIds[0];
+}
 
 function isArrayOrObject(obj) {
     return Array.isArray(obj) || (obj && typeof obj === 'object');
