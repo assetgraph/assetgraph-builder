@@ -75,7 +75,7 @@ var optimist = require('optimist'),
         .options('norecursive', {
             describe: 'Don\'t follow local HTML anchors when populating the graph',
             type: 'boolean',
-            deafult: false
+            default: false
         })
         .options('nocompress', {
             describe: 'Prettifies HTML, CSS and Javascript for easier debugging',
