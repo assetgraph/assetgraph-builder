@@ -78,7 +78,7 @@ var followRelationsQueryObj = query.or(
         to: {type: 'I18n'}
     },
     {
-        type: query.not(['JavaScriptInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor']),
+        type: query.not(['JavaScriptInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor', 'HtmlMetaRefresh']),
         to: {url: query.not(/^https?:/)}
     }
 );

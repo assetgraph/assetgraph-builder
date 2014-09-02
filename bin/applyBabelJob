@@ -65,7 +65,7 @@ new AssetGraph({root: commandLineOptions.root})
     .assumeThatAllHtmlFragmentAssetsWithoutIncomingRelationsAreNotTemplates()
     .populate({
         followRelations: {
-            type: AssetGraph.query.not('HtmlAnchor'),
+            type: AssetGraph.query.not(['HtmlAnchor', 'HtmlMetaRefresh']),
             to: {url: AssetGraph.query.not(/^https?:/)}
         }
     })

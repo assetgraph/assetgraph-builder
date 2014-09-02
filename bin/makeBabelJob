@@ -71,7 +71,7 @@ new AssetGraph({root: commandLineOptions.root})
     .fixBaseAssetsOfUnresolvedOutgoingRelationsFromHtmlFragments({isInitial: true})
     .assumeThatAllHtmlFragmentAssetsWithoutIncomingRelationsAreNotTemplates()
     .populate({
-        followRelations: {type: AssetGraph.query.not('HtmlAnchor'), to: {url: AssetGraph.query.not(/^https?:/)}}
+        followRelations: {type: AssetGraph.query.not(['HtmlAnchor', 'HtmlMetaRefresh']), to: {url: AssetGraph.query.not(/^https?:/)}}
     })
     .checkLanguageKeys({supportedLocaleIds: localeIds, defaultLocaleId: defaultLocaleId, ignore: 'missing'})
     .queue(function exportLanguageKeys(assetGraph) {
