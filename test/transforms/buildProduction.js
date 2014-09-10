@@ -1016,6 +1016,21 @@ describe('buildProduction', function () {
             .run(done);
     });
 
+    it('should handle implicitly defined baseUrl for requireJs', function (done) {
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/implicitBaseUrl/'})
+            .on('warn', function (err) {
+                (this._emittedWarnings = this._emittedWarnings || []).push(err);
+            })
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets(['index.html'])
+            .populate()
+            .buildProduction({version: false})
+            .queue(function (assetGraph) {
+                expect(assetGraph._emittedWarnings, 'to be undefined');
+            })
+            .run(done);
+    });
+
     // FIXME: This one fails half the time on Travis
     it.skip('should handle images with wrong extensions', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/imagesWithWrongExtensions/'})
