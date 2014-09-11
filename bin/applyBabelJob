@@ -77,8 +77,13 @@ new AssetGraph({root: commandLineOptions.root})
         if (i18nUrl) {
             i18nAssetForAllKeys = assetGraph.findAssets({url: i18nUrl})[0];
             if (!i18nAssetForAllKeys) {
-                console.error('--i18n ' + commandLineOptions.i18n + ': not found');
-                process.exit(1);
+                i18nAssetForAllKeys = new AssetGraph.I18n({
+                    url: i18nUrl,
+                    isDirty: true,
+                    parseTree: {}
+                });
+                assetGraph.addAsset(i18nAssetForAllKeys);
+                assetGraph.emit('info', '--i18n ' + commandLineOptions.i18n + ' not found, creating it');
             }
         }
 
@@ -263,7 +268,7 @@ new AssetGraph({root: commandLineOptions.root})
     })
     .prettyPrintAssets({type: 'I18n', isDirty: true})
     .writeStatsToStderr()
-    .writeAssetsToDisc({type: ['I18n'], isDirty: true})
+    .writeAssetsToDisc({type: 'I18n', isDirty: true})
     .if(commandLineOptions.replace)
         .writeAssetsToDisc({type: ['JavaScript', 'Html'], hasReplacedLanguageKeys: true})
     .endif()
