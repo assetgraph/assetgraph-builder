@@ -33,10 +33,10 @@ var path = require('path'),
 
 if (commandLineOptions.defaultlocale) {
     defaultLocaleId = i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale);
-    if (localeIds.indexOf(defaultLocaleId) === -1) {
+    if (localeIds && localeIds.indexOf(defaultLocaleId) === -1) {
         throw new Error('The default locale id (' + defaultLocaleId + ') is not among the locales listed with the --locales switch (' + localeIds.join(', ') + ')');
     }
-} else {
+} else if (localeIds) {
     defaultLocaleId = localeIds[0];
 }
 
