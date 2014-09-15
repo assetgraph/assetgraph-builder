@@ -42,7 +42,7 @@
     "assetgraph": "1.10.0",
     "async": "0.2.9",
     "chalk": "0.4.0",
-    "express-processimage": "0.1.23",
+    "express-processimage": "1.0.1",
     "extend": "1.2.1",
     "jpegtran": "0.0.6",
     "memoizesync": "0.2.0",
