@@ -52,6 +52,7 @@
     "passerror": "1.0.0",
     "pngcrush": "0.0.5",
     "pngquant": "0.1.5",
+    "semver": "3.0.1",
     "seq": "0.3.5",
     "temp": "0.4.0",
     "underscore": "1.2.0",
@@ -63,7 +64,7 @@
     "node-zopfli": "1.1.4"
   },
   "devDependencies": {
-    "autoprefixer": "2.1.1",
+    "autoprefixer": "3.1.0",
     "coveralls": "2.11.1",
     "gm": "1.6.1",
     "istanbul": "0.2.10",
