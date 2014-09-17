@@ -39,7 +39,7 @@
     "bin"
   ],
   "dependencies": {
-    "assetgraph": "1.10.0",
+    "assetgraph": "1.10.1",
     "async": "0.2.9",
     "chalk": "0.4.0",
     "express-processimage": "1.0.1",
