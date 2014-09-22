@@ -1059,4 +1059,18 @@ describe('buildProduction', function () {
             })
             .run(done);
     });
+
+    it('should not lose the type of an image that has been run through inkscape (regression test for an issue in express-processimage 1.0.0)', function (done) {
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/inkscape/'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets('index.html')
+            .populate()
+            .buildProduction({version: false, less: true, optimizeImages: true, browsers: 'ie > 9', inlineByRelationType: {CssImage: 8192}})
+            .queue(function (assetGraph) {
+                var cssAsset = assetGraph.findAssets({type: 'Css'})[0];
+                expect(cssAsset.text, 'not to contain', 'image/undefined');
+                expect(cssAsset.text, 'not to match', /url\(image\.[a-f0-9]{10}\)/);
+            })
+            .run(done);
+    });
 });
