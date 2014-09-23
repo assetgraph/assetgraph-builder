@@ -278,12 +278,12 @@ if (commandLineOptions._.length > 0) {
         }
     }
 } else if (rootUrl && /^file:/.test(rootUrl)) {
-    inputUrls = [rootUrl + '**/*.html'];
+    inputUrls = [rootUrl + '*.html'];
     console.warn('No input files specified, defaulting to ' + inputUrls[0]);
 } else {
     throw new Error('No input files and no --root specified (or it isn\'t file:), cannot proceed');
 }
-
+return;
 new AssetGraph({root: rootUrl})
     .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
     .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
