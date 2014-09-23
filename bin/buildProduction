@@ -283,7 +283,7 @@ if (commandLineOptions._.length > 0) {
 } else {
     throw new Error('No input files and no --root specified (or it isn\'t file:), cannot proceed');
 }
-return;
+
 new AssetGraph({root: rootUrl})
     .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
     .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
