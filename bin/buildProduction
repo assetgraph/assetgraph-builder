@@ -155,7 +155,7 @@ var chalk = require('chalk'),
         })
         */
 
-// Intentionally omitted: source_map, inline_script (implemented differently), screw_ie8
+// Intentionally omitted: source_map, inline_script (implemented differently), screw_ie8 (controlled via --browsers)
 var javaScriptSerializationOptionNames = ['indent_start', 'indent_level', 'quote_keys', 'space_colon', 'ascii_only', 'unescape_regexps', 'width', 'max_line_len', 'beautify', 'bracketize', 'semicolons', 'comments', 'preserve_line', 'preamble', 'quote_char'],
     javaScriptSerializationOptions = {};
 
