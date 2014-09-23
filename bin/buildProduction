@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-var optimist = require('optimist'),
-    chalk = require('chalk'),
-    commandLineOptions = optimist
+var chalk = require('chalk'),
+    optimist = require('optimist')
         .usage('$0 --root <inputRootDirectory> --outroot <dir> [options] <htmlFile(s)>')
+        .wrap(72)
         .options('h', {
             alias: 'help',
             describe: 'Show this help',
@@ -154,8 +154,29 @@ var optimist = require('optimist'),
             demand: false
         })
         */
-        .wrap(72)
-        .argv;
+
+// Intentionally omitted: source_map, inline_script (implemented differently), screw_ie8
+var javaScriptSerializationOptionNames = ['indent_start', 'indent_level', 'quote_keys', 'space_colon', 'ascii_only', 'unescape_regexps', 'width', 'max_line_len', 'beautify', 'bracketize', 'semicolons', 'comments', 'preserve_line', 'preamble', 'quote_char'],
+    javaScriptSerializationOptions = {};
+
+javaScriptSerializationOptionNames.forEach(function (javaScriptSerializationOptionName) {
+    var type = [].indexOf(javaScriptSerializationOptionName) === -1 ? 'number' : 'boolean';
+    // Also accept the option without underscores, or with the underscores replaced with dashes:
+    optimist.options(javaScriptSerializationOptionName.replace(/_/g, ''), {
+        alias: [javaScriptSerializationOptionName, javaScriptSerializationOptionName.replace(/_/g, '-')],
+        type: type,
+        description: 'UglifyJS serialization option, see http://lisperator.net/uglifyjs/codegen'
+    })
+});
+
+var commandLineOptions = optimist.argv;
+
+javaScriptSerializationOptionNames.forEach(function (javaScriptSerializationOptionName) {
+    var value = commandLineOptions[javaScriptSerializationOptionName.replace(/_/g, '')];
+    if (typeof value !== 'undefined') {
+        javaScriptSerializationOptions[javaScriptSerializationOptionName] = value;
+    }
+});
 
 if (commandLineOptions.h) {
     optimist.showHelp();
@@ -313,7 +334,8 @@ new AssetGraph({root: rootUrl})
         sharedBundles: commandLineOptions.sharedbundles,
         stripDebug: !commandLineOptions.debug,
         addInitialHtmlExtension: commandLineOptions.addinitialhtmlextension,
-        canonicalUrl: canonicalUrl
+        canonicalUrl: canonicalUrl,
+        javaScriptSerializationOptions: javaScriptSerializationOptions
     })
     .writeAssetsToDisc({url: canonicalUrl ? query.createPrefixMatcher(canonicalUrl) : /^file:/, isLoaded: true}, outRoot, canonicalUrl)
     .if(cdnRoot)
