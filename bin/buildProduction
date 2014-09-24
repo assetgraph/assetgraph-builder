@@ -139,7 +139,7 @@ var chalk = require('chalk'),
         .options('repl', {
             describe: 'Start the REPL after a particular transform (or "error")',
             type: 'string'
-        })
+        });
         /*
         // These are internal One.com options. No reason to expose them to the world.
         // Might be deprecated in the near future. If in doubt, don't use!
@@ -166,7 +166,7 @@ javaScriptSerializationOptionNames.forEach(function (javaScriptSerializationOpti
         alias: [javaScriptSerializationOptionName, javaScriptSerializationOptionName.replace(/_/g, '-')],
         type: type,
         description: 'UglifyJS serialization option, see http://lisperator.net/uglifyjs/codegen'
-    })
+    });
 });
 
 var commandLineOptions = optimist.argv;
