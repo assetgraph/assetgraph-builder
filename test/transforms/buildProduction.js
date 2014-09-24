@@ -134,7 +134,7 @@ describe('buildProduction', function () {
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain assets', {type: 'Png'}, 2);
                 assetGraph.findAssets({type: 'Png'}).forEach(function (pngAsset) {
-                    expect(pngAsset.rawSrc.toString('ascii'), 'not to contain', 'gAMA');
+                    expect(pngAsset.rawSrc.toString('ascii'), 'not to contain', 'pHYs');
                 });
             })
             .run(done);
