@@ -1073,4 +1073,17 @@ describe('buildProduction', function () {
             })
             .run(done);
     });
+
+    it('should not remove a data-bind attribute', function (done) {
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/missingDataBind/'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets('index.html')
+            .populate()
+            .buildProduction({version: false, browsers: 'ie > 9'})
+            .queue(function (assetGraph) {
+                var htmlAsset = assetGraph.findAssets({type: 'Html'})[0];
+                expect(htmlAsset.text, 'to contain', 'data-bind="template:{name:\'application\',if:isInitialized');
+             })
+            .run(done);
+    });
 });
