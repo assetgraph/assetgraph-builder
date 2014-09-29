@@ -240,7 +240,7 @@ new AssetGraph({root: commandLineOptions.root})
                         if (!_.isEqual(occurrence.defaultValue, allKeysInDefaultLocale[occurrence.key])) {
                             if (occurrence.type === 'TR' || occurrence.type === 'TRPAT') {
                                 var asset = occurrence.asset.nonInlineAncestor,
-                                    replaceRegExp = new RegExp('(TR(?:PAT)?\\(([\'"])' + key.replace(/[\.\[\]\*\+\?\{\}\(\)\^\$]/g, '\\$&') + '\\2\\s*,\\s*)[^)]*?\\)', 'g');
+                                    replaceRegExp = new RegExp('(TR(?:PAT)?\\(([\'"])' + key.replace(/[\.\[\]\*\+\?\{\}\(\)\^\$]/g, '\\$&') + '\\2\\s*,\\s*)(?:[^)\'"]*|"[^"]*"|\'[^\']*\')*?\\)', 'g');
 
                                 replacedTextByAssetId[asset.id] = (replacedTextByAssetId[asset.id] || originalTextByAssetId[asset.id] || asset.text)
                                     .replace(replaceRegExp,
