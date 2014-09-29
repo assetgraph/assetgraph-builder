@@ -87,6 +87,11 @@ var chalk = require('chalk'),
             type: 'boolean',
             default: false
         })
+        .options('noscss', {
+            describe: 'Keep .scss files as they are instead of automatically compiling them to CSS',
+            type: 'boolean',
+            default: false
+        })
         .options('nocdnflash', {
             describe: 'Avoid putting flash files on the cdnroot. Use this if you have problems setting up CORS',
             type: 'boolean',
@@ -314,6 +319,7 @@ new AssetGraph({root: rootUrl})
         version: commandLineOptions.version,
         browsers: commandLineOptions.browsers,
         less: !commandLineOptions.noless,
+        scss: !commandLineOptions.noscss,
         optimizeImages: commandLineOptions.optimizeimages,
         inlineByRelationType: inlineByRelationType,
         gzip: commandLineOptions.gzip,

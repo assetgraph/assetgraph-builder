@@ -56,6 +56,7 @@ Features
    specified.
  * Compiles <a href="http://lesscss.org/">less</a> to CSS and strips
    out the in-browser less compiler.
+ * Compiles Sass to CSS
  * Renames JavaScript, CSS, images etc. to a 10-char MD5 prefix + the
    original extension so they can be served with a far-future expiry time.
  * Supports a special syntax for getting the url of static assets from
@@ -129,6 +130,34 @@ The value should be the path to `almond.js` like so:
 ```
 
 When you do this you should not use require as an external script loader, since almond does not support this.
+
+
+Working with Sass (.scss) assets
+--------------------------------
+Assetgraph will compile your sass assets to CSS, but only if you link in your `.scss`-files like this:
+
+``` html
+<link rel="stylesheet" type="text/css" href="path/to/stylesheet.scss">
+```
+
+Or using a requirejs css plugin:
+
+``` javascript
+// RequireJS AMD syntax
+define(['css!path/to/stylesheet.scss'], function () {
+  // Your code here
+})
+
+// RequireJS CommonJS compatible syntax
+define(function (require) {
+  require('css!path/to/stylesheet.scss');
+
+  // Your code here
+})
+```
+
+In order to make this work for you in development you can use [livestyle](https://github.com/One-com/livestyle/) as a static webserver.
+It will automatically convert the sass files in the HTTP stream, making your page work out of the box with no configuration.
 
 
 Referring to static files in JavaScript using GETSTATICURL
