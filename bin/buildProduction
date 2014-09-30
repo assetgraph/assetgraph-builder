@@ -174,7 +174,12 @@ javaScriptSerializationOptionNames.forEach(function (javaScriptSerializationOpti
     });
 });
 
-var commandLineOptions = optimist.argv;
+var commandLineOptions = optimist.argv,
+    browsers = commandLineOptions.browsers;
+
+if (Array.isArray(browsers)) {
+    browsers = browsers.join(',');
+}
 
 javaScriptSerializationOptionNames.forEach(function (javaScriptSerializationOptionName) {
     var value = commandLineOptions[javaScriptSerializationOptionName.replace(/_/g, '')];
@@ -317,7 +322,7 @@ new AssetGraph({root: rootUrl})
     .loadAssets(inputUrls)
     .buildProduction({
         version: commandLineOptions.version,
-        browsers: commandLineOptions.browsers,
+        browsers: browsers,
         less: !commandLineOptions.noless,
         scss: !commandLineOptions.noscss,
         optimizeImages: commandLineOptions.optimizeimages,
