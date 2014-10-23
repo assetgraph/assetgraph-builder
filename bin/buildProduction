@@ -144,6 +144,10 @@ var chalk = require('chalk'),
         .options('repl', {
             describe: 'Start the REPL after a particular transform (or "error")',
             type: 'string'
+        })
+        .options('sweep', {
+            describe: 'Experimental: Free up memory by cleaning up relations and assets after they have been removed from the graph',
+            type: 'boolean'
         });
         /*
         // These are internal One.com options. No reason to expose them to the world.
@@ -316,6 +320,25 @@ if (commandLineOptions._.length > 0) {
 }
 
 new AssetGraph({root: rootUrl})
+    .queue(function (assetGraph) {
+        if (commandLineOptions.sweep) {
+            assetGraph.on('removeAsset', function (asset) {
+                setImmediate(function () {
+                    if (!asset.assetGraph) {
+                        asset.unload();
+                    }
+                });
+            }).on('removeRelation', function (relation) {
+                setImmediate(function () {
+                    if (!relation.assetGraph) {
+                        Object.keys(relation).forEach(function (key) {
+                            relation[key] = null;
+                        });
+                    }
+                });
+            });
+        }
+    })
     .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
     .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
