@@ -13,9 +13,15 @@ Looking for a Grunt integration? Try [grunt-reduce](https://github.com/Munter/gr
 Quick start
 -----------
 
+# Conventional
 ```
 npm install -g assetgraph-builder
 buildProduction path/to/your/index.html --outroot path/to/output/directory
+```
+
+# [Docker](https://www.docker.com/)
+```
+docker run --rm -it  -v "$(pwd)":/app/ -w /app/ assetgraph-builder path/to/your/index.html --outroot path/to/output/directory
 ```
 
 Congratulations, you just optimized your web page!
