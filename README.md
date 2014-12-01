@@ -87,7 +87,7 @@ Optional first step: To take full advantage of the image processing
 and optimization features, you need several libraries and command line
 utilities installed. On Ubuntu you can grab them all by running:
 
-    sudo apt-get install -y libcairo2-dev libjpeg8-dev libgif-dev optipng pngcrush pngquant libpango1.0-dev graphicsmagick libjpeg-turbo-progs inkscape
+    sudo apt-get install -y libcairo2-dev libjpeg8-dev libgif-dev optipng pngcrush pngquant libpango1.0-dev graphicsmagick libjpeg-progs inkscape
 
 Or on OS X, with [homebrew](http://brew.sh/):
 
