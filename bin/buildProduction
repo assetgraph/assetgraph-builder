@@ -82,6 +82,11 @@ var chalk = require('chalk'),
             type: 'boolean',
             default: false
         })
+        .options('removedeadifs', {
+            describe: 'Optimize away certain if (...) {...} constructs. Only makes sense with --nocompress as UglifyJS includes the same optimization',
+            type: 'boolean',
+            default: false
+        })
         .options('noless', {
             describe: 'Keep .less files as they are instead of automatically compiling them to CSS',
             type: 'boolean',
@@ -365,6 +370,7 @@ new AssetGraph({root: rootUrl})
         cdnFlash: !commandLineOptions.nocdnflash,
         cdnHtml: commandLineOptions.cdnhtml,
         noCompress: commandLineOptions.nocompress,
+        removeDeadIfs: commandLineOptions.removedeadifs,
         sharedBundles: commandLineOptions.sharedbundles,
         stripDebug: !commandLineOptions.debug,
         addInitialHtmlExtension: commandLineOptions.addinitialhtmlextension,
