@@ -79,6 +79,7 @@ var chalk = require('chalk'),
         })
         .options('nocompress', {
             describe: 'Prettifies HTML, CSS and Javascript for easier debugging',
+            alias: 'no-compress',
             type: 'boolean',
             default: false
         })
