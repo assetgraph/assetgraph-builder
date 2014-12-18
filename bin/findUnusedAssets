@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-var _ = require('underscore'),
-    AssetGraph = require('../lib/AssetGraph'),
+var AssetGraph = require('../lib/AssetGraph'),
     urltools = require('urltools'),
     path = require('path'),
     commandLineOptions = require('optimist')
@@ -12,8 +11,23 @@ var _ = require('underscore'),
 
 var assetGraph = new AssetGraph({root: commandLineOptions.root});
 
+//Run external process
+function runEx(command, callback, scope) {
+    var exec = require('child_process').exec;
+    exec(command, function (error, stdout, stderr) {
+        if (stderr) {
+            console.log(command);
+            console.log('stderr: ' + stderr);
+        } else {
+            stdout = stdout.replace(/([\r\n]+|[\r]+|[\n]+)/g, '\n'); //Normalize
+            var output = stdout.split('\n'); //Array
+            callback.call(scope, output);
+        }
+    });
+}
+
 assetGraph.on('afterTransform', function (transform, elapsedTime) {
-        console.log((elapsedTime / 1000).toFixed(3) + " secs: " + transform.name);
+        console.log((elapsedTime / 1000).toFixed(3) + ' secs: ' + transform.name);
     })
     .on('warn', function (err) {
         // These are way too noisy
@@ -33,7 +47,7 @@ assetGraph.on('afterTransform', function (transform, elapsedTime) {
     .loadAssets(commandLineOptions._.map(urltools.fsFilePathToFileUrl))
     .populate({from: {type: 'Html'}, followRelations: {type: 'HtmlScript', to: {url: /^file:/}}})
     .assumeRequireJsConfigHasBeenFound()
-    .moveAssets({isInitial: true}, function (asset) {return asset.url.replace(/\.template$/, ""); })
+    .moveAssets({isInitial: true}, function (asset) {return asset.url.replace(/\.template$/, ''); })
     .populate({
         followRelations: {
             to: {url: assetGraph.query.not(/^https?:/)}
@@ -86,18 +100,3 @@ assetGraph.on('afterTransform', function (transform, elapsedTime) {
             }
         });
     });
-
-//Run external process
-function runEx(command, callback, scope) {
-    var exec = require('child_process').exec;
-    exec(command, function (error, stdout, stderr) {
-        if (stderr) {
-            console.log(command);
-            console.log('stderr: ' + stderr);
-        } else {
-            stdout = stdout.replace(/([\r\n]+|[\r]+|[\n]+)/g, '\n'); //Normalize
-            var output = stdout.split('\n'); //Array
-            callback.call(scope, output);
-        }
-    });
-}
