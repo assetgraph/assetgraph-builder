@@ -255,7 +255,7 @@ a specific compression level:
 
 ```html
 <img src="myImage.png?pngquant=37">
-<img src="myOtherImage.png?optipng=-o7&amp;pngcrush=-rem,tEXT">
+<img src="myOtherImage.png?optipng=-o7&amp;pngcrush=-rem+tEXT">
 ```
 
 The image processing is supported everywhere you can refer to an
@@ -267,8 +267,17 @@ href="https://github.com/aheckmann/gm">gm module</a>) are supported:
 
 ```css
 body {
-    background-image: url(foo.png?resize=500,300&flip&magnify&pngcrush);
+    background-image: url(foo.png?resize=500+300&flip&magnify&pngcrush);
 }
+```
+
+These are especially useful for responsive images:
+
+```html
+<img srcset="bar.jpg 1024w,
+             bar.jpg?resize=600 600w,
+             bar.jpg?resize=500&amp;gravity=Center&amp;crop=300+300 300w"
+     sizes="(min-width: 768px) 50vw, 100vw">
 ```
 
 This allows you to only check your original images into version
