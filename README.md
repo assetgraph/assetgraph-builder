@@ -107,11 +107,15 @@ Example usage
 
 Build a single page application:
 
-    buildProduction --outroot path/to/production --root path/to/dev path/to/dev/index.html
+    buildProduction --outroot path/to/production --root path/to/dev/index.html
 
 This will load path/to/dev/index.html, follow all local relations to
 JavaScript, CSS, etc., perform the above mentioned optimizations, then
-output the result to the directory `path/to/production`.
+output the result to the directory `path/to/production`. In case there
+are pages which are not linked from the site (e.g. a landing page), you
+can add those as additional arguments to `--root`:
+
+    buildProduction --outroot path/to/production --root path/to/dev/index.html path/to/dev/landing.html
 
 Create a CDN-enabled build:
 
