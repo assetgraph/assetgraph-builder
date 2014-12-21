@@ -102,6 +102,19 @@ then run:
 
 Now you'll have the `buildProduction` script in your PATH.
 
+Usage
+-----
+
+    $ buildProduction --outroot outputPath [--root webrootPath] [startingAssets]
+
+Assetgraph needs a web root to resolve URLs correctly. If you pass in the `--root` option assetgraph will use it, otherwise it will take a best guess based on your `startingAssets`.
+
+The `--outroot` option tells assetgraph-builder where to write the built files to. If the directory does not exist it will be created for you.
+
+Your `startingAssets` can be one or more file paths or minimatch patterns, which will be used as the starting point of assetgraphs automatic discovery process. The default is `index.html`, but you might also want to add any file here that is not linked to by your website, but still has to be a part of the build, for example `robots.txt`, `.htaccess` or `404.html`. If one or more files are missing from your build, check that you are actually linking to them. If you are not, and it is by design, then you should add these files as input paths in `startingAssets`.
+
+There are many more options to assetgraph-builder. We suggest you consult the help with `buildProduction -h`.
+
 Example usage
 -------------
 
