@@ -293,6 +293,16 @@ These are especially useful for responsive images:
      sizes="(min-width: 768px) 50vw, 100vw">
 ```
 
+They work in JavaScript too:
+
+```js
+var img = document.querySelector('.responsive-image');
+img.setAttribute('srcset',
+  GETSTATICURL('baz.gif') + ' 500w, ' +
+  GETSTATICURL('baz.gif?resize=300') + ' 300w');
+picturefill({ elements: [img] }); // reload if you're using Picturefill
+```
+
 This allows you to only check your original images into version
 control and have your build system create the scaled/processed/derived
 ones dynamically.
