@@ -68,13 +68,14 @@
     "coveralls": "2.11.1",
     "gm": "1.6.1",
     "istanbul": "0.3.5",
+    "jsdom": "0.11.0",
     "jshint": "2.5.1",
     "less": "1.6.3",
     "mocha": "1.20.0",
     "node-sass": "0.9.4",
     "sinon": "1.10.3",
-    "unexpected": "3.2.0",
-    "unexpected-jsdom": "0.1.0",
+    "unexpected": "5.0.0-beta23",
+    "unexpected-jsdom": "5.0.0",
     "unexpected-sinon": "3.0.2"
   },
   "engines": {
