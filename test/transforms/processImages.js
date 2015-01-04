@@ -161,4 +161,66 @@ describe('processImages', function () {
             })
             .run(done);
     });
+
+    it('should apply device pixel ratio to images', function (done) {
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/devicePixelRatio/'})
+            .loadAssets('style.css')
+            .populate()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Css', 1);
+                expect(assetGraph, 'to contain asset', 'Png', 9);
+
+                expect(_.pluck(assetGraph.findAssets({ isImage: true }), 'devicePixelRatio'), 'to equal', [1, 2, 1, 1, 1, 1, 1, 8, 1]);
+            })
+            .processImages()
+            .queue(function (assetGraph) {
+                var outputs = [
+                    {
+                        type: 'Png',
+                        devicePixelRatio: 1
+                    },
+                    {
+                        type: 'Png',
+                        devicePixelRatio: 2
+                    },
+                    {
+                        type: 'Png',
+                        devicePixelRatio: 3,
+                        url: /foo\.png$/
+                    },
+                    {
+                        type: 'Png',
+                        devicePixelRatio: 1
+                    },
+                    {
+                        type: 'Png',
+                        devicePixelRatio: 5,
+                        url: /foo\.resize=,200\.png$/
+                    },
+                    {
+                        type: 'Png',
+                        devicePixelRatio: 6,
+                        url: /foo\.resize=,200\.png$/
+                    },
+                    {
+                        type: 'Png',
+                        devicePixelRatio: 7,
+                        url: /foo\.png\?foo=bar$/
+                    },
+                    {
+                        type: 'Png',
+                        devicePixelRatio: 1
+                    },
+                    {
+                        type: 'Jpeg',
+                        devicePixelRatio: 9
+                    }
+                ];
+
+                expect(assetGraph.findAssets({ isImage: true }), 'to be an array whose items satisfy', function (img, idx) {
+                    expect(img, 'to satisfy', outputs[idx]);
+                });
+            })
+            .run(done);
+    });
 });

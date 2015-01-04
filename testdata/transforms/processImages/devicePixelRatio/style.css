@@ -1,0 +1,35 @@
+.p1 {
+    background-image: url(foo.png);
+}
+
+.p2 {
+    background-image: url(foo@2x.png);
+}
+
+.p3 {
+    background-image: url(foo.png?dpr=3);
+}
+
+.p4 {
+    background-image: url(foo.png?resize=,200);
+}
+
+.p5 {
+    background-image: url(foo.png?resize=,200&dpr=5);
+}
+
+.p6 {
+    background-image: url(foo.png?dpr=6&resize=,200);
+}
+
+.p7 {
+    background-image: url(foo.png?dpr=7&foo=bar);
+}
+
+.p8 {
+    background-image: url(foo@8x.png?dpr=1);
+}
+
+.p9 {
+    background-image: url(foo.png?setFormat=jpg&dpr=9);
+}
