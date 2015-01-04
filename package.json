@@ -51,7 +51,7 @@
     "optipng": "0.1.1",
     "passerror": "1.0.0",
     "pngcrush": "0.1.0",
-    "pngquant": "0.1.5",
+    "pngquant": "0.4.0",
     "semver": "3.0.1",
     "seq": "0.3.5",
     "temp": "0.4.0",
