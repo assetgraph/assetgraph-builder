@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var AssetGraph = require('../lib/AssetGraph'),
-    _ = require('underscore'),
+    _ = require('lodash'),
     urlTools = require('urltools'),
     commandLineOptions = require('optimist')
         .usage('$0 [--root <inputRootDirectory>] <htmlFile>...')

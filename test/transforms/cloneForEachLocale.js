@@ -1,7 +1,7 @@
 /*global describe, it*/
 var expect = require('../unexpected-with-plugins'),
     vm = require('vm'),
-    _ = require('underscore'),
+    _ = require('lodash'),
     AssetGraph = require('../../lib/AssetGraph'),
     bootstrapper = require('../../lib/bootstrapper');
 

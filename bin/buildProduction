@@ -223,7 +223,7 @@ if (commandLineOptions.cdnoutroot) {
     console.warn(chalk.yellow('INFO: the --cdnoutroot switch is deprecated. Default location for your cdn assets is now <outroot>/static/cdn'));
 }
 
-var _ = require('underscore'),
+var _ = require('lodash'),
     AssetGraph = require('../lib/AssetGraph'),
     uglifyJs = AssetGraph.JavaScript.uglifyJs,
     uglifyAst = AssetGraph.JavaScript.uglifyAst,

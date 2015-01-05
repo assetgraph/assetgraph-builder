@@ -3,7 +3,7 @@
 var path = require('path'),
     fs = require('fs'),
     util = require('util'),
-    _ = require('underscore'),
+    _ = require('lodash'),
     extend = require('extend'),
     AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),

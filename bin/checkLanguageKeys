@@ -38,7 +38,7 @@ if (commandLineOptions.h) {
     process.exit(1);
 }
 
-var _ = require('underscore'),
+var _ = require('lodash'),
     AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
     query = AssetGraph.query,

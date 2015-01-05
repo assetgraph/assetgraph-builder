@@ -2,7 +2,7 @@
 
 var path = require('path'),
     fs = require('fs'),
-    _ = require('underscore'),
+    _ = require('lodash'),
     AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
     urlTools = require('urltools'),

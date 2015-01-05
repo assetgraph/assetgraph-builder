@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var _ = require('underscore'),
+var _ = require('lodash'),
     AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
     urlTools = require('urltools'),
