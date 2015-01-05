@@ -54,7 +54,7 @@
     "pngquant": "0.4.0",
     "semver": "3.0.1",
     "seq": "0.3.5",
-    "temp": "0.4.0",
+    "temp": "0.8.1",
     "underscore": "1.2.0",
     "urltools": "0.2.0"
   },
