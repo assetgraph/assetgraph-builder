@@ -39,7 +39,7 @@
     "bin"
   ],
   "dependencies": {
-    "assetgraph": "1.15.1",
+    "assetgraph": "1.15.3",
     "async": "0.9.0",
     "chalk": "0.5.1",
     "express-processimage": "2.0.0",
@@ -74,9 +74,9 @@
     "mocha": "1.20.0",
     "node-sass": "0.9.4",
     "sinon": "1.10.3",
-    "unexpected": "5.0.0-beta23",
-    "unexpected-jsdom": "5.0.0",
-    "unexpected-sinon": "3.0.2"
+    "unexpected": "5.1.5",
+    "unexpected-jsdom": "5.1.0",
+    "unexpected-sinon": "5.0.0"
   },
   "engines": {
     "node": ">=0.8.0"
