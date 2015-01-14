@@ -98,6 +98,11 @@ var chalk = require('chalk'),
             type: 'boolean',
             default: false
         })
+        .options('nofilerev', {
+            describe: 'Revision files with a hash of their content in their file name for optimal far future caching',
+            type: 'boolean',
+            default: false
+        })
         .options('nocdnflash', {
             describe: 'Avoid putting flash files on the cdnroot. Use this if you have problems setting up CORS',
             type: 'boolean',
@@ -357,6 +362,7 @@ new AssetGraph({root: rootUrl})
         optimizeImages: commandLineOptions.optimizeimages,
         inlineByRelationType: inlineByRelationType,
         gzip: commandLineOptions.gzip,
+        noFileRev: commandLineOptions.nofilerev,
         defines: defines,
         reservedNames: reservedNames,
         localeIds: localeIds,

@@ -928,6 +928,19 @@ describe('buildProduction', function () {
             .run(done);
     });
 
+    it('should keep favicon.ico at its original location when file revision is disabled', function (done) {
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/faviconOutsideRoot/'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets(['index.html'])
+            .populate()
+            .buildProduction({version: false, noFileRev: true})
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', {url: assetGraph.root + 'foo/favicon.ico'});
+                expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to equal', '<!DOCTYPE html><html><head><link rel="shortcut icon" type=image/vnd.microsoft.icon href=foo/favicon.ico></head><body></body></html>');
+            })
+            .run(done);
+    });
+
     it('should handle a test case with an RSS feed (#118)', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/rss/'})
             .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
