@@ -11,10 +11,10 @@ describe('transforms.autoprefixer', function () {
                 expect(assetGraph, 'to contain relations', 'HtmlStyle', 2);
                 expect(assetGraph, 'to contain relations', 'CssImage', 1);
             })
-            .autoprefixer()
+            .autoprefixer('last 100 versions')
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain relations', 'HtmlStyle', 2);
-                expect(assetGraph, 'to contain relations', 'CssImage', 3);
+                expect(assetGraph, 'to contain relations', 'CssImage', 4);
             })
             .run(done);
     });
