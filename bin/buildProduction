@@ -37,7 +37,7 @@ var chalk = require('chalk'),
         })
         .options('browsers', {
             alias: 'b',
-            describe: 'Specify which browsers to support. Configures autoprefixer and controls which IE hacks to apply. Syntax: https://github.com/ai/autoprefixer#browsers',
+            describe: 'Specify which browsers to support. Configures autoprefixer and controls which IE hacks to apply. Syntax: https://github.com/ai/browserslist',
             type: 'string',
             demand: false
         })
