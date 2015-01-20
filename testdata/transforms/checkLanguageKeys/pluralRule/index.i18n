@@ -1,0 +1,26 @@
+{
+    "EveryNWeeks": {
+        "en": {
+            "one": "Every week",
+            "other": "Every {0} weeks"
+        },
+        "cs": {
+            "one": "Každý týden",
+            "other": "Každých {0} týdnů"
+        }
+    },
+    "DeeplyStructured": {
+        "en": {
+            "foo": {
+                "one": "Every week",
+                "other": "Every {0} weeks"
+            }
+        },
+        "cs": {
+            "foo": {
+                "one": "Každý týden",
+                "other": "Každých {0} týdnů"
+            }
+        }
+    }
+}
