@@ -61,13 +61,19 @@ describe('checkLanguageKeys', function () {
             .loadAssets('index.html')
             .populate()
             .checkLanguageKeys({
-                supportedLocaleIds: ['en_us', 'cs'],
+                supportedLocaleIds: ['en_us', 'cs', 'da'],
                 defaultLocaleId: 'en_us'
             })
             .queue(function (assetGraph) {
                 expect(infos, 'to equal', [
-                    new Error('cs is missing the "few" case in EveryNWeeks'),
-                    new Error('DeeplyStructured: Czech is missing the "few" case')
+                    new Error('cs is missing EveryNWeeks[few]'),
+                    new Error('cs is missing EveryNWeeks[many]'),
+                    new Error('da should not have EveryNWeeks[many]=\'I should not be here\''),
+                    new Error('en is missing DeeplyStructured[bar]'),
+                    new Error('da is missing DeeplyStructured[bar]'),
+                    new Error('cs is missing DeeplyStructured[foo][few]'),
+                    new Error('cs is missing DeeplyStructured[foo][many]'),
+                    new Error('da should not have DeeplyStructured[foo][many]=\'I should not be here\'')
                 ]);
             })
             .run(done);
