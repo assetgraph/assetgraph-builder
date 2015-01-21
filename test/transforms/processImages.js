@@ -71,7 +71,7 @@ describe('processImages', function () {
             .run(done);
     });
 
-    it('should handlea Css test case with a setFormat instruction in the query string of a background-image url', function (done) {
+    it('should handle a Css test case with a setFormat instruction in the query string of a background-image url', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/setFormat/'})
             .loadAssets('index.css')
             .populate()

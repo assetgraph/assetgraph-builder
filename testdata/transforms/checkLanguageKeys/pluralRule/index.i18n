@@ -1,0 +1,39 @@
+{
+    "EveryNWeeks": {
+        "en": {
+            "one": "Every week",
+            "other": "Every {0} weeks"
+        },
+        "cs": {
+            "one": "Každý týden",
+            "other": "Každých {0} týdnů"
+        },
+        "da": {
+            "one": "Hver uge",
+            "other": "Hver {0}. uge",
+            "many": "I should not be here"
+        }
+    },
+    "DeeplyStructured": {
+        "en": {
+            "foo": {
+                "one": "Every week",
+                "other": "Every {0} weeks"
+            }
+        },
+        "cs": {
+            "foo": {
+                "one": "Každý týden",
+                "other": "Každých {0} týdnů"
+            },
+            "bar": 123
+        },
+        "da": {
+            "foo": {
+                "one": "Hver uge",
+                "other": "Hver {0}. uge",
+                "many": "I should not be here"
+            }
+        }
+    }
+}
