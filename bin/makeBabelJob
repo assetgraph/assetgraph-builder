@@ -7,6 +7,7 @@ var path = require('path'),
     i18nTools = require('../lib/i18nTools'),
     urlTools = require('urltools'),
     mkpathSync = require('../lib/mkpathSync'),
+    pluralsCldr = require('plurals-cldr'),
     commandLineOptions = require('optimist')
         .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--i18n <pathToI18nFile>] [--all] [--defaultlocale <localeId>] --babeldir=<dirForBabelFiles> --root <inputRootDirectory> --locales <localeId>,... <htmlFile>...')
         .boolean('parentdir', 'all')
@@ -34,6 +35,70 @@ if (commandLineOptions.i18n) {
 }
 
 mkpathSync(commandLineOptions.babeldir);
+
+function coalescePluralsToLocale(value, localeId) {
+    return (function traverse(obj) {
+        if (Array.isArray(obj)) {
+            return obj.map(traverse);
+        } else if (typeof obj === 'object' && obj !== null) {
+            var coalescedObj = {},
+                keys = Object.keys(obj);
+            if (keys.length > 0 && keys.every(function (key) {
+                return ['zero', 'one', 'two', 'few', 'many', 'other'].indexOf(key) !== -1;
+            })) {
+                keys = pluralsCldr.forms(localeId);
+                keys.forEach(function (key) {
+                    coalescedObj[key] = obj[key];
+                });
+                obj = coalescedObj;
+            }
+            keys.forEach(function (propertyName) {
+                coalescedObj[propertyName] = traverse(obj[propertyName]);
+            });
+            return coalescedObj;
+        } else {
+            return obj;
+        }
+    }(value));
+}
+
+function nullIfNullOrUndefined(val) {
+    if (val === null || typeof val === 'undefined') {
+        return null;
+    } else {
+        return val;
+    }
+}
+
+function nullOutLeaves(obj) {
+    if (Array.isArray(obj)) {
+        return obj.map(nullOutLeaves);
+    } else if (typeof obj === 'object' && obj !== null) {
+        var resultObj = {};
+        Object.keys(obj).forEach(function (propertyName) {
+            resultObj[propertyName] = nullOutLeaves(obj[propertyName]);
+        });
+        return resultObj;
+    } else {
+        return null;
+    }
+}
+
+function getLeavesFrom(obj, otherObject) {
+    if (Array.isArray(obj)) {
+        return obj.map(function (item, i) {
+            return getLeavesFrom(item, Array.isArray(otherObject) ? nullIfNullOrUndefined(otherObject[i]) : null);
+        });
+    } else if (typeof obj === 'object' && obj !== null) {
+        var resultObj = {};
+        Object.keys(obj).forEach(function (propertyName) {
+            resultObj[propertyName] = getLeavesFrom(obj[propertyName], otherObject && typeof otherObject === 'object' ? nullIfNullOrUndefined(otherObject[propertyName]) : null);
+        });
+        return resultObj;
+    } else {
+        return obj;
+    }
+}
 
 function flattenKey(key, value) {
     var valueByFlattenedKey = {},
@@ -169,6 +234,7 @@ new AssetGraph({root: commandLineOptions.root})
                     flattenedKeysThatMustBePresent = Object.keys(valueByFlattenedKey);
                 // Make sure that all the flattened keys from the actual occurrence are present:
                 if (typeof defaultValueInTheOccurrence !== 'undefined') {
+                    defaultValueInTheOccurrence = coalescePluralsToLocale(defaultValueInTheOccurrence, localeId);
                     defaultValueInTheOccurrenceByFlattenedKey = flattenKey(key, defaultValueInTheOccurrence);
                     flattenedKeysThatMustBePresent = _.union(Object.keys(defaultValueInTheOccurrenceByFlattenedKey), flattenedKeysThatMustBePresent);
                 }
@@ -198,7 +264,13 @@ new AssetGraph({root: commandLineOptions.root})
                         if (localeId.indexOf(defaultLocaleId) === 0) {
                             i18nAssetForKey.parseTree[key][localeId] = defaultValue;
                         } else {
-                            i18nAssetForKey.parseTree[key][localeId] = null;
+                            var newValue;
+                            if (omitExistingValues) {
+                                newValue = nullOutLeaves(coalescePluralsToLocale(value, localeId));
+                            } else {
+                                newValue = getLeavesFrom(coalescePluralsToLocale(defaultValue, localeId), value);
+                            }
+                            i18nAssetForKey.parseTree[key][localeId] = newValue;
                         }
                         i18nAssetForKey.markDirty();
                     }
