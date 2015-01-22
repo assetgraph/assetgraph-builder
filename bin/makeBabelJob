@@ -36,7 +36,7 @@ if (commandLineOptions.i18n) {
 
 mkpathSync(commandLineOptions.babeldir);
 
-function coalescePluralsToLocale(value, localeId) {
+function coalescePluralsToLocale(value, localeId, pluralFormsToInclude) {
     return (function traverse(obj) {
         if (Array.isArray(obj)) {
             return obj.map(traverse);
@@ -46,9 +46,12 @@ function coalescePluralsToLocale(value, localeId) {
             if (keys.length > 0 && keys.every(function (key) {
                 return ['zero', 'one', 'two', 'few', 'many', 'other'].indexOf(key) !== -1;
             })) {
-                keys = pluralsCldr.forms(localeId);
-                keys.forEach(function (key) {
-                    coalescedObj[key] = obj[key];
+                keys = [];
+                pluralsCldr.forms(localeId).forEach(function (pluralForm) {
+                    if (!pluralFormsToInclude || pluralFormsToInclude === pluralForm || pluralFormsToInclude.indexOf(pluralForm) !== -1) {
+                        coalescedObj[pluralForm] = obj[pluralForm];
+                        keys.push(pluralForm);
+                    }
                 });
                 obj = coalescedObj;
             }
@@ -60,6 +63,25 @@ function coalescePluralsToLocale(value, localeId) {
             return obj;
         }
     }(value));
+}
+
+function valueContainsPlurals(obj) {
+    if (Array.isArray(obj)) {
+        return obj.some(valueContainsPlurals);
+    } else if (typeof obj === 'object' && obj !== null) {
+        var keys = Object.keys(obj);
+        if (keys.length > 0 && keys.every(function (key) {
+            return ['zero', 'one', 'two', 'few', 'many', 'other'].indexOf(key) !== -1;
+        })) {
+            return true;
+        } else {
+            return keys.some(function (key) {
+                return valueContainsPlurals(obj[key]);
+            });
+        }
+    } else {
+        return false;
+    }
 }
 
 function nullIfNullOrUndefined(val) {
@@ -125,6 +147,11 @@ function flattenKey(key, value) {
     }(value));
     return valueByFlattenedKey;
 }
+
+var pluralFormsInTheDefaultLocale = pluralsCldr.forms(defaultLocaleId),
+    relevantPluralFormsNotInTheDefaultLocale = _.difference(_.union.apply(_, localeIds.map(function (localeId) {
+        return pluralsCldr.forms(localeId);
+    })), pluralFormsInTheDefaultLocale);
 
 new AssetGraph({root: commandLineOptions.root})
     .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
@@ -249,6 +276,20 @@ new AssetGraph({root: commandLineOptions.root})
                     }
                     babelSrc += flattenedKey + '=' + (omitExistingValues ? '' : String(value || '').replace(/\\/g, '\\\\').replace(/\n/g, '\\n')) + '\n';
                 });
+
+                if (isDefaultLocale && relevantPluralFormsNotInTheDefaultLocale.length > 0 && valueContainsPlurals(value)) {
+                    relevantPluralFormsNotInTheDefaultLocale.forEach(function (pluralForm) {
+                        var localeIdsNeedingThisKey = localeIds.filter(function (localeId) {
+                            return pluralsCldr.forms(localeId).indexOf(pluralForm) !== -1;
+                        });
+
+                        var valueByFlattenedKey = flattenKey(key, nullOutLeaves(coalescePluralsToLocale(defaultValueInTheOccurrence, localeIdsNeedingThisKey[0], pluralForm)));
+
+                        babelSrc += '# NOTE: The language' + (localeIdsNeedingThisKey.length > 1 ? 's' : '') +
+                            ' ' + localeIdsNeedingThisKey.join(', ') + ' need' + (localeIdsNeedingThisKey.length > 1 ? '' : 's') + ' this additional key to cover all plural forms:\n' +
+                            Object.keys(valueByFlattenedKey).map(function (flattenedKey) {return '# ' + flattenedKey + '=\n';}).join('');
+                    });
+                }
 
                 var i18nAssetForKey = assetGraph.findAssets({type: 'I18n', isLoaded: true, parseTree: function (parseTree) {
                     return key in parseTree;

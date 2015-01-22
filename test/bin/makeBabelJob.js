@@ -50,18 +50,26 @@ describe('makeBabelJob', function () {
 
                 expect(fs.readdirSync(babelDir).sort(), 'to equal', ['cs.txt', 'da.txt', 'de.txt', 'en.txt']);
 
-                expect(fs.readFileSync(Path.resolve(babelDir, 'en.txt'), 'utf-8').split(/\n/), 'to equal', [
+                expect(fs.readFileSync(Path.resolve(babelDir, 'en.txt'), 'utf-8'), 'to equal', [
                     'KeyAlreadyPartiallyTranslatedInIndexI18n=Key already partially translated in index.i18n',
                     'KeyAlreadyPartiallyTranslatedInOtherI18n=Key already partially translated in other.i18n',
                     'KeyDestinedForIndexI18n=Key destined for index.i18n',
                     'NotYetTranslatedKeyWithPluralCases[one]=one week',
                     'NotYetTranslatedKeyWithPluralCases[other]={0} weeks',
+                    '# NOTE: The language cs needs this additional key to cover all plural forms:',
+                    '# NotYetTranslatedKeyWithPluralCases[few]=',
+                    '# NOTE: The language cs needs this additional key to cover all plural forms:',
+                    '# NotYetTranslatedKeyWithPluralCases[many]=',
                     'NotYetTranslatedKeyWithPluralCasesInNestedStructure[foo][one]=one week',
                     'NotYetTranslatedKeyWithPluralCasesInNestedStructure[foo][other]={0} weeks',
+                    '# NOTE: The language cs needs this additional key to cover all plural forms:',
+                    '# NotYetTranslatedKeyWithPluralCasesInNestedStructure[foo][few]=',
+                    '# NOTE: The language cs needs this additional key to cover all plural forms:',
+                    '# NotYetTranslatedKeyWithPluralCasesInNestedStructure[foo][many]=',
                     ''
-                ]);
+                ].join('\n'));
 
-                expect(fs.readFileSync(Path.resolve(babelDir, 'da.txt'), 'utf-8').split(/\n/), 'to equal', [
+                expect(fs.readFileSync(Path.resolve(babelDir, 'da.txt'), 'utf-8'), 'to equal', [
                     'KeyAlreadyPartiallyTranslatedInIndexI18n=',
                     'KeyAlreadyPartiallyTranslatedInOtherI18n=',
                     'KeyDestinedForIndexI18n=',
@@ -70,9 +78,9 @@ describe('makeBabelJob', function () {
                     'NotYetTranslatedKeyWithPluralCasesInNestedStructure[foo][one]=',
                     'NotYetTranslatedKeyWithPluralCasesInNestedStructure[foo][other]=',
                     ''
-                ]);
+                ].join('\n'));
 
-                expect(fs.readFileSync(Path.resolve(babelDir, 'de.txt'), 'utf-8').split(/\n/), 'to equal', [
+                expect(fs.readFileSync(Path.resolve(babelDir, 'de.txt'), 'utf-8'), 'to equal', [
                     'KeyAlreadyPartiallyTranslatedInIndexI18n=Existing translation to German',
                     'KeyAlreadyPartiallyTranslatedInOtherI18n=Existing translation to German',
                     'KeyDestinedForIndexI18n=',
@@ -81,9 +89,9 @@ describe('makeBabelJob', function () {
                     'NotYetTranslatedKeyWithPluralCasesInNestedStructure[foo][one]=',
                     'NotYetTranslatedKeyWithPluralCasesInNestedStructure[foo][other]=',
                     ''
-                ]);
+                ].join('\n'));
 
-                expect(fs.readFileSync(Path.resolve(babelDir, 'cs.txt'), 'utf-8').split(/\n/), 'to equal', [
+                expect(fs.readFileSync(Path.resolve(babelDir, 'cs.txt'), 'utf-8'), 'to equal', [
                     'KeyAlreadyPartiallyTranslatedInIndexI18n=',
                     'KeyAlreadyPartiallyTranslatedInOtherI18n=',
                     'KeyDestinedForIndexI18n=',
@@ -96,7 +104,7 @@ describe('makeBabelJob', function () {
                     'NotYetTranslatedKeyWithPluralCasesInNestedStructure[foo][many]=',
                     'NotYetTranslatedKeyWithPluralCasesInNestedStructure[foo][other]=',
                     ''
-                ]);
+                ].join('\n'));
 
                 expect(JSON.parse(fs.readFileSync(Path.resolve(tmpTestCaseCopyDir, 'index.i18n'), 'utf-8')), 'to equal', {
                     KeyDestinedForIndexI18n: {
