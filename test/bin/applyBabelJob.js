@@ -23,6 +23,7 @@ describe('applyBabelJob', function () {
                 '--replace',
                 tmpTestCaseCopyDir + '/index.html'
             ]);
+
             applyBabelJobProcess.on('exit', function (exitCode) {
                 if (exitCode) {
                     done(new Error('The applyBabelJob process ended with a non-zero exit code: ' + exitCode));
@@ -55,6 +56,12 @@ describe('applyBabelJob', function () {
                             en: 'This proofread key has {0} proofread placeholders'
                         }
                     });
+                    expect(JSON.parse(fs.readFileSync(tmpTestCaseCopyDir + '/index.someother.i18n')), 'to equal', {
+                        KeyInSomeOtherI18nFile: {
+                            en: 'Woop',
+                            da: 'Jubii'
+                        }
+                    });
                     expect(fs.readFileSync(tmpTestCaseCopyDir + '/index.html', 'utf-8'), 'to equal',
                         '<!DOCTYPE html>\n' +
                         '<html>\n' +
@@ -63,12 +70,14 @@ describe('applyBabelJob', function () {
                         '    </head>\n' +
                         '    <body>\n' +
                         '        <script>\n' +
+                        '            INCLUDE(\'index.someother.i18n\');\n' +
                         '            alert(TR(\'bar\', \'BarProofRead\'));\n' +
                         '            alert(TR(\'WeirdlyFormattedKey\', \'that \' + \'comes \' + \'back the same in the translation job\'));\n' +
                         '            alert(TR(\'ComplexKey\', {\n' +
                         '                that: \'also comes\',\n' +
                         '                back: \'the same\'\n' +
                         '            }));\n' +
+                        '            alert(TR(\'KeyInSomeOtherI18nFile\', \'Woop\'));\n' +
                         '        </script>\n' +
                         '        <span data-i18n="placeholders">This proofread key has <span>some</span> proofread placeholders</span>\n' +
                         '        <span data-bind="text: foo < 4 && bar > 2"></span>\n' +

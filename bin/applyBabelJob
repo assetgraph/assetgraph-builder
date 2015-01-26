@@ -170,12 +170,32 @@ new AssetGraph({root: commandLineOptions.root})
                 }
             });
         }
+        var secondaryI18nAssets = assetGraph.findAssets({
+            type: 'I18n'
+        }).filter(function (asset) {
+            return asset !== i18nAssetForAllKeys;
+        });
         Object.keys(translationsByKeyAndLocaleId).forEach(function (key) {
             var i18nAsset;
-            try {
-                i18nAsset = i18nAssetForAllKeys || i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, occurrencesByKey);
-            } catch (e) {
-                console.warn('Skipping language key: ' + e.message);
+            if (i18nAssetForAllKeys) {
+                // Even if a i18nAssetForAllKeys (--i18n ...) is defined, another .i18n we should prefer another file with that key already defined:
+                if (secondaryI18nAssets.length > 0) {
+                    for (var i = 0 ; i < secondaryI18nAssets.length ; i += 1) {
+                        if (key in secondaryI18nAssets[i].parseTree) {
+                            i18nAsset = secondaryI18nAssets[i];
+                            break;
+                        }
+                    }
+                }
+                if (!i18nAsset) {
+                    i18nAsset = i18nAssetForAllKeys;
+                }
+            } else {
+                try {
+                    i18nAsset = i18nAssetForAllKeys || i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, occurrencesByKey);
+                } catch (e) {
+                    console.warn('Skipping language key: ' + e.message);
+                }
             }
             if (i18nAsset) {
                 if (!(key in i18nAsset.parseTree)) {
