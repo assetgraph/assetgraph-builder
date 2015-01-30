@@ -77,6 +77,11 @@ var chalk = require('chalk'),
             type: 'boolean',
             default: true
         })
+        .options('minify', {
+            describe: 'Minifies HTML, CSS, SVG and Javascript.',
+            type: 'boolean',
+            default: true
+        })
         .options('nocompress', {
             describe: 'Prettifies HTML, CSS and Javascript for easier debugging',
             alias: 'no-compress',
@@ -376,6 +381,7 @@ new AssetGraph({root: rootUrl})
         recursive: commandLineOptions.recursive,
         cdnFlash: !commandLineOptions.nocdnflash,
         cdnHtml: commandLineOptions.cdnhtml,
+        minify: commandLineOptions.minify,
         noCompress: commandLineOptions.nocompress,
         removeDeadIfs: commandLineOptions.removedeadifs,
         sharedBundles: commandLineOptions.sharedbundles,
