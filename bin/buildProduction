@@ -114,7 +114,7 @@ var chalk = require('chalk'),
             type: 'string'
         })
         .options('inline', {
-            describe: 'Set size threshold for inlining. Supported values: false (never inline), true (always inline), number (inline if target is smaller than this number of bytes). Also supported: --inlinehtmlscript true, --inlinecssimage 8192 etc.',
+            describe: 'Set size threshold for inlining. Supported values: false (never inline), true (always inline, except when found inside @media queries), number (inline if target is smaller than this number of bytes). Also supported: --inlinehtmlscript true, --inlinecssimage 8192 etc.',
             default: false
         })
         .options('cdnhtml', {
