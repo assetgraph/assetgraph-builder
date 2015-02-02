@@ -280,24 +280,35 @@ new AssetGraph({root: commandLineOptions.root})
                 });
 
                 if (keyNeedsTranslation && isDefaultLocale && relevantPluralFormsNotInTheDefaultLocale.length > 0 && valueContainsPlurals(value)) {
+                    var localeIdsByFlattenedKey = {};
                     relevantPluralFormsNotInTheDefaultLocale.forEach(function (pluralForm) {
-                        var localeIdsNeedingThisKey = localeIds.filter(function (localeId) {
-                                return pluralsCldr.forms(localeId).indexOf(pluralForm) !== -1;
-                            });
-                        localeIdsNeedingThisKey.forEach(function (localeId) {
-                            var valueByFlattenedKey = flattenKey(key, nullOutLeaves(coalescePluralsToLocale(defaultValueInTheOccurrence, localeId, pluralForm))),
-                                existingTranslationByFlattenedKey = allKeys[key] && localeId in allKeys[key] ? flattenKey(key, allKeys[key][localeId]) : {},
-                                notes = Object.keys(valueByFlattenedKey).filter(function (flattenedKey) {
-                                    return !(flattenedKey in existingTranslationByFlattenedKey);
-                                }).map(function (flattenedKey) {
-                                    return '# ' + flattenedKey + '=\n';
-                                });
+                        localeIds.forEach(function (localeId) {
+                            if (pluralsCldr.forms(localeId).indexOf(pluralForm) !== -1) {
+                                var valueByFlattenedKey = flattenKey(key, nullOutLeaves(coalescePluralsToLocale(defaultValueInTheOccurrence, localeId, pluralForm))),
+                                    existingTranslationByFlattenedKey = allKeys[key] && localeId in allKeys[key] ? flattenKey(key, allKeys[key][localeId]) : {};
 
-                            if (notes.length > 0) {
-                                babelSrc += '# NOTE: The language ' + localeId + ' needs this additional key to cover all plural forms:\n' +
-                                    notes.join('');
+                                Object.keys(valueByFlattenedKey).forEach(function (flattenedKey) {
+                                    if (!(flattenedKey in existingTranslationByFlattenedKey)) {
+                                        (localeIdsByFlattenedKey[flattenedKey] = localeIdsByFlattenedKey[flattenedKey] || []).push(localeId);
+                                    }
+                                });
                             }
                         });
+                    });
+                    var flattenedKeysByJoinedLocaleIds = {};
+                    Object.keys(localeIdsByFlattenedKey).forEach(function (flattenedKey) {
+                        var localeIds = localeIdsByFlattenedKey[flattenedKey];
+                        localeIds.sort();
+                        (flattenedKeysByJoinedLocaleIds[localeIds.join(',')] = flattenedKeysByJoinedLocaleIds[localeIds.join(',')] || []).push(flattenedKey);
+                    });
+
+                    Object.keys(flattenedKeysByJoinedLocaleIds).forEach(function (joinedLocaleIds) {
+                        var flattenedKeys = flattenedKeysByJoinedLocaleIds[joinedLocaleIds],
+                            localeIds = joinedLocaleIds.split(',');
+                        babelSrc += '# NOTE: The language' + (localeIds.length > 1 ? 's ' : ' ') + localeIds.join(', ') + (localeIds.length > 1 ? ' need' : ' needs') + (flattenedKeys.length > 1 ? ' these additional keys' : ' this additional key') + ' to cover all plural forms:\n' +
+                            flattenedKeys.map(function (flattenedKey) {
+                                return '# ' + flattenedKey + '=\n';
+                            }).join('');
                     });
                 }
 

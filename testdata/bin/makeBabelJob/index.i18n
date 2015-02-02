@@ -36,6 +36,12 @@
         "en": {
             "one": "foo",
             "other": "foo"
+        },
+        "pl": {
+            "one": "fzz",
+            "few": "fzz",
+            "many": "fzz",
+            "other": "fzz"
         }
     }
 }
