@@ -11,6 +11,8 @@
             alert(TR('KeyAlreadyPartiallyTranslatedInOtherI18n', 'Key already partially translated in other.i18n'));
             alert(TR('NotYetTranslatedKeyWithPluralCases', {one: 'one week', other: '{0} weeks'}).one);
             alert(TR('NotYetTranslatedKeyWithPluralCasesInNestedStructure', {foo: {one: 'one week', other: '{0} weeks'}}).foo.one);
+            alert(TR('KeyAlreadyTranslatedToAllLanguages', {one: 'foo', other: 'foo'}));
+            alert(TR('KeyAlreadyTranslatedToCzech', {one: 'foo', other: 'foo'}));
         </script>
         <span data-i18n="text: null">data-i18n specifying that the contents of the tag should not be translated</span>
         <span data-i18n="">data-i18n specifying that the contents of the tag should not be translated</span>

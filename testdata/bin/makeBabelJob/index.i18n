@@ -1,5 +1,41 @@
 {
     "KeyAlreadyPartiallyTranslatedInIndexI18n": {
         "de": "Existing translation to German"
+    },
+    "KeyAlreadyTranslatedToCzech": {
+        "cs": {
+            "one": "fzd",
+            "few": "fzd",
+            "many": "fzd",
+            "other": "fzd"
+        }
+    },
+    "KeyAlreadyTranslatedToCzech": {
+        "cs": {
+            "one": "fzd",
+            "few": "fzd",
+            "many": "fzd",
+            "other": "fzd"
+        }
+    },
+    "KeyAlreadyTranslatedToAllLanguages": {
+        "cs": {
+            "one": "fzd",
+            "few": "fzd",
+            "many": "fzd",
+            "other": "fzd"
+        },
+        "da": {
+            "one": "føø",
+            "other": "føø"
+        },
+        "de": {
+            "one": "voo",
+            "other": "voo"
+        },
+        "en": {
+            "one": "foo",
+            "other": "foo"
+        }
     }
 }

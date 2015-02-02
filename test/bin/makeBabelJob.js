@@ -53,6 +53,8 @@ describe('makeBabelJob', function () {
                 expect(fs.readFileSync(Path.resolve(babelDir, 'en.txt'), 'utf-8'), 'to equal', [
                     'KeyAlreadyPartiallyTranslatedInIndexI18n=Key already partially translated in index.i18n',
                     'KeyAlreadyPartiallyTranslatedInOtherI18n=Key already partially translated in other.i18n',
+                    'KeyAlreadyTranslatedToCzech[one]=foo',
+                    'KeyAlreadyTranslatedToCzech[other]=foo',
                     'KeyDestinedForIndexI18n=Key destined for index.i18n',
                     'NotYetTranslatedKeyWithPluralCases[one]=one week',
                     'NotYetTranslatedKeyWithPluralCases[other]={0} weeks',
@@ -72,6 +74,8 @@ describe('makeBabelJob', function () {
                 expect(fs.readFileSync(Path.resolve(babelDir, 'da.txt'), 'utf-8'), 'to equal', [
                     'KeyAlreadyPartiallyTranslatedInIndexI18n=',
                     'KeyAlreadyPartiallyTranslatedInOtherI18n=',
+                    'KeyAlreadyTranslatedToCzech[one]=',
+                    'KeyAlreadyTranslatedToCzech[other]=',
                     'KeyDestinedForIndexI18n=',
                     'NotYetTranslatedKeyWithPluralCases[one]=',
                     'NotYetTranslatedKeyWithPluralCases[other]=',
@@ -83,6 +87,8 @@ describe('makeBabelJob', function () {
                 expect(fs.readFileSync(Path.resolve(babelDir, 'de.txt'), 'utf-8'), 'to equal', [
                     'KeyAlreadyPartiallyTranslatedInIndexI18n=Existing translation to German',
                     'KeyAlreadyPartiallyTranslatedInOtherI18n=Existing translation to German',
+                    'KeyAlreadyTranslatedToCzech[one]=',
+                    'KeyAlreadyTranslatedToCzech[other]=',
                     'KeyDestinedForIndexI18n=',
                     'NotYetTranslatedKeyWithPluralCases[one]=',
                     'NotYetTranslatedKeyWithPluralCases[other]=',
@@ -94,14 +100,20 @@ describe('makeBabelJob', function () {
                 expect(fs.readFileSync(Path.resolve(babelDir, 'cs.txt'), 'utf-8'), 'to equal', [
                     'KeyAlreadyPartiallyTranslatedInIndexI18n=',
                     'KeyAlreadyPartiallyTranslatedInOtherI18n=',
+                    'KeyAlreadyTranslatedToAllLanguages[few]=fzd',
+                    'KeyAlreadyTranslatedToAllLanguages[many]=fzd',
+                    'KeyAlreadyTranslatedToCzech[few]=fzd',
+                    'KeyAlreadyTranslatedToCzech[many]=fzd',
+                    'KeyAlreadyTranslatedToCzech[one]=fzd',
+                    'KeyAlreadyTranslatedToCzech[other]=fzd',
                     'KeyDestinedForIndexI18n=',
-                    'NotYetTranslatedKeyWithPluralCases[one]=',
                     'NotYetTranslatedKeyWithPluralCases[few]=',
                     'NotYetTranslatedKeyWithPluralCases[many]=',
+                    'NotYetTranslatedKeyWithPluralCases[one]=',
                     'NotYetTranslatedKeyWithPluralCases[other]=',
-                    'NotYetTranslatedKeyWithPluralCasesInNestedStructure[foo][one]=',
                     'NotYetTranslatedKeyWithPluralCasesInNestedStructure[foo][few]=',
                     'NotYetTranslatedKeyWithPluralCasesInNestedStructure[foo][many]=',
+                    'NotYetTranslatedKeyWithPluralCasesInNestedStructure[foo][one]=',
                     'NotYetTranslatedKeyWithPluralCasesInNestedStructure[foo][other]=',
                     ''
                 ].join('\n'));
@@ -158,6 +170,18 @@ describe('makeBabelJob', function () {
                             }
                         },
                         en: { foo: {one: 'one week', other: '{0} weeks' } }
+                    },
+                    KeyAlreadyTranslatedToAllLanguages: {
+                        cs: { one: 'fzd', few: 'fzd', many: 'fzd', other: 'fzd' },
+                        da: { one: 'føø', other: 'føø' },
+                        de: { one: 'voo', other: 'voo' },
+                        en: { one: 'foo', other: 'foo' }
+                    },
+                    KeyAlreadyTranslatedToCzech: {
+                        cs: { one: 'fzd', few: 'fzd', many: 'fzd', other: 'fzd' },
+                        da: { one: null, other: null },
+                        de: { one: null, other: null },
+                        en: { one: 'foo', other: 'foo' }
                     }
                 });
 
