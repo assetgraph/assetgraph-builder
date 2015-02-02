@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <script>
+            function INCLUDE() {}
+            INCLUDE('external.js');
+            alert(TR('SimpleAndIdentical1', 'Bar'));
+            alert(TR('SimpleAndIdentical2', 'Bar'));
+
+            alert(TR('SimpleAndDifferent1', 'abc'));
+            alert(TR('SimpleAndDifferent2', 'def'));
+
+            alert(TR('ComplexAndIdentical1', {hey: 'Bar', blabla: 'Yep'}));
+            alert(TR('ComplexAndIdentical2', {hey: 'Bar', blabla: 'Yep'}));
+
+            alert(TR('ComplexAndDifferent1', {hey: 'Bar', blabla: 'abc'}));
+            alert(TR('ComplexAndDifferent2', {hey: 'Bar', blabla: 'def'}));
+
+            alert(TR('ComplexAndCanonicallyIdentical1', {blabla: 'zzz', hey: 'Bar'}));
+            alert(TR('ComplexAndCanonicallyIdentical2', {hey: 'Bar', blabla: 'zzz'}));
+        </script>
+    </body>
+</html>

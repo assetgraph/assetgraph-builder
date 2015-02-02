@@ -74,4 +74,28 @@ describe('checkLanguageKeys', function () {
             })
             .run(done);
     });
+
+    it('emits info events when multiple language keys have the same translation in the default locale', function (done) {
+        var infos = [];
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/checkLanguageKeys/duplicateLanguageKeys/'})
+            .on('info', function (err) {
+                infos.push(err);
+            })
+            .loadAssets('index.html')
+            .populate()
+            .checkLanguageKeys({
+                supportedLocaleIds: ['en_us', 'cs', 'da'],
+                ignoreMessageTypes: 'missing',
+                defaultLocaleId: 'en_us'
+            })
+            .queue(function (assetGraph) {
+                expect(infos, 'to satisfy', [
+                    /^2 language keys have the same default value \'Bar\'\n  SimpleAndIdentical1: inline JavaScript in .*\/index.html\n  SimpleAndIdentical2: inline JavaScript in .*\/index.html$/,
+                    /^2 language keys have the same default value \{ blabla: 'Yep', hey: 'Bar' \}/,
+                    /^2 language keys have the same default value \{ blabla: 'zzz', hey: 'Bar' \}/,
+                    /^2 language keys have the same default value \'Blah\'\n  AnotherSimpleAndIdentical1: .*\/external.js:1:7\n  AnotherSimpleAndIdentical2: .*\/external.js:2:7/
+                ]);
+            })
+            .run(done);
+    });
 });
