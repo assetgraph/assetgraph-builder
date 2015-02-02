@@ -132,44 +132,16 @@ describe('makeBabelJob', function () {
                         da: null
                     },
                     NotYetTranslatedKeyWithPluralCases: {
-                        cs: {
-                            one: null,
-                            few: null,
-                            many: null,
-                            other: null
-                        },
-                        da: {
-                            one: null,
-                            other: null
-                        },
-                        de: {
-                            one: null,
-                            other: null
-                        },
+                        cs: { one: null, few: null, many: null, other: null },
+                        da: { one: null, other: null },
+                        de: { one: null, other: null },
                         en: { one: 'one week', other: '{0} weeks' }
                     },
                     NotYetTranslatedKeyWithPluralCasesInNestedStructure: {
-                        cs: {
-                            foo: {
-                                one: null,
-                                few: null,
-                                many: null,
-                                other: null
-                            }
-                        },
-                        da: {
-                            foo: {
-                                one: null,
-                                other: null
-                            }
-                        },
-                        de: {
-                            foo: {
-                                one: null,
-                                other: null
-                            }
-                        },
-                        en: { foo: {one: 'one week', other: '{0} weeks' } }
+                        cs: { foo: { one: null, few: null, many: null, other: null } },
+                        da: { foo: { one: null, other: null } },
+                        de: { foo: { one: null, other: null } },
+                        en: { foo: { one: 'one week', other: '{0} weeks' } }
                     },
                     KeyAlreadyTranslatedToAllLanguages: {
                         cs: { one: 'fzd', few: 'fzd', many: 'fzd', other: 'fzd' },
