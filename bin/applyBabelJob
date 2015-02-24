@@ -227,7 +227,12 @@ new AssetGraph({root: commandLineOptions.root})
             var allKeysInDefaultLocale = {},
                 replacedTextByAssetId = {};
             Object.keys(translationsByKeyAndLocaleId).forEach(function (key) {
-                allKeysInDefaultLocale[key] = translationsByKeyAndLocaleId[key][defaultLocaleId];
+                i18nTools.expandLocaleIdToPrioritizedList(defaultLocaleId).some(function (localeId) {
+                    if (localeId in translationsByKeyAndLocaleId[key]) {
+                        allKeysInDefaultLocale[key] = translationsByKeyAndLocaleId[key][localeId];
+                        return true;
+                    }
+                });
             });
 
             // Replace data-i18n in Html assets first:
