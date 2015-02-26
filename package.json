@@ -61,7 +61,7 @@
     "urltools": "0.2.0"
   },
   "optionalDependencies": {
-    "assetgraph-sprite": "0.7.0",
+    "assetgraph-sprite": "0.7.1",
     "histogram": "0.1.5",
     "node-zopfli": "1.1.4"
   },
