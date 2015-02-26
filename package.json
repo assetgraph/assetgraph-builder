@@ -41,14 +41,14 @@
   "dependencies": {
     "assetgraph": "1.15.4",
     "async": "0.9.0",
-    "chalk": "0.5.1",
-    "express-processimage": "2.0.0",
+    "chalk": "1.0.0",
+    "express-processimage": "2.1.0",
     "extend": "1.2.1",
     "jpegtran": "0.1.0",
     "lodash": "2.4.1",
     "memoizesync": "0.5.0",
     "ngmin": "0.4.0",
-    "optimist": "0.2.6",
+    "optimist": "0.6.1",
     "optipng": "0.1.1",
     "passerror": "1.1.0",
     "plurals-cldr": "1.0.1",
@@ -57,28 +57,27 @@
     "semver": "3.0.1",
     "seq": "0.3.5",
     "temp": "0.8.1",
-    "unexpected": "5.6.0",
     "urltools": "0.2.0"
   },
   "optionalDependencies": {
     "assetgraph-sprite": "0.7.1",
-    "histogram": "0.1.5",
-    "node-zopfli": "1.1.4"
+    "histogram": "2.0.0",
+    "node-zopfli": "1.2.1"
   },
   "devDependencies": {
     "autoprefixer": "3.1.0",
-    "coveralls": "2.11.1",
-    "gm": "1.6.1",
-    "istanbul": "0.3.5",
+    "coveralls": "2.11.2",
+    "gm": "1.17.0",
+    "istanbul": "0.3.6",
     "jsdom": "0.11.0",
-    "jshint": "2.5.1",
+    "jshint": "2.6.0",
     "less": "1.6.3",
     "mocha": "2.1.0",
     "node-sass": "0.9.4",
-    "sinon": "1.10.3",
-    "unexpected": "5.8.1",
+    "sinon": "1.12.2",
+    "unexpected": "5.9.3",
     "unexpected-jsdom": "5.1.0",
-    "unexpected-sinon": "5.0.0"
+    "unexpected-sinon": "5.1.0"
   },
   "engines": {
     "node": ">=0.8.0"
