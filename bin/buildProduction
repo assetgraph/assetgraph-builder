@@ -164,6 +164,10 @@ var chalk = require('chalk'),
         .options('sweep', {
             describe: 'Experimental: Free up memory by cleaning up relations and assets after they have been removed from the graph',
             type: 'boolean'
+        })
+        .options('angular', {
+            describe: 'Enable Angular.js specific annotations',
+            type: 'boolean'
         });
         /*
         // These are internal One.com options. No reason to expose them to the world.
@@ -388,7 +392,8 @@ new AssetGraph({root: rootUrl})
         stripDebug: !commandLineOptions.debug,
         addInitialHtmlExtension: commandLineOptions.addinitialhtmlextension,
         canonicalUrl: canonicalUrl,
-        javaScriptSerializationOptions: javaScriptSerializationOptions
+        javaScriptSerializationOptions: javaScriptSerializationOptions,
+        angular: commandLineOptions.angular
     })
     .writeAssetsToDisc({url: canonicalUrl ? query.createPrefixMatcher(canonicalUrl) : /^file:/, isLoaded: true}, outRoot, canonicalUrl)
     .if(cdnRoot)

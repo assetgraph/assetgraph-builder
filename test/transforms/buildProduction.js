@@ -1099,4 +1099,44 @@ describe('buildProduction', function () {
              })
             .run(done);
     });
+
+    describe('angularAnnotations', function () {
+        it('should not annotate a basic example when angular option is false', function (done) {
+            new AssetGraph({ root: __dirname + '/../../testdata/transforms/angularAnnotations' })
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('basic.js')
+                .populate()
+                .buildProduction({
+                    angular: false,
+                    noCompress: true
+                })
+                .queue(function (assetGraph) {
+                    expect(assetGraph, 'to contain assets', 'JavaScript', 1);
+
+                    var asset = assetGraph.findAssets()[0];
+
+                    expect(asset.text, 'to be', '/*global angular*/\nangular.module("MyMod").controller("MyCtrl", function($scope, $timeout) {\n    return [ $scope, $timeout ];\n});');
+                })
+                .run(done);
+        });
+
+        it('should annotate a basic example when angular option is true', function (done) {
+            new AssetGraph({ root: __dirname + '/../../testdata/transforms/angularAnnotations' })
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('basic.js')
+                .populate()
+                .buildProduction({
+                    angular: true,
+                    noCompress: true
+                })
+                .queue(function (assetGraph) {
+                    expect(assetGraph, 'to contain assets', 'JavaScript', 1);
+
+                    var asset = assetGraph.findAssets()[0];
+
+                    expect(asset.text, 'to be', '/*global angular*/\nangular.module("MyMod").controller("MyCtrl", [ "$scope", "$timeout", function($scope, $timeout) {\n    return [ $scope, $timeout ];\n} ]);');
+                })
+                .run(done);
+        });
+    });
 });
