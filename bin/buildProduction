@@ -166,7 +166,7 @@ var chalk = require('chalk'),
             type: 'boolean'
         })
         .options('angular', {
-            describe: 'Enable Angular.js specific annotations',
+            describe: 'Enable Angular.js specific annotations and template inlining',
             type: 'boolean'
         });
         /*

@@ -78,6 +78,7 @@ Features
    of code due to the reliance on high level <a
    href="https://github.com/One-com/assetgraph">AssetGraph</a>
    transforms.
+ * Angular annotations with [ng-annotate](https://github.com/olov/ng-annotate) and angular template inlining.
 
 
 Installation
