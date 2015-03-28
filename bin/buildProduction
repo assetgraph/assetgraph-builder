@@ -189,7 +189,7 @@ var javaScriptSerializationOptionNames = ['indent_start', 'indent_level', 'quote
     javaScriptSerializationOptions = {};
 
 javaScriptSerializationOptionNames.forEach(function (javaScriptSerializationOptionName) {
-    var type = [].indexOf(javaScriptSerializationOptionName) === -1 ? 'number' : 'boolean';
+    var type = [ 'quote_keys', 'space_colon', 'ascii_only', 'unescape_regexps', 'beautify', 'bracketize', 'semicolons', 'comments', 'preserve_line' ].indexOf(javaScriptSerializationOptionName) === -1 ? 'number' : 'boolean';
     // Also accept the option without underscores, or with the underscores replaced with dashes:
     optimist.options(javaScriptSerializationOptionName.replace(/_/g, ''), {
         alias: [javaScriptSerializationOptionName, javaScriptSerializationOptionName.replace(/_/g, '-')],
