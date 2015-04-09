@@ -7,6 +7,7 @@ var path = require('path'),
     extend = require('extend'),
     AssetGraph = require('../lib/AssetGraph'),
     i18nTools = require('../lib/i18nTools'),
+    pluralsCldr = require('plurals-cldr'),
     urlTools = require('urltools'),
     commandLineOptions = require('optimist')
         .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--i18n <pathToI18nFile>] [--locales <localeId>[,<localeId>...]] [--defaultlocale <localeId>] --babeldir=<dirContainingTheBabelFilesToApply> --root <inputRootDirectory> <htmlFile>...')
@@ -175,6 +176,42 @@ new AssetGraph({root: commandLineOptions.root})
         }).filter(function (asset) {
             return asset !== i18nAssetForAllKeys;
         });
+
+        Object.keys(translationsByKeyAndLocaleId).forEach(function (key) {
+            var translationsByLocaleId = translationsByKeyAndLocaleId[key];
+            Object.keys(translationsByLocaleId).forEach(function (localeId) {
+                var value = translationsByLocaleId[localeId];
+                // Mostly copied from coalescePluralsToLocale
+                translationsByLocaleId[localeId] = (function traverse(obj) {
+                    if (Array.isArray(obj)) {
+                        return obj.map(traverse);
+                    } else if (typeof obj === 'object' && obj !== null) {
+                        var coalescedObj = {},
+                            keys = Object.keys(obj);
+                        if (keys.length > 0 && keys.every(function (key) {
+                            return ['zero', 'one', 'two', 'few', 'many', 'other'].indexOf(key) !== -1;
+                        })) {
+                            keys = [];
+                            pluralsCldr.forms(localeId).forEach(function (pluralForm) {
+                                coalescedObj[pluralForm] = obj[pluralForm];
+                                keys.push(pluralForm);
+                            });
+                            if (Object.keys(obj).length > keys.length) {
+                                console.log(key + ': Discarding plural forms not used in ' + localeId + ':', obj, '=>', coalescedObj);
+                            }
+                            obj = coalescedObj;
+                        }
+                        keys.forEach(function (propertyName) {
+                            coalescedObj[propertyName] = traverse(obj[propertyName]);
+                        });
+                        return coalescedObj;
+                    } else {
+                        return obj;
+                    }
+                }(value));
+            });
+        });
+
         Object.keys(translationsByKeyAndLocaleId).forEach(function (key) {
             var i18nAsset;
             if (i18nAssetForAllKeys) {

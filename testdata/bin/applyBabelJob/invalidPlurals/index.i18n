@@ -1,0 +1,14 @@
+{
+    "MyPlurals": {
+        "en": {
+            "one": "The plural",
+            "other": "The plurals"
+        },
+        "cs": {
+            "one": null,
+            "other": null,
+            "few": null,
+            "many": null
+        }
+    }
+}

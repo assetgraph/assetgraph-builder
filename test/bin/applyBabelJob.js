@@ -96,4 +96,62 @@ describe('applyBabelJob', function () {
             });
         });
     });
+
+    it('should warn about and discard plural cases not supported by a locale', function (done) {
+        var babelDir = Path.resolve(__dirname, '..', '..', 'testdata', 'bin', 'applyBabelJob', 'invalidPlurals', 'translationjob'),
+            tmpTestCaseCopyDir = temp.mkdirSync(),
+            copyCommand = 'cp \'' + __dirname + '/../../testdata/bin/applyBabelJob\'/invalidPlurals/index.* ' + tmpTestCaseCopyDir;
+        childProcess.exec(copyCommand, function (err, stdout, stderr) {
+            if (err) {
+                return done(new Error(copyCommand + ' failed: STDERR:' + stderr + '\nSTDOUT:' + stdout));
+            }
+            var applyBabelJobProcess = childProcess.spawn(__dirname + '/../../bin/applyBabelJob', [
+                '--babeldir', babelDir,
+                '--root', tmpTestCaseCopyDir,
+                '--defaultlocale', 'en',
+                '--locales', 'en,cs',
+                '--i18n', tmpTestCaseCopyDir + '/index.i18n',
+                '--replace',
+                tmpTestCaseCopyDir + '/index.html'
+            ]);
+
+            applyBabelJobProcess.on('exit', function (exitCode) {
+                if (exitCode) {
+                    done(new Error('The applyBabelJob process ended with a non-zero exit code: ' + exitCode));
+                } else {
+                    expect(JSON.parse(fs.readFileSync(tmpTestCaseCopyDir + '/index.i18n')), 'to equal', {
+                        MyPlurals: {
+                            en: {
+                                one: 'The plural',
+                                other: 'The plurals'
+                            },
+                            cs: {
+                                one: 'xxxx',
+                                other: 'yyyy',
+                                few: 'zzzz',
+                                many: 'wwww'
+                            }
+                        }
+                    });
+                    expect(fs.readFileSync(tmpTestCaseCopyDir + '/index.html', 'utf-8'), 'to equal',
+                        '<!DOCTYPE html>\n' +
+                        '<html>\n' +
+                        '    <head>\n' +
+                        '    </head>\n' +
+                        '    <body>\n' +
+                        '        <script>\n' +
+                        '            INCLUDE(\'index.i18n\');\n' +
+                        '            alert(TR(\'MyPlurals\', {\n' +
+                        '                one: \'The plural\',\n' +
+                        '                other: \'The plurals\'\n' +
+                        '            }));\n' +
+                        '        </script>\n' +
+                        '    </body>\n' +
+                        '</html>\n'
+                    );
+                    done();
+                }
+            });
+        });
+    });
 });

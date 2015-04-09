@@ -1,0 +1,4 @@
+MyPlurals[one]=xxxx
+MyPlurals[other]=yyyy
+MyPlurals[few]=zzzz
+MyPlurals[many]=wwww

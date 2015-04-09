@@ -1,0 +1,4 @@
+MyPlurals[one]=The plural
+MyPlurals[other]=The plurals
+MyPlurals[few]=argh
+MyPlurals[many]=blargh
