@@ -1,0 +1,14 @@
+{
+    "KeyPartiallyTranslatedToCzech": {
+        "en": {
+            "one": "the one",
+            "other": "the other"
+        },
+        "cs": {
+            "one": "xxxx",
+            "other": "yyyy",
+            "few": "zzzz",
+            "many": "wwww"
+        }
+    }
+}

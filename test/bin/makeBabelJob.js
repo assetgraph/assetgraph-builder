@@ -9,7 +9,7 @@ describe('makeBabelJob', function () {
     it('should extract a translation job and set null values in the correct places in the existing i18n files', function (done) {
         var babelDir = temp.mkdirSync(),
             tmpTestCaseCopyDir = temp.mkdirSync(),
-            copyCommand = 'cp \'' + __dirname + '/../../testdata/bin\'/makeBabelJob/* ' + tmpTestCaseCopyDir;
+            copyCommand = 'cp \'' + __dirname + '/../../testdata/bin\'/makeBabelJob/complex/* ' + tmpTestCaseCopyDir;
 
         childProcess.exec(copyCommand, function (err, stdout, stderr) {
             if (err) {
@@ -101,8 +101,6 @@ describe('makeBabelJob', function () {
                 expect(fs.readFileSync(Path.resolve(babelDir, 'cs.txt'), 'utf-8'), 'to equal', [
                     'KeyAlreadyPartiallyTranslatedInIndexI18n=',
                     'KeyAlreadyPartiallyTranslatedInOtherI18n=',
-                    'KeyAlreadyTranslatedToAllLanguages[few]=fzd',
-                    'KeyAlreadyTranslatedToAllLanguages[many]=fzd',
                     'KeyAlreadyTranslatedToCzech[few]=fzd',
                     'KeyAlreadyTranslatedToCzech[many]=fzd',
                     'KeyAlreadyTranslatedToCzech[one]=fzd',
@@ -122,8 +120,6 @@ describe('makeBabelJob', function () {
                 expect(fs.readFileSync(Path.resolve(babelDir, 'pl.txt'), 'utf-8'), 'to equal', [
                     'KeyAlreadyPartiallyTranslatedInIndexI18n=',
                     'KeyAlreadyPartiallyTranslatedInOtherI18n=',
-                    'KeyAlreadyTranslatedToAllLanguages[few]=fzz',
-                    'KeyAlreadyTranslatedToAllLanguages[many]=fzz',
                     'KeyAlreadyTranslatedToCzech[few]=',
                     'KeyAlreadyTranslatedToCzech[many]=',
                     'KeyAlreadyTranslatedToCzech[one]=',
@@ -195,6 +191,122 @@ describe('makeBabelJob', function () {
                     }
                 });
 
+                done();
+            });
+        });
+    });
+
+    it('should not do anything if the project is fully translated', function (done) {
+        var babelDir = temp.mkdirSync(),
+            tmpTestCaseCopyDir = temp.mkdirSync(),
+            copyCommand = 'cp \'' + __dirname + '/../../testdata/bin\'/makeBabelJob/noTranslationsNecessary/* ' + tmpTestCaseCopyDir;
+
+        childProcess.exec(copyCommand, function (err, stdout, stderr) {
+            if (err) {
+                return done(new Error(copyCommand + ' failed: STDERR:' + stderr + '\nSTDOUT:' + stdout));
+            }
+
+            var makeBabelJobProcess = childProcess.spawn(__dirname + '/../../bin/makeBabelJob', [
+                    '--babeldir', babelDir,
+                    '--root', tmpTestCaseCopyDir,
+                    '--i18n', Path.resolve(tmpTestCaseCopyDir, 'index.i18n'),
+                    Path.resolve(tmpTestCaseCopyDir, 'index.html'),
+                    '--locales', 'en,cs'
+                ]),
+                buffersByStreamName = {},
+                streamNames = ['stdout', 'stderr'];
+
+            streamNames.forEach(function (streamName) {
+                buffersByStreamName[streamName] = [];
+                makeBabelJobProcess[streamName].on('data', function (chunk) {
+                    buffersByStreamName[streamName].push(chunk);
+                });
+            });
+
+            function getStreamOutputText() {
+                var outputText = '';
+                streamNames.forEach(function (streamName) {
+                    if (buffersByStreamName[streamName].length > 0) {
+                        outputText += '\n' + streamName.toUpperCase() + ': ' + Buffer.concat(buffersByStreamName[streamName]).toString('utf-8') + '\n';
+                    }
+                });
+                return outputText;
+            }
+
+            makeBabelJobProcess.on('exit', function (exitCode) {
+                if (exitCode) {
+                    return done(new Error('The makeBabelJob process ended with a non-zero exit code: ' + exitCode + getStreamOutputText()));
+                }
+
+                expect(fs.readdirSync(babelDir).sort(), 'to equal', []);
+                done();
+            });
+        });
+    });
+
+    it('should extract all flattened keys for the default language when any language is missing at least one', function (done) {
+        var babelDir = temp.mkdirSync(),
+            tmpTestCaseCopyDir = temp.mkdirSync(),
+            copyCommand = 'cp \'' + __dirname + '/../../testdata/bin\'/makeBabelJob/includeAllFlattened/* ' + tmpTestCaseCopyDir;
+
+        childProcess.exec(copyCommand, function (err, stdout, stderr) {
+            if (err) {
+                return done(new Error(copyCommand + ' failed: STDERR:' + stderr + '\nSTDOUT:' + stdout));
+            }
+
+            var makeBabelJobProcess = childProcess.spawn(__dirname + '/../../bin/makeBabelJob', [
+                    '--babeldir', babelDir,
+                    '--root', tmpTestCaseCopyDir,
+                    '--i18n', Path.resolve(tmpTestCaseCopyDir, 'index.i18n'),
+                    Path.resolve(tmpTestCaseCopyDir, 'index.html'),
+                    '--locales', 'en,cs'
+                ]),
+                buffersByStreamName = {},
+                streamNames = ['stdout', 'stderr'];
+
+            streamNames.forEach(function (streamName) {
+                buffersByStreamName[streamName] = [];
+                makeBabelJobProcess[streamName].on('data', function (chunk) {
+                    buffersByStreamName[streamName].push(chunk);
+                });
+            });
+
+            function getStreamOutputText() {
+                var outputText = '';
+                streamNames.forEach(function (streamName) {
+                    if (buffersByStreamName[streamName].length > 0) {
+                        outputText += '\n' + streamName.toUpperCase() + ': ' + Buffer.concat(buffersByStreamName[streamName]).toString('utf-8') + '\n';
+                    }
+                });
+                return outputText;
+            }
+
+            makeBabelJobProcess.on('exit', function (exitCode) {
+                if (exitCode) {
+                    return done(new Error('The makeBabelJob process ended with a non-zero exit code: ' + exitCode + getStreamOutputText()));
+                }
+
+                expect(fs.readFileSync(Path.resolve(babelDir, 'cs.txt'), 'utf-8'), 'to equal', [
+                    'KeyPartiallyTranslatedToCzech[many]=',
+                    ''
+                ].join('\n'));
+
+                expect(fs.readdirSync(babelDir).sort(), 'to equal', ['cs.txt', 'en.txt']);
+
+                expect(fs.readFileSync(Path.resolve(babelDir, 'en.txt'), 'utf-8'), 'to equal', [
+                    'KeyPartiallyTranslatedToCzech[one]=the one',
+                    'KeyPartiallyTranslatedToCzech[other]=the other',
+                    '# NOTE: The language cs needs this additional key to cover all plural forms:',
+                    '# KeyPartiallyTranslatedToCzech[many]=',
+                    ''
+                ].join('\n'));
+
+                expect(JSON.parse(fs.readFileSync(Path.resolve(tmpTestCaseCopyDir, 'index.i18n'), 'utf-8')), 'to equal', {
+                    KeyPartiallyTranslatedToCzech: {
+                        en: {one: 'the one', other: 'the other'},
+                        cs: {one: 'xxxx', other: 'yyyy', few: 'zzzz', many: null}
+                    }
+                });
                 done();
             });
         });
