@@ -16,3 +16,7 @@ html[lang="sv"] .theSwedishThing {
     width: 128px;
     background-image: url(bar.png);
 }
+
+.foobar, html[lang="cs"] .theCzechThing {
+    width: 200px;
+}
