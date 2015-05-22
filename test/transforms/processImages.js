@@ -223,4 +223,19 @@ describe('processImages', function () {
             })
             .run(done);
     });
+
+    it('should not touch images that have auto=false', function (done) {
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/autoFalse/'})
+            .loadAssets('index.html')
+            .populate()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Png', 1);
+            })
+            .processImages({type: 'Png'}, {autoLossless: true})
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Png', 1);
+                expect(assetGraph.findAssets({type: 'Png'})[0].rawSrc.length, 'to equal', 8285);
+            })
+            .run(done);
+    });
 });
