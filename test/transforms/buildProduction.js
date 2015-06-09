@@ -1139,4 +1139,26 @@ describe('buildProduction', function () {
                 .run(done);
         });
     });
+
+    it('should support a standalone svgfilter', function (done) {
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/svgFilter/'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets('index.html')
+            .populate()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Svg', 1);
+            })
+            .buildProduction()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Svg', 1);
+                expect(assetGraph.findAssets({type: 'Svg'})[0].text, 'when parsed as XML', 'queried for', 'path', 'to satisfy', [
+                    {
+                        attributes: {
+                            stroke: expect.it('to equal', '#ff0000').or('to equal', 'red') // optimized by svgo if available
+                        }
+                    }
+                ]);
+            })
+            .run(done);
+    });
 });
