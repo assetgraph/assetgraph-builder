@@ -94,6 +94,6 @@
     "lint": "jshint . bin/*",
     "test": "npm run lint && mocha",
     "travis": "npm run lint && npm run coverage",
-    "coverage": "NODE_ENV=development ./node_modules/.bin/istanbul cover --include-all-sources -x '**/testdata/**' -x lib/i18nTools.js -x lib/bootstrapper.js ./node_modules/mocha/bin/_mocha -- --reporter dot"
+    "coverage": "NODE_ENV=development istanbul cover --include-all-sources -x '**/testdata/**' -x lib/i18nTools.js -x lib/bootstrapper.js _mocha -- --reporter dot"
   }
 }
