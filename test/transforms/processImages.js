@@ -238,4 +238,25 @@ describe('processImages', function () {
             })
             .run(done);
     });
+
+    it('should support a standalone svgfilter', function (done) {
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/svgFilter/'})
+            .loadAssets('index.html')
+            .populate()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Svg', 1);
+            })
+            .processImages()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Svg', 1);
+                expect(assetGraph.findAssets({type: 'Svg'})[0].text, 'when parsed as XML', 'queried for', 'path', 'to satisfy', [
+                    {
+                        attributes: {
+                            stroke: '#ff0000'
+                        }
+                    }
+                ]);
+            })
+            .run(done);
+    });
 });
