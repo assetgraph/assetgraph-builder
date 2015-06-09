@@ -73,7 +73,7 @@
     "jsdom": "0.11.0",
     "jshint": "2.6.0",
     "less": "1.6.3",
-    "mocha": "2.2.4",
+    "mocha": "2.2.5",
     "node-sass": "0.9.4",
     "sinon": "1.12.2",
     "unexpected": "7.5.1",
