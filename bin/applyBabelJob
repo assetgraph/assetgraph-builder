@@ -317,9 +317,9 @@ new AssetGraph({root: commandLineOptions.root})
                     replacedText = replacedTextByAssetId[assetId];
                 asset.keepUnpopulated = true;
                 if (asset.type === 'Html') {
-                    // Un-entitify < > & in data-bind attributes (common intentional spec breakage in development):
+                    // Un-entitify < > & in data-bind and data-htmlizer attributes (common intentional spec breakage in development):
                     asset.keepUnpopulated = true;
-                    replacedText = replacedText.replace(/data-bind="[^"]*"/g, function ($0) {
+                    replacedText = replacedText.replace(/(?:data-htmlizer|data-bind)="[^"]*"/g, function ($0) {
                         return $0.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
                     });
                 }
