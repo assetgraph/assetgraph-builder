@@ -1154,7 +1154,7 @@ describe('buildProduction', function () {
                 expect(assetGraph.findAssets({type: 'Svg'})[0].text, 'when parsed as XML', 'queried for', 'path', 'to satisfy', [
                     {
                         attributes: {
-                            stroke: expect.it('to equal', '#ff0000').or('to equal', 'red') // optimized by svgo if available
+                            stroke: expect.it('to equal', '#ff0000').or('to equal', 'red').or('to equal', '#f00') // optimized by svgo if available
                         }
                     }
                 ]);
