@@ -1161,4 +1161,27 @@ describe('buildProduction', function () {
             })
             .run(done);
     });
+
+    it('should support an inline SVG island inside an HTML asset', function (done) {
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/HtmlSvgIsland/'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets('index.html')
+            .populate()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Html');
+                expect(assetGraph, 'to contain assets', 'Svg', 2);
+            })
+            .buildProduction()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain assets', 'Svg', 2);
+                expect(assetGraph.findAssets({type: 'Html'})[0].parseTree, 'queried for', 'svg use', 'to satisfy', [
+                    {
+                        attributes: {
+                            'xlink:href': /^static\/gaussianBlur\.[0-9a-f]{10}\.svg$/
+                        }
+                    }
+                ]);
+            })
+            .run(done);
+    });
 });
