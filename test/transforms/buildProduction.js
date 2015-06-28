@@ -651,8 +651,12 @@ describe('buildProduction', function () {
             .queue(function (assetGraph, cb) {
                 var html = assetGraph.findAssets({type: 'Html'})[0],
                     javaScript = assetGraph.findAssets({type: 'JavaScript'})[0],
-                    context = vm.createContext();
-                require('assetgraph/lib/util/extendWithGettersAndSetters')(context, html.parseTree.createWindow());
+                    context = vm.createContext(),
+                    window = html.parseTree.createWindow();
+
+                window.navigator = { userAgent: 'foo' };
+
+                require('assetgraph/lib/util/extendWithGettersAndSetters')(context, window);
                 context.window = context;
                 context.alert = function (message) {
                     if (/^got sockjs/.test(message)) {
