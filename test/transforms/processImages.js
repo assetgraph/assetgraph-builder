@@ -252,7 +252,7 @@ describe('processImages', function () {
                 expect(assetGraph.findAssets({type: 'Svg'})[0].text, 'when parsed as XML', 'queried for', 'path', 'to satisfy', [
                     {
                         attributes: {
-                            stroke: '#ff0000'
+                            stroke: expect.it('to be colored', 'red')
                         }
                     }
                 ]);
