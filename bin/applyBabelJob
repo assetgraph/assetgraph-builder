@@ -214,7 +214,7 @@ new AssetGraph({root: commandLineOptions.root})
 
         Object.keys(translationsByKeyAndLocaleId).forEach(function (key) {
             var i18nAsset;
-            if (i18nAssetForAllKeys) {
+            if (i18nAssetForAllKeys && !(key in i18nAssetForAllKeys.parseTree)) {
                 // Even if a i18nAssetForAllKeys (--i18n ...) is defined, another .i18n we should prefer another file with that key already defined:
                 if (secondaryI18nAssets.length > 0) {
                     for (var i = 0 ; i < secondaryI18nAssets.length ; i += 1) {
