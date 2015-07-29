@@ -43,7 +43,7 @@
     "async": "0.9.0",
     "browserslist": "0.1.3",
     "chalk": "1.0.0",
-    "express-processimage": "2.2.1",
+    "express-processimage": "2.2.2",
     "extend": "1.2.1",
     "jpegtran": "0.2.0",
     "lodash": "2.4.1",
