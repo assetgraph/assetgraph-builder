@@ -33,6 +33,7 @@
       "email": "munter@fumle.dk"
     }
   ],
+  "license": "BSD-3-Clause",
   "main": "lib/AssetGraph.js",
   "files": [
     "lib",
