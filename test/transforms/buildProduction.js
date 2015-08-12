@@ -656,7 +656,7 @@ describe('buildProduction', function () {
 
                 window.navigator = { userAgent: 'foo' };
 
-                require('assetgraph/lib/util/extendWithGettersAndSetters')(context, window);
+                require('assetgraph-teepee/lib/util/extendWithGettersAndSetters')(context, window);
                 context.window = context;
                 context.alert = function (message) {
                     if (/^got sockjs/.test(message)) {
@@ -816,7 +816,7 @@ describe('buildProduction', function () {
     });
 
     it('should call splitCssIfIeLimitIsReached unconditionally and correctly when IE >= 8 is to be supported', function (done) {
-        var stub = sinon.stub(require('assetgraph/lib/TransformQueue').prototype, 'splitCssIfIeLimitIsReached', function (queryObj, options) {
+        var stub = sinon.stub(require('assetgraph-teepee/lib/TransformQueue').prototype, 'splitCssIfIeLimitIsReached', function (queryObj, options) {
             expect(options, 'to equal', {minimumIeVersion: 8});
             return this;
         });

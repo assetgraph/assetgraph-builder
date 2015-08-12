@@ -40,7 +40,7 @@
     "bin"
   ],
   "dependencies": {
-    "assetgraph": "1.22.0",
+    "assetgraph-teepee": "1.22.0-patch1",
     "async": "0.9.0",
     "browserslist": "0.1.3",
     "chalk": "1.0.0",
