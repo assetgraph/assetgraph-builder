@@ -75,7 +75,7 @@
     "jshint": "2.6.0",
     "less": "2.5.1",
     "mocha": "2.2.5",
-    "node-sass": "3.2.0",
+    "node-sass": "3.3.3",
     "sinon": "1.15.4",
     "unexpected": "9.5.0",
     "unexpected-color": "1.1.0",
