@@ -67,7 +67,7 @@
     "node-zopfli": "1.2.1"
   },
   "devDependencies": {
-    "autoprefixer": "5.2.0",
+    "autoprefixer": "6.0.3",
     "coveralls": "2.11.2",
     "gm": "1.17.0",
     "istanbul": "0.3.21",
