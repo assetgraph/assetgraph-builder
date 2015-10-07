@@ -42,7 +42,7 @@
   "dependencies": {
     "assetgraph": "1.23.0",
     "async": "1.4.2",
-    "browserslist": "0.1.3",
+    "browserslist": "1.0.1",
     "chalk": "1.0.0",
     "express-processimage": "2.6.1",
     "extend": "1.2.1",
