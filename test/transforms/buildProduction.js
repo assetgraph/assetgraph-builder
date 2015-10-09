@@ -62,10 +62,10 @@ describe('buildProduction', function () {
                 expect(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" lang=da manifest=index.appcache><head><title>Den danske titel</title><style>body{color:teal}body{color:maroon}</style><style>body{color:tan}</style><style>body div{width:100px}</style></head><body><script src=' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.url + ' async defer></script><script>alert("script3");</script><script type=text/html id=template><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif"></script></body></html>');
 
                 var afterRequireJs = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.text.replace(/^[\s\S]*req\(cfg\)\}\}\(this\),/, '');
-                expect(afterRequireJs, 'to equal', 'alert("something else"),define("somethingElse",function(){}),alert("shimmed"),define("shimmed",function(){}),define("amdDependency",function(){console.warn("here I AM(D)")}),require.config({shim:{shimmed:["somethingElse"]}}),require(["shimmed","amdDependency"],function(){alert("Hello!")}),define("main",function(){});');
+                expect(afterRequireJs, 'to equal', 'alert(\'something else\'),define(\'somethingElse\',function(){}),alert(\'shimmed\'),define(\'shimmed\',function(){}),define(\'amdDependency\',function(){console.warn(\'here I AM(D)\')}),require.config({shim:{shimmed:[\'somethingElse\']}}),require([\'shimmed\',\'amdDependency\'],function(e,t){alert(\'Hello!\')}),define(\'main\',function(){});');
 
                 afterRequireJs = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.text.replace(/^[\s\S]*req\(cfg\)\}\}\(this\),/, '');
-                expect(afterRequireJs, 'to equal', 'alert("something else"),define("somethingElse",function(){}),alert("shimmed"),define("shimmed",function(){}),define("amdDependency",function(){console.warn("here I AM(D)")}),require.config({shim:{shimmed:["somethingElse"]}}),require(["shimmed","amdDependency"],function(){alert("Hej!")}),define("main",function(){});');
+                expect(afterRequireJs, 'to equal', 'alert(\'something else\'),define(\'somethingElse\',function(){}),alert(\'shimmed\'),define(\'shimmed\',function(){}),define(\'amdDependency\',function(){console.warn(\'here I AM(D)\')}),require.config({shim:{shimmed:[\'somethingElse\']}}),require([\'shimmed\',\'amdDependency\'],function(e,t){alert(\'Hej!\')}),define(\'main\',function(){});');
 
                 // someTextFile.txt should be found at /static/someTextFile.c7429a1035.txt (not on the CDN)
                 expect(assetGraph, 'to contain assets', {url: /\/static\/someTextFile.c7429a1035\.txt$/}, 1);
@@ -371,7 +371,7 @@ describe('buildProduction', function () {
             .buildProduction({version: false})
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', {type: 'Png'});
-                expect(assetGraph.findAssets({type: 'Html', isInitial: true, isFragment: false})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var myTemplateUrl="static/myTemplate.b8ee9bf196.html";</script></body></html>');
+                expect(assetGraph.findAssets({type: 'Html', isInitial: true, isFragment: false})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var myTemplateUrl=\'static/myTemplate.b8ee9bf196.html\';</script></body></html>');
             })
             .run(done);
     });
@@ -417,7 +417,7 @@ describe('buildProduction', function () {
                 cdnRoot: 'http://cdn.example.com/foo/'
             })
             .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var imgUrl="http://cdn.example.com/foo/test.d65dd5318f.png";</script></body></html>');
+                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var imgUrl=\'http://cdn.example.com/foo/test.d65dd5318f.png\';</script></body></html>');
             })
             .run(done);
     });
@@ -444,7 +444,7 @@ describe('buildProduction', function () {
                 cdnRoot: 'http://cdn.example.com/foo/'
             })
             .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var swfUrl="static/foo.d41d8cd98f.swf";</script></body></html>');
+                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var swfUrl=\'static/foo.d41d8cd98f.swf\';</script></body></html>');
             })
             .run(done);
     });
@@ -460,7 +460,7 @@ describe('buildProduction', function () {
                 cdnFlash: true
             })
             .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var swfUrl="http://cdn.example.com/foo/foo.d41d8cd98f.swf";</script></body></html>');
+                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var swfUrl=\'http://cdn.example.com/foo/foo.d41d8cd98f.swf\';</script></body></html>');
             })
             .run(done);
     });
@@ -512,7 +512,7 @@ describe('buildProduction', function () {
             .queue(function (assetGraph) {
                 var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
                 expect(javaScriptAssets, 'to have length', 1);
-                expect(javaScriptAssets[0].text, 'to equal', 'var fileName="static/justThisOneFile.22324131a2.txt";');
+                expect(javaScriptAssets[0].text, 'to equal', 'var fileName=\'static/justThisOneFile.22324131a2.txt\';');
             })
             .run(done);
     });
@@ -525,7 +525,7 @@ describe('buildProduction', function () {
             .queue(function (assetGraph) {
                 var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
                 expect(javaScriptAssets, 'to have length', 1);
-                expect(javaScriptAssets[0].text, 'to equal', 'var fileName="static/justThisOneFile.22324131a2.txt";');
+                expect(javaScriptAssets[0].text, 'to equal', 'var fileName=\'static/justThisOneFile.22324131a2.txt\';');
             })
             .run(done);
     });
@@ -564,7 +564,7 @@ describe('buildProduction', function () {
             .queue(function (assetGraph) {
                 var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
                 expect(javaScriptAssets, 'to have length', 1);
-                expect(javaScriptAssets[0].text, 'to match', /define\(\"\/templates\/header\.html\".*require\(\[\"\/templates\/header\.html/);
+                expect(javaScriptAssets[0].text, 'to match', /define\(\'\/templates\/header\.html\'.*require\(\[\'\/templates\/header\.html/);
             })
             .run(done);
     });
@@ -577,7 +577,7 @@ describe('buildProduction', function () {
             .queue(function (assetGraph) {
                 var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
                 expect(javaScriptAssets, 'to have length', 1);
-                expect(javaScriptAssets[0].text, 'to match', /require.config\(\{baseUrl:"\/js"\}\),define\("modules\/utils",function\(\)\{alert\("These are the utils!"\)\}\),require\(\["modules\/utils"\],function\(\)\{console.log\("Ready."\)\}\),define\("main",function\(\)\{\}\);/);
+                expect(javaScriptAssets[0].text, 'to match', /require.config\(\{baseUrl:"\/js"\}\),define\("modules\/utils",function\(\)\{alert\("These are the utils!"\)\}\),require\(\["modules\/utils"\],function\(e\)\{console.log\("Ready."\)\}\),define\("main",function\(\)\{\}\);/);
             })
             .run(done);
     });
@@ -710,14 +710,14 @@ describe('buildProduction', function () {
             .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({version: false, noCompress: true, defines: {
-                MYSYMBOL: new AssetGraph.JavaScript.uglifyJs.AST_String({value: 'theValue'}),
-                MYOTHERSYMBOL: new AssetGraph.JavaScript.uglifyJs.AST_String({value: 'theOtherValue'}),
-                MYOBJECT: {foo: 'bar'}
+                MYSYMBOL: { type: 'Literal', value: 'theValue' },
+                MYOTHERSYMBOL: { type: 'Literal', value: 'theOtherValue' },
+                MYOBJECT: { foo: 'bar' }
             }})
             .queue(function (assetGraph) {
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to match', /theValue/);
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'not to match', /theOtherValue/);
-                expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to match', /alert\("bar"\);/);
+                expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to match', /alert\(\'bar\'\);/);
             })
             .run(done);
     });
@@ -727,9 +727,9 @@ describe('buildProduction', function () {
             .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({version: false, noCompress: false, defines: {
-                MYSYMBOL: new AssetGraph.JavaScript.uglifyJs.AST_String({value: 'theValue'}),
-                MYOTHERSYMBOL: new AssetGraph.JavaScript.uglifyJs.AST_String({value: 'theOtherValue'}),
-                MYOBJECT: {foo: 'bar'}
+                MYSYMBOL: { type: 'Literal', value: 'theValue' },
+                MYOTHERSYMBOL: { type: 'Literal', value: 'theOtherValue' },
+                MYOBJECT: { foo: 'bar' }
             }})
             .queue(function (assetGraph) {
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to match', /theValue/);
@@ -1099,7 +1099,7 @@ describe('buildProduction', function () {
             .buildProduction({version: false, browsers: 'ie > 9'})
             .queue(function (assetGraph) {
                 var htmlAsset = assetGraph.findAssets({type: 'Html'})[0];
-                expect(htmlAsset.text, 'to contain', 'data-bind="template:{name:\'application\',if:isInitialized');
+                expect(htmlAsset.text, 'to contain', 'data-bind="template:{name:\'application\',\'if\':isInitialized');
              })
             .run(done);
     });
@@ -1112,14 +1112,25 @@ describe('buildProduction', function () {
                 .populate()
                 .buildProduction({
                     angular: false,
-                    noCompress: true
+                    noCompress: true,
+                    minify: false
                 })
                 .queue(function (assetGraph) {
                     expect(assetGraph, 'to contain assets', 'JavaScript', 1);
 
                     var asset = assetGraph.findAssets()[0];
 
-                    expect(asset.text, 'to be', '/*global angular*/\nangular.module("MyMod").controller("MyCtrl", function($scope, $timeout) {\n    return [ $scope, $timeout ];\n});');
+                    expect(
+                        asset.text,
+                        'to be',
+                        '/*global angular*/\n' +
+                        'angular.module(\'MyMod\').controller(\'MyCtrl\', function ($scope, $timeout) {\n' +
+                        '    return [\n' +
+                        '        $scope,\n' +
+                        '        $timeout\n' +
+                        '    ];\n' +
+                        '});'
+                    );
                 })
                 .run(done);
         });
@@ -1131,14 +1142,29 @@ describe('buildProduction', function () {
                 .populate()
                 .buildProduction({
                     angular: true,
-                    noCompress: true
+                    noCompress: true,
+                    minify: false
                 })
                 .queue(function (assetGraph) {
                     expect(assetGraph, 'to contain assets', 'JavaScript', 1);
 
                     var asset = assetGraph.findAssets()[0];
 
-                    expect(asset.text, 'to be', '/*global angular*/\nangular.module("MyMod").controller("MyCtrl", [ "$scope", "$timeout", function($scope, $timeout) {\n    return [ $scope, $timeout ];\n} ]);');
+                    expect(
+                        asset.text,
+                        'to be',
+                        '/*global angular*/\n' +
+                        'angular.module(\'MyMod\').controller(\'MyCtrl\', [\n' +
+                        '    \'$scope\',\n' +
+                        '    \'$timeout\',\n' +
+                        '    function ($scope, $timeout) {\n' +
+                        '        return [\n' +
+                        '            $scope,\n' +
+                        '            $timeout\n' +
+                        '        ];\n' +
+                        '    }\n' +
+                        ']);'
+                    );
                 })
                 .run(done);
         });
@@ -1187,5 +1213,37 @@ describe('buildProduction', function () {
                 ]);
             })
             .run(done);
+    });
+
+    describe('JavaScript serialization options', function () {
+        it('should honor indent_level', function (done) {
+            new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/javaScriptSerializationOptions/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('script.js')
+                .populate()
+                .buildProduction({
+                    noCompress: true,
+                    javaScriptSerializationOptions: { indent_level: 1 }
+                })
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to equal', 'function foo() {\n alert(\'☺\');\n};');
+                })
+                .run(done);
+        });
+
+        it('should honor ascii_only', function (done) {
+            new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/javaScriptSerializationOptions/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('script.js')
+                .populate()
+                .buildProduction({
+                    noCompress: true,
+                    javaScriptSerializationOptions: { ascii_only: true }
+                })
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to equal', 'function foo() {\n    alert(\'\\u263A\');\n};');
+                })
+                .run(done);
+        });
     });
 });

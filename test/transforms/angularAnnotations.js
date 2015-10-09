@@ -8,12 +8,13 @@ describe('angularAnnotations', function () {
             .loadAssets('basic.js')
             .populate()
             .angularAnnotations()
+            .minifyAssets()
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain assets', 'JavaScript', 1);
 
                 var asset = assetGraph.findAssets()[0];
 
-                expect(asset.text, 'to be', 'angular.module("MyMod").controller("MyCtrl",["$scope","$timeout",function($scope,$timeout){return[$scope,$timeout]}]);');
+                expect(asset.text, 'to be', 'angular.module(\'MyMod\').controller(\'MyCtrl\',[\'$scope\',\'$timeout\',function($scope,$timeout){return[$scope,$timeout]}]);');
             })
             .run(done);
     });
