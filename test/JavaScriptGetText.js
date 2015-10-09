@@ -16,7 +16,7 @@ describe('GETTEXT', function () {
             .removeRelations({type: 'JavaScriptGetText'}, {removeOrphan: true})
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain assets', {}, 3);
-                expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to match', /\"Hello, my name is \"\s*\+\s*\"Foobar/);
+                expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to match', /'Hello, my name is '\s*\+\s*'Foobar/);
             })
             .run(done);
     });
