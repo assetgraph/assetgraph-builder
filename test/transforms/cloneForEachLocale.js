@@ -217,7 +217,7 @@ describe('cloneForEachLocale', function () {
                 expect(assetGraph, 'to contain assets', 'JavaScript', 2);
 
                 var danishJavaScript = assetGraph.findAssets({type: 'JavaScript', incoming: {type: 'HtmlScript', from: {url: /\/index\.da\.html$/}}})[0];
-                expect(danishJavaScript.text, 'to equal', 'alert("da");alert("en_us");alert("myCookie");alert(["en_us","da"]);LOCALEID="foo";');
+                expect(danishJavaScript.text, 'to equal', 'alert(\'da\');alert(\'en_us\');alert(\'myCookie\');alert([\'en_us\',\'da\']);LOCALEID=\'foo\'// Shouldn\'t be replaced\n');
             })
             .run(done);
     });
@@ -411,7 +411,7 @@ describe('cloneForEachLocale', function () {
             .populate()
             .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da']})
             .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].parseTree.body.innerHTML, 'to equal', '\n    <div>Some <span>foo</span> <span>foo</span> thing</div>\n    <script>INCLUDE("index.i18n");</script>\n');
+                expect(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].parseTree.body.innerHTML, 'to equal', '\n    <div>Some <span>foo</span> <span>foo</span> thing</div>\n    <script>INCLUDE(\'index.i18n\');</script>\n');
             })
             .run(done);
     });
