@@ -82,10 +82,10 @@
     "mocha": "2.3.3",
     "node-sass": "3.3.3",
     "sinon": "1.15.4",
-    "unexpected": "9.5.0",
-    "unexpected-color": "1.1.0",
-    "unexpected-dom": "2.0.1",
-    "unexpected-sinon": "6.4.2"
+    "unexpected": "10.0.1",
+    "unexpected-color": "2.0.0",
+    "unexpected-dom": "3.0.0",
+    "unexpected-sinon": "8.0.0"
   },
   "engines": {
     "node": ">=0.8.0"
