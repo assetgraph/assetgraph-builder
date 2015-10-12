@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var chalk = require('chalk'),
+    parseExpression = require('assetgraph/lib/parseExpression'),
     optimist = require('optimist')
         .usage('$0 --root <inputRootDirectory> --outroot <dir> [options] <htmlFile(s)>')
         .wrap(72)
@@ -313,7 +314,7 @@ if (commandLineOptions.inlinesize) {
         var valueAst;
         if (matchDefine[2]) {
             try {
-                valueAst = uglifyAst.parseExpression(matchDefine[2]);
+                valueAst = parseExpression(matchDefine[2]);
             } catch (e) {
                 console.error('Invalid --define ' + matchDefine[1] + ': Could not parse ' + matchDefine[2] + ' as a JavaScript expression. Missing shell escapes?');
                 console.error(e.message + ' (line ' + e.line + ', column ' + e.col + ')');
