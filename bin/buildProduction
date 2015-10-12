@@ -249,8 +249,6 @@ if (commandLineOptions.cdnoutroot) {
 
 var _ = require('lodash'),
     AssetGraph = require('../lib/AssetGraph'),
-    uglifyJs = AssetGraph.JavaScript.uglifyJs,
-    uglifyAst = AssetGraph.JavaScript.uglifyAst,
     i18nTools = require('../lib/i18nTools'),
     query = AssetGraph.query,
     urlTools = require('urltools'),
@@ -323,7 +321,7 @@ if (commandLineOptions.inlinesize) {
                 process.exit(1);
             }
         } else {
-            valueAst = new uglifyJs.AST_True();
+            valueAst = { type: 'Literal', value: true };
         }
         defines[matchDefine[1]] = valueAst;
     }
