@@ -188,7 +188,9 @@ var chalk = require('chalk'),
 var javaScriptSerializationOptions = {};
 
 // These names originally come from UglifyJS' code generator, but are now mapped to their escodegen equivalents
-[ 'indent_level', 'ascii_only' ].forEach(function (javaScriptSerializationOptionName) {
+var javaScriptSerializationOptionNames = [ 'indent_level', 'ascii_only' ];
+
+javaScriptSerializationOptionNames.forEach(function (javaScriptSerializationOptionName) {
     var type = (javaScriptSerializationOptionName === 'indent_level') ? 'number' : 'boolean';
     // Also accept the option without underscores, or with the underscores replaced with dashes:
     optimist.options(javaScriptSerializationOptionName.replace(/_/g, ''), {
