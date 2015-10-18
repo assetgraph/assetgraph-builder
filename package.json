@@ -40,7 +40,7 @@
     "bin"
   ],
   "dependencies": {
-    "assetgraph": "1.23.0",
+    "assetgraph": "1.23.1",
     "async": "1.4.2",
     "browserslist": "0.1.3",
     "chalk": "1.0.0",
@@ -76,11 +76,11 @@
     "less": "2.5.1",
     "mocha": "2.3.3",
     "node-sass": "3.3.3",
-    "sinon": "1.15.4",
-    "unexpected": "9.5.0",
-    "unexpected-color": "1.1.0",
-    "unexpected-dom": "2.0.1",
-    "unexpected-sinon": "6.4.2"
+    "sinon": "1.17.1",
+    "unexpected": "10.0.1",
+    "unexpected-color": "2.0.0",
+    "unexpected-dom": "3.0.1",
+    "unexpected-sinon": "8.0.0"
   },
   "engines": {
     "node": ">=0.8.0"
