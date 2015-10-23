@@ -31,6 +31,11 @@ var chalk = require('chalk'),
             type: 'string',
             demand: false
         })
+        .options('sourcemaps', {
+            describe: 'Whether to include source maps',
+            type: 'boolean',
+            default: false
+        })
         .options('optimizeimages', {
             describe: 'Perform automatic lossless optimization of all images using pngcrush, pngquant, optipng, and jpegtran',
             type: 'boolean',
@@ -374,6 +379,7 @@ new AssetGraph({root: rootUrl})
     .buildProduction({
         version: commandLineOptions.version,
         browsers: browsers,
+        sourceMaps: commandLineOptions.sourcemaps,
         less: !commandLineOptions.noless,
         scss: !commandLineOptions.noscss,
         optimizeImages: commandLineOptions.optimizeimages,

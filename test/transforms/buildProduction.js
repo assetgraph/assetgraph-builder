@@ -1215,6 +1215,40 @@ describe('buildProduction', function () {
             .run(done);
     });
 
+    it('should read in location data from existing source maps and produce source maps for bundles', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/sourceMaps/'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets('index.html')
+            .populate()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Html');
+            })
+            .buildProduction({ sourceMaps: true, noCompress: true })
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain assets', 'SourceMap', 2);
+                var sourceMaps = assetGraph.findAssets({ type: 'SourceMap' });
+                expect(sourceMaps[0].parseTree.sources, 'to equal', [ '/jquery-1.10.1.js', '/a.js' ]);
+                expect(sourceMaps[1].parseTree.sources, 'to equal', [ '/b.js', '/c.js' ]);
+            });
+    });
+
+    it('should read in location data from existing source maps and produce source maps for bundles, without noCompress switch', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/sourceMaps/'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets('index.html')
+            .populate()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Html');
+            })
+            .buildProduction({ sourceMaps: true })
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain assets', 'SourceMap', 2);
+                var sourceMaps = assetGraph.findAssets({ type: 'SourceMap' });
+                expect(sourceMaps[0].parseTree.sources, 'to equal', [ '/jquery-1.10.1.js', '/a.js' ]);
+                expect(sourceMaps[1].parseTree.sources, 'to equal', [ '/b.js', '/c.js' ]);
+            });
+    });
+
     describe('JavaScript serialization options', function () {
         it('should honor indent_level', function (done) {
             new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/javaScriptSerializationOptions/'})
