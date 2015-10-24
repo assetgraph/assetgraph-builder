@@ -77,7 +77,7 @@
     "mocha": "2.3.3",
     "node-sass": "3.3.3",
     "sinon": "1.17.1",
-    "unexpected": "10.0.1",
+    "unexpected": "10.0.2",
     "unexpected-color": "2.0.0",
     "unexpected-dom": "3.0.1",
     "unexpected-sinon": "8.0.0"
