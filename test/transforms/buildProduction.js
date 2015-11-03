@@ -57,9 +57,9 @@ describe('buildProduction', function () {
 
                 expect(assetGraph, 'to contain relations', {type: 'HtmlScript', from: {url: /\/index\.en\.html$/}}, 2);
 
-                expect(assetGraph.findAssets({url: /\/index\.en\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" lang=en manifest=index.appcache><head><title>The English title</title><style>body{color:teal}body{color:maroon}</style><style>body{color:tan}</style><style>body div{width:100px}</style></head><body><script src=' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.url + ' async defer></script><script>alert("script3");</script><script type=text/html id=template><a href="/index.html">The English link text</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif"></script></body></html>');
+                expect(assetGraph.findAssets({url: /\/index\.en\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" lang=en manifest=index.appcache><head><title>The English title</title><style>body{color:teal;color:maroon}</style><style>body{color:tan}</style><style>body div{width:100px}</style></head><body><script src=' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.url + ' async defer></script><script>alert("script3");</script><script type=text/html id=template><a href="/index.html">The English link text</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif"></script></body></html>');
 
-                expect(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" lang=da manifest=index.appcache><head><title>Den danske titel</title><style>body{color:teal}body{color:maroon}</style><style>body{color:tan}</style><style>body div{width:100px}</style></head><body><script src=' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.url + ' async defer></script><script>alert("script3");</script><script type=text/html id=template><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif"></script></body></html>');
+                expect(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" lang=da manifest=index.appcache><head><title>Den danske titel</title><style>body{color:teal;color:maroon}</style><style>body{color:tan}</style><style>body div{width:100px}</style></head><body><script src=' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.url + ' async defer></script><script>alert("script3");</script><script type=text/html id=template><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif"></script></body></html>');
 
                 var afterRequireJs = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.text.replace(/^[\s\S]*req\(cfg\)\}\}\(this\),/, '');
                 expect(afterRequireJs, 'to equal', 'alert(\'something else\'),define(\'somethingElse\',function(){}),alert(\'shimmed\'),define(\'shimmed\',function(){}),define(\'amdDependency\',function(){console.warn(\'here I AM(D)\')}),require.config({shim:{shimmed:[\'somethingElse\']}}),require([\'shimmed\',\'amdDependency\'],function(e,t){alert(\'Hello!\')}),define(\'main\',function(){});');
@@ -104,7 +104,7 @@ describe('buildProduction', function () {
             .buildProduction({version: false})
             .queue(function (assetGraph) {
                 // The rules from the @imported stylesheet should only be included once
-                expect(assetGraph.findRelations({type: 'HtmlStyle'})[0].to.text, 'to equal', 'body{color:white}');
+                expect(assetGraph.findRelations({type: 'HtmlStyle'})[0].to.text, 'to equal', 'body{color:#fff}');
             })
             .run(done);
     });
@@ -499,7 +499,7 @@ describe('buildProduction', function () {
             .queue(function (assetGraph) {
                 var cssAssets = assetGraph.findAssets({type: 'Css'});
                 expect(cssAssets, 'to have length', 1);
-                expect(cssAssets[0].text, 'to equal', 'body{color:tan}body{background-color:beige}body{text-indent:10px}');
+                expect(cssAssets[0].text, 'to equal', 'body{color:tan;background-color:beige;text-indent:10px}');
             })
             .run(done);
     });
@@ -876,7 +876,7 @@ describe('buildProduction', function () {
                 expect(assetGraph, 'to contain asset', {type: 'Css'});
                 expect(assetGraph, 'to contain relation', {type: 'HtmlScript'});
                 expect(assetGraph, 'to contain asset', {type: 'JavaScript'});
-                expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to equal', '<style>body{color:#aaa}body{color:#bbb}</style><script>alert("a"),alert("b");</script>');
+                expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to equal', '<style>body{color:#aaa;color:#bbb}</style><script>alert("a"),alert("b");</script>');
             })
             .run(done);
     });
