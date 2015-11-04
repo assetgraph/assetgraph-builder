@@ -23,8 +23,8 @@ new AssetGraph({root: commandLineOptions.root})
         }
         assetGraph.findAssets({type: 'Css'}).forEach(function (cssAsset) {
             cssAsset.constructor.eachRuleInParseTree(cssAsset.parseTree, function (cssRule) {
-                if (cssRule.type === 1) { // STYLE_RULE
-                    if (isSelectorUsed(cssRule.selectorText)) {
+                if (cssRule.type === 'rule') { // STYLE_RULE
+                    if (isSelectorUsed(cssRule.selector)) {
                         //console.warn('IN USE: ' + cssRule.cssText);
                         if (cssRule.selectorText.indexOf(',') !== -1) {
                             cssRule.selectorText.split(',').forEach(function (subSelector) {
@@ -35,7 +35,7 @@ new AssetGraph({root: commandLineOptions.root})
                             });
                         }
                     } else {
-                        console.warn('NOT IN USE: ' + cssRule.cssText);
+                        console.warn('NOT IN USE: ' + cssRule.toString());
                     }
                 }
             });
