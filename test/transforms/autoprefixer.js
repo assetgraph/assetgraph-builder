@@ -38,4 +38,19 @@ describe('transforms.autoprefixer', function () {
                 .run(done);
         }, 'not to throw');
     });
+
+    it('should preserve source information', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/autoprefixer/'})
+            .loadAssets('index.html')
+            .populate()
+            .queue(function (assetGraph) {
+                assetGraph.findAssets({type: 'Css'})[0].parseTree.source.input.file = 'http://example.com/style.css';
+            })
+            .autoprefixer('last 2 versions, ie > 8,ff > 28')
+            .queue(function (assetGraph) {
+                expect(assetGraph.findAssets({type: 'Css'})[0].sourceMap, 'to satisfy', {
+                    sources: expect.it('to contain', 'http://example.com/style.css')
+                });
+            });
+    });
 });
