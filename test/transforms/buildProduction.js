@@ -1280,4 +1280,26 @@ describe('buildProduction', function () {
                 .run(done);
         });
     });
+
+    it('should preserve source maps when autoprefixer is enabled', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/existingExternalSourceMap'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets('index.html')
+            .populate()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Css');
+                expect(assetGraph, 'to contain asset', 'SourceMap');
+            })
+            .buildProduction({
+                browsers: 'last 2 versions, ie > 8, ff > 28',
+                sourceMaps: true,
+                inlineByRelationType: { HtmlStyle: false }
+            })
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Css');
+                expect(assetGraph.findAssets({ type: 'Css' })[0].text, 'to contain', 'sourceMappingURL=foo.8f6b70eaf4.map');
+                expect(assetGraph, 'to contain asset', 'SourceMap');
+                expect(assetGraph.findAssets({ type: 'SourceMap' })[0].parseTree.sources, 'to contain', '/foo.less');
+            });
+    });
 });
