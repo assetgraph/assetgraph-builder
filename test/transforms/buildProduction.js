@@ -10,7 +10,8 @@ var expect = require('../unexpected-with-plugins'),
     vm = require('vm'),
     passError = require('passerror'),
     sinon = require('sinon'),
-    AssetGraph = require('../../lib/AssetGraph');
+    AssetGraph = require('../../lib/AssetGraph'),
+    mozilla = require('source-map');
 
 describe('buildProduction', function () {
     it('should handle a simple test case', function (done) {
@@ -121,6 +122,63 @@ describe('buildProduction', function () {
                 expect(assetGraph.findRelations({}, true).length, 'to equal', 0);
             })
             .run(done);
+    });
+
+    it('should compile and bundle less files while preserving source map information', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/lessWithSourceMap/'})
+            .registerRequireJsConfig()
+            .loadAssets('index.html')
+            .buildProduction({version: false, less: true, sourceMaps: true, inlineByRelationType: { HtmlStyle: false }, noFileRev: true})
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain no assets', 'Less');
+                expect(assetGraph, 'to contain asset', 'Css');
+
+                var htmlText = assetGraph.findAssets({type: 'Html'})[0].text;
+                expect(htmlText, 'not to contain', 'stylesheet/less');
+                expect(htmlText, 'not to contain', 'styles.less');
+
+                expect(assetGraph.findAssets({type: 'Css'})[0].text, 'to equal',
+                    'strong {\n' +
+                    '  font-weight: 400;\n' +
+                    '}\n' +
+                    '#header {\n' +
+                    '  color: #333333;\n' +
+                    '  border-left: 1px;\n' +
+                    '  border-right: 2px;\n' +
+                    '}\n' +
+                    '#footer {\n' +
+                    '  color: #114411;\n' +
+                    '  border-color: #7d2717;\n' +
+                    '}\n' +
+                    '/*# sourceMappingURL=styles.eacc070544.map*/\n'
+                );
+                expect(assetGraph.findAssets({type: 'Css'})[0].sourceMap.sources, 'to satisfy', [
+                    assetGraph.root + 'morestyles.less',
+                    assetGraph.root + 'styles.less'
+                ]);
+
+                var sourceMap = assetGraph.findAssets({type: 'SourceMap'})[0];
+                var consumer = new mozilla.SourceMapConsumer(sourceMap.parseTree);
+                expect(consumer.generatedPositionFor({
+                    source: assetGraph.root + 'styles.less',
+                    line: 6,
+                    column: 0
+                }), 'to equal', {
+                    line: 4,
+                    column: 0,
+                    lastColumn: null
+                });
+
+                expect(consumer.generatedPositionFor({
+                    source: assetGraph.root + 'morestyles.less',
+                    line: 3,
+                    column: 0
+                }), 'to equal', {
+                    line: 1,
+                    column: 0,
+                    lastColumn: null
+                });
+            });
     });
 
     it('should handle a test case with a GETSTATICURL', function (done) {
