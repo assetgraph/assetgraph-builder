@@ -128,7 +128,7 @@ describe('buildProduction', function () {
         return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/lessWithSourceMap/'})
             .registerRequireJsConfig()
             .loadAssets('index.html')
-            .buildProduction({version: false, less: true, sourceMaps: true, inlineByRelationType: { HtmlStyle: false }, noFileRev: true})
+            .buildProduction({version: false, less: true, sourceMaps: true, inlineByRelationType: { HtmlStyle: false }, noFileRev: true, minify: false})
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain no assets', 'Less');
                 expect(assetGraph, 'to contain asset', 'Css');
@@ -150,17 +150,29 @@ describe('buildProduction', function () {
                     '  color: #114411;\n' +
                     '  border-color: #7d2717;\n' +
                     '}\n' +
-                    '/*# sourceMappingURL=styles.eacc070544.map*/\n'
+                    '/*# sourceMappingURL=styles.css.map*/\n'
                 );
                 expect(assetGraph.findAssets({type: 'Css'})[0].sourceMap.sources, 'to satisfy', [
                     assetGraph.root + 'morestyles.less',
-                    assetGraph.root + 'styles.less'
+                    assetGraph.root + 'styles.less',
+                    /^<input css \d+>$/ // FIXME
                 ]);
 
-                var sourceMap = assetGraph.findAssets({type: 'SourceMap'})[0];
+                var sourceMap = assetGraph.findAssets({fileName: 'styles.css.map'})[0];
                 var consumer = new mozilla.SourceMapConsumer(sourceMap.parseTree);
+
+                expect(consumer.originalPositionFor({
+                    line: 1,
+                    column: 1
+                }), 'to equal', {
+                    source: '/morestyles.less',
+                    line: 3,
+                    column: 0,
+                    name: null
+                });
+
                 expect(consumer.generatedPositionFor({
-                    source: assetGraph.root + 'styles.less',
+                    source: '/styles.less',
                     line: 6,
                     column: 0
                 }), 'to equal', {
@@ -170,7 +182,65 @@ describe('buildProduction', function () {
                 });
 
                 expect(consumer.generatedPositionFor({
-                    source: assetGraph.root + 'morestyles.less',
+                    source: '/morestyles.less',
+                    line: 3,
+                    column: 0
+                }), 'to equal', {
+                    line: 1,
+                    column: 0,
+                    lastColumn: null
+                });
+            });
+    });
+
+    it('should compile and bundle less files while preserving source map information, minification turned on', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/lessWithSourceMap/'})
+            .registerRequireJsConfig()
+            .loadAssets('index.html')
+            .buildProduction({version: false, less: true, sourceMaps: true, inlineByRelationType: { HtmlStyle: false }, noFileRev: true})
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain no assets', 'Less');
+                expect(assetGraph, 'to contain asset', 'Css');
+
+                var htmlText = assetGraph.findAssets({type: 'Html'})[0].text;
+                expect(htmlText, 'not to contain', 'stylesheet/less');
+                expect(htmlText, 'not to contain', 'styles.less');
+
+
+                expect(assetGraph.findAssets({type: 'Css'})[0].text, 'to equal',
+                    'strong{font-weight:400}#header{color:#333;border-left:1px;border-right:2px}#footer{color:#141;border-color:#7d2717}/*# sourceMappingURL=styles.css.map*/'
+                );
+                expect(assetGraph.findAssets({type: 'Css'})[0].sourceMap.sources, 'to satisfy', [
+                    assetGraph.root + 'morestyles.less',
+                    assetGraph.root + 'styles.less',
+                    /^<input css \d+>$/ // FIXME
+                ]);
+
+                var sourceMap = assetGraph.findAssets({fileName: 'styles.css.map'})[0];
+                var consumer = new mozilla.SourceMapConsumer(sourceMap.parseTree);
+
+                expect(consumer.originalPositionFor({
+                    line: 1,
+                    column: 1
+                }), 'to equal', {
+                    source: '/morestyles.less',
+                    line: 3,
+                    column: 0,
+                    name: null
+                });
+
+                expect(consumer.generatedPositionFor({
+                    source: '/styles.less',
+                    line: 6,
+                    column: 0
+                }), 'to equal', {
+                    line: 1,
+                    column: 23,
+                    lastColumn: null
+                });
+
+                expect(consumer.generatedPositionFor({
+                    source: '/morestyles.less',
                     line: 3,
                     column: 0
                 }), 'to equal', {
