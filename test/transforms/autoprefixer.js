@@ -46,7 +46,7 @@ describe('transforms.autoprefixer', function () {
             .queue(function (assetGraph) {
                 assetGraph.findAssets({type: 'Css'})[0].parseTree.source.input.file = 'http://example.com/style.css';
             })
-            .autoprefixer('last 2 versions, ie > 8,ff > 28')
+            .autoprefixer('last 2 versions, ie > 8,ff > 28', { sourceMaps: true })
             .queue(function (assetGraph) {
                 expect(assetGraph.findAssets({type: 'Css'})[0].sourceMap, 'to satisfy', {
                     sources: expect.it('to contain', 'http://example.com/style.css')
@@ -62,7 +62,7 @@ describe('transforms.autoprefixer', function () {
                 expect(assetGraph, 'to contain asset', 'Css');
                 expect(assetGraph, 'to contain asset', 'SourceMap');
             })
-            .autoprefixer('last 2 versions, ie > 8,ff > 28')
+            .autoprefixer('last 2 versions, ie > 8,ff > 28', { sourceMaps: true })
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', 'Css');
                 expect(assetGraph.findAssets({ type: 'Css' })[0].text, 'to contain', 'sourceMappingURL');
