@@ -40,7 +40,7 @@
     "bin"
   ],
   "dependencies": {
-    "assetgraph": "git://github.com/assetgraph/assetgraph.git#948e88fe9262abd970003323ab26d75b52860918",
+    "assetgraph": "assetgraph/assetgraph#948e88fe9262abd970003323ab26d75b52860918",
     "async": "1.4.2",
     "browserslist": "0.1.3",
     "chalk": "1.1.1",
