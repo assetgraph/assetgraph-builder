@@ -67,7 +67,7 @@
     "urltools": "0.2.0"
   },
   "optionalDependencies": {
-    "assetgraph-sprite": "git://github.com/assetgraph/assetgraph-sprite.git#6626098055796c5d431c56d4e2b3581854c79efa",
+    "assetgraph-sprite": "git://github.com/assetgraph/assetgraph-sprite.git#33a0915d15ede63551d5932d4cfd60a784f7bd06",
     "histogram": "2.0.1",
     "node-zopfli": "1.4.0"
   },
