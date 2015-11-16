@@ -40,7 +40,7 @@
     "bin"
   ],
   "dependencies": {
-    "assetgraph": "assetgraph/assetgraph.git#1acae9e317604380fa5c1e5bd61e3ca266ae09f9",
+    "assetgraph": "assetgraph/assetgraph#1acae9e317604380fa5c1e5bd61e3ca266ae09f9",
     "async": "1.4.2",
     "browserslist": "0.1.3",
     "chalk": "1.1.1",
@@ -67,7 +67,7 @@
     "urltools": "0.2.0"
   },
   "optionalDependencies": {
-    "assetgraph-sprite": "assetgraph/assetgraph-sprite.git#33a0915d15ede63551d5932d4cfd60a784f7bd06",
+    "assetgraph-sprite": "assetgraph/assetgraph-sprite#33a0915d15ede63551d5932d4cfd60a784f7bd06",
     "histogram": "2.0.1",
     "node-zopfli": "1.4.0"
   },
@@ -76,7 +76,7 @@
     "coveralls": "2.11.2",
     "gm": "1.21.1",
     "istanbul": "0.4.0",
-    "jsdom": "papandreou/jsdom.git#4a83791ba9d20b243723ae5cb50571b302e294ec",
+    "jsdom": "papandreou/jsdom#4a83791ba9d20b243723ae5cb50571b302e294ec",
     "jshint": "2.6.0",
     "less": "2.5.3",
     "mocha": "2.3.3",
