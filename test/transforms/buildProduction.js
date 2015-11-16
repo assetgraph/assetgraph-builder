@@ -1430,4 +1430,18 @@ describe('buildProduction', function () {
                 expect(assetGraph.findAssets({ type: 'SourceMap' })[0].parseTree.sources, 'to contain', '/foo.less');
             });
     });
+
+    it('should provide an external source map for an inline JavaScript asset', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/addSourceMapToInlineJavaScript'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets('index.html')
+            .populate()
+            .buildProduction({ sourceMaps: true })
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'JavaScript');
+                expect(assetGraph.findAssets({ type: 'JavaScript' })[0].text, 'to contain', '//# sourceMappingURL=static/');
+                expect(assetGraph, 'to contain asset', 'SourceMap');
+                expect(assetGraph.findAssets({ type: 'SourceMap' })[0].parseTree.sources, 'to contain', '/index.html');
+            });
+    });
 });
