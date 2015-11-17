@@ -80,7 +80,7 @@
     "jshint": "2.6.0",
     "less": "2.5.3",
     "mocha": "2.3.3",
-    "node-sass": "3.4.0",
+    "node-sass": "3.4.2",
     "sinon": "1.17.1",
     "unexpected": "10.0.2",
     "unexpected-color": "2.0.0",
