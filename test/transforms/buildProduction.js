@@ -1444,4 +1444,19 @@ describe('buildProduction', function () {
                 expect(assetGraph.findAssets({ type: 'SourceMap' })[0].parseTree.sources, 'to contain', '/index.html');
             });
     });
+
+    it('should read the existing inline source maps correctly from the output of Fusile', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/sourceMaps/fusile-output'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets('index.html')
+            .populate()
+            .buildProduction({ sourceMaps: true })
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'JavaScript');
+                expect(assetGraph.findAssets({ type: 'JavaScript' })[0].text, 'to contain', '//# sourceMappingURL=static/');
+                expect(assetGraph, 'to contain assets', 'SourceMap', 2);
+                expect(assetGraph.findRelations({ type: 'CssSourceMappingUrl' })[0].to.parseTree.sources, 'to contain', '/home/munter/assetgraph/builder/demoapp/main.scss');
+                expect(assetGraph.findRelations({ type: 'JavaScriptSourceMappingUrl' })[0].to.parseTree.sources, 'to contain', '/home/munter/assetgraph/builder/demoapp/main.jsx');
+            });
+    });
 });
