@@ -49,7 +49,7 @@ describe('buildDevelopment', function () {
                 version: 'The version number'
             })
             .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to contain', '<style data-bind="text: dynamicStyle"></style>');
+                expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to contain', '<style data-bind="text: dynamicStyle">\n</style>');
             })
             .run(done);
     });

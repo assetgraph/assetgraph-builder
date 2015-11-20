@@ -31,7 +31,7 @@ describe('resolvers/senchaJsBuilder', function () {
             .queue(function (assetGraph) {
                 // All the background-image urls should be relative to the Html
                 assetGraph.findRelations({type: 'CssImage'}).forEach(function (relation) {
-                    expect(relation.cssRule.style[relation.propertyName], 'to equal', 'url(resources/images/foo/bar/foo.png)');
+                    expect(relation.propertyNode.value, 'to equal', 'url(resources/images/foo/bar/foo.png)');
                 });
                 expect(assetGraph.findAssets({type: 'Html'})[0].text.match(/url\(resources\/images\/foo\/bar\/foo\.png\)/g), 'to have length', 4);
             })

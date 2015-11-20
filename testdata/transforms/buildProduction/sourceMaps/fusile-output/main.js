@@ -1,0 +1,8 @@
+'use strict';
+
+var foo = 'waat';
+
+setTimeout(function () {
+  return console.log(foo);
+});
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9ob21lL211bnRlci9hc3NldGdyYXBoL2J1aWxkZXIvZGVtb2FwcC9tYWluLmpzeCJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUFBLElBQU0sR0FBRyxHQUFHLE1BQU0sQ0FBQzs7QUFFbkIsVUFBVSxDQUFDO1NBQU0sT0FBTyxDQUFDLEdBQUcsQ0FBQyxHQUFHLENBQUM7Q0FBQSxDQUFDLENBQUMiLCJmaWxlIjoiL2hvbWUvbXVudGVyL2Fzc2V0Z3JhcGgvYnVpbGRlci9kZW1vYXBwL21haW4uanN4In0=

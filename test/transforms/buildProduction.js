@@ -10,7 +10,8 @@ var expect = require('../unexpected-with-plugins'),
     vm = require('vm'),
     passError = require('passerror'),
     sinon = require('sinon'),
-    AssetGraph = require('../../lib/AssetGraph');
+    AssetGraph = require('../../lib/AssetGraph'),
+    mozilla = require('source-map');
 
 describe('buildProduction', function () {
     it('should handle a simple test case', function (done) {
@@ -57,9 +58,9 @@ describe('buildProduction', function () {
 
                 expect(assetGraph, 'to contain relations', {type: 'HtmlScript', from: {url: /\/index\.en\.html$/}}, 2);
 
-                expect(assetGraph.findAssets({url: /\/index\.en\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" lang=en manifest=index.appcache><head><title>The English title</title><style>body{color:teal}body{color:maroon}</style><style>body{color:tan}</style><style>body div{width:100px}</style></head><body><script src=' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.url + ' async defer></script><script>alert("script3");</script><script type=text/html id=template><a href="/index.html">The English link text</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif"></script></body></html>');
+                expect(assetGraph.findAssets({url: /\/index\.en\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" lang=en manifest=index.appcache><head><title>The English title</title><style>body{color:teal;color:maroon}</style><style>body{color:tan}</style><style>body div{width:100px}</style></head><body><script src=' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.url + ' async defer></script><script>alert("script3");</script><script type=text/html id=template><a href="/index.html">The English link text</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif"></script></body></html>');
 
-                expect(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" lang=da manifest=index.appcache><head><title>Den danske titel</title><style>body{color:teal}body{color:maroon}</style><style>body{color:tan}</style><style>body div{width:100px}</style></head><body><script src=' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.url + ' async defer></script><script>alert("script3");</script><script type=text/html id=template><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif"></script></body></html>');
+                expect(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" lang=da manifest=index.appcache><head><title>Den danske titel</title><style>body{color:teal;color:maroon}</style><style>body{color:tan}</style><style>body div{width:100px}</style></head><body><script src=' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.url + ' async defer></script><script>alert("script3");</script><script type=text/html id=template><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif"></script></body></html>');
 
                 var afterRequireJs = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.text.replace(/^[\s\S]*req\(cfg\)\}\}\(this\),/, '');
                 expect(afterRequireJs, 'to equal', 'alert(\'something else\'),define(\'somethingElse\',function(){}),alert(\'shimmed\'),define(\'shimmed\',function(){}),define(\'amdDependency\',function(){console.warn(\'here I AM(D)\')}),require.config({shim:{shimmed:[\'somethingElse\']}}),require([\'shimmed\',\'amdDependency\'],function(e,t){alert(\'Hello!\')}),define(\'main\',function(){});');
@@ -104,7 +105,7 @@ describe('buildProduction', function () {
             .buildProduction({version: false})
             .queue(function (assetGraph) {
                 // The rules from the @imported stylesheet should only be included once
-                expect(assetGraph.findRelations({type: 'HtmlStyle'})[0].to.text, 'to equal', 'body{color:white}');
+                expect(assetGraph.findRelations({type: 'HtmlStyle'})[0].to.text, 'to equal', 'body{color:#fff}');
             })
             .run(done);
     });
@@ -121,6 +122,133 @@ describe('buildProduction', function () {
                 expect(assetGraph.findRelations({}, true).length, 'to equal', 0);
             })
             .run(done);
+    });
+
+    it('should compile and bundle less files while preserving source map information', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/lessWithSourceMap/'})
+            .registerRequireJsConfig()
+            .loadAssets('index.html')
+            .buildProduction({version: false, less: true, sourceMaps: true, inlineByRelationType: { HtmlStyle: false }, noFileRev: true, minify: false})
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain no assets', 'Less');
+                expect(assetGraph, 'to contain asset', 'Css');
+
+                var htmlText = assetGraph.findAssets({type: 'Html'})[0].text;
+                expect(htmlText, 'not to contain', 'stylesheet/less');
+                expect(htmlText, 'not to contain', 'styles.less');
+
+                expect(assetGraph.findAssets({type: 'Css'})[0].text, 'to equal',
+                    'strong {\n' +
+                    '  font-weight: 400;\n' +
+                    '}\n' +
+                    '#header {\n' +
+                    '  color: #333333;\n' +
+                    '  border-left: 1px;\n' +
+                    '  border-right: 2px;\n' +
+                    '}\n' +
+                    '#footer {\n' +
+                    '  color: #114411;\n' +
+                    '  border-color: #7d2717;\n' +
+                    '}\n' +
+                    '/*# sourceMappingURL=styles.css.map*/\n'
+                );
+                expect(assetGraph.findAssets({type: 'Css'})[0].sourceMap.sources, 'to satisfy', [
+                    assetGraph.root + 'morestyles.less',
+                    assetGraph.root + 'styles.less',
+                    /^<input css \d+>$/ // FIXME
+                ]);
+
+                var sourceMap = assetGraph.findAssets({fileName: 'styles.css.map'})[0];
+                var consumer = new mozilla.SourceMapConsumer(sourceMap.parseTree);
+
+                expect(consumer.originalPositionFor({
+                    line: 1,
+                    column: 1
+                }), 'to equal', {
+                    source: '/morestyles.less',
+                    line: 3,
+                    column: 0,
+                    name: null
+                });
+
+                expect(consumer.generatedPositionFor({
+                    source: '/styles.less',
+                    line: 6,
+                    column: 0
+                }), 'to equal', {
+                    line: 4,
+                    column: 0,
+                    lastColumn: null
+                });
+
+                expect(consumer.generatedPositionFor({
+                    source: '/morestyles.less',
+                    line: 3,
+                    column: 0
+                }), 'to equal', {
+                    line: 1,
+                    column: 0,
+                    lastColumn: null
+                });
+            });
+    });
+
+    it('should compile and bundle less files while preserving source map information, minification turned on', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/lessWithSourceMap/'})
+            .registerRequireJsConfig()
+            .loadAssets('index.html')
+            .buildProduction({version: false, less: true, sourceMaps: true, inlineByRelationType: { HtmlStyle: false }, noFileRev: true})
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain no assets', 'Less');
+                expect(assetGraph, 'to contain asset', 'Css');
+
+                var htmlText = assetGraph.findAssets({type: 'Html'})[0].text;
+                expect(htmlText, 'not to contain', 'stylesheet/less');
+                expect(htmlText, 'not to contain', 'styles.less');
+
+
+                expect(assetGraph.findAssets({type: 'Css'})[0].text, 'to equal',
+                    'strong{font-weight:400}#header{color:#333;border-left:1px;border-right:2px}#footer{color:#141;border-color:#7d2717}/*# sourceMappingURL=styles.css.map*/'
+                );
+                expect(assetGraph.findAssets({type: 'Css'})[0].sourceMap.sources, 'to satisfy', [
+                    assetGraph.root + 'morestyles.less',
+                    assetGraph.root + 'styles.less',
+                    /^<input css \d+>$/ // FIXME
+                ]);
+
+                var sourceMap = assetGraph.findAssets({fileName: 'styles.css.map'})[0];
+                var consumer = new mozilla.SourceMapConsumer(sourceMap.parseTree);
+
+                expect(consumer.originalPositionFor({
+                    line: 1,
+                    column: 1
+                }), 'to equal', {
+                    source: '/morestyles.less',
+                    line: 3,
+                    column: 0,
+                    name: null
+                });
+
+                expect(consumer.generatedPositionFor({
+                    source: '/styles.less',
+                    line: 6,
+                    column: 0
+                }), 'to equal', {
+                    line: 1,
+                    column: 23,
+                    lastColumn: null
+                });
+
+                expect(consumer.generatedPositionFor({
+                    source: '/morestyles.less',
+                    line: 3,
+                    column: 0
+                }), 'to equal', {
+                    line: 1,
+                    column: 0,
+                    lastColumn: null
+                });
+            });
     });
 
     it('should handle a test case with a GETSTATICURL', function (done) {
@@ -499,7 +627,7 @@ describe('buildProduction', function () {
             .queue(function (assetGraph) {
                 var cssAssets = assetGraph.findAssets({type: 'Css'});
                 expect(cssAssets, 'to have length', 1);
-                expect(cssAssets[0].text, 'to equal', 'body{color:tan}body{background-color:beige}body{text-indent:10px}');
+                expect(cssAssets[0].text, 'to equal', 'body{color:tan;background-color:beige;text-indent:10px}');
             })
             .run(done);
     });
@@ -876,7 +1004,7 @@ describe('buildProduction', function () {
                 expect(assetGraph, 'to contain asset', {type: 'Css'});
                 expect(assetGraph, 'to contain relation', {type: 'HtmlScript'});
                 expect(assetGraph, 'to contain asset', {type: 'JavaScript'});
-                expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to equal', '<style>body{color:#aaa}body{color:#bbb}</style><script>alert("a"),alert("b");</script>');
+                expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to equal', '<style>body{color:#aaa;color:#bbb}</style><script>alert("a"),alert("b");</script>');
             })
             .run(done);
     });
@@ -1215,6 +1343,40 @@ describe('buildProduction', function () {
             .run(done);
     });
 
+    it('should read in location data from existing source maps and produce source maps for bundles', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/sourceMaps/'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets('index.html')
+            .populate()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Html');
+            })
+            .buildProduction({ sourceMaps: true, noCompress: true })
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain assets', 'SourceMap', 2);
+                var sourceMaps = assetGraph.findAssets({ type: 'SourceMap' });
+                expect(sourceMaps[0].parseTree.sources, 'to equal', [ '/jquery-1.10.1.js', '/a.js' ]);
+                expect(sourceMaps[1].parseTree.sources, 'to equal', [ '/b.js', '/c.js' ]);
+            });
+    });
+
+    it('should read in location data from existing source maps and produce source maps for bundles, without noCompress switch', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/sourceMaps/'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets('index.html')
+            .populate()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Html');
+            })
+            .buildProduction({ sourceMaps: true })
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain assets', 'SourceMap', 2);
+                var sourceMaps = assetGraph.findAssets({ type: 'SourceMap' });
+                expect(sourceMaps[0].parseTree.sources, 'to equal', [ '/jquery-1.10.1.js', '/a.js' ]);
+                expect(sourceMaps[1].parseTree.sources, 'to equal', [ '/b.js', '/c.js' ]);
+            });
+    });
+
     describe('JavaScript serialization options', function () {
         it('should honor indent_level', function (done) {
             new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/javaScriptSerializationOptions/'})
@@ -1245,5 +1407,56 @@ describe('buildProduction', function () {
                 })
                 .run(done);
         });
+    });
+
+    it('should preserve source maps when autoprefixer is enabled', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/existingExternalSourceMap'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets('index.html')
+            .populate()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Css');
+                expect(assetGraph, 'to contain asset', 'SourceMap');
+            })
+            .buildProduction({
+                browsers: 'last 2 versions, ie > 8, ff > 28',
+                sourceMaps: true,
+                inlineByRelationType: { HtmlStyle: false }
+            })
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Css');
+                expect(assetGraph.findAssets({ type: 'Css' })[0].text, 'to contain', 'sourceMappingURL=foo.8f6b70eaf4.map');
+                expect(assetGraph, 'to contain asset', 'SourceMap');
+                expect(assetGraph.findAssets({ type: 'SourceMap' })[0].parseTree.sources, 'to contain', '/foo.less');
+            });
+    });
+
+    it('should provide an external source map for an inline JavaScript asset', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/addSourceMapToInlineJavaScript'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets('index.html')
+            .populate()
+            .buildProduction({ sourceMaps: true })
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'JavaScript');
+                expect(assetGraph.findAssets({ type: 'JavaScript' })[0].text, 'to contain', '//# sourceMappingURL=static/');
+                expect(assetGraph, 'to contain asset', 'SourceMap');
+                expect(assetGraph.findAssets({ type: 'SourceMap' })[0].parseTree.sources, 'to contain', '/index.html');
+            });
+    });
+
+    it('should read the existing inline source maps correctly from the output of Fusile', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/sourceMaps/fusile-output'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets('index.html')
+            .populate()
+            .buildProduction({ sourceMaps: true })
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'JavaScript');
+                expect(assetGraph.findAssets({ type: 'JavaScript' })[0].text, 'to contain', '//# sourceMappingURL=static/');
+                expect(assetGraph, 'to contain assets', 'SourceMap', 2);
+                expect(assetGraph.findRelations({ type: 'CssSourceMappingUrl' })[0].to.parseTree.sources, 'to contain', '/home/munter/assetgraph/builder/demoapp/main.scss');
+                expect(assetGraph.findRelations({ type: 'JavaScriptSourceMappingUrl' })[0].to.parseTree.sources, 'to contain', '/home/munter/assetgraph/builder/demoapp/main.jsx');
+            });
     });
 });

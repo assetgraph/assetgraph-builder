@@ -332,7 +332,7 @@ describe('cloneForEachLocale', function () {
             .run(done);
     });
 
-    it('should handle Css asset that needs localization', function (done) {
+    it('should handle a Css asset that needs localization', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/cloneForEachLocale/css/'})
             .loadAssets('index.html')
             .populate()
@@ -342,34 +342,34 @@ describe('cloneForEachLocale', function () {
                 expect(assetGraph, 'to contain assets', {type: 'Png'}, 3);
 
                 var danishCss = assetGraph.findAssets({url: /\/needsLocalization\.da\.css$/})[0],
-                    cssRules = danishCss.parseTree.cssRules;
+                    cssRules = danishCss.parseTree.nodes;
                 expect(cssRules, 'to have length', 3);
-                expect(cssRules[0].selectorText, 'to equal', 'body');
-                expect(cssRules[1].selectorText, 'to equal', 'html .theThing');
+                expect(cssRules[0].selector, 'to equal', 'body');
+                expect(cssRules[1].selector, 'to equal', 'html .theThing');
                 var outgoingRelations = assetGraph.findRelations({from: danishCss});
                 expect(outgoingRelations, 'to have length', 1);
                 expect(outgoingRelations[0].href, 'to equal',  'foo.png');
 
                 var germanCss = assetGraph.findAssets({url: /\/needsLocalization\.de\.css$/})[0];
-                expect(germanCss.parseTree.cssRules, 'to have length', 3);
-                expect(germanCss.parseTree.cssRules[0].selectorText, 'to equal', 'body');
-                expect(germanCss.parseTree.cssRules[1].selectorText, 'to equal', 'html.anotherClassOnHtml .theGermanThing');
+                expect(germanCss.parseTree.nodes, 'to have length', 3);
+                expect(germanCss.parseTree.nodes[0].selector, 'to equal', 'body');
+                expect(germanCss.parseTree.nodes[1].selector, 'to equal', 'html.anotherClassOnHtml .theGermanThing');
 
                 outgoingRelations = assetGraph.findRelations({from: germanCss});
                 expect(outgoingRelations, 'to have length', 1);
                 expect(outgoingRelations[0].to, 'to have property', 'isImage', true);
 
                 var englishCss = assetGraph.findAssets({url: /\/needsLocalization\.en\.css$/})[0];
-                expect(englishCss.parseTree.cssRules, 'to have length', 2);
-                expect(englishCss.parseTree.cssRules[0].selectorText, 'to equal', 'body');
+                expect(englishCss.parseTree.nodes, 'to have length', 2);
+                expect(englishCss.parseTree.nodes[0].selector, 'to equal', 'body');
 
-                expect(englishCss.parseTree.cssRules[1].selectorText, 'to equal', '.foobar');
+                expect(englishCss.parseTree.nodes[1].selector, 'to equal', '.foobar');
 
                 var czechCss = assetGraph.findAssets({url: /\/needsLocalization\.cs\.css$/})[0];
-                expect(czechCss.parseTree.cssRules, 'to have length', 2);
-                expect(czechCss.parseTree.cssRules[0].selectorText, 'to equal', 'body');
+                expect(czechCss.parseTree.nodes, 'to have length', 2);
+                expect(czechCss.parseTree.nodes[0].selector, 'to equal', 'body');
 
-                expect(czechCss.parseTree.cssRules[1].selectorText, 'to equal', '.foobar, html .theCzechThing');
+                expect(czechCss.parseTree.nodes[1].selector, 'to equal', '.foobar, html .theCzechThing');
 
                 expect(assetGraph, 'to contain no relations', {from: englishCss});
 
