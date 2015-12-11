@@ -47,7 +47,7 @@
     "esanimate": "1.0.3",
     "escodegen": "1.7.1",
     "esmangle": "1.0.1",
-    "esprima": "2.6.0",
+    "esprima": "2.7.1",
     "estraverse": "4.1.0",
     "express-processimage": "4.3.0",
     "extend": "3.0.0",
