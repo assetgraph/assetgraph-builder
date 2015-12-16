@@ -88,6 +88,7 @@ new AssetGraph({root: rootUrl})
     .loadAssets(inputUrls)
     .populate({from: {type: 'Html'}, followRelations: {type: 'HtmlScript', to: {url: /^file:/}}})
     .assumeRequireJsConfigHasBeenFound()
+    .bundleSystemJs({ sourceMaps: true })
     .populate({
         followRelations: query.or(
             {

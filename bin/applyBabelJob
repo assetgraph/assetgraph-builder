@@ -327,10 +327,7 @@ new AssetGraph({root: commandLineOptions.root})
                     });
                 }
                 asset._rawSrc = replacedText.toString('utf-8');
-                // Hack: Prevent system.js bundles from being written to disc:
-                if (assetGraph.findRelations({ from: asset, to: { type: 'SourceMap' } }).length === 0) {
-                    asset.hasReplacedLanguageKeys = true;
-                }
+                asset.hasReplacedLanguageKeys = true;
             });
         }
     })
