@@ -164,6 +164,7 @@ new AssetGraph({root: commandLineOptions.root})
     .loadAssets(initialAssetUrls)
     .populate({from: {type: 'Html'}, followRelations: {type: 'HtmlScript', to: {url: /^file:/}}})
     .assumeRequireJsConfigHasBeenFound()
+    .bundleSystemJs()
     .fixBaseAssetsOfUnresolvedOutgoingRelationsFromHtmlFragments({isInitial: true})
     .assumeThatAllHtmlFragmentAssetsWithoutIncomingRelationsAreNotTemplates()
     .populate({

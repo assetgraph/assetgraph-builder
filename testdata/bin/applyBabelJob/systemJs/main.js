@@ -1,0 +1,1 @@
+alert(TR('myAlert', 'Hello'));

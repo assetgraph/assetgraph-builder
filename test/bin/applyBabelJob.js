@@ -154,4 +154,41 @@ describe('applyBabelJob', function () {
             });
         });
     });
+
+    it('should update the actual source files when importing into a project that uses system.js', function (done) {
+        var babelDir = Path.resolve(__dirname, '..', '..', 'testdata', 'bin', 'applyBabelJob', 'systemJs', 'translationjob'),
+            tmpTestCaseCopyDir = temp.mkdirSync(),
+            copyCommand = 'cp \'' + __dirname + '/../../testdata/bin/applyBabelJob\'/systemJs/*.* ' + tmpTestCaseCopyDir;
+        childProcess.exec(copyCommand, function (err, stdout, stderr) {
+            if (err) {
+                return done(new Error(copyCommand + ' failed: STDERR:' + stderr + '\nSTDOUT:' + stdout));
+            }
+            var applyBabelJobProcess = childProcess.spawn(__dirname + '/../../bin/applyBabelJob', [
+                '--babeldir', babelDir,
+                '--root', tmpTestCaseCopyDir,
+                '--defaultlocale', 'en',
+                '--locales', 'en,cs',
+                '--i18n', tmpTestCaseCopyDir + '/index.i18n',
+                '--replace',
+                tmpTestCaseCopyDir + '/index.html'
+            ]);
+
+            applyBabelJobProcess.on('exit', function (exitCode) {
+                if (exitCode) {
+                    done(new Error('The applyBabelJob process ended with a non-zero exit code: ' + exitCode));
+                } else {
+                    expect(JSON.parse(fs.readFileSync(tmpTestCaseCopyDir + '/index.i18n')), 'to equal', {
+                        myAlert: {
+                            en: 'HelloFoo',
+                            cs: 'Ahoj'
+                        }
+                    });
+                    expect(fs.readFileSync(tmpTestCaseCopyDir + '/main.js', 'utf-8'), 'to equal',
+                        'alert(TR(\'myAlert\', \'HelloFoo\'));\n'
+                    );
+                    done();
+                }
+            });
+        });
+    });
 });

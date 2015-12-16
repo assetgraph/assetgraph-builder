@@ -62,6 +62,9 @@ new AssetGraph({root: commandLineOptions.root})
     .loadAssets(initialAssetUrls)
     .populate({from: {type: 'Html'}, followRelations: {type: 'HtmlScript', to: {url: /^file:/}}})
     .assumeRequireJsConfigHasBeenFound()
+    .bundleSystemJs({ sourceMaps: true })
+    .serializeSourceMaps()
+    .populate({ startAssets: { type: 'SourceMap' }})
     .fixBaseAssetsOfUnresolvedOutgoingRelationsFromHtmlFragments({isInitial: true})
     .assumeThatAllHtmlFragmentAssetsWithoutIncomingRelationsAreNotTemplates()
     .populate({
@@ -324,7 +327,10 @@ new AssetGraph({root: commandLineOptions.root})
                     });
                 }
                 asset._rawSrc = replacedText.toString('utf-8');
-                asset.hasReplacedLanguageKeys = true;
+                // Hack: Prevent system.js bundles from being written to disc:
+                if (assetGraph.findRelations({ from: asset, to: { type: 'SourceMap' } }).length === 0) {
+                    asset.hasReplacedLanguageKeys = true;
+                }
             });
         }
     })

@@ -311,4 +311,69 @@ describe('makeBabelJob', function () {
             });
         });
     });
+
+    it('should discover language keys imported via System.js', function (done) {
+        var babelDir = temp.mkdirSync(),
+            tmpTestCaseCopyDir = temp.mkdirSync(),
+            copyCommand = 'cp \'' + __dirname + '/../../testdata/bin\'/makeBabelJob/systemJs/* ' + tmpTestCaseCopyDir;
+
+        childProcess.exec(copyCommand, function (err, stdout, stderr) {
+            if (err) {
+                return done(new Error(copyCommand + ' failed: STDERR:' + stderr + '\nSTDOUT:' + stdout));
+            }
+
+            var makeBabelJobProcess = childProcess.spawn(__dirname + '/../../bin/makeBabelJob', [
+                    '--babeldir', babelDir,
+                    '--root', tmpTestCaseCopyDir,
+                    '--i18n', Path.resolve(tmpTestCaseCopyDir, 'index.i18n'),
+                    Path.resolve(tmpTestCaseCopyDir, 'index.html'),
+                    '--locales', 'en,cs'
+                ]),
+                buffersByStreamName = {},
+                streamNames = ['stdout', 'stderr'];
+
+            streamNames.forEach(function (streamName) {
+                buffersByStreamName[streamName] = [];
+                makeBabelJobProcess[streamName].on('data', function (chunk) {
+                    buffersByStreamName[streamName].push(chunk);
+                });
+            });
+
+            function getStreamOutputText() {
+                var outputText = '';
+                streamNames.forEach(function (streamName) {
+                    if (buffersByStreamName[streamName].length > 0) {
+                        outputText += '\n' + streamName.toUpperCase() + ': ' + Buffer.concat(buffersByStreamName[streamName]).toString('utf-8') + '\n';
+                    }
+                });
+                return outputText;
+            }
+
+            makeBabelJobProcess.on('exit', function (exitCode) {
+                if (exitCode) {
+                    return done(new Error('The makeBabelJob process ended with a non-zero exit code: ' + exitCode + getStreamOutputText()));
+                }
+
+                expect(fs.readFileSync(Path.resolve(babelDir, 'cs.txt'), 'utf-8'), 'to equal', [
+                    'myAlert=',
+                    ''
+                ].join('\n'));
+
+                expect(fs.readdirSync(babelDir).sort(), 'to equal', ['cs.txt', 'en.txt']);
+
+                expect(fs.readFileSync(Path.resolve(babelDir, 'en.txt'), 'utf-8'), 'to equal', [
+                    'myAlert=Hello',
+                    ''
+                ].join('\n'));
+
+                expect(JSON.parse(fs.readFileSync(Path.resolve(tmpTestCaseCopyDir, 'index.i18n'), 'utf-8')), 'to equal', {
+                    myAlert: {
+                        en: 'Hello',
+                        cs: null
+                    }
+                });
+                done();
+            });
+        });
+    });
 });
