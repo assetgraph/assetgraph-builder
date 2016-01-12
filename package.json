@@ -75,7 +75,7 @@
     "autoprefixer": "6.2.0",
     "coveralls": "2.11.6",
     "gm": "1.21.1",
-    "istanbul": "0.4.1",
+    "istanbul": "0.4.2",
     "jsdom": "papandreou/jsdom#4a83791ba9d20b243723ae5cb50571b302e294ec",
     "jshint": "2.6.0",
     "less": "2.5.3",
