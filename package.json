@@ -87,7 +87,7 @@
     "unexpected": "10.7.0",
     "unexpected-color": "2.0.0",
     "unexpected-dom": "3.0.2",
-    "unexpected-sinon": "9.0.4"
+    "unexpected-sinon": "10.0.0"
   },
   "engines": {
     "node": ">=0.8.0"
