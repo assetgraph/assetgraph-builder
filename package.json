@@ -81,7 +81,7 @@
     "less": "2.5.3",
     "mocha": "2.3.4",
     "node-sass": "3.4.0",
-    "sinon": "1.17.1",
+    "sinon": "1.17.3",
     "source-map": "0.5.3",
     "systemjs-builder": "0.14.15",
     "unexpected": "10.7.0",
