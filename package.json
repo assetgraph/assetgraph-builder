@@ -80,7 +80,7 @@
     "jshint": "2.6.0",
     "less": "2.5.3",
     "mocha": "2.3.4",
-    "node-sass": "3.4.0",
+    "node-sass": "v3.4.2",
     "sinon": "1.17.1",
     "source-map": "0.5.3",
     "systemjs-builder": "0.14.15",
