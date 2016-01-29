@@ -84,7 +84,7 @@
     "sinon": "1.17.1",
     "source-map": "0.5.3",
     "systemjs-builder": "0.14.15",
-    "unexpected": "10.7.0",
+    "unexpected": "10.8.1",
     "unexpected-color": "2.0.0",
     "unexpected-dom": "3.0.2",
     "unexpected-sinon": "9.0.4"
