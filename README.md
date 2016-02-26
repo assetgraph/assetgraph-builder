@@ -33,7 +33,7 @@ Features
    CSS, images etc and will spit out a full independent ready-packed build of your website/app into a directory.
  * Auto **minifies/packs** JS,CSS and HTML files. Also removes duplicate images, JavaScript, CSS, etc.
  * Supports require.js `define` and `require` statements. Mostly replaces require.js's optimization tool.
- * Supports **LESS** and **SASS**. Strips out the in-browser less compiler.
+ * Compiles **LESS** and **SASS** to CSS. Strips out the in-browser less compiler.
  * Special support for **Knockout.js** (inlines KO templates), **JSX** and **AngularJS** (Angular annotations with [ng-annotate](https://github.com/olov/ng-annotate) and angular template inlining).
  * **Automatic image optimization**.
  * **Build for multiple languages** using special i18n syntax (i.e JS and HTML files can be built for each language you support). i18n is also supported for SVG and Knockout.js templates).
