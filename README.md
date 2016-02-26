@@ -30,7 +30,7 @@ Features
 --------
 
  * **Needs no build configs**. Just tell where your HTML file(s) are and it will find the referenced JavaScript,
-   CSS, images etc and will spit out a full independent ready-packed build of your website/app into a directory.
+   CSS, images etc and will spit out a full independent packed build of your website/app into a directory.
  * Auto **minifies/packs** JS,CSS and HTML files. Also removes duplicate images, JavaScript, CSS, etc.
  * Supports require.js `define` and `require` statements. Mostly replaces require.js's optimization tool.
  * Compiles **LESS** and **SASS** to CSS. Strips out the in-browser less compiler.
