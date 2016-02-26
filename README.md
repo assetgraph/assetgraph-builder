@@ -37,16 +37,14 @@ Features
  * Special support for **Knockout.js** (inlines KO templates), **JSX** and **AngularJS** (Angular annotations with [ng-annotate](https://github.com/olov/ng-annotate) and angular template inlining).
  * **Automatic image optimization**.
  * **Build for multiple languages** using special i18n syntax (i.e JS and HTML files can be built for each language you support). i18n is also supported for SVG and Knockout.js templates).
- * Cache busting strategy using 10-char MD5 prefix + the original extension for assests (JavaScript, CSS, images etc).
+ * Cache busting strategy using 10-char MD5 prefix + the original extension for assets (JavaScript, CSS, images etc).
  * Optionally adds a cache manifest to each HTML page (if `--manifest` is  specified).
  * If needed, images (or other files) can be referenced from JS code using special function `GETSTATICURL`, so that the tool doesn't miss them during build.
  * Helps getting your static assets on a CDN by rewriting the
    references to them (controlled by the `--cdnroot` and
    `--cdnoutroot` switches).
- * **Very customizable** (if needed). The entire build script is only around 100 lines
-   of code due to the reliance on high level <a
-   href="https://github.com/One-com/assetgraph">AssetGraph</a>
-   transforms.
+ * **Very customizable** (if needed). Write custom scripts using high level [AssetGraph](https://github.com/One-com/assetgraph)
+   transforms ([Read more](https://mntr.dk/2014/getting-started-with-assetgraph/)).
 
 
 Installation
