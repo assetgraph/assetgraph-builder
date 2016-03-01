@@ -29,56 +29,22 @@ Congratulations, you just optimized your web page!
 Features
 --------
 
- * Requires no build manifest. All information about your project is
-   gathered from the HTML/CSS/JavaScript itself. Just tell it where to
-   find your HTML file(s), and it will find the referenced JavaScript,
-   CSS, etc.
- * Reads your web application from one directory, manipulates and
-   optimizes it, then writes the resulting build to a separate
-   directory with everything included.
- * Supports a multitude of asset/relation types, even shortcut icons,
-   `AlphaImageLoader` images, conditional comments, fonts linked via
-   `@font-face { src: url(...) }`, .htc files linked via CSS
-   `behavior` properties.
- * Bundles JavaScript and CSS.
- * Removes duplicate images, JavaScript, CSS, etc.
- * Supports automatic optimization and custom processing of images using
-   pngquant, pngcrush, optipng, jpegtran, and GraphicsMagick.
- * Minifies/packs JavaScript, CSS, and HTML (uses <a
-   href="https://github.com/mishoo/UglifyJS">UglifyJS</a> and <a
-   href="https://github.com/jbleuzen/node-cssmin">cssmin</a>, and <a
-   href="https://github.com/tmpvar/jsdom">jsdom</a>).
- * Supports require.js `define` and `require` statements, rolls up the
-   dependency graph like <a
-   href="http://requirejs.org/docs/optimization.html">the require.js
-   optimizer</a> does (still missing some features though). Understands
-   the require.js config options `baseUrl` and `paths`.
- * Sprites background images (see <a
-   href="https://github.com/One-com/assetgraph-sprite">assetgraph-sprite</a>).
- * Inlines CSS `background-image`s less than 8192 bytes and provides an
-   alternative stylesheet for older IE versions via conditional comments.
- * Inlines CSS and Javascript with total size less than 4096 bytes to reduce HTTP requests.
- * Adds a cache manifest to each HTML page if `--manifest` is
-   specified.
- * Compiles <a href="http://lesscss.org/">less</a> to CSS and strips
-   out the in-browser less compiler.
- * Compiles Sass to CSS
- * Renames JavaScript, CSS, images etc. to a 10-char MD5 prefix + the
-   original extension so they can be served with a far-future expiry time.
- * Supports a special syntax for getting the url of static assets from
-   JavaScript code (`GETSTATICURL`). These are also modelled as
-   relations so the target files will be included in the build and thus
-   renamed so they can be served with a far-future expiry time.
+ * **Needs no build configs**. Just tell where your HTML file(s) are and it will find the referenced JavaScript,
+   CSS, images etc and will spit out a full independent packed build of your website/app into a directory.
+ * Auto **minifies/packs** JS,CSS and HTML files. Also removes duplicate images, JavaScript, CSS, etc.
+ * Supports **CommonJS require**, **require.js** and **SystemJS**.
+ * Compiles **LESS** and **SASS** to CSS. Strips out the in-browser less compiler.
+ * Special support for **Knockout.js** (inlines KO templates), **JSX** and **AngularJS** (Angular annotations with [ng-annotate](https://github.com/olov/ng-annotate) and angular template inlining).
+ * **Automatic image optimization**.
+ * **Build for multiple languages** using special i18n syntax (i.e JS and HTML files can be built for each language you support). i18n is also supported for SVG and Knockout.js templates).
+ * Cache busting strategy using 10-char MD5 prefix + the original extension for assets (JavaScript, CSS, images etc).
+ * Optionally adds a cache manifest to each HTML page (if `--manifest` is  specified).
+ * If needed, images (or other files) can be referenced from JS code using special function `GETSTATICURL`, so that the tool doesn't miss them during build.
  * Helps getting your static assets on a CDN by rewriting the
    references to them (controlled by the `--cdnroot` and
    `--cdnoutroot` switches).
- * Supports internationalization of HTML, JavaScript, SVG, and Knockout.js
-   templates (support for more template formats will be added on demand).
- * Very customizable, the entire build script is only around 100 lines
-   of code due to the reliance on high level <a
-   href="https://github.com/One-com/assetgraph">AssetGraph</a>
-   transforms.
- * Angular annotations with [ng-annotate](https://github.com/olov/ng-annotate) and angular template inlining.
+ * **Very customizable** (if needed). Write custom scripts using high level [AssetGraph](https://github.com/One-com/assetgraph)
+   transforms ([Read more](https://mntr.dk/2014/getting-started-with-assetgraph/)).
 
 
 Installation
