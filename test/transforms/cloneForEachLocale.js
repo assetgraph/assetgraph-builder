@@ -217,7 +217,16 @@ describe('cloneForEachLocale', function () {
                 expect(assetGraph, 'to contain assets', 'JavaScript', 2);
 
                 var danishJavaScript = assetGraph.findAssets({type: 'JavaScript', incoming: {type: 'HtmlScript', from: {url: /\/index\.da\.html$/}}})[0];
-                expect(danishJavaScript.text, 'to equal', 'alert(\'da\');alert(\'en_us\');alert(\'myCookie\');alert([\'en_us\',\'da\']);LOCALEID=\'foo\'// Shouldn\'t be replaced\n');
+                expect(danishJavaScript.text, 'to equal',
+                    'alert(\'da\');\n' +
+                    'alert(\'en_us\');\n' +
+                    'alert(\'myCookie\');\n' +
+                    'alert([\n' +
+                    '    \'en_us\',\n' +
+                    '    \'da\'\n' +
+                    ']);\n' +
+                    'LOCALEID = \'foo\';    // Shouldn\'t be replaced\n'
+                );
             })
             .run(done);
     });

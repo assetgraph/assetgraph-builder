@@ -94,10 +94,25 @@ var chalk = require('chalk'),
             default: true
         })
         .options('nocompress', {
-            describe: 'Prettifies HTML, CSS and Javascript for easier debugging',
+            describe: 'Disables JavaScript compression via UglifyJS',
             alias: 'no-compress',
             type: 'boolean',
             default: false
+        })
+        .options('pretty', {
+            describe: 'Whether to pretty-print JavaScript, CSS and HTML assets',
+            type: 'boolean',
+            default: false
+        })
+        .options('space', {
+            describe: 'The space character to use when serializing JavaScript',
+            type: 'string',
+            default: ' '
+        })
+        .options('newline', {
+            describe: 'The newline character to use when serializing JavaScript',
+            type: 'string',
+            default: '\n'
         })
         .options('removedeadifs', {
             describe: 'Optimize away certain if (...) {...} constructs. Only makes sense with --nocompress as UglifyJS includes the same optimization',
@@ -195,8 +210,6 @@ var chalk = require('chalk'),
         })
         */
 
-var javaScriptSerializationOptions = {};
-
 // These names originally come from UglifyJS' code generator, but are now mapped to their escodegen equivalents
 var javaScriptSerializationOptionNames = [ 'indent_level', 'ascii_only' ];
 
@@ -210,8 +223,14 @@ javaScriptSerializationOptionNames.forEach(function (javaScriptSerializationOpti
     });
 });
 
-var commandLineOptions = optimist.argv,
-    browsers = commandLineOptions.browsers;
+var commandLineOptions = optimist.argv;
+var browsers = commandLineOptions.browsers;
+
+var javaScriptSerializationOptions = {
+    compact: commandLineOptions.compact,
+    space: commandLineOptions.space,
+    newline: commandLineOptions.newline
+};
 
 [ 'preserve_line', 'preamble', 'quote_char', 'indent_start', 'quote_keys', 'space_colon', 'unescape_regexps', 'width', 'max_line_len', 'beautify', 'bracketize' ].forEach(function (deprecatedUglifyJsOption) {
     [deprecatedUglifyJsOption, deprecatedUglifyJsOption.replace(/_/g, ''), deprecatedUglifyJsOption.replace(/_/g, '-')].forEach(function (alias) {
@@ -407,6 +426,7 @@ new AssetGraph({root: rootUrl})
         cdnHtml: commandLineOptions.cdnhtml,
         minify: commandLineOptions.minify,
         noCompress: commandLineOptions.nocompress,
+        pretty: commandLineOptions.pretty,
         removeDeadIfs: commandLineOptions.removedeadifs,
         sharedBundles: commandLineOptions.sharedbundles,
         stripDebug: !commandLineOptions.debug,

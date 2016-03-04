@@ -569,6 +569,7 @@ describe('buildProduction', function () {
             .loadAssets('index.html')
             .buildProduction({
                 version: false,
+                minify: true,
                 cdnRoot: 'http://cdn.example.com/foo/'
             })
             .queue(function (assetGraph) {
@@ -1241,6 +1242,7 @@ describe('buildProduction', function () {
                 .buildProduction({
                     angular: false,
                     noCompress: true,
+                    pretty: true,
                     minify: false
                 })
                 .queue(function (assetGraph) {
@@ -1271,6 +1273,7 @@ describe('buildProduction', function () {
                 .buildProduction({
                     angular: true,
                     noCompress: true,
+                    pretty: true,
                     minify: false
                 })
                 .queue(function (assetGraph) {
@@ -1385,6 +1388,7 @@ describe('buildProduction', function () {
                 .populate()
                 .buildProduction({
                     noCompress: true,
+                    pretty: true,
                     javaScriptSerializationOptions: { indent_level: 1 }
                 })
                 .queue(function (assetGraph) {
@@ -1400,6 +1404,7 @@ describe('buildProduction', function () {
                 .populate()
                 .buildProduction({
                     noCompress: true,
+                    pretty: true,
                     javaScriptSerializationOptions: { ascii_only: true }
                 })
                 .queue(function (assetGraph) {
