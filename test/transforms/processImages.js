@@ -195,12 +195,12 @@ describe('processImages', function () {
                     {
                         type: 'Png',
                         devicePixelRatio: 5,
-                        url: /foo\.resize=,200\.png$/
+                        url: /foo\.resize=200,200\.png$/
                     },
                     {
                         type: 'Png',
                         devicePixelRatio: 6,
-                        url: /foo\.resize=,200\.png$/
+                        url: /foo\.resize=200,200\.png$/
                     },
                     {
                         type: 'Png',
@@ -258,5 +258,18 @@ describe('processImages', function () {
                 ]);
             })
             .run(done);
+    });
+
+    it('should handle multiple gifsicle-powered operations on a gif', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/gifsicle/'})
+            .loadAssets('index.html')
+            .populate()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Gif', 1);
+            })
+            .processImages()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Gif', 1);
+            });
     });
 });

@@ -11,15 +11,15 @@
 }
 
 .p4 {
-    background-image: url(foo.png?resize=,200);
+    background-image: url(foo.png?resize=200,200);
 }
 
 .p5 {
-    background-image: url(foo.png?resize=,200&dpr=5);
+    background-image: url(foo.png?resize=200,200&dpr=5);
 }
 
 .p6 {
-    background-image: url(foo.png?dpr=6&resize=,200);
+    background-image: url(foo.png?dpr=6&resize=200,200);
 }
 
 .p7 {

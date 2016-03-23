@@ -49,7 +49,7 @@
     "esmangle": "1.0.1",
     "esprima": "2.7.2",
     "estraverse": "4.1.0",
-    "express-processimage": "4.5.3",
+    "express-processimage": "5.1.0",
     "extend": "3.0.0",
     "jpegtran": "0.2.0",
     "lodash": "3.10.1",
@@ -74,6 +74,7 @@
   "devDependencies": {
     "autoprefixer": "6.3.2",
     "coveralls": "^2.11.6",
+    "gifsicle-stream": "0.1.1",
     "gm": "^1.21.1",
     "istanbul": "^0.4.1",
     "jsdom": "papandreou/jsdom#4a83791ba9d20b243723ae5cb50571b302e294ec",
