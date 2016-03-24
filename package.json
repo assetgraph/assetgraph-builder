@@ -79,7 +79,7 @@
     "istanbul": "^0.4.1",
     "jsdom": "papandreou/jsdom#4a83791ba9d20b243723ae5cb50571b302e294ec",
     "jshint": "^2.6.0",
-    "less": "2.5.3",
+    "less": "2.6.1",
     "mocha": "^2.4.5",
     "node-sass": "3.4.0",
     "sinon": "^1.17.3",
