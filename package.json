@@ -72,7 +72,7 @@
     "node-zopfli": "1.4.0"
   },
   "devDependencies": {
-    "autoprefixer": "6.3.4",
+    "autoprefixer": "6.3.5",
     "coveralls": "^2.11.6",
     "gifsicle-stream": "0.1.1",
     "gm": "^1.21.1",
