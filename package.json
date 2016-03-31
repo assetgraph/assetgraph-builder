@@ -51,7 +51,7 @@
     "estraverse": "4.1.0",
     "express-processimage": "5.1.0",
     "extend": "3.0.0",
-    "jpegtran": "0.2.0",
+    "jpegtran": "1.0.2",
     "lodash": "3.10.1",
     "memoizesync": "0.5.0",
     "ng-annotate": "1.2.1",
