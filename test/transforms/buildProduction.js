@@ -1229,7 +1229,7 @@ describe('buildProduction', function () {
             .queue(function (assetGraph) {
                 var htmlAsset = assetGraph.findAssets({type: 'Html'})[0];
                 expect(htmlAsset.text, 'to contain', 'data-bind="template:{name:\'application\',\'if\':isInitialized');
-             })
+            })
             .run(done);
     });
 
