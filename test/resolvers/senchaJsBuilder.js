@@ -55,7 +55,7 @@ describe('resolvers/senchaJsBuilder', function () {
             .flattenStaticIncludes({isInitial: true})
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain relations', 'HtmlScript', 4);
-                expect(_.pluck(assetGraph.findRelations({type: 'HtmlScript'}), 'href'), 'to equal', [
+                expect(_.map(assetGraph.findRelations({type: 'HtmlScript'}), 'href'), 'to equal', [
                     'js/A1.js',
                     'js/B1.js',
                     'js/C1.js',
@@ -82,7 +82,7 @@ describe('resolvers/senchaJsBuilder', function () {
             .flattenStaticIncludes({isInitial: true})
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain relations', 'HtmlScript', 4);
-                expect(_.pluck(assetGraph.findRelations({type: 'HtmlScript'}), 'href'), 'to equal', [
+                expect(_.map(assetGraph.findRelations({type: 'HtmlScript'}), 'href'), 'to equal', [
                     'js/A1.js',
                     'js/B1.js',
                     'js/C1.js',

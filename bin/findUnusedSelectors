@@ -15,7 +15,7 @@ new AssetGraph({root: commandLineOptions.root})
         followRelations: {type: ['HtmlStyle', 'CssImport'], to: {url: /^file:/}}
     })
     .queue(function (assetGraph) {
-        var documents = _.pluck(assetGraph.findAssets({type: 'Html'}), 'parseTree');
+        var documents = _.map(assetGraph.findAssets({type: 'Html'}), 'parseTree');
         function isSelectorUsed(selector) {
             return documents.some(function (document) {
                 return document.querySelectorAll(selector).length > 0;

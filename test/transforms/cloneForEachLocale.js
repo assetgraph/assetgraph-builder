@@ -397,14 +397,14 @@ describe('cloneForEachLocale', function () {
             .populate()
             .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da']})
             .queue(function (assetGraph) {
-                expect(_.pluck(assetGraph.findAssets({type: 'Html'}), 'url').sort(), 'to equal', [
+                expect(_.map(assetGraph.findAssets({type: 'Html'}), 'url').sort(), 'to equal', [
                     assetGraph.root + '1.da.html',
                     assetGraph.root + '1.en.html',
                     assetGraph.root + '2.da.html',
                     assetGraph.root + '2.en.html'
                 ]);
 
-                expect(_.pluck(assetGraph.findAssets({type: 'JavaScript'}), 'url').sort(), 'to equal', [
+                expect(_.map(assetGraph.findAssets({type: 'JavaScript'}), 'url').sort(), 'to equal', [
                     assetGraph.root + 'doesNotNeedLocalization.da.js',
                     assetGraph.root + 'doesNotNeedLocalization.en.js',
                     assetGraph.root + 'needsLocalization.da.js',

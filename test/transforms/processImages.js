@@ -18,7 +18,7 @@ describe('processImages', function () {
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain assets', 'Png', 3);
 
-                expect(_.pluck(assetGraph.findAssets({isImage: true}), 'url').sort(), 'to equal', [
+                expect(_.map(assetGraph.findAssets({isImage: true}), 'url').sort(), 'to equal', [
                     urlTools.resolveUrl(assetGraph.root, 'purplealpha24bit.pngquant=256.png'),
                     urlTools.resolveUrl(assetGraph.root, 'redalpha24bit.png?irrelevant'),
                     urlTools.resolveUrl(assetGraph.root, 'redalpha24bit.pngquant=128.png')
@@ -49,7 +49,7 @@ describe('processImages', function () {
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain assets', 'Png', 3);
 
-                expect(_.pluck(assetGraph.findAssets({isImage: true}), 'url').sort(), 'to equal', [
+                expect(_.map(assetGraph.findAssets({isImage: true}), 'url').sort(), 'to equal', [
                     urlTools.resolveUrl(assetGraph.root, 'myImage.png'),
                     urlTools.resolveUrl(assetGraph.root, 'myImage.png?resize=200+200'),
                     urlTools.resolveUrl(assetGraph.root, 'myImage.png?resize=400+400#foo')
@@ -62,7 +62,7 @@ describe('processImages', function () {
             .processImages()
             .queue(function (assetGraph) {
                 // The urls of the image assets should have the processing instructions removed from the query string, but added before the extension:
-                expect(_.pluck(assetGraph.findAssets({isImage: true}), 'url').sort(), 'to equal', [
+                expect(_.map(assetGraph.findAssets({isImage: true}), 'url').sort(), 'to equal', [
                     urlTools.resolveUrl(assetGraph.root, 'myImage.resize=200-200.png'),
                     urlTools.resolveUrl(assetGraph.root, 'myImage.resize=400-400.png#foo'),
                     urlTools.resolveUrl(assetGraph.root, 'myImage.png')
@@ -84,7 +84,7 @@ describe('processImages', function () {
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain no assets', 'Png');
                 expect(assetGraph, 'to contain asset', 'Gif');
-                expect(_.pluck(assetGraph.findAssets({isImage: true}), 'url').sort(), 'to equal', [
+                expect(_.map(assetGraph.findAssets({isImage: true}), 'url').sort(), 'to equal', [
                     urlTools.resolveUrl(assetGraph.root, 'foo.setFormat=gif.gif')
                 ]);
             })
@@ -170,7 +170,7 @@ describe('processImages', function () {
                 expect(assetGraph, 'to contain asset', 'Css', 1);
                 expect(assetGraph, 'to contain asset', 'Png', 9);
 
-                expect(_.pluck(assetGraph.findAssets({ isImage: true }), 'devicePixelRatio'), 'to equal', [1, 2, 1, 1, 1, 1, 1, 8, 1]);
+                expect(_.map(assetGraph.findAssets({ isImage: true }), 'devicePixelRatio'), 'to equal', [1, 2, 1, 1, 1, 1, 1, 8, 1]);
             })
             .processImages()
             .queue(function (assetGraph) {
