@@ -298,7 +298,7 @@ var _ = require('lodash'),
     inlineByRelationType = {};
 
 if (commandLineOptions.inline) {
-   inlineByRelationType['*'] = true;
+    inlineByRelationType['*'] = true;
 }
 
 // Doesn't touch non-string values or values that don't look like something boolean:

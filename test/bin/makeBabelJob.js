@@ -170,7 +170,7 @@ describe('makeBabelJob', function () {
                         da: { one: 'føø', other: 'føø' },
                         de: { one: 'voo', other: 'voo' },
                         en: { one: 'foo', other: 'foo' },
-                        pl: { one: 'fzz', few: 'fzz', many: 'fzz', other: 'fzz' },
+                        pl: { one: 'fzz', few: 'fzz', many: 'fzz', other: 'fzz' }
                     },
                     KeyAlreadyTranslatedToCzech: {
                         cs: { one: 'fzd', few: 'fzd', many: 'fzd', other: 'fzd' },
