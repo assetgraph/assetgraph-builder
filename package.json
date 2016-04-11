@@ -64,7 +64,7 @@
     "semver": "5.1.0",
     "seq": "0.3.5",
     "temp": "0.8.3",
-    "urltools": "0.2.0"
+    "urltools": "0.2.1"
   },
   "optionalDependencies": {
     "assetgraph-sprite": "1.0.0",
