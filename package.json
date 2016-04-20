@@ -82,7 +82,7 @@
     "jsdom": "papandreou/jsdom#4a83791ba9d20b243723ae5cb50571b302e294ec",
     "less": "2.5.3",
     "mocha": "^2.4.5",
-    "node-sass": "3.4.0",
+    "node-sass": "3.5.1",
     "sinon": "^1.17.3",
     "source-map": "^0.5.3",
     "systemjs-builder": "0.15.15",
