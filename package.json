@@ -85,7 +85,7 @@
     "node-sass": "3.5.3",
     "sinon": "^1.17.3",
     "source-map": "^0.5.3",
-    "systemjs-builder": "0.15.15",
+    "systemjs-builder": "0.15.16",
     "unexpected": "^10.8.1",
     "unexpected-color": "^2.0.0",
     "unexpected-dom": "^3.0.2",
