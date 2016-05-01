@@ -154,8 +154,7 @@ describe('buildProduction', function () {
                 );
                 expect(assetGraph.findAssets({type: 'Css'})[0].sourceMap.sources, 'to satisfy', [
                     assetGraph.root + 'morestyles.less',
-                    assetGraph.root + 'styles.less',
-                    /^<input css \d+>$/ // FIXME
+                    assetGraph.root + 'styles.less'
                 ]);
 
                 var sourceMap = assetGraph.findAssets({fileName: 'styles.css.map'})[0];
@@ -212,8 +211,7 @@ describe('buildProduction', function () {
                 );
                 expect(assetGraph.findAssets({type: 'Css'})[0].sourceMap.sources, 'to satisfy', [
                     assetGraph.root + 'morestyles.less',
-                    assetGraph.root + 'styles.less',
-                    /^<input css \d+>$/ // FIXME
+                    assetGraph.root + 'styles.less'
                 ]);
 
                 var sourceMap = assetGraph.findAssets({fileName: 'styles.css.map'})[0];
