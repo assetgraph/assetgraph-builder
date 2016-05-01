@@ -48,7 +48,7 @@
     "escodegen": "1.8.0",
     "esmangle": "1.0.1",
     "esprima": "2.7.2",
-    "estraverse": "4.1.0",
+    "estraverse": "4.2.0",
     "express-processimage": "5.8.2",
     "extend": "3.0.0",
     "jpegtran": "1.0.4",
