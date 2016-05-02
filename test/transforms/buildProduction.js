@@ -63,10 +63,10 @@ describe('buildProduction', function () {
                 expect(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" lang=da manifest=index.appcache><head><title>Den danske titel</title><style>body{color:teal;color:maroon}</style><style>body{color:tan}</style><style>body div{width:100px}</style></head><body><script src=' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.url + ' async defer></script><script>alert("script3");</script><script type=text/html id=template><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif"></script></body></html>');
 
                 var afterRequireJs = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.text.replace(/^[\s\S]*req\(cfg\)\}\}\(this\),/, '');
-                expect(afterRequireJs, 'to equal', 'alert(\'something else\'),define(\'somethingElse\',function(){}),alert(\'shimmed\'),define(\'shimmed\',function(){}),define(\'amdDependency\',function(){console.warn(\'here I AM(D)\')}),require.config({shim:{shimmed:[\'somethingElse\']}}),require([\'shimmed\',\'amdDependency\'],function(e,t){alert(\'Hello!\')}),define(\'main\',function(){});');
+                expect(afterRequireJs, 'to equal', 'alert(\'something else\'),define(\'somethingElse\',function(){}),alert(\'shimmed\'),define(\'shimmed\',function(){}),define(\'amdDependency\',function(){console.warn(\'here I AM(D)\')}),require.config({shim:{shimmed:[\'somethingElse\']}}),require([\'shimmed\',\'amdDependency\'],function(a,b){alert(\'Hello!\')}),define(\'main\',function(){});');
 
                 afterRequireJs = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.text.replace(/^[\s\S]*req\(cfg\)\}\}\(this\),/, '');
-                expect(afterRequireJs, 'to equal', 'alert(\'something else\'),define(\'somethingElse\',function(){}),alert(\'shimmed\'),define(\'shimmed\',function(){}),define(\'amdDependency\',function(){console.warn(\'here I AM(D)\')}),require.config({shim:{shimmed:[\'somethingElse\']}}),require([\'shimmed\',\'amdDependency\'],function(e,t){alert(\'Hej!\')}),define(\'main\',function(){});');
+                expect(afterRequireJs, 'to equal', 'alert(\'something else\'),define(\'somethingElse\',function(){}),alert(\'shimmed\'),define(\'shimmed\',function(){}),define(\'amdDependency\',function(){console.warn(\'here I AM(D)\')}),require.config({shim:{shimmed:[\'somethingElse\']}}),require([\'shimmed\',\'amdDependency\'],function(a,b){alert(\'Hej!\')}),define(\'main\',function(){});');
 
                 // someTextFile.txt should be found at /static/someTextFile.c7429a1035.txt (not on the CDN)
                 expect(assetGraph, 'to contain assets', {url: /\/static\/someTextFile.c7429a1035\.txt$/}, 1);
@@ -704,7 +704,7 @@ describe('buildProduction', function () {
             .queue(function (assetGraph) {
                 var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
                 expect(javaScriptAssets, 'to have length', 1);
-                expect(javaScriptAssets[0].text, 'to match', /require.config\(\{baseUrl:"\/js"\}\),define\("modules\/utils",function\(\)\{alert\("These are the utils!"\)\}\),require\(\["modules\/utils"\],function\(e\)\{console.log\("Ready."\)\}\),define\("main",function\(\)\{\}\);/);
+                expect(javaScriptAssets[0].text, 'to match', /require.config\(\{baseUrl:"\/js"\}\),define\("modules\/utils",function\(\)\{alert\("These are the utils!"\)\}\),require\(\["modules\/utils"\],function\(a\)\{console.log\("Ready."\)\}\),define\("main",function\(\)\{\}\);/);
             })
             .run(done);
     });
