@@ -253,7 +253,7 @@ javaScriptSerializationOptionNames.forEach(function (javaScriptSerializationOpti
 
 if (commandLineOptions.h) {
     optimist.showHelp();
-    process.exit(1);
+    process.exit(0);
 }
 
 // Temporary deprecation message
