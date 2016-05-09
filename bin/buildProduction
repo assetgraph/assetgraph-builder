@@ -36,6 +36,16 @@ var chalk = require('chalk'),
             type: 'boolean',
             default: false
         })
+        .options('contentsecuritypolicy', {
+            describe: 'Whether to update existing Content-Security-Policy meta tags',
+            type: 'boolean',
+            default: false
+        })
+        .options('subresourceintegrity', {
+            describe: 'Whether to add integrity=... attributes to stylesheets and scripts that are part of the build',
+            type: 'boolean',
+            default: false
+        })
         .options('sourcescontent', {
             describe: 'Whether to include the source contents in the source maps (requires --sourcemaps), only works for CSS (not yet JavaScript)',
             type: 'boolean',
@@ -405,6 +415,8 @@ new AssetGraph({root: rootUrl})
         browsers: browsers,
         sourceMaps: commandLineOptions.sourcemaps,
         sourcesContent: commandLineOptions.sourcescontent,
+        contentSecurityPolicy: commandLineOptions.contentsecuritypolicy,
+        subResourceIntegrity: commandLineOptions.subresourceintegrity,
         less: !commandLineOptions.noless,
         scss: !commandLineOptions.noscss,
         optimizeImages: commandLineOptions.optimizeimages,

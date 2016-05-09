@@ -1462,4 +1462,81 @@ describe('buildProduction', function () {
                 expect(assetGraph.findRelations({ type: 'JavaScriptSourceMappingUrl' })[0].to.parseTree.sources, 'to contain', '/home/munter/assetgraph/builder/demoapp/main.jsx');
             });
     });
+
+    describe('with contentSecurityPolicy=true', function () {
+        describe('with an existing policy', function () {
+            it('should add image-src data: to an existing CSP when an image has been inlined', function () {
+                return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/'})
+                    .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                    .loadAssets('index.html')
+                    .populate()
+                    .buildProduction({contentSecurityPolicy: true, inlineByRelationType: {CssImage: true}})
+                    .queue(function (assetGraph) {
+                        expect(assetGraph, 'to contain asset', {type: 'Png', isInline: true});
+                        expect(assetGraph.findAssets({type: 'ContentSecurityPolicy'})[0].parseTree, 'to satisfy', {
+                            imgSrc: ['data:']
+                        });
+                    });
+            });
+
+            describe('along with a cdnRoot', function () {
+                it('should add the CDN host name to the relevant sections', function () {
+                    return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/'})
+                        .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                        .loadAssets('index.html')
+                        .populate()
+                        .buildProduction({contentSecurityPolicy: true, cdnRoot: '//my.cdn.com/', inlineByRelationType: {}})
+                        .queue(function (assetGraph) {
+                            expect(assetGraph.findAssets({type: 'ContentSecurityPolicy'}), 'to satisfy', [
+                                {
+                                    parseTree: expect.it('to equal', {
+                                        styleSrc: ['\'self\'', 'my.cdn.com'],
+                                        scriptSrc: ['\'self\'', 'my.cdn.com']
+                                    })
+                                }
+                            ]);
+                        });
+                });
+            });
+        });
+    });
+
+    describe('with subResourceIntegrity=true', function () {
+        it('should leave relations to other domains alone', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/subResourceIntegrity/scriptsAndStylesheetOnForeignDomain/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .populate({followRelations: { to: { url: AssetGraph.query.not(/^https?:\/\//)}}})
+                .buildProduction({subResourceIntegrity: true})
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets({type: 'Html'})[0].text, 'not to contain', 'integrity');
+                });
+        });
+
+        it('should add integrity attributes to local relations', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/subResourceIntegrity/externalScriptAndStylesheet/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .populate()
+                .buildProduction({subResourceIntegrity: true, inlineByRelationType: {}})
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to contain',
+                        'integrity="sha256-PxmT6t1HcvKET+AaUXzreq0LE2ftJs0cvaXtDT1sBCo="',
+                        'integrity="sha256-VPpU4ZUqU5zjmt3+cCupom56kQrj9lmyq2hiHVNLhDw="');
+                });
+        });
+
+        it('should add integrity attributes to assets that are put on a CDN', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/subResourceIntegrity/externalScriptAndStylesheet/'})
+                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+                .loadAssets('index.html')
+                .populate()
+                .buildProduction({subResourceIntegrity: true, cdnRoot: '//my.cdn.com/', inlineByRelationType: {}})
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to contain',
+                        'integrity="sha256-PxmT6t1HcvKET+AaUXzreq0LE2ftJs0cvaXtDT1sBCo="',
+                        'integrity="sha256-VPpU4ZUqU5zjmt3+cCupom56kQrj9lmyq2hiHVNLhDw="');
+                });
+        });
+    });
 });

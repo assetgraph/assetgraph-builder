@@ -1,0 +1,68 @@
+#!/usr/bin/env node
+
+var optimist = require('optimist')
+        .usage('$0 --root <inputRootDirectory> --outroot <dir> [options] <htmlFile(s)>')
+        .wrap(72)
+        .options('h', {
+            alias: 'help',
+            describe: 'Show this help',
+            type: 'boolean',
+            default: false
+        })
+        .options('algorithm', {
+            describe: 'The hash algorithm to use',
+            type: 'string',
+            default: 'sha256',
+            demand: false
+        })
+        .options('root', {
+            describe: 'Path to your web root (will be deduced from your input files if not specified)',
+            type: 'string',
+            demand: false
+        })
+        .options('outroot', {
+            describe: 'Path to the output folder (will be generated if non-existing). Defaults to overwrite the source files in-place',
+            type: 'string',
+            demand: false
+        });
+
+var commandLineOptions = optimist.argv;
+
+if (commandLineOptions.h) {
+    optimist.showHelp();
+    process.exit(0);
+}
+
+var AssetGraph = require('../lib/AssetGraph'),
+    query = AssetGraph.query,
+    urlTools = require('urltools'),
+    outRoot = commandLineOptions.outroot && urlTools.fsDirToFileUrl(commandLineOptions.outroot),
+    rootUrl = commandLineOptions.root && urlTools.urlOrFsPathToUrl(commandLineOptions.root, true),
+    inputUrls;
+
+if (commandLineOptions._.length > 0) {
+    inputUrls = commandLineOptions._.map(function (urlOrFsPath) {
+        return urlTools.urlOrFsPathToUrl(String(urlOrFsPath), false);
+    });
+    if (!rootUrl) {
+        rootUrl = urlTools.findCommonUrlPrefix(inputUrls.filter(function (inputUrl) {
+            return /^file:/.test(inputUrl);
+        }));
+        if (rootUrl) {
+            console.warn('Guessing --root from input files: ' + rootUrl);
+        }
+    }
+} else if (rootUrl && /^file:/.test(rootUrl)) {
+    inputUrls = [rootUrl + '*.html'];
+    console.warn('No input files specified, defaulting to ' + inputUrls[0]);
+} else {
+    throw new Error('No input files and no --root specified (or it isn\'t file:), cannot proceed');
+}
+
+new AssetGraph({root: rootUrl})
+    .loadAssets(inputUrls)
+    .populate({from: {type: 'Html'}, followRelations: {type: ['HtmlScript', 'HtmlStyle'], to: {url: query.not(/^file:/)}}})
+    .reviewSubResourceIntegrity({type: 'Html', isInline: false, isFragment: false, isLoaded: true}, {update: true, single: true, algorithm: commandLineOptions.algorithm})
+    .writeAssetsToDisc({url: /^file:/, type: 'Html', isLoaded: true, isDirty: true}, outRoot || rootUrl)
+    .writeStatsToStderr()
+    .run();
