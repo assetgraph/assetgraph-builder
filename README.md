@@ -70,8 +70,7 @@ Features
    relations so the target files will be included in the build and thus
    renamed so they can be served with a far-future expiry time.
  * Helps getting your static assets on a CDN by rewriting the
-   references to them (controlled by the `--cdnroot` and
-   `--cdnoutroot` switches).
+   references to them (controlled by the `--cdnroot` switch).
  * Supports internationalization of HTML, JavaScript, SVG, and Knockout.js
    templates (support for more template formats will be added on demand).
  * Very customizable, the entire build script is only around 100 lines
