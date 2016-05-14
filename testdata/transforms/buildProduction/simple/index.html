@@ -11,6 +11,21 @@
             INCLUDE('index.i18n');
             var myStaticUrl = GETSTATICURL('/someTextFile.txt');
         </script>
+        <script>
+            var require = {
+                shim: {
+                    shimmed: ['somethingElse']
+                },
+                separateCSS: true,
+                packages: [
+                    {
+                        name: 'less',
+                        location: 'require-less',
+                        main: 'less'
+                    }
+                ]
+            };
+        </script>
         <script src="script1.js"></script>
         <script src="script2.js"></script>
         <script src="require.js" data-main="morescripts/main"></script>

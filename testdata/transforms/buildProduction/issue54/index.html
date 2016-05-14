@@ -2,6 +2,14 @@
 <html>
     <head></head>
     <body>
-        <script src="/js/vendor/requirejs/require.js" data-main="/js/app"></script>
+        <script>
+            var require = {
+                paths: {
+                    backbone: 'vendor/backbone-amd/backbone',
+                    deepmodel: 'vendor/deep-model'
+                }
+            };
+        </script>
+        <script src="/js/vendor/requirejs/require.js" data-main="js/app"></script>
     <body>
 </html>

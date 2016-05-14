@@ -17,11 +17,9 @@ var _ = require('lodash'),
 
 new AssetGraph({root: commandLineOptions.root})
     .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
-    .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .populate({from: {type: 'Html'}, followRelations: {type: 'HtmlScript', to: {url: /^file:/}}})
-    .assumeRequireJsConfigHasBeenFound()
     .populate({
         followRelations: {
             type: ['HtmlScript', 'HtmlRequireJsMain', 'JavaScriptInclude', 'JavaScriptAmdDefine', 'JavaScriptAmdRequire', 'JavaScriptGetText'],

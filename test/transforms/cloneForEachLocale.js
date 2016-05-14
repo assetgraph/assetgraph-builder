@@ -188,26 +188,6 @@ describe('cloneForEachLocale', function () {
             .run(done);
     });
 
-    it('should handle a TR in a data-bind attribute in a .ko template', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/cloneForEachLocale/trInHtmlDataBindAttributeInKoTemplate/'})
-            .registerRequireJsConfig()
-            .loadAssets('index.html')
-            .populate()
-            .flattenRequireJs()
-            .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_US', 'da']})
-            .queue(function (assetGraph) {
-                expect(assetGraph, 'to contain assets', {type: 'Html', isFragment: true}, 2);
-
-                var danishKnockoutJsTemplate = assetGraph.findRelations({type: 'JavaScriptGetText', from: function (asset) {
-                    return asset.incomingRelations.some(function (incomingRelation) {
-                        return incomingRelation.from === assetGraph.findAssets({url: /\/index\.da\.html$/})[0];
-                    });
-                }})[0].to;
-                expect(danishKnockoutJsTemplate.text, 'to match', /Den danske værdi/);
-            })
-            .run(done);
-    });
-
     it('should handle a JavaScript asset that uses LOCALEID, DEFAULTLOCALE, LOCALECOOKIENAME, and SUPPORTEDLOCALEIDS', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/cloneForEachLocale/globalVarUsageInJavaScript/'})
             .loadAssets('index.html')
