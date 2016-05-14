@@ -71,6 +71,9 @@ Features
    renamed so they can be served with a far-future expiry time.
  * Helps getting your static assets on a CDN by rewriting the
    references to them (controlled by the `--cdnroot` switch).
+ * Updates an existing Content-Security-Policy meta tag to reflect the
+   changes that happened during the build procedure, including hashing
+   of inline scripts and stylesheets.
  * Supports internationalization of HTML, JavaScript, SVG, and Knockout.js
    templates (support for more template formats will be added on demand).
  * Very customizable, the entire build script is only around 100 lines
@@ -190,6 +193,77 @@ define(function (require) {
 
 In order to make this work for you in development you can use [livestyle](https://github.com/One-com/livestyle/) as a static webserver.
 It will automatically convert the sass files in the HTTP stream, making your page work out of the box with no configuration.
+
+
+Working with a Content Security Policy
+--------------------------------------
+
+If you add the `--contentsecuritypolicy` switch and one or more of your HTML
+files contain a CSP in a meta tag such as:
+
+```html
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src foo.com">
+```
+
+it will be read and updated to reflect the changes that were made during the build.
+This includes whitelisting your CDN, adding `image-src data:` if images are inlined,
+and generating hashes for inline scripts and stylesheets if your policy does not
+allow `'unsafe-inline'`.
+
+You can extract the resulting CSPs from the build and add it to your web server's
+config, or use something like
+[express-extractheaders](https://github.com/papandreou/express-extractheaders) to
+also send the CSP as a response header.
+
+We encourage a workflow like this so that the CSPs of your project are also
+in effect in your development setup, as that will help catch bugs early.
+
+Tip: If you want to use inline scripts and stylesheets in your development
+setup, yet don't want to allow `'unsafe-inline'` in your policy, you can
+use a nonce in development:
+
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Security-Policy"
+              content="script-src 'nonce-yeah', style-src 'nonce-yeah'">
+        <style rel="stylesheet" nonce="yeah">
+            body { color: red; }
+        </style>
+    </head>
+    <body>
+        <script nonce="yeah">
+            alert("Hello");
+        </script>
+    </body>
+</html>
+```
+
+`buildProduction --contentsecuritypolicy` will upgrade the nonce to a hash
+token if the scripts and stylesheets are still inline when the bundling/externalization
+steps have been carried out.
+
+
+Sub resource integrity
+----------------------
+
+The `--subresourceintegrity` switch will make `buildProduction` add an `integrity`
+attribute to every `<script src=...>` and `<link rel="stylesheet" href=...>`
+that points at an asset that is part of the build. Note that this excludes
+references to assets that are already located on a CDN, or indeed any http:// url.
+If you want to lock down such dependencies, please use the bundled
+`addIntegrityToForeignRelations` tool or compute the hash yourself and
+add it to your development HTML manually, for instance:
+
+```html
+<script src="https://code.jquery.com/jquery-2.2.3.min.js"
+     integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="</script>
+```
+
+The reason why this isn't automated is that `buildProduction` cannot know
+if a given external resource might change in the future, thus breaking your
+production build.
 
 
 Referring to static files in JavaScript using GETSTATICURL
