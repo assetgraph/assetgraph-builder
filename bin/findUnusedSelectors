@@ -25,9 +25,8 @@ new AssetGraph({root: commandLineOptions.root})
             cssAsset.constructor.eachRuleInParseTree(cssAsset.parseTree, function (cssRule) {
                 if (cssRule.type === 'rule') { // STYLE_RULE
                     if (isSelectorUsed(cssRule.selector)) {
-                        //console.warn('IN USE: ' + cssRule.cssText);
-                        if (cssRule.selectorText.indexOf(',') !== -1) {
-                            cssRule.selectorText.split(',').forEach(function (subSelector) {
+                        if (cssRule.selector.indexOf(',') !== -1) {
+                            cssRule.selector.split(',').forEach(function (subSelector) {
                                 subSelector = subSelector.replace(/^\s+|\s+$/g, ''); // Trim
                                 if (!isSelectorUsed(subSelector)) {
                                     console.warn('Unused selector fragment "' + subSelector + '" in rule: ' + cssRule.cssText);
