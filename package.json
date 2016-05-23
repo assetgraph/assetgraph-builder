@@ -80,7 +80,7 @@
     "istanbul": "^0.4.1",
     "jsdom": "papandreou/jsdom#4a83791ba9d20b243723ae5cb50571b302e294ec",
     "less": "^2.6.1",
-    "mocha": "^2.4.5",
+    "mocha": "^2.5.0",
     "node-sass": "3.7.0",
     "sinon": "^1.17.3",
     "source-map": "^0.5.3",
