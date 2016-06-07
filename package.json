@@ -78,7 +78,7 @@
     "gifsicle-stream": "^0.3.0",
     "gm": "^1.21.1",
     "istanbul": "^0.4.1",
-    "jsdom": "papandreou/jsdom#b957f6ae9030fe095b57b02a96e173a6412a6f09",
+    "jsdom": "git://github.com/papandreou/jsdom.git#c19d92c39f5db32cd64cce16255876a1c847fc43",
     "less": "^2.6.1",
     "mocha": "^2.4.5",
     "node-sass": "3.7.0",
