@@ -77,7 +77,7 @@
     "eslint-config-onelint": "^1.0.2",
     "gifsicle-stream": "^0.3.0",
     "gm": "^1.21.1",
-    "istanbul": "^0.4.1",
+    "istanbul": "^0.4.4",
     "jsdom": "git://github.com/papandreou/jsdom.git#c19d92c39f5db32cd64cce16255876a1c847fc43",
     "less": "^2.6.1",
     "mocha": "^2.4.5",
