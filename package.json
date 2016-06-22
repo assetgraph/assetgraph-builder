@@ -82,6 +82,7 @@
     "less": "^2.6.1",
     "mocha": "^2.4.5",
     "node-sass": "3.8.0",
+    "requirejs": "^2.2.0",
     "sinon": "^1.17.3",
     "source-map": "^0.5.3",
     "systemjs-builder": "^0.15.16",
