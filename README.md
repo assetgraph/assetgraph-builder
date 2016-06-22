@@ -170,7 +170,7 @@ range of tweaks and hacks, for example:
 The default is to support all browsers, which will cause a heavier build,
 especially when IE8 and below are included and inlining of CSS images is active
 (which it is by default). If you're lucky enough that you don't need to support
-those browsers, you can add `--browsers "not ie <= 8"` and avoid those hacks.
+those browsers, you can add `--browsers ">0%, not ie <= 8"` and avoid those hacks.
 
 
 Replacing require.js with almond.js on build
