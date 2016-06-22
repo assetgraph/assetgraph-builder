@@ -154,10 +154,28 @@ distribution at the root of your origin server. As long as you serve `/static` a
 below it with a far-future expires, you won't need to touch your CDN config or manually
 upload anything to your CDN provider.
 
+Specifying which browsers to support
+------------------------------------
+
+It's highly recommended that you tell `buildProduction` which browsers you need
+to support via the `--browsers` switch. It draws its syntax from the
+[browserslist](https://github.com/ai/browserslist) module and governs a wide
+range of tweaks and hacks, for example:
+
+* Whether the `screw IE8` option is passed to [UglifyJS](https://github.com/mishoo/UglifyJS2#usage).
+* The set of browsers autoprefixer is instructed to support, if autoprefixer is available.
+* Whether to add fallback stylesheets referenced via conditional comments when images
+  are inlined in CSS (due to IE7 not supporting `data:` urls and IE8's 32 KB `data:` url limit).
+
+The default is to support all browsers, which will cause a heavier build,
+especially when IE8 and below are included and inlining of CSS images is active
+(which it is by default). If you're lucky enough that you don't need to support
+those browsers, you can add `--browsers "not ie <= 8"` and avoid those hacks.
+
 
 Replacing require.js with almond.js on build
 --------------------------------------------
-Simply add a `data-almond`-attribute to the script tag that has `require.js` as it's source.
+Simply add a `data-almond`-attribute to the script tag that has `require.js` as its source.
 The value should be the path to `almond.js` like so:
 
 ``` html
