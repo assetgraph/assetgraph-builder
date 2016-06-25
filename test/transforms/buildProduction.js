@@ -576,6 +576,21 @@ describe('buildProduction', function () {
             .run(done);
     });
 
+    it('should set crossorigin=anonymous on script and link tags that end up pointing to the configured cdn', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/crossoriginAnonymous/'})
+            .registerRequireJsConfig()
+            .loadAssets('index.html')
+            .buildProduction({
+                version: false,
+                cdnRoot: '//cdn.example.com/foo/',
+                inlineByRelationType: {'*': false}
+            })
+            .then(function (assetGraph) {
+                expect(assetGraph.findRelations({type: ['HtmlStyle', 'HtmlScript']}), 'to have length', 2)
+                    .and('to have items satisfying', { node: { attributes: { crossorigin: 'anonymous' } } });
+            });
+    });
+
     it('should handle a test case with a JavaScriptGetStaticUrl relation pointing at a flash file, then running the buildProduction transform with the cdnRoot and cdnFlash options', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/GetStaticUrlFlash/'})
             .on('error', done)
