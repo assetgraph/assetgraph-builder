@@ -205,9 +205,8 @@ describe('buildProduction', function () {
                 expect(htmlText, 'not to contain', 'stylesheet/less');
                 expect(htmlText, 'not to contain', 'styles.less');
 
-
                 expect(assetGraph.findAssets({type: 'Css'})[0].text, 'to equal',
-                    'strong{font-weight:400}#header{color:#333;border-left:1px;border-right:2px}#footer{color:#141;border-color:#7d2717}/*# sourceMappingURL=styles.css.map*/'
+                    'strong{font-weight:400}#header{color:#333;border-left:1px;border-right:2px}#footer{color:#141;border-color:#7d2717}\n/*# sourceMappingURL=styles.css.map*/'
                 );
                 expect(assetGraph.findAssets({type: 'Css'})[0].sourceMap.sources, 'to satisfy', [
                     assetGraph.root + 'morestyles.less',
