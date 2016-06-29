@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "assetgraph-builder",
   "description": "Build system for web sites and applications",
   "repository": "git://github.com/One-com/assetgraph-builder.git",
