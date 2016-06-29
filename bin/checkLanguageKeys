@@ -83,19 +83,18 @@ if (commandLineOptions._.length > 0) {
 
 new AssetGraph({root: rootUrl})
     .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
-    .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(inputUrls)
     .populate({from: {type: 'Html'}, followRelations: {type: 'HtmlScript', to: {url: /^file:/}}})
-    .assumeRequireJsConfigHasBeenFound()
     .bundleSystemJs({ sourceMaps: true })
+    .bundleRequireJs({ sourceMaps: true })
     .populate({
         followRelations: query.or(
             {
                 to: {type: 'I18n'}
             },
             {
-                type: query.not(['JavaScriptCommonJsRequire', 'HtmlAnchor', 'HtmlMetaRefresh', 'SvgAnchor', 'JavaScriptSourceMappingUrl', 'JavaScriptSourceUrl']),
+                type: query.not(['HtmlAnchor', 'HtmlMetaRefresh', 'SvgAnchor', 'JavaScriptSourceMappingUrl', 'JavaScriptSourceUrl']),
                 to: {url: query.not(/^https?:/)}
             }
         )

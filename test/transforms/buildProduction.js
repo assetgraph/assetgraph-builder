@@ -17,7 +17,6 @@ describe('buildProduction', function () {
     it('should handle a simple test case', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/simple/'})
             .on('error', done)
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({
                 quiet: true,
@@ -38,7 +37,6 @@ describe('buildProduction', function () {
             })
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain assets', {type: 'Html', isInline: false}, 2);
-                expect(assetGraph, 'to contain assets', {type: 'Html', isInline: true}, 2);
 
                 var htmlAssets = assetGraph.findAssets({type: 'Html', url: /\/index\.da\.html$/});
                 expect(htmlAssets, 'to have length', 1);
@@ -58,29 +56,17 @@ describe('buildProduction', function () {
 
                 expect(assetGraph, 'to contain relations', {type: 'HtmlScript', from: {url: /\/index\.en\.html$/}}, 2);
 
-                expect(assetGraph.findAssets({url: /\/index\.en\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" lang=en manifest=index.appcache><head><title>The English title</title><style>body{color:teal;color:maroon}</style><style>body{color:tan}</style><style>body div{width:100px}</style></head><body><script src=' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.url + ' async defer crossorigin=anonymous></script><script>alert("script3");</script><script type=text/html id=template><a href="/index.html">The English link text</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif"></script></body></html>');
-
-                expect(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" lang=da manifest=index.appcache><head><title>Den danske titel</title><style>body{color:teal;color:maroon}</style><style>body{color:tan}</style><style>body div{width:100px}</style></head><body><script src=' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.url + ' async defer crossorigin=anonymous></script><script>alert("script3");</script><script type=text/html id=template><a href="/index.html">Den danske linktekst</a><img src="http://cdn.example.com/foo/myImage.3fb51b1ae1.gif"></script></body></html>');
-
-                var afterRequireJs = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.text.replace(/^[\s\S]*req\(cfg\)\}\}\(this\),/, '');
-                expect(afterRequireJs, 'to equal', 'alert(\'something else\'),define(\'somethingElse\',function(){}),alert(\'shimmed\'),define(\'shimmed\',function(){}),define(\'amdDependency\',function(){console.warn(\'here I AM(D)\')}),require.config({shim:{shimmed:[\'somethingElse\']}}),require([\'shimmed\',\'amdDependency\'],function(a,b){alert(\'Hello!\')}),define(\'main\',function(){});');
-
-                afterRequireJs = assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.text.replace(/^[\s\S]*req\(cfg\)\}\}\(this\),/, '');
-                expect(afterRequireJs, 'to equal', 'alert(\'something else\'),define(\'somethingElse\',function(){}),alert(\'shimmed\'),define(\'shimmed\',function(){}),define(\'amdDependency\',function(){console.warn(\'here I AM(D)\')}),require.config({shim:{shimmed:[\'somethingElse\']}}),require([\'shimmed\',\'amdDependency\'],function(a,b){alert(\'Hej!\')}),define(\'main\',function(){});');
+                expect(assetGraph.findAssets({url: /\/index\.en\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" lang=en manifest=index.appcache><head><title>The English title</title><style>body div{width:100px}body{color:teal;color:maroon}</style><style>body{color:tan}</style></head><body><script src=' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.url + ' async defer crossorigin=anonymous></script><script>alert("script3");</script></body></html>');
+                expect(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" lang=da manifest=index.appcache><head><title>Den danske titel</title><style>body div{width:100px}body{color:teal;color:maroon}</style><style>body{color:tan}</style></head><body><script src=' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.url + ' async defer crossorigin=anonymous></script><script>alert("script3");</script></body></html>');
 
                 // someTextFile.txt should be found at /static/someTextFile.c7429a1035.txt (not on the CDN)
                 expect(assetGraph, 'to contain assets', {url: /\/static\/someTextFile.c7429a1035\.txt$/}, 1);
-
-                // myImage.gif should be put on the CDN and have 4 incoming relations': function (assetGraph) {
-                var queryObj = {url: 'http://cdn.example.com/foo/myImage.3fb51b1ae1.gif'};
-                expect(assetGraph, 'to contain assets', queryObj, 1);
-                expect(assetGraph, 'to contain relations', {to: queryObj}, 4);
 
                 assetGraph.findAssets({type: 'Html', isInline: false}).forEach(function (htmlAsset) {
                     var htmlCacheManifestRelations = assetGraph.findRelations({from: htmlAsset, type: 'HtmlCacheManifest'});
                     expect(htmlCacheManifestRelations, 'to have length', 1);
                     var cacheManifest = htmlCacheManifestRelations[0].to;
-                    expect(assetGraph, 'to contain relations', {from: cacheManifest}, 3);
+                    expect(assetGraph, 'to contain relations', {from: cacheManifest}, 2);
                     var lines = cacheManifest.text.split('\n');
                     lines[1] = lines[1].replace(/ @.*$/, ''); // Remove md5 sum
                     expect(lines, 'to equal', [
@@ -88,7 +74,6 @@ describe('buildProduction', function () {
                         '# ' + htmlCacheManifestRelations[0].from.fileName,
                         'static/someTextFile.c7429a1035.txt',
                         assetGraph.findRelations({type: 'HtmlScript', from: htmlAsset})[0].to.url,
-                        'http://cdn.example.com/foo/myImage.3fb51b1ae1.gif',
                         'NETWORK:',
                         '*',
                         ''
@@ -100,7 +85,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case with two stylesheets that @import the same stylesheet (assetgraph issue #82)', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/duplicateImports/'})
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
@@ -112,7 +96,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case with 3 in-browser less compilers', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/lessCompiler/'})
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({
                 version: false,
@@ -126,7 +109,6 @@ describe('buildProduction', function () {
 
     it('should compile and bundle less files while preserving source map information', function () {
         return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/lessWithSourceMap/'})
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({version: false, less: true, sourceMaps: true, inlineByRelationType: { HtmlStyle: false }, noFileRev: true, minify: false})
             .queue(function (assetGraph) {
@@ -194,7 +176,6 @@ describe('buildProduction', function () {
 
     it('should compile and bundle less files while preserving source map information, minification turned on', function () {
         return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/lessWithSourceMap/'})
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({version: false, less: true, sourceMaps: true, inlineByRelationType: { HtmlStyle: false }, noFileRev: true})
             .queue(function (assetGraph) {
@@ -250,7 +231,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case with a GETSTATICURL', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/JavaScriptGetStaticUrlWithProcessedImages/'})
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({
                 version: false,
@@ -267,7 +247,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case that uses both processImage instructions for both sprited images and the sprite itself', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/spriteAndProcessImages/'})
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({
                 version: false,
@@ -296,7 +275,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case with Angular.js templates', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/angularJs/'})
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -343,7 +321,6 @@ describe('buildProduction', function () {
 
     it('should handle the same Angular.js test case with localization turned on', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/angularJs/'})
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({version: false, angular: true, localeIds: ['en', 'da']})
             .queue(function (assetGraph) {
@@ -383,7 +360,6 @@ describe('buildProduction', function () {
 
     it('should handle the same Angular.js when initially loading **/*.html', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/angularJs/'})
-            .registerRequireJsConfig()
             .loadAssets('**/*.html')
             .buildProduction({version: false, angular: true})
             .queue(function (assetGraph) {
@@ -416,7 +392,6 @@ describe('buildProduction', function () {
 
     it('should handle an Angular.js test case with multiple references to the same template', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/angularJsMultipleTemplateRefs/'})
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -435,7 +410,6 @@ describe('buildProduction', function () {
     it('should handle a test case with a SSI in the document title', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/ssi/'})
             .on('error', done)
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({
                 version: false,
@@ -453,41 +427,9 @@ describe('buildProduction', function () {
             .run(done);
     });
 
-    it('should handle a test case with Knockout.js templates', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/knockoutJs/'})
-            .registerRequireJsConfig()
-            .loadAssets('index.html')
-            .populate()
-            .queue(function (assetGraph) {
-                expect(assetGraph, 'to contain assets', {type: 'Html'}, 3);
-                expect(assetGraph, 'to contain assets', {type: 'JavaScript', isInline: false}, 3);
-                expect(assetGraph, 'to contain relations', {type: ['JavaScriptAmdRequire', 'JavaScriptAmdDefine'], to: {type: 'Html'}}, 3);
-                expect(assetGraph, 'to contain relation', 'JavaScriptGetStaticUrl');
-                expect(assetGraph, 'to contain asset', 'Png');
-            })
-            .buildProduction({version: false})
-            .queue(function (assetGraph) {
-                expect(assetGraph, 'to contain no relations', {type: ['JavaScriptAmdRequire', 'JavaScriptAmdDefine'], to: {type: 'Html'}});
-
-                expect(assetGraph, 'to contain relations', {type: 'HtmlInlineScriptTemplate'}, 2);
-
-                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text.replace(/src=static\/bundle-\d+\.[a-f0-9]{10}\.js/, 'src=MD5.js'), 'to equal', '<!DOCTYPE html><html><head></head><body><script src=MD5.js></script><script type=text/html id=foo><img data-bind="attr:{src:\'static/foo.d65dd5318f.png\'}"></script><script type=text/html id=bar><div><h1>bar.ko</h1></div></script></body></html>');
-
-                var relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) { return node.getAttribute('id') === 'foo'; }})[0];
-                expect(relation, 'to be truthy');
-                expect(relation.to.text, 'to equal', '<img data-bind="attr:{src:\'static/foo.d65dd5318f.png\'}">');
-
-                relation = assetGraph.findRelations({type: 'HtmlInlineScriptTemplate', node: function (node) { return node.getAttribute('id') === 'bar'; }})[0];
-                expect(relation, 'to be truthy');
-                expect(relation.to.text, 'to equal', '<div><h1>bar.ko</h1></div>');
-            })
-            .run(done);
-    });
-
     it('should handle a test case with Html fragments as initial assets', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/initialHtmlFragments/'})
             .on('error', done)
-            .registerRequireJsConfig()
             .loadAssets('**/*.html')
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain assets', {type: 'Html'}, 2);
@@ -504,7 +446,6 @@ describe('buildProduction', function () {
     it('should handle a test case with an Html fragment as an initial asset, but without loading the asset referencing it', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/initialHtmlFragments/'})
             .on('error', done)
-            .registerRequireJsConfig()
             .loadAssets('myTemplate.html')
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', {type: 'Html'});
@@ -520,7 +461,6 @@ describe('buildProduction', function () {
     it('should handle a test case with an HtmlScript relation pointing at an extension-less, non-existent file', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/nonExistentFileWithoutExtension/'})
             .on('error', done)
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', {});
@@ -535,7 +475,6 @@ describe('buildProduction', function () {
     it('should handle a test case with a JavaScriptGetStaticUrl relation pointing at an image, without the cdnRoot option', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/GetStaticUrlImageOnCdn/'})
             .on('error', done)
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({
                 version: false,
@@ -550,7 +489,6 @@ describe('buildProduction', function () {
     it('should handle a test case with a HtmlRequireDataMain relation pointing at a script with a JavaScriptInclude relation pointing at an I18n asset', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/htmlDataMainWithI18n/'})
             .on('error', done)
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({version: false, localeIds: ['da', 'en_US']})
             .queue(function (assetGraph) {
@@ -562,7 +500,6 @@ describe('buildProduction', function () {
     it('should handle a test case with a JavaScriptGetStaticUrl relation pointing at a flash file, then running the buildProduction transform with the cdnRoot option', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/GetStaticUrlFlash/'})
             .on('error', done)
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({
                 version: false,
@@ -577,7 +514,6 @@ describe('buildProduction', function () {
 
     it('should set crossorigin=anonymous on script and link tags that end up pointing to the configured cdn', function () {
         return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/crossoriginAnonymous/'})
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({
                 version: false,
@@ -592,7 +528,6 @@ describe('buildProduction', function () {
 
     it('should set crossorigin=anonymous on script and link tags that end up pointing to the configured cdn, also when the cdnRoot is specified as an absolute url', function () {
         return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/crossoriginAnonymous/'})
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({
                 version: false,
@@ -608,7 +543,6 @@ describe('buildProduction', function () {
     it('should handle a test case with a JavaScriptGetStaticUrl relation pointing at a flash file, then running the buildProduction transform with the cdnRoot and cdnFlash options', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/GetStaticUrlFlash/'})
             .on('error', done)
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({
                 version: false,
@@ -624,7 +558,6 @@ describe('buildProduction', function () {
     it('should handle a test case with an @import rule in a stylesheet pulled in via require.js, then running the buildProduction transform', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/requiredCssImport/'})
             .on('error', done)
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
@@ -638,7 +571,6 @@ describe('buildProduction', function () {
     it('should handle a test case with a require.js paths config pointing at an http url', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/requireJsCdnPath/'})
             .on('error', done)
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
@@ -649,20 +581,18 @@ describe('buildProduction', function () {
 
     it('should handle a test case using the less! plugin, then running the buildProduction transform', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/lessPlugin/'})
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({less: true})
             .queue(function (assetGraph) {
                 var cssAssets = assetGraph.findAssets({type: 'Css'});
                 expect(cssAssets, 'to have length', 1);
-                expect(cssAssets[0].text, 'to equal', 'body{color:tan;background-color:beige;text-indent:10px}');
+                expect(cssAssets[0].text, 'to equal', 'body{background-color:beige;color:tan;text-indent:10px}');
             })
             .run(done);
     });
 
     it('should handle a test case with a GETSTATICURL that has a wildcard value, but only matches a single file', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/GetStaticUrlSingleFileWildcard/'})
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
@@ -675,7 +605,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case with a GETSTATICURL that has two wildcard values, but only matches a single file', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/GetStaticUrlSingleFileAndTwoWildcards/'})
-            .registerRequireJsConfig()
             .loadAssets('index.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
@@ -686,22 +615,8 @@ describe('buildProduction', function () {
             .run(done);
     });
 
-    it('should handle a test case where the require.js configuration is in an external file, but it is being used in an inline script', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/requireJsConfigurationInExternalFile/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
-            .loadAssets('index.html')
-            .buildProduction({version: false})
-            .queue(function (assetGraph) {
-                var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
-                expect(javaScriptAssets, 'to have length', 1);
-                expect(javaScriptAssets[0].text, 'to match', /alert\((['"])foo\1\)/);
-            })
-            .run(done);
-    });
-
     it('should handle a test case for issue #54', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/issue54/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
@@ -714,62 +629,19 @@ describe('buildProduction', function () {
 
     it('should handle a test case for issue #58', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/issue58/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
                 var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
                 expect(javaScriptAssets, 'to have length', 1);
-                expect(javaScriptAssets[0].text, 'to match', /define\(\'\/templates\/header\.html\'.*require\(\[\'\/templates\/header\.html/);
-            })
-            .run(done);
-    });
-
-    it('should handle a test case for issue #60', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/issue60/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
-            .loadAssets('index.html')
-            .buildProduction({version: false})
-            .queue(function (assetGraph) {
-                var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
-                expect(javaScriptAssets, 'to have length', 1);
-                expect(javaScriptAssets[0].text, 'to match', /require.config\(\{baseUrl:"\/js"\}\),define\("modules\/utils",function\(\)\{alert\("These are the utils!"\)\}\),require\(\["modules\/utils"\],function\(a\)\{console.log\("Ready."\)\}\),define\("main",function\(\)\{\}\);/);
-            })
-            .run(done);
-    });
-
-    it('should handle a test case with multiple pages pulling in the same AMD modules, with sharedBundles:true', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/multiPageRequireJs/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
-            .loadAssets('index*.html')
-            .buildProduction({sharedBundles: true})
-            .queue(function (assetGraph) {
-                expect(assetGraph, 'to contain assets', {type: 'JavaScript'}, 3);
-
-                // One of the JavaScript assets should be shared and contain require.js and the definitions of the common modules
-                var commonJavaScripts = assetGraph.findAssets(function (asset) {
-                    return asset.type === 'JavaScript' && asset.incomingRelations.length > 1;
-                });
-                expect(commonJavaScripts, 'to have length', 1);
-                expect(commonJavaScripts[0].text, 'to match', /2\.1\.5/);
-                expect(commonJavaScripts[0].text, 'to match', /alert\(['"]common1/);
-                expect(commonJavaScripts[0].text, 'to match', /alert\(['"]common2/);
-
-                [1, 2].forEach(function (pageNumber) {
-                    var htmlAsset = assetGraph.findAssets({fileName: 'index' + pageNumber + '.html'})[0];
-                    expect(htmlAsset, 'to be truthy');
-                    var htmlScripts = assetGraph.findRelations({type: 'HtmlScript', from: htmlAsset});
-                    expect(htmlScripts, 'to have length', 2);
-                    expect(htmlScripts[1].to.isInline, 'to equal', true);
-                    expect(htmlScripts[1].to.text, 'to equal', 'require(["common1","common2"],function(){alert("main' + pageNumber + '")}),define("main' + pageNumber + '",function(){});');
-                });
+                expect(javaScriptAssets[0].text, 'to contain', 'define\("text!../templates\/header\.html"')
+                    .and('to contain', 'require(["text!../templates\/header.html"');
             })
             .run(done);
     });
 
     it('should handle a with a JavaScript asset that contains debugger statement and console.log, with stripDebug:true', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/stripDebug/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({stripDebug: true})
             .queue(function (assetGraph) {
@@ -784,7 +656,6 @@ describe('buildProduction', function () {
 
     it('should handle a test where some require.js-loaded JavaScript files could become orphaned, then run the buildProduction transform', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/requireJsOrphans/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
@@ -795,7 +666,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case for issue #69', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/issue69/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
@@ -835,7 +705,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case for issue #83', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/issue83/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({version: false, reservedNames: ['$$super', 'quux']})
             .queue(function (assetGraph) {
@@ -852,7 +721,6 @@ describe('buildProduction', function () {
             .on('warn', function (err) {
                 (this._emittedWarnings = this._emittedWarnings || []).push(err);
             })
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('*.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
@@ -863,7 +731,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case with a JavaScript that needs a symbol replaced, then running the buildProduction transform with noCompress:true', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/noCompress/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({version: false, noCompress: true, defines: {
                 MYSYMBOL: { type: 'Literal', value: 'theValue' },
@@ -880,7 +747,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case with a JavaScript that needs a symbol replaced, then running the buildProduction transform with noCompress:false', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/noCompress/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({version: false, noCompress: false, defines: {
                 MYSYMBOL: { type: 'Literal', value: 'theValue' },
@@ -897,7 +763,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case then running the buildProduction transform with gzip:true', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/gzip/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({version: false, gzip: true})
             .queue(function (assetGraph) {
@@ -915,7 +780,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case with an HTML fragment that has an unpopulated relation, then running the buildProduction transform (regression test)', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/fragmentWithUnpopulatedRelation/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('**/*.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
@@ -926,7 +790,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case with an existing source map, then running the buildProduction transform with gzip:true', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/existingSourceMap/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({version: false, gzip: true})
             .queue(function (assetGraph) {
@@ -937,7 +800,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case with some assets that can be inlined, with HtmlScript and HtmlStyle inlining thresholds of 100 bytes', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/inline/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({version: false, inlineByRelationType: {HtmlScript: 100, HtmlStyle: 100}})
             .queue(function (assetGraph) {
@@ -949,7 +811,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case with some assets that can be inlined, with HtmlScript and HtmlStyle inlining thresholds of 5 bytes', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/inline/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({version: false, inlineByRelationType: {HtmlScript: 5, HtmlStyle: 5}})
             .queue(function (assetGraph) {
@@ -961,7 +822,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case with some assets that can be inlined, with HtmlScript and HtmlStyle inlining thresholds of false', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/inline/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({version: false, inlineByRelationType: {HtmlScript: false, HtmlStyle: false}})
             .queue(function (assetGraph) {
@@ -977,7 +837,6 @@ describe('buildProduction', function () {
             return this;
         });
         new AssetGraph()
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets({url: 'http://example.com/index.html', type: 'Html', text: '<!DOCTYPE html>'})
             .buildProduction({version: false, browsers: 'ie >= 8'})
             .queue(function () {
@@ -989,7 +848,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case where an initial asset has no <html> element and no incoming relations (#109)', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/initialAssetWithoutHtmlElement/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
@@ -1001,7 +859,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case with a web component that has a stylesheet reference inside a template tag', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/styleSheetInTemplate/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
@@ -1012,7 +869,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case where a JavaScript is eliminated by stripDebug and uglifiction (#114)', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/issue114/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({stripDebug: true, version: false})
             .queue(function (assetGraph) {
@@ -1024,7 +880,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case with an HTML fragment that has bundleable scripts and stylesheets', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/bundlingInHtmlFragments/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
@@ -1039,14 +894,13 @@ describe('buildProduction', function () {
 
     it('should handle a test case with require.js, a data-main and a data-almond attribute', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/dataMainAndAlmondJs/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', {type: 'JavaScript'});
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text,
                     'to equal',
-                    'alert("a"),alert("b"),alert("almond"),alert("d"),alert("e");'
+                    'alert("a"),alert("b"),alert("almond"),alert("main"),define("main",function(){}),alert("d"),alert("e");'
                 );
             })
             .run(done);
@@ -1054,7 +908,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case with some assets that should remain at the root (see assetgraph#185)', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/assetsThatShouldNotBeMoved/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets(['index.html'])
             .populate()
             .queue(function (assetGraph) {
@@ -1077,7 +930,6 @@ describe('buildProduction', function () {
 
     it('should move a favicon.ico file not located at the root to /static/', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/faviconOutsideRoot/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets(['index.html'])
             .populate()
             .buildProduction({version: false})
@@ -1090,7 +942,6 @@ describe('buildProduction', function () {
 
     it('should keep favicon.ico at its original location when file revision is disabled', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/faviconOutsideRoot/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets(['index.html'])
             .populate()
             .buildProduction({version: false, noFileRev: true})
@@ -1103,7 +954,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case with an RSS feed (#118)', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/rss/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets(['index.html'])
             .populate()
             .queue(function (assetGraph) {
@@ -1123,7 +973,6 @@ describe('buildProduction', function () {
 
     it('should handle a test case with an I18n asset being referenced from a script with an id of "bootstrapper"', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/bootstrapperI18n/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets(['index.html'])
             .populate()
             .buildProduction({version: false, localeIds: ['da', 'en']})
@@ -1140,7 +989,6 @@ describe('buildProduction', function () {
 
     it('should keep identical inline styles in svg files inlined', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/svgsWithIdenticalInlineStyle/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets(['*.svg'])
             .populate()
             .buildProduction({version: false})
@@ -1153,7 +1001,6 @@ describe('buildProduction', function () {
 
     it('should not rename Html assets that are linked to with HtmlAnchor relations', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/nonInitialAssetWithIncomingHtmlAnchor/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets(['index.html'])
             .populate()
             .buildProduction({version: false})
@@ -1166,7 +1013,6 @@ describe('buildProduction', function () {
 
     it('should only remove empty scripts and stylesheets without extra attributes', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/emptyScriptsAndStylesheetsWithAttributes/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets(['index.html'])
             .populate()
             .buildProduction({version: false})
@@ -1192,7 +1038,6 @@ describe('buildProduction', function () {
             .on('warn', function (err) {
                 (this._emittedWarnings = this._emittedWarnings || []).push(err);
             })
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets(['index.html'])
             .populate()
             .buildProduction({version: false})
@@ -1208,7 +1053,6 @@ describe('buildProduction', function () {
             .on('warn', function (err) {
                 (this._emittedWarnings = this._emittedWarnings || []).push(err);
             })
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets(['index.html'])
             .populate()
             .buildProduction({version: false, optimizeImages: true})
@@ -1235,7 +1079,6 @@ describe('buildProduction', function () {
 
     it('should not lose the type of an image that has been run through inkscape (regression test for an issue in express-processimage 1.0.0)', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/inkscape/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .populate()
             .buildProduction({version: false, less: true, optimizeImages: true, browsers: 'ie > 9', inlineByRelationType: {CssImage: 8192}})
@@ -1249,7 +1092,6 @@ describe('buildProduction', function () {
 
     it('should not remove a data-bind attribute', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/missingDataBind/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .populate()
             .buildProduction({version: false, browsers: 'ie > 9'})
@@ -1263,7 +1105,6 @@ describe('buildProduction', function () {
     describe('angularAnnotations', function () {
         it('should not annotate a basic example when angular option is false', function (done) {
             new AssetGraph({ root: __dirname + '/../../testdata/transforms/angularAnnotations' })
-                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
                 .loadAssets('basic.js')
                 .populate()
                 .buildProduction({
@@ -1294,7 +1135,6 @@ describe('buildProduction', function () {
 
         it('should annotate a basic example when angular option is true', function (done) {
             new AssetGraph({ root: __dirname + '/../../testdata/transforms/angularAnnotations' })
-                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
                 .loadAssets('basic.js')
                 .populate()
                 .buildProduction({
@@ -1330,7 +1170,6 @@ describe('buildProduction', function () {
 
     it('should support a standalone svgfilter', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/svgFilter/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -1352,7 +1191,6 @@ describe('buildProduction', function () {
 
     it('should support an inline SVG island inside an HTML asset', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/HtmlSvgIsland/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -1375,7 +1213,6 @@ describe('buildProduction', function () {
 
     it('should read in location data from existing source maps and produce source maps for bundles', function () {
         return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/sourceMaps/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -1392,7 +1229,6 @@ describe('buildProduction', function () {
 
     it('should read in location data from existing source maps and produce source maps for bundles, without noCompress switch', function () {
         return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/sourceMaps/'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -1410,7 +1246,6 @@ describe('buildProduction', function () {
     describe('JavaScript serialization options', function () {
         it('should honor indent_level', function (done) {
             new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/javaScriptSerializationOptions/'})
-                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
                 .loadAssets('script.js')
                 .populate()
                 .buildProduction({
@@ -1426,7 +1261,6 @@ describe('buildProduction', function () {
 
         it('should honor ascii_only', function (done) {
             new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/javaScriptSerializationOptions/'})
-                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
                 .loadAssets('script.js')
                 .populate()
                 .buildProduction({
@@ -1443,7 +1277,6 @@ describe('buildProduction', function () {
 
     it('should preserve source maps when autoprefixer is enabled', function () {
         return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/existingExternalSourceMap'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -1465,7 +1298,6 @@ describe('buildProduction', function () {
 
     it('should provide an external source map for an inline JavaScript asset', function () {
         return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/addSourceMapToInlineJavaScript'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .populate()
             .buildProduction({ sourceMaps: true })
@@ -1479,7 +1311,6 @@ describe('buildProduction', function () {
 
     it('should read the existing inline source maps correctly from the output of Fusile', function () {
         return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/sourceMaps/fusile-output'})
-            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
             .populate()
             .buildProduction({ sourceMaps: true })
@@ -1496,7 +1327,6 @@ describe('buildProduction', function () {
         describe('with an existing policy', function () {
             it('should add image-src data: to an existing CSP when an image has been inlined', function () {
                 return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/'})
-                    .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
                     .loadAssets('index.html')
                     .populate()
                     .buildProduction({contentSecurityPolicy: true, inlineByRelationType: {CssImage: true}})
@@ -1511,7 +1341,6 @@ describe('buildProduction', function () {
             describe('along with a cdnRoot', function () {
                 it('should add the CDN host name to the relevant sections', function () {
                     return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/'})
-                        .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
                         .loadAssets('index.html')
                         .populate()
                         .buildProduction({contentSecurityPolicy: true, cdnRoot: '//my.cdn.com/', inlineByRelationType: {}})
@@ -1533,7 +1362,6 @@ describe('buildProduction', function () {
     describe('with subResourceIntegrity=true', function () {
         it('should leave relations to other domains alone', function () {
             return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/subResourceIntegrity/scriptsAndStylesheetOnForeignDomain/'})
-                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
                 .loadAssets('index.html')
                 .populate({followRelations: { to: { url: AssetGraph.query.not(/^https?:\/\//)}}})
                 .buildProduction({subResourceIntegrity: true})
@@ -1544,7 +1372,6 @@ describe('buildProduction', function () {
 
         it('should add integrity attributes to local relations', function () {
             return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/subResourceIntegrity/externalScriptAndStylesheet/'})
-                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
                 .loadAssets('index.html')
                 .populate()
                 .buildProduction({subResourceIntegrity: true, inlineByRelationType: {}})
@@ -1557,7 +1384,6 @@ describe('buildProduction', function () {
 
         it('should add integrity attributes to assets that are put on a CDN', function () {
             return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/subResourceIntegrity/externalScriptAndStylesheet/'})
-                .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
                 .loadAssets('index.html')
                 .populate()
                 .buildProduction({subResourceIntegrity: true, cdnRoot: '//my.cdn.com/', inlineByRelationType: {}})

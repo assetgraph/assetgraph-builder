@@ -2,6 +2,15 @@
 <html>
     <head></head>
     <body>
-        <script src="require.js" data-main="app/main"></script>
+        <script>
+            var require = {
+                baseUrl: 'app',
+                enforceDefine: false,
+                paths: {
+                    sockjs: '../vendor/sockjs/sockjs-0.3.4'
+                }
+            };
+        </script>
+        <script src="require.js" data-main="main"></script>
     <body>
 </html>

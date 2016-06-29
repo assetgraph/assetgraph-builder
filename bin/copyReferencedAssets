@@ -78,18 +78,16 @@ var followRelationsQueryObj = query.or(
         to: {type: 'I18n'}
     },
     {
-        type: query.not(['JavaScriptInclude', 'JavaScriptExtJsRequire', 'JavaScriptCommonJsRequire', 'HtmlAnchor', 'HtmlMetaRefresh']),
+        type: query.not(['JavaScriptInclude', 'HtmlAnchor', 'HtmlMetaRefresh']),
         to: {url: query.not(/^https?:/)}
     }
 );
 
 new AssetGraph({root: rootUrl})
     .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
-    .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(inputUrls)
     .populate({from: {type: 'Html'}, followRelations: {type: 'HtmlScript', to: {url: /^file:/}}})
-    .assumeRequireJsConfigHasBeenFound()
     .populate({followRelations: followRelationsQueryObj})
     .queue(function fixBaseAssetsOfUnresolvedOutgoingRelationsFromHtmlFragments(assetGraph) {
         assetGraph.findRelations({from: {type: 'Html', isFragment: true, isInitial: true}}, true).forEach(function (relation) {

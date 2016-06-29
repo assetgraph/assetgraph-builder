@@ -158,13 +158,12 @@ var pluralFormsInTheDefaultLocale = pluralsCldr.forms(defaultLocaleId),
     })), pluralFormsInTheDefaultLocale);
 
 new AssetGraph({root: commandLineOptions.root})
-    .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
-    .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+    .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning})
     .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(initialAssetUrls)
     .populate({from: {type: 'Html'}, followRelations: {type: 'HtmlScript', to: {url: /^file:/}}})
-    .assumeRequireJsConfigHasBeenFound()
     .bundleSystemJs()
+    .bundleRequireJs()
     .serializeSourceMaps()
     .populate({ startAssets: { type: 'SourceMap' }, followRelations: { to: { url: /^file:\// } } })
     .fixBaseAssetsOfUnresolvedOutgoingRelationsFromHtmlFragments({isInitial: true})

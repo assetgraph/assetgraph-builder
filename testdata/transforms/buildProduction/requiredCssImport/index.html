@@ -3,9 +3,10 @@
 <head></head>
 <body>
     <script>
-        require(['css!foo.css'], function () {
-            console.warn("yay");
-        });
+        var require = {
+            separateCSS: true
+        };
     </script>
+    <script src="require.js" data-main="main"></script>
 </body>
 </html>
