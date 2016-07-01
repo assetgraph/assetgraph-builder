@@ -92,6 +92,25 @@ describe('buildProduction', function () {
             .run(done);
     });
 
+    it('should support webpack', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/webpack/'})
+            .loadAssets('index.html')
+            .buildProduction()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'JavaScript');
+                expect(assetGraph, 'to contain relations', { type: 'HtmlScript', from: { url: /index\.html$/} }, 1);
+                expect(assetGraph, 'to contain asset', {
+                    type: 'JavaScript',
+                    fileName: /bundle/
+                });
+                expect(assetGraph.findRelations({
+                    from: { url: /index\.html$/ },
+                    to: { fileName: /bundle/ }
+                })[0].to.text, 'to contain', 'alert("noExistingSourceMap")')
+                    .and('to contain', '* Sizzle CSS Selector Engine');
+            });
+    });
+
     it('should handle a test case with a GETSTATICURL pointing at an image to be processed', function () {
         return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/JavaScriptGetStaticUrlWithProcessedImage/'})
             .loadAssets('index.html')
