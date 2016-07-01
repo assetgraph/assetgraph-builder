@@ -580,7 +580,7 @@ describe('buildProduction', function () {
             .loadAssets('*.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
-                expect(assetGraph._emittedWarnings || [], 'to have length', 0);
+                expect(assetGraph._emittedWarnings, 'to satisfy', [/webpack/]);
             })
             .run(done);
     });
