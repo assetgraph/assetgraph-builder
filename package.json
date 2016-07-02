@@ -80,6 +80,7 @@
     "gm": "^1.21.1",
     "istanbul": "^0.4.4",
     "jsdom": "git://github.com/papandreou/jsdom.git#c19d92c39f5db32cd64cce16255876a1c847fc43",
+    "less": "2.7.1",
     "mocha": "^2.4.5",
     "requirejs": "^2.2.0",
     "sinon": "^1.17.3",
