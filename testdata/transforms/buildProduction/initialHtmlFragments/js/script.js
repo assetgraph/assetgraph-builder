@@ -1,1 +1,1 @@
-var myTemplateUrl = GETSTATICURL('myTemplate.html');
+var myTemplateUrl = GETSTATICURL('/myTemplate.html');

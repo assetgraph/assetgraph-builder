@@ -427,9 +427,8 @@ describe('buildProduction', function () {
             .run(done);
     });
 
-    it('should handle a test case with Html fragments as initial assets', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/initialHtmlFragments/'})
-            .on('error', done)
+    it('should handle a test case with Html fragments as initial assets', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/initialHtmlFragments/'})
             .loadAssets('**/*.html')
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain assets', {type: 'Html'}, 2);
@@ -438,14 +437,12 @@ describe('buildProduction', function () {
             .buildProduction({version: false})
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', {type: 'Png'});
-                expect(assetGraph.findAssets({type: 'Html', isInitial: true, isFragment: false})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var myTemplateUrl=\'static/myTemplate.b8ee9bf196.html\';</script></body></html>');
-            })
-            .run(done);
+                expect(assetGraph.findAssets({type: 'Html', fileName: 'index.html'})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var myTemplateUrl=\'/static/myTemplate.b8ee9bf196.html\';</script></body></html>');
+            });
     });
 
-    it('should handle a test case with an Html fragment as an initial asset, but without loading the asset referencing it', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/initialHtmlFragments/'})
-            .on('error', done)
+    it('should handle a test case with an Html fragment as an initial asset, but without loading the asset referencing it', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/initialHtmlFragments/'})
             .loadAssets('myTemplate.html')
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', {type: 'Html'});
@@ -453,9 +450,8 @@ describe('buildProduction', function () {
             })
             .buildProduction({version: false})
             .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({type: 'Html', url: /\/myTemplate\.html$/})[0].text, 'to equal', '<div><h1>Template with a relative image reference: <img src=static/foo.d65dd5318f.png></h1></div>');
-            })
-            .run(done);
+                expect(assetGraph.findAssets({type: 'Html', fileName: 'myTemplate.html'})[0].text, 'to equal', '<div><h1>Template with a relative image reference: <img src=static/foo.d65dd5318f.png></h1></div>');
+            });
     });
 
     it('should handle a test case with an HtmlScript relation pointing at an extension-less, non-existent file', function (done) {
