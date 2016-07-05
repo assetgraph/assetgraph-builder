@@ -65,10 +65,6 @@ Features
  * Compiles Sass to CSS
  * Renames JavaScript, CSS, images etc. to a 10-char MD5 prefix + the
    original extension so they can be served with a far-future expiry time.
- * Supports a special syntax for getting the url of static assets from
-   JavaScript code (`GETSTATICURL`). These are also modelled as
-   relations so the target files will be included in the build and thus
-   renamed so they can be served with a far-future expiry time.
  * Helps getting your static assets on a CDN by rewriting the
    references to them (controlled by the `--cdnroot` switch).
  * Updates an existing Content-Security-Policy meta tag to reflect the
@@ -282,82 +278,6 @@ add it to your development HTML manually, for instance:
 The reason why this isn't automated is that `buildProduction` cannot know
 if a given external resource might change in the future, thus breaking your
 production build.
-
-
-Referring to static files in JavaScript using GETSTATICURL
-----------------------------------------------------------
-
-Sometimes you need to load a template or a JSON file from your
-JavaScript, and you want the file to be included in the build so it's
-renamed to `<md5Prefix>.<extension>` etc. Simply putting something
-like `var url = 'foo.json'; $.ajax(url, ...)` in your code won't make
-`buildProduction` aware that `foo.json` is a url -- it's
-indistinguishable from a regular string.
-
-However, if you wrap `GETSTATICURL(...)` around your url, it will be
-modelled as a relation, and the target asset will be included in the
-build. Note that relative urls will be resolved from the url of the
-containing HTML asset, not the JavaScript asset (otherwise it wouldn't
-work without `buildProduction` as there's no way to get retrieve
-the url of the JavaScript being executed in a browser).
-
-Example:
-
-```javascript
-var url = GETSTATICURL('foo.json');
-$.ajax(url, ...);
-```
-
-... which will produce something like this after being run through
-`buildProduction`:
-
-```javascript
-var url = 'static/96b1d5a6ba.json';
-$.ajax(url, ...);
-```
-
-`GETSTATICURL` includes support for wildcards for cases where you need
-to pull in multiple static files in one go:
-
-```javascript
-var url = GETSTATICURL('myData/*.json', name);
-```
-
-This will glob for `myData/*.json` and include all the found files in
-the build. The additional parameters passed to `GETSTATICURL` will be
-used as the wildcard values and can be any JavaScript expression. If
-`myData` contains `a.json` and `b.json`, the output of
-`buildProduction` would look something like this:
-
-```javascript
-var url = {a: "static/a65f5a6f5.json", b: "static/c628491b44.json"}[name];
-```
-
-The wildcards are expanded using <a
-href="https://github.com/isaacs/node-glob">node-glob</a>, so all
-constructs supported by <a
-href="https://github.com/isaacs/minimatch">minimatch</a> are
-supported, except `?`, because it's interpreted as a GET parameter
-delimiter.
-
-For `GETSTATICURL` to work in development mode the function needs to
-be declared. The `buildDevelopment` script adds a bootstrapper script
-that includes `GETSTATICURL`, but you can also put this into your main
-HTML before all your other scripts:
-
-```html
-<script id="bootstrapper">
-    window.GETSTATICURL = function (url) { // , placeHolderValue1, placeHolderValue2, ...
-        var placeHolderValues = Array.prototype.slice.call(arguments, 1);
-        return url.replace(/\*\*?|\{[^\}]*\}/g, function () {
-            return placeHolderValues.shift();
-        });
-    };
-</script>
-```
-
-`buildProduction` will remove the script with `id="bootstrapper"` so it
-doesn't clutter your production code.
 
 Image optimization and processing
 ---------------------------------

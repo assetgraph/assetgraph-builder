@@ -92,17 +92,14 @@ describe('buildProduction', function () {
             .run(done);
     });
 
-    it('should handle a test case with a GETSTATICURL', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/JavaScriptGetStaticUrlWithProcessedImages/'})
+    it('should handle a test case with a GETSTATICURL pointing at an image to be processed', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/JavaScriptGetStaticUrlWithProcessedImage/'})
             .loadAssets('index.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
-                expect(assetGraph, 'to contain assets', {type: 'Png'}, 2);
-                assetGraph.findAssets({type: 'Png'}).forEach(function (pngAsset) {
-                    expect(pngAsset.rawSrc.toString('ascii'), 'not to contain', 'pHYs');
-                });
-            })
-            .run(done);
+                expect(assetGraph, 'to contain asset', 'Png');
+                expect(assetGraph.findAssets({type: 'Png'})[0].rawSrc.toString('ascii'), 'not to contain', 'pHYs');
+            });
     });
 
     it('should handle a test case that uses both processImage instructions for both sprited images and the sprite itself', function () {
@@ -443,20 +440,8 @@ describe('buildProduction', function () {
             .run(done);
     });
 
-    it('should handle a test case with a GETSTATICURL that has a wildcard value, but only matches a single file', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/GetStaticUrlSingleFileWildcard/'})
-            .loadAssets('index.html')
-            .buildProduction({version: false})
-            .queue(function (assetGraph) {
-                var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
-                expect(javaScriptAssets, 'to have length', 1);
-                expect(javaScriptAssets[0].text, 'to equal', 'var fileName=\'static/justThisOneFile.22324131a2.txt\';');
-            })
-            .run(done);
-    });
-
-    it('should handle a test case with a GETSTATICURL that has two wildcard values, but only matches a single file', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/GetStaticUrlSingleFileAndTwoWildcards/'})
+    it('should handle a test case with a GETSTATICURL', function (done) {
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/GetStaticUrl/'})
             .loadAssets('index.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
