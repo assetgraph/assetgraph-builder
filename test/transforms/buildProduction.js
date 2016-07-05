@@ -1323,6 +1323,18 @@ describe('buildProduction', function () {
             });
     });
 
+    it('should bundle importScripts(...) calls in a web worker', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/webWorker'})
+            .loadAssets('index.html')
+            .populate()
+            .buildProduction()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain assets', 'JavaScript', 3);
+                expect(assetGraph, 'to contain asset', {fileName: 'worker.js'});
+                expect(assetGraph.findAssets({fileName: 'worker.js'})[0].text, 'to match', /^importScripts\('static\/bundle-[\w.]+\.js'\);$/);
+            });
+    });
+
     describe('with contentSecurityPolicy=true', function () {
         describe('with an existing policy', function () {
             it('should add image-src data: to an existing CSP when an image has been inlined', function () {

@@ -41,7 +41,7 @@
     "bin"
   ],
   "dependencies": {
-    "assetgraph": "assetgraph/assetgraph#master",
+    "assetgraph": "assetgraph/assetgraph#feature/webworker",
     "async": "^1.5.2",
     "browserslist": "1.3.4",
     "chalk": "^1.1.3",
