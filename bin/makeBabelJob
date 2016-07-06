@@ -9,8 +9,8 @@ var path = require('path'),
     mkpathSync = require('../lib/mkpathSync'),
     pluralsCldr = require('plurals-cldr'),
     commandLineOptions = require('optimist')
-        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--i18n <pathToI18nFile>] [--all] [--defaultlocale <localeId>] --babeldir=<dirForBabelFiles> --root <inputRootDirectory> --locales <localeId>,... <htmlFile>...')
-        .boolean('parentdir', 'all')
+        .usage('$0 [--i18n <pathToI18nFile>] [--all] [--defaultlocale <localeId>] --babeldir=<dirForBabelFiles> --root <inputRootDirectory> --locales <localeId>,... <htmlFile>...')
+        .boolean('all')
         .demand(['root', 'locales', 'babeldir'])
         .argv,
     localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
@@ -159,7 +159,6 @@ var pluralFormsInTheDefaultLocale = pluralsCldr.forms(defaultLocaleId),
 
 new AssetGraph({root: commandLineOptions.root})
     .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning})
-    .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(initialAssetUrls)
     .populate({from: {type: 'Html'}, followRelations: {type: 'HtmlScript', to: {url: /^file:/}}})
     .bundleSystemJs()

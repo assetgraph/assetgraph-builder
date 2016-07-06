@@ -7,8 +7,7 @@ var _ = require('lodash'),
     urlTools = require('urltools'),
     fs = require('fs'),
     commandLineOptions = require('optimist')
-        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] --root <inputRootDirectory> --locales <localeId>,... <htmlFile>...')
-        .boolean('parentdir')
+        .usage('$0 --root <inputRootDirectory> --locales <localeId>,... <htmlFile>...')
         .demand(['root', 'locales'])
         .argv,
     localeIds = _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
@@ -17,7 +16,6 @@ var _ = require('lodash'),
 
 new AssetGraph({root: commandLineOptions.root})
     .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
-    .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
     .populate({from: {type: 'Html'}, followRelations: {type: 'HtmlScript', to: {url: /^file:/}}})
     .populate({

@@ -10,8 +10,7 @@ var path = require('path'),
     pluralsCldr = require('plurals-cldr'),
     urlTools = require('urltools'),
     commandLineOptions = require('optimist')
-        .usage('$0 [--label <labelName>=<dir> ...] [--parentdir] [--i18n <pathToI18nFile>] [--locales <localeId>[,<localeId>...]] [--defaultlocale <localeId>] --babeldir=<dirContainingTheBabelFilesToApply> --root <inputRootDirectory> <htmlFile>...')
-        .boolean('parentdir')
+        .usage('$0 [--i18n <pathToI18nFile>] [--locales <localeId>[,<localeId>...]] [--defaultlocale <localeId>] --babeldir=<dirContainingTheBabelFilesToApply> --root <inputRootDirectory> <htmlFile>...')
         .options('defaultlocale', {
             describe: 'The locale of the default value in TR statements and tags with a data-i18n attribute',
             type: 'string',
@@ -57,7 +56,6 @@ new AssetGraph({root: commandLineOptions.root})
         });
     })
     .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
-    .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(initialAssetUrls)
     .populate({from: {type: 'Html'}, followRelations: {type: 'HtmlScript', to: {url: /^file:/}}})
     .bundleSystemJs({ sourceMaps: true })

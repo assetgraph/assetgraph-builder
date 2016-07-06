@@ -19,23 +19,8 @@ var optimist = require('optimist'),
             type: 'string',
             demand: true
         })
-        .options('label', {
-            describe: 'Registers labels as custom protocols for path resolving. You can create multiple of these: --label <labelName>=<dir> --label <otherLabelName>=<otherDir>',
-            type: 'string',
-            demand: false
-        })
-        .options('parentdir', {
-            describe: 'If an unknown label (scheme) is found, look for at parent dir of that name before failing (breaks custom protocols)',
-            type: 'boolean',
-            demand: false
-        })
         .options('stoponwarning', {
             describe: 'Whether to stop with a non-zero exit code when a warning is encountered',
-            type: 'boolean',
-            default: false
-        })
-        .options('noless', {
-            describe: 'Keep .less files as they are instead of automatically compiling them to CSS',
             type: 'boolean',
             default: false
         })
@@ -85,7 +70,6 @@ var followRelationsQueryObj = query.or(
 
 new AssetGraph({root: rootUrl})
     .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
-    .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(inputUrls)
     .populate({from: {type: 'Html'}, followRelations: {type: 'HtmlScript', to: {url: /^file:/}}})
     .populate({followRelations: followRelationsQueryObj})

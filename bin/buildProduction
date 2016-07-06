@@ -205,20 +205,6 @@ var chalk = require('chalk'),
             describe: 'Enable Angular.js specific annotations and template inlining',
             type: 'boolean'
         });
-        /*
-        // These are internal One.com options. No reason to expose them to the world.
-        // Might be deprecated in the near future. If in doubt, don't use!
-        .options('label', {
-            describe: 'Registers labels as custom protocols for path resolving. You can create multiple of these: --label <labelName>=<dir> --label <otherLabelName>=<otherDir>',
-            type: 'string',
-            demand: false
-        })
-        .options('parentdir', {
-            describe: 'If an unknown label (scheme) is found, look for at parent dir of that name before failing (breaks custom protocols)',
-            type: 'boolean',
-            demand: false
-        })
-        */
 
 // These names originally come from UglifyJS' code generator, but are now mapped to their escodegen equivalents
 var javaScriptSerializationOptionNames = [ 'indent_level', 'ascii_only' ];
@@ -407,7 +393,6 @@ new AssetGraph({root: rootUrl})
         }
     })
     .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
-    .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
     .loadAssets(inputUrls)
     .buildProduction({
         version: commandLineOptions.version,
