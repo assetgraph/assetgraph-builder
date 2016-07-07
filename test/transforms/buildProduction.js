@@ -431,7 +431,7 @@ describe('buildProduction', function () {
     it('should handle a test case using the less! plugin, then running the buildProduction transform', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/lessPlugin/'})
             .loadAssets('index.html')
-            .buildProduction({less: true})
+            .buildProduction()
             .queue(function (assetGraph) {
                 var cssAssets = assetGraph.findAssets({type: 'Css'});
                 expect(cssAssets, 'to have length', 1);

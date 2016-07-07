@@ -129,16 +129,6 @@ var chalk = require('chalk'),
             type: 'boolean',
             default: false
         })
-        .options('noless', {
-            describe: 'Keep .less files as they are instead of automatically compiling them to CSS',
-            type: 'boolean',
-            default: false
-        })
-        .options('noscss', {
-            describe: 'Keep .scss files as they are instead of automatically compiling them to CSS',
-            type: 'boolean',
-            default: false
-        })
         .options('nofilerev', {
             describe: 'Revision files with a hash of their content in their file name for optimal far future caching',
             type: 'boolean',
@@ -250,11 +240,6 @@ javaScriptSerializationOptionNames.forEach(function (javaScriptSerializationOpti
 if (commandLineOptions.h) {
     optimist.showHelp();
     process.exit(0);
-}
-
-// Temporary deprecation message
-if (commandLineOptions.less) {
-    console.warn(chalk.yellow('INFO: The --less command line option is deprecated. This is now default behavior. Use --noless to keep .less files in build output'));
 }
 
 // Temporary deprecation message
@@ -401,8 +386,6 @@ new AssetGraph({root: rootUrl})
         sourcesContent: commandLineOptions.sourcescontent,
         contentSecurityPolicy: commandLineOptions.contentsecuritypolicy,
         subResourceIntegrity: commandLineOptions.subresourceintegrity,
-        less: !commandLineOptions.noless,
-        scss: !commandLineOptions.noscss,
         optimizeImages: commandLineOptions.optimizeimages,
         inlineByRelationType: inlineByRelationType,
         gzip: commandLineOptions.gzip,
