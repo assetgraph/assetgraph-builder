@@ -93,7 +93,7 @@ sudo apt-get install -y libcairo2-dev libjpeg8-dev libgif-dev optipng pngcrush p
 Or on OS X, with [homebrew](http://brew.sh/):
 
 ```
-brew install cairo jpeg giflib optipng pngcrush pngquant pango graphicsmagick jpeg-turbo inkscape
+brew install cairo jpeg giflib optipng pngcrush pngquant pango graphicsmagick jpeg-turbo homebrew/gui/inkscape
 export PKG_CONFIG_PATH=/opt/X11/lib/pkgconfig
 ```
 
