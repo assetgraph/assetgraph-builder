@@ -1242,5 +1242,18 @@ describe('buildProduction', function () {
                         'integrity="sha256-');
                 });
         });
+
+        it('should use suitable serialization options after processing a data-bind attribute', function () {
+            return new AssetGraph()
+                .loadAssets({
+                    type: 'Html',
+                    url: 'http://example.com/foo.html',
+                    text: '<!DOCTYPE html><html><body><div data-bind="text: TR(\'key\', {one: 12345, other: 23456})"></div></body></html>'
+                })
+                .buildProduction({localeIds: ['en_us'], noCompress: false})
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to contain', 'data-bind=text:{one:12345,other:23456}');
+                });
+        });
     });
 });
