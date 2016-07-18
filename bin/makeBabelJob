@@ -185,6 +185,8 @@ new AssetGraph({root: commandLineOptions.root})
                 });
                 assetGraph.addAsset(i18nAssetForAllKeys);
                 assetGraph.emit('info', '--i18n ' + commandLineOptions.i18n + ' not found, creating it');
+            } else if (!i18nAssetForAllKeys.isLoaded) {
+                i18nAssetForAllKeys.parseTree = {};
             }
         }
 
