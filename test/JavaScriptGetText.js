@@ -7,7 +7,6 @@ describe('GETTEXT', function () {
         new AssetGraph({root: __dirname + '/../testdata/JavaScriptGetText/'})
             .loadAssets('index.html.template')
             .populate()
-            .injectBootstrapper({isInitial: true})
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain assets', {}, 4);
                 expect(assetGraph, 'to contain relation', 'JavaScriptGetText');

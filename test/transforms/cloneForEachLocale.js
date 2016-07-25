@@ -2,25 +2,7 @@
 var expect = require('../unexpected-with-plugins'),
     vm = require('vm'),
     _ = require('lodash'),
-    AssetGraph = require('../../lib/AssetGraph'),
-    bootstrapper = require('../../lib/bootstrapper');
-
-function getJavaScriptTextAndBootstrappedContext(assetGraph, htmlQueryObj) {
-    var htmlAsset = assetGraph.findAssets(htmlQueryObj)[0],
-        htmlScriptRelations = assetGraph.findRelations({from: htmlAsset, to: {type: 'JavaScript'}}),
-        inlineJavaScript;
-
-    if (htmlScriptRelations[0].node.getAttribute('id') === 'bootstrapper') {
-        inlineJavaScript = htmlScriptRelations[1].to;
-    } else {
-        inlineJavaScript = htmlScriptRelations[0].to;
-    }
-
-    return {
-        text: inlineJavaScript.text,
-        context: bootstrapper.createContext(assetGraph.findAssets(htmlQueryObj)[0], assetGraph, {TRANSLATE: false})
-    };
-}
+    AssetGraph = require('../../lib/AssetGraph');
 
 function evaluateInContext(src, context) {
     vm.runInContext('result = (function () {' + src + '}());', context);
@@ -60,18 +42,12 @@ describe('cloneForEachLocale', function () {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/cloneForEachLocale/multipleLocales/'})
             .loadAssets('index.html')
             .populate()
-            .injectBootstrapper({type: 'Html', isInitial: true})
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain assets', {}, 4);
                 expect(assetGraph, 'to contain asset', 'Html');
                 expect(assetGraph, 'to contain assets', {type: 'JavaScript', isInline: true}, 2);
                 expect(assetGraph, 'to contain relation', 'JavaScriptInclude');
                 expect(assetGraph, 'to contain asset', 'I18n');
-
-                var obj = getJavaScriptTextAndBootstrappedContext(assetGraph, {type: 'Html'});
-                expect(evaluateInContext(obj.text + '; return plainTr()', obj.context), 'to equal', 'Plain English');
-                expect(evaluateInContext(obj.text + '; return callTRPAT()', obj.context), 'to equal', 'Boring and stupid English pattern');
-                expect(evaluateInContext(obj.text + '; return nonInvokedTrPattern(\'X\')', obj.context), 'to equal', 'Welcome to America, Mr. X');
             })
             .cloneForEachLocale({isInitial: true}, {localeIds: ['da', 'en_US', 'en_GB']})
             .prettyPrintAssets({type: 'JavaScript'})
@@ -90,16 +66,6 @@ describe('cloneForEachLocale', function () {
                 paragraphs = assetGraph.findAssets({url: /\/index\.en_us\.html$/})[0].parseTree.getElementsByTagName('p');
                 expect(paragraphs[0].firstChild.nodeValue, 'to equal', 'Some text in body');
                 expect(paragraphs[1].innerHTML, 'to equal', 'A <span>beautiful</span> text with <span>lovely</span> placeholders in it');
-
-                var obj = getJavaScriptTextAndBootstrappedContext(assetGraph, {type: 'Html', url: /\/index\.en_us\.html$/});
-                expect(evaluateInContext(obj.text + '; return plainTr()', obj.context), 'to equal', 'Plain English');
-                expect(evaluateInContext(obj.text + '; return callTRPAT();', obj.context), 'to equal', 'Boring and stupid English pattern');
-                expect(evaluateInContext(obj.text + '; return nonInvokedTrPattern(\'X\');', obj.context), 'to equal', 'Welcome to America, Mr. X');
-
-                obj = getJavaScriptTextAndBootstrappedContext(assetGraph, {type: 'Html', url: /\/index\.da\.html$/});
-                expect(evaluateInContext(obj.text + '; return plainTr()', obj.context), 'to equal', 'Jævnt dansk');
-                expect(evaluateInContext(obj.text + '; return callTRPAT();', obj.context), 'to equal', 'Kedeligt and stupid dansk mønster');
-                expect(evaluateInContext(obj.text + '; return nonInvokedTrPattern(\'X\');', obj.context), 'to equal', 'Velkommen til Danmark, hr. X');
             })
             .runJavaScriptConditionalBlocks({isInitial: true}, 'buildDevelopment')
             .queue(function (assetGraph) {
