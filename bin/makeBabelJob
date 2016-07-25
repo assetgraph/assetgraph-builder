@@ -9,9 +9,9 @@ var path = require('path'),
     mkpathSync = require('../lib/mkpathSync'),
     pluralsCldr = require('plurals-cldr'),
     commandLineOptions = require('optimist')
-        .usage('$0 [--i18n <pathToI18nFile>] [--all] [--defaultlocale <localeId>] --babeldir=<dirForBabelFiles> --root <inputRootDirectory> --locales <localeId>,... <htmlFile>...')
+        .usage('$0 --i18n <pathToI18nFile> [--all] [--defaultlocale <localeId>] --babeldir=<dirForBabelFiles> --root <inputRootDirectory> --locales <localeId>,... <htmlFile>...')
         .boolean('all')
-        .demand(['root', 'locales', 'babeldir'])
+        .demand(['root', 'locales', 'babeldir', 'i18n'])
         .argv,
     localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
         return localeId.split(',');
@@ -264,13 +264,7 @@ new AssetGraph({root: commandLineOptions.root})
                     omitExistingValues = false,
                     value,
                     defaultValue,
-                    defaultValueInTheOccurrence,
-                    i18nAsset;
-                try {
-                    i18nAsset = i18nAssetForAllKeys || i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, occurrencesByKey);
-                } catch (e) {
-                    console.warn('Skipping language key: ' + e.message);
-                }
+                    defaultValueInTheOccurrence;
 
                 // Look for a default value in the occurrences:
                 occurrences.forEach(function (occurrence) {
@@ -354,7 +348,7 @@ new AssetGraph({root: commandLineOptions.root})
 
                 var i18nAssetForKey = assetGraph.findAssets({type: 'I18n', isLoaded: true, parseTree: function (parseTree) {
                     return key in parseTree;
-                }})[0] || i18nAsset;
+                }})[0] || i18nAssetForAllKeys;
 
                 if (i18nAssetForKey) {
                     if (!(key in i18nAssetForKey.parseTree)) {

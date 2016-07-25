@@ -10,7 +10,7 @@ var path = require('path'),
     pluralsCldr = require('plurals-cldr'),
     urlTools = require('urltools'),
     commandLineOptions = require('optimist')
-        .usage('$0 [--i18n <pathToI18nFile>] [--locales <localeId>[,<localeId>...]] [--defaultlocale <localeId>] --babeldir=<dirContainingTheBabelFilesToApply> --root <inputRootDirectory> <htmlFile>...')
+        .usage('$0 --i18n <pathToI18nFile> [--locales <localeId>[,<localeId>...]] [--defaultlocale <localeId>] --babeldir=<dirContainingTheBabelFilesToApply> --root <inputRootDirectory> <htmlFile>...')
         .options('defaultlocale', {
             describe: 'The locale of the default value in TR statements and tags with a data-i18n attribute',
             type: 'string',
@@ -21,7 +21,7 @@ var path = require('path'),
             type: 'boolean',
             default: false
         })
-        .demand(['root', 'babeldir'])
+        .demand(['root', 'babeldir', 'i18n'])
         .argv,
     localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
         return localeId.split(',');
@@ -214,7 +214,7 @@ new AssetGraph({root: commandLineOptions.root})
 
         Object.keys(translationsByKeyAndLocaleId).forEach(function (key) {
             var i18nAsset;
-            if (i18nAssetForAllKeys && !(key in i18nAssetForAllKeys.parseTree)) {
+            if (!(key in i18nAssetForAllKeys.parseTree)) {
                 // Even if a i18nAssetForAllKeys (--i18n ...) is defined, another .i18n we should prefer another file with that key already defined:
                 if (secondaryI18nAssets.length > 0) {
                     for (var i = 0 ; i < secondaryI18nAssets.length ; i += 1) {
@@ -228,36 +228,30 @@ new AssetGraph({root: commandLineOptions.root})
                     i18nAsset = i18nAssetForAllKeys;
                 }
             } else {
-                try {
-                    i18nAsset = i18nAssetForAllKeys || i18nTools.getOrCreateI18nAssetForKey(assetGraph, key, occurrencesByKey);
-                } catch (e) {
-                    console.warn('Skipping language key: ' + e.message);
-                }
+                i18nAsset = i18nAssetForAllKeys;
             }
-            if (i18nAsset) {
-                if (!(key in i18nAsset.parseTree)) {
-                    i18nAsset.parseTree[key] = {};
+            if (!(key in i18nAsset.parseTree)) {
+                i18nAsset.parseTree[key] = {};
+                i18nAsset.markDirty();
+            }
+            Object.keys(translationsByKeyAndLocaleId[key]).forEach(function (localeId) {
+                var newTranslation = translationsByKeyAndLocaleId[key][localeId],
+                    existingTranslation = i18nAsset.parseTree[key][localeId];
+
+                function setMergedTranslation(mergedTranslation) {
+                    i18nAsset.parseTree[key][localeId] = mergedTranslation;
                     i18nAsset.markDirty();
                 }
-                Object.keys(translationsByKeyAndLocaleId[key]).forEach(function (localeId) {
-                    var newTranslation = translationsByKeyAndLocaleId[key][localeId],
-                        existingTranslation = i18nAsset.parseTree[key][localeId];
 
-                    function setMergedTranslation(mergedTranslation) {
-                        i18nAsset.parseTree[key][localeId] = mergedTranslation;
-                        i18nAsset.markDirty();
-                    }
-
-                    if (isArrayOrObject(existingTranslation) && isArrayOrObject(existingTranslation)) {
-                        // Do a 'deep extend' to update existing complex value:
-                        setMergedTranslation(extend(true, existingTranslation, newTranslation));
-                    } else if (typeof existingTranslation === 'undefined' ||
-                               isArrayOrObject(existingTranslation) !== isArrayOrObject(newTranslation) ||
-                               existingTranslation !== newTranslation) {
-                        setMergedTranslation(newTranslation);
-                    }
-                });
-            }
+                if (isArrayOrObject(existingTranslation) && isArrayOrObject(existingTranslation)) {
+                    // Do a 'deep extend' to update existing complex value:
+                    setMergedTranslation(extend(true, existingTranslation, newTranslation));
+                } else if (typeof existingTranslation === 'undefined' ||
+                           isArrayOrObject(existingTranslation) !== isArrayOrObject(newTranslation) ||
+                           existingTranslation !== newTranslation) {
+                    setMergedTranslation(newTranslation);
+                }
+            });
         });
 
         if (commandLineOptions.replace) {
