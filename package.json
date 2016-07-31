@@ -84,7 +84,7 @@
     "requirejs": "^2.2.0",
     "sinon": "^1.17.5",
     "source-map": "^0.5.3",
-    "systemjs-builder": "^0.15.16",
+    "systemjs-builder": "^0.15.25",
     "unexpected": "^10.8.1",
     "unexpected-color": "^2.0.0",
     "unexpected-dom": "^3.0.2",
