@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+/*eslint indent:0*/
 var chalk = require('chalk'),
     parseExpression = require('assetgraph/lib/parseExpression'),
     optimist = require('optimist')

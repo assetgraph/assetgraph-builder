@@ -1,30 +1,30 @@
 #!/usr/bin/env node
 
 var optimist = require('optimist')
-        .usage('$0 --root <inputRootDirectory> --outroot <dir> [options] <htmlFile(s)>')
-        .wrap(72)
-        .options('h', {
-            alias: 'help',
-            describe: 'Show this help',
-            type: 'boolean',
-            default: false
-        })
-        .options('algorithm', {
-            describe: 'The hash algorithm to use',
-            type: 'string',
-            default: 'sha256',
-            demand: false
-        })
-        .options('root', {
-            describe: 'Path to your web root (will be deduced from your input files if not specified)',
-            type: 'string',
-            demand: false
-        })
-        .options('outroot', {
-            describe: 'Path to the output folder (will be generated if non-existing). Defaults to overwrite the source files in-place',
-            type: 'string',
-            demand: false
-        });
+    .usage('$0 --root <inputRootDirectory> --outroot <dir> [options] <htmlFile(s)>')
+    .wrap(72)
+    .options('h', {
+        alias: 'help',
+        describe: 'Show this help',
+        type: 'boolean',
+        default: false
+    })
+    .options('algorithm', {
+        describe: 'The hash algorithm to use',
+        type: 'string',
+        default: 'sha256',
+        demand: false
+    })
+    .options('root', {
+        describe: 'Path to your web root (will be deduced from your input files if not specified)',
+        type: 'string',
+        demand: false
+    })
+    .options('outroot', {
+        describe: 'Path to the output folder (will be generated if non-existing). Defaults to overwrite the source files in-place',
+        type: 'string',
+        demand: false
+    });
 
 var commandLineOptions = optimist.argv;
 

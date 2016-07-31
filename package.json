@@ -73,7 +73,7 @@
   "devDependencies": {
     "autoprefixer": "6.3.7",
     "coveralls": "^2.11.12",
-    "eslint": "^2.13.1",
+    "eslint": "^3.2.0",
     "eslint-config-onelint": "^1.0.2",
     "gifsicle-stream": "^0.3.0",
     "gm": "^1.21.1",

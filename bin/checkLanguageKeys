@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+/*eslint indent:0*/
 var optimist = require('optimist'),
     commandLineOptions = optimist
         .usage('$0 --root <inputRootDirectory> [options] <htmlFile(s)>')

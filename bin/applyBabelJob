@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+/*eslint indent:0*/
 var path = require('path'),
     fs = require('fs'),
     util = require('util'),
