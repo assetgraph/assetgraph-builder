@@ -82,7 +82,7 @@
     "less": "2.7.1",
     "mocha": "^2.4.5",
     "requirejs": "^2.2.0",
-    "sinon": "^1.17.3",
+    "sinon": "^1.17.5",
     "source-map": "^0.5.3",
     "systemjs-builder": "^0.15.16",
     "unexpected": "^10.8.1",
