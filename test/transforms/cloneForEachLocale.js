@@ -1,13 +1,7 @@
 /*global describe, it*/
 var expect = require('../unexpected-with-plugins'),
-    vm = require('vm'),
     _ = require('lodash'),
     AssetGraph = require('../../lib/AssetGraph');
-
-function evaluateInContext(src, context) {
-    vm.runInContext('result = (function () {' + src + '}());', context);
-    return context.result;
-}
 
 describe('cloneForEachLocale', function () {
     it('should make a clone of each Html file for each language', function (done) {
@@ -38,22 +32,22 @@ describe('cloneForEachLocale', function () {
             .run(done);
     });
 
-    it('should handle multiple locales', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/cloneForEachLocale/multipleLocales/'})
+    it('should handle multiple locales', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/cloneForEachLocale/multipleLocales/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
-                expect(assetGraph, 'to contain assets', {}, 4);
+                expect(assetGraph, 'to contain assets', {}, 3);
                 expect(assetGraph, 'to contain asset', 'Html');
-                expect(assetGraph, 'to contain assets', {type: 'JavaScript', isInline: true}, 2);
-                expect(assetGraph, 'to contain relation', 'JavaScriptInclude');
+                expect(assetGraph, 'to contain assets', {type: 'JavaScript', isInline: true}, 1);
+                expect(assetGraph, 'to contain relation', 'JavaScriptGetStaticUrl');
                 expect(assetGraph, 'to contain asset', 'I18n');
             })
             .cloneForEachLocale({isInitial: true}, {localeIds: ['da', 'en_US', 'en_GB']})
             .prettyPrintAssets({type: 'JavaScript'})
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain assets', 'Html', 3);
-                expect(assetGraph, 'to contain assets', 'JavaScript', 6);
+                expect(assetGraph, 'to contain assets', 'JavaScript', 3);
 
                 var paragraphs = assetGraph.findAssets({url: /\/index\.da\.html$/})[0].parseTree.getElementsByTagName('p');
                 expect(paragraphs[0].firstChild.nodeValue, 'to equal', 'Kropstekst');
@@ -66,13 +60,7 @@ describe('cloneForEachLocale', function () {
                 paragraphs = assetGraph.findAssets({url: /\/index\.en_us\.html$/})[0].parseTree.getElementsByTagName('p');
                 expect(paragraphs[0].firstChild.nodeValue, 'to equal', 'Some text in body');
                 expect(paragraphs[1].innerHTML, 'to equal', 'A <span>beautiful</span> text with <span>lovely</span> placeholders in it');
-            })
-            .runJavaScriptConditionalBlocks({isInitial: true}, 'buildDevelopment')
-            .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({type: 'Html', url: /\/index\.en_us\.html$/})[0].parseTree.title, 'to equal', 'The awesome document title');
-                expect(assetGraph.findAssets({type: 'Html', url: /\/index\.da\.html$/})[0].parseTree.title, 'to equal', 'Dokumentets vidunderlige titel');
-            })
-            .run(done);
+            });
     });
 
     it('should handle a test case with an externalized inline HtmlStyle and inlineCssImagesWithLegacyFallback', function (done) {
@@ -366,7 +354,7 @@ describe('cloneForEachLocale', function () {
             .populate()
             .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da']})
             .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].parseTree.body.innerHTML, 'to equal', '\n    <div>Some <span>foo</span> <span>foo</span> thing</div>\n    <script>INCLUDE(\'index.i18n\');</script>\n');
+                expect(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].parseTree.body.innerHTML, 'to equal', '\n    <div>Some <span>foo</span> <span>foo</span> thing</div>\n    <script>GETSTATICURL(\'index.i18n\');</script>\n');
             })
             .run(done);
     });

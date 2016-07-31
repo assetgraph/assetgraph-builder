@@ -220,13 +220,13 @@ describe('buildProduction', function () {
             .run(done);
     });
 
-    it('should handle a test case with a HtmlRequireDataMain relation pointing at a script with a JavaScriptInclude relation pointing at an I18n asset', function (done) {
+    it('should handle a test case with a HtmlRequireDataMain relation pointing at a script with a relation pointing at an I18n asset', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/htmlDataMainWithI18n/'})
             .on('error', done)
             .loadAssets('index.html')
             .buildProduction({version: false, localeIds: ['da', 'en_US']})
             .queue(function (assetGraph) {
-                expect(assetGraph, 'to contain no assets', {type: 'JavaScript', text: /INCLUDE/});
+                expect(assetGraph, 'to contain no assets', {type: 'JavaScript', text: /GETSTATICURL/});
             })
             .run(done);
     });

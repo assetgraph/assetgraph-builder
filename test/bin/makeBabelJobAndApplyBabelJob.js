@@ -15,11 +15,11 @@ describe('makeBabelJob and applyBabelJob', function () {
             if (err) {
                 return done(new Error(copyCommand + ' failed: STDERR:' + stderr + '\nSTDOUT:' + stdout));
             }
-
             var makeBabelJobProcess = childProcess.spawn(Path.resolve(__dirname, '..', '..', 'bin', 'makeBabelJob'), [
                     '--babeldir', babelDir,
                     '--root', tmpTestCaseCopyDir,
                     '--locales', 'en,da,de',
+                    '--i18n', Path.resolve(tmpTestCaseCopyDir, 'thething.i18n'),
                     Path.resolve(tmpTestCaseCopyDir, 'index.html')
                 ]),
                 buffersByStreamName = {},
@@ -134,6 +134,7 @@ describe('makeBabelJob and applyBabelJob', function () {
                     '--babeldir', babelDir,
                     '--root', tmpTestCaseCopyDir,
                     '--locales', 'en,da,de',
+                    '--i18n', Path.resolve(tmpTestCaseCopyDir, 'thething.i18n'),
                     Path.resolve(tmpTestCaseCopyDir, 'index.html')
                 ]);
                 applyBabelJobProcess.on('exit', function (exitCode) {

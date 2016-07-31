@@ -7,8 +7,10 @@
         <link rel="stylesheet" href="styles3.css" nobundle="nobundle">
     </head>
     <body>
+        <script id="bootstrapper">
+            GETSTATICURL('index.i18n');
+        </script>
         <script>
-            INCLUDE('index.i18n');
             var myStaticUrl = GETSTATICURL('/someTextFile.txt');
         </script>
         <script>

@@ -1,1 +1,1 @@
-INCLUDE('webmail.i18n');
+GETSTATICURL('webmail.i18n');

@@ -1,3 +1,3 @@
-INCLUDE('needsLocalization.js');
+GETSTATICURL('needsLocalization.js');
 
 alert("hello");

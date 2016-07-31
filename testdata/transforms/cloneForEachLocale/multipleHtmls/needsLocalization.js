@@ -1,3 +1,3 @@
-INCLUDE('index.i18n');
+GETSTATICURL('index.i18n');
 
 alert(TR('languageKey', 'yup'));
