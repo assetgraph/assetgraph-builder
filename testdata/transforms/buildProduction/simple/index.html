@@ -8,10 +8,10 @@
     </head>
     <body>
         <script id="bootstrapper">
-            GETSTATICURL('index.i18n');
+            'index.i18n'.toString('url');
         </script>
         <script>
-            var myStaticUrl = GETSTATICURL('/someTextFile.txt');
+            var myStaticUrl = '/someTextFile.txt'.toString('url');
         </script>
         <script>
             var require = {

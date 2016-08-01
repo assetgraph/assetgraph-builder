@@ -5,7 +5,7 @@
     </head>
     <body>
         <script>
-            GETSTATICURL('index.someother.i18n');
+            'index.someother.i18n'.toString('url');
             alert(TR('bar', 'Bar'));
             alert(TR('WeirdlyFormattedKey', 'that ' + 'comes ' + 'back the same in the translation job'));
             alert(TR('ComplexKey', {

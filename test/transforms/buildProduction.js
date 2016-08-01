@@ -111,8 +111,8 @@ describe('buildProduction', function () {
             });
     });
 
-    it('should handle a test case with a GETSTATICURL pointing at an image to be processed', function () {
-        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/JavaScriptGetStaticUrlWithProcessedImage/'})
+    it('should handle a test case with a JavaScriptStaticUrl pointing at an image to be processed', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/JavaScriptStaticUrlWithProcessedImage/'})
             .loadAssets('index.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
@@ -206,7 +206,7 @@ describe('buildProduction', function () {
             .run(done);
     });
 
-    it('should handle a test case with a JavaScriptGetStaticUrl relation pointing at an image, without the cdnRoot option', function (done) {
+    it('should handle a test case with a JavaScriptStaticUrl relation pointing at an image, without the cdnRoot option', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/GetStaticUrlImageOnCdn/'})
             .on('error', done)
             .loadAssets('index.html')
@@ -226,12 +226,12 @@ describe('buildProduction', function () {
             .loadAssets('index.html')
             .buildProduction({version: false, localeIds: ['da', 'en_US']})
             .queue(function (assetGraph) {
-                expect(assetGraph, 'to contain no assets', {type: 'JavaScript', text: /GETSTATICURL/});
+                expect(assetGraph, 'to contain no assets', {type: 'JavaScript', text: /toString('url')/});
             })
             .run(done);
     });
 
-    it('should handle a test case with a JavaScriptGetStaticUrl relation pointing at a flash file, then running the buildProduction transform with the cdnRoot option', function (done) {
+    it('should handle a test case with a JavaScriptStaticUrl relation pointing at a flash file, then running the buildProduction transform with the cdnRoot option', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/GetStaticUrlFlash/'})
             .on('error', done)
             .loadAssets('index.html')
@@ -274,7 +274,7 @@ describe('buildProduction', function () {
             });
     });
 
-    it('should handle a test case with a JavaScriptGetStaticUrl relation pointing at a flash file, then running the buildProduction transform with the cdnRoot and cdnFlash options', function (done) {
+    it('should handle a test case with a JavaScriptStaticUrl relation pointing at a flash file, then running the buildProduction transform with the cdnRoot and cdnFlash options', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/GetStaticUrlFlash/'})
             .on('error', done)
             .loadAssets('index.html')
@@ -325,7 +325,7 @@ describe('buildProduction', function () {
             .run(done);
     });
 
-    it('should handle a test case with a GETSTATICURL', function (done) {
+    it('should handle a test case with a JavaScriptStaticUrl', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/GetStaticUrl/'})
             .loadAssets('index.html')
             .buildProduction({version: false})

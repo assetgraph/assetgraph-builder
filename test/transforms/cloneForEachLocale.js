@@ -40,7 +40,7 @@ describe('cloneForEachLocale', function () {
                 expect(assetGraph, 'to contain assets', {}, 3);
                 expect(assetGraph, 'to contain asset', 'Html');
                 expect(assetGraph, 'to contain assets', {type: 'JavaScript', isInline: true}, 1);
-                expect(assetGraph, 'to contain relation', 'JavaScriptGetStaticUrl');
+                expect(assetGraph, 'to contain relation', 'JavaScriptStaticUrl');
                 expect(assetGraph, 'to contain asset', 'I18n');
             })
             .cloneForEachLocale({isInitial: true}, {localeIds: ['da', 'en_US', 'en_GB']})
@@ -354,7 +354,7 @@ describe('cloneForEachLocale', function () {
             .populate()
             .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da']})
             .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].parseTree.body.innerHTML, 'to equal', '\n    <div>Some <span>foo</span> <span>foo</span> thing</div>\n    <script>GETSTATICURL(\'index.i18n\');</script>\n');
+                expect(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].parseTree.body.innerHTML, 'to equal', '\n    <div>Some <span>foo</span> <span>foo</span> thing</div>\n    <script>\'index.i18n\'.toString(\'url\');</script>\n');
             })
             .run(done);
     });

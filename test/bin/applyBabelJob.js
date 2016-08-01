@@ -70,7 +70,7 @@ describe('applyBabelJob', function () {
                         '    </head>\n' +
                         '    <body>\n' +
                         '        <script>\n' +
-                        '            GETSTATICURL(\'index.someother.i18n\');\n' +
+                        '            \'index.someother.i18n\'.toString(\'url\');\n' +
                         '            alert(TR(\'bar\', \'BarProofRead\'));\n' +
                         '            alert(TR(\'WeirdlyFormattedKey\', \'that \' + \'comes \' + \'back the same in the translation job\'));\n' +
                         '            alert(TR(\'ComplexKey\', {\n' +
@@ -140,7 +140,7 @@ describe('applyBabelJob', function () {
                         '    </head>\n' +
                         '    <body>\n' +
                         '        <script>\n' +
-                        '            GETSTATICURL(\'index.i18n\');\n' +
+                        '            \'index.i18n\'.toString(\'url\');\n' +
                         '            alert(TR(\'MyPlurals\', {\n' +
                         '                one: \'The plural\',\n' +
                         '                other: \'The plurals\'\n' +

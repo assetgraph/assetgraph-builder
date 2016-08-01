@@ -1,1 +1,1 @@
-GETSTATICURL('webmail.i18n');
+'webmail.i18n'.toString('url');

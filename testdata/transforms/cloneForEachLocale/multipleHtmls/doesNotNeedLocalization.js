@@ -1,3 +1,3 @@
-GETSTATICURL('needsLocalization.js');
+'needsLocalization.js'.toString('url');
 
 alert("hello");
