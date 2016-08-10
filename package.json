@@ -3,7 +3,7 @@
   "name": "assetgraph-builder",
   "description": "Build system for web sites and applications",
   "repository": "git://github.com/One-com/assetgraph-builder.git",
-  "version": "4.10.9",
+  "version": "4.11.0",
   "keywords": [
     "assetgraph",
     "web",
