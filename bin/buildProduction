@@ -99,7 +99,12 @@ var chalk = require('chalk'),
             default: true
         })
         .options('minify', {
-            describe: 'Minifies HTML, CSS, SVG and Javascript.',
+            describe: 'Minifies HTML, CSS and Javascript.',
+            type: 'boolean',
+            default: true
+        })
+        .options('svgo', {
+            describe: 'Minify SVG with svgo (requires the svgo module to be installed in your app)',
             type: 'boolean',
             default: true
         })
@@ -436,6 +441,7 @@ new AssetGraph({root: rootUrl})
         recursive: commandLineOptions.recursive,
         cdnFlash: !commandLineOptions.nocdnflash,
         cdnHtml: commandLineOptions.cdnhtml,
+        svgo: commandLineOptions.svgo,
         minify: commandLineOptions.minify,
         noCompress: commandLineOptions.nocompress,
         pretty: commandLineOptions.pretty,
