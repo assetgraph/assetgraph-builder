@@ -77,6 +77,7 @@ Features
    href="https://github.com/One-com/assetgraph">AssetGraph</a>
    transforms.
  * Angular annotations with [ng-annotate](https://github.com/olov/ng-annotate) and angular template inlining.
+ * Automatically adds `rel="noopener"` to cross domain anchors opening in new windows ([The performance benefits of rel=noopener](https://jakearchibald.com/2016/performance-benefits-of-rel-noopener/))
 
 
 Installation
