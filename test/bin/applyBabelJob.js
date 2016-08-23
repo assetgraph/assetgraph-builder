@@ -63,9 +63,7 @@ describe('applyBabelJob', function () {
                         }
                     });
                     expect(fs.readFileSync(tmpTestCaseCopyDir + '/index.html', 'utf-8'), 'to equal',
-                        '<!DOCTYPE html>\n' +
-                        '<html>\n' +
-                        '    <head>\n' +
+                        '<!DOCTYPE html><html><head>\n' +
                         '        <title data-i18n="foo">FooProofRead</title>\n' +
                         '    </head>\n' +
                         '    <body>\n' +
@@ -88,8 +86,9 @@ describe('applyBabelJob', function () {
                         '        <span data-i18n="text: null">data-i18n specifying that the contents of the tag should not be translated</span>\n' +
                         '        <span data-i18n="">data-i18n specifying that the contents of the tag should not be translated</span>\n' +
                         '        <span data-i18n="attr: {title: null}" title="data-i18n specifiying that the title attribute should not be translated"></span>\n' +
-                        '    </body>\n' +
-                        '</html>\n'
+                        '    \n' +
+                        '\n' +
+                        '</body></html>'
                     );
                     done();
                 }

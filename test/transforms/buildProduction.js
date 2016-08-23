@@ -160,7 +160,7 @@ describe('buildProduction', function () {
                 expect(htmlAssets, 'to have length', 1);
                 var htmlAsset = htmlAssets[0];
                 expect(htmlAsset.parseTree.documentElement.getAttribute('lang'), 'to equal', 'da');
-                expect(htmlAsset.text, 'to equal', '<!DOCTYPE html><html lang=da><head><title>Ja, <!--#echo "exactly" --> sådan</title></head><body><div><!--#echo "Here" --> er tingen</div></body></html>');
+                expect(htmlAsset.text, 'to equal', '<!DOCTYPE html><html lang=da><head></head><body><div>Ja, <!--#echo "exactly" --> sådan</div><div><!--#echo "Here" --> er tingen</div></body></html>');
             })
             .run(done);
     });
@@ -386,8 +386,8 @@ describe('buildProduction', function () {
             .run(done);
     });
 
-    it('should handle a test case for issue #69', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/issue69/'})
+    it('should handle a test case for issue #69', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/issue69/'})
             .loadAssets('index.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
@@ -397,12 +397,14 @@ describe('buildProduction', function () {
 
             })
             .queue(function (assetGraph, cb) {
-                var html = assetGraph.findAssets({type: 'Html'})[0],
-                    javaScript = assetGraph.findAssets({type: 'JavaScript'})[0],
-                    context = vm.createContext(),
-                    window = html.parseTree.createWindow();
-
-                window.navigator = { userAgent: 'foo' };
+                var html = assetGraph.findAssets({type: 'Html'})[0];
+                var javaScript = assetGraph.findAssets({type: 'JavaScript'})[0];
+                var context = vm.createContext();
+                var window = {
+                    document: html.parseTree,
+                    navigator: { userAgent: 'foo' },
+                    addEventListener: function () {}
+                };
 
                 require('assetgraph/lib/util/extendWithGettersAndSetters')(context, window);
                 context.window = context;
@@ -421,8 +423,7 @@ describe('buildProduction', function () {
                         cb(e);
                     });
                 }
-            })
-            .run(done);
+            });
     });
 
     it('should handle a test case for issue #83', function (done) {
@@ -845,8 +846,8 @@ describe('buildProduction', function () {
             .run(done);
     });
 
-    it('should support an inline SVG island inside an HTML asset', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/HtmlSvgIsland/'})
+    it('should support an inline SVG island inside an HTML asset', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/HtmlSvgIsland/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -856,15 +857,8 @@ describe('buildProduction', function () {
             .buildProduction()
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain assets', 'Svg', 2);
-                expect(assetGraph.findAssets({type: 'Html'})[0].parseTree, 'queried for', 'svg use', 'to satisfy', [
-                    {
-                        attributes: {
-                            'xlink:href': /^static\/gaussianBlur\.[0-9a-f]{10}\.svg$/
-                        }
-                    }
-                ]);
-            })
-            .run(done);
+                expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to match', /xlink:href=static\/gaussianBlur\.[0-9a-f]{10}\.svg/);
+            });
     });
 
     it('should read in location data from existing source maps and produce source maps for bundles', function () {

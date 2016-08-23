@@ -348,15 +348,14 @@ describe('cloneForEachLocale', function () {
             .run(done);
     });
 
-    it('should handle a language key that uses the same placeholder twice in the Danish translation', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/cloneForEachLocale/reusePlaceHolder/'})
+    it('should handle a language key that uses the same placeholder twice in the Danish translation', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/cloneForEachLocale/reusePlaceHolder/'})
             .loadAssets('index.html')
             .populate()
             .cloneForEachLocale({type: 'Html'}, {localeIds: ['en', 'da']})
             .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].parseTree.body.innerHTML, 'to equal', '\n    <div>Some <span>foo</span> <span>foo</span> thing</div>\n    <script>\'index.i18n\'.toString(\'url\');</script>\n');
-            })
-            .run(done);
+                expect(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].parseTree.body.innerHTML, 'to equal', '\n    <div>Some <span>foo</span> <span>foo</span> thing</div>\n    <script>\'index.i18n\'.toString(\'url\');</script>\n\n\n');
+            });
     });
 
     it('should handle a language key that uses the same placeholder twice in the Danish translation when the placeholder in the Html has a relation in it', function (done) {
