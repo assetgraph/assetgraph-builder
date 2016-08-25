@@ -439,17 +439,15 @@ describe('buildProduction', function () {
             .run(done);
     });
 
-    it('should handle a test case where multiple HTML files reference the same require.js config in an external JavaScript file, then run the buildProduction transform', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/multipleHtmlsReferencingTheSameExternalRequireJsConfig/'})
-            .on('warn', function (err) {
-                (this._emittedWarnings = this._emittedWarnings || []).push(err);
-            })
+    it('should handle a test case where multiple HTML files reference the same require.js config in an external JavaScript file, then run the buildProduction transform', function () {
+        var warningSpy = sinon.spy();
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/multipleHtmlsReferencingTheSameExternalRequireJsConfig/'})
+            .on('warn', warningSpy)
             .loadAssets('*.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
-                expect(assetGraph._emittedWarnings, 'to satisfy', [/webpack/]);
-            })
-            .run(done);
+                expect(warningSpy, 'to have calls satisfying', []);
+            });
     });
 
     it('should handle a test case with a JavaScript that needs a symbol replaced, then running the buildProduction transform with noCompress:true', function (done) {
