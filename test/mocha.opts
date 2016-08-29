@@ -2,4 +2,4 @@
 --timeout 60000
 --recursive
 --check-leaks
---globals Promise,requirejsVars,curPart,i,out,_requirejsCssData
+--globals Promise,requirejsVars,curPart,i,out,_requirejsCssData,$__curScript,URLPolyfill,SystemJS,System,$traceurRuntime,traceur,Reflect
