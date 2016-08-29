@@ -404,4 +404,18 @@ describe('cloneForEachLocale', function () {
             })
             .run(done);
     });
+
+    it('should preserve the hrefType of an asset being cloned', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/cloneForEachLocale/hrefType/'})
+            .loadAssets('index.html')
+            .populate()
+            .cloneForEachLocale({type: 'Html'}, {localeIds: ['en_us', 'da']})
+            .queue(function (assetGraph) {
+                expect(assetGraph.findAssets({fileName: 'index.da.html'})[0].text, 'to contain', '/style.da.css')
+                    .and('to contain', '/script.da.js');
+
+                expect(assetGraph.findAssets({fileName: 'index.en_us.html'})[0].text, 'to contain', '/style.en_us.css')
+                    .and('to contain', '/script.en_us.js');
+            });
+    });
 });
