@@ -147,7 +147,11 @@ var chalk = require('chalk'),
         })
         .options('define', {
             alias: 'd',
-            describe: '--define SYMBOL[=value] will be passed to UglifyJS as is (see the docs at https://github.com/mishoo/UglifyJS#usage). Remember to protect quotes from the shell, eg. --define foo=\\"bar\\"',
+            describe: '--define SYMBOL[=value] will be passed to UglifyJS as is (see the docs at https://github.com/mishoo/UglifyJS#usage). Can be repeated. Remember to protect quotes from the shell, eg. --define foo=\\"bar\\".',
+            type: 'string'
+        })
+        .options('condition', {
+            describe: '--condition name[=value] will be passed to System.js builder and used in #{...} interpolations (as described on http://jspm.io/0.17-beta-guide/conditional-interpolation.html). Can be repeated.',
             type: 'string'
         })
         .options('inline', {
@@ -280,7 +284,6 @@ var _ = require('lodash'),
         return reservedName.split(',');
     })),
     defaultLocaleId = commandLineOptions.defaultlocale && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale),
-    defines = {},
     inputUrls,
     inlineByRelationType = {};
 
@@ -324,6 +327,7 @@ if (commandLineOptions.inlinesize) {
     inlineByRelationType.CssImage = 8192;
 }
 
+var defines = {};
 (commandLineOptions.define ? _.flatten(_.flatten([commandLineOptions.define])) : []).forEach(function (define) {
     var matchDefine = define.match(/^(\w+)(?:=(.*))?$/);
     if (matchDefine) {
@@ -343,6 +347,16 @@ if (commandLineOptions.inlinesize) {
     }
 });
 
+var conditions = {};
+(commandLineOptions.condition ? _.flatten(_.flatten([commandLineOptions.condition])) : []).forEach(function (condition) {
+    var matchConditional = condition.match(/^([^=]+)=(.*)$/);
+    if (matchConditional) {
+        conditions[matchConditional[1]] = matchConditional[2];
+    } else {
+        console.error('Invalid --condition ' + condition);
+        process.exit(1);
+    }
+});
 
 if (commandLineOptions._.length > 0) {
     inputUrls = commandLineOptions._.map(function (urlOrFsPath) {
@@ -397,6 +411,7 @@ new AssetGraph({root: rootUrl})
         gzip: commandLineOptions.gzip,
         noFileRev: commandLineOptions.nofilerev,
         defines: defines,
+        conditions: conditions,
         reservedNames: reservedNames,
         localeIds: localeIds,
         localeCookieName: commandLineOptions.localecookiename,
