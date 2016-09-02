@@ -1106,5 +1106,23 @@ describe('buildProduction', function () {
                     });
             });
         });
+
+        describe('pointing at a stylesheet', function () {
+            it('should attach the correct stylesheet to the pages in the cloneForEachLocale step', function () {
+                return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/systemJsConditionals/stylesheet/'})
+                    .loadAssets('index.html')
+                    .populate()
+                    .buildProduction({
+                        localeIds: ['en_us', 'da'],
+                        inlineByRelationType: {'*': true}
+                    })
+                    .queue(function (assetGraph) {
+                        expect(assetGraph.findAssets({fileName: 'index.da.html'})[0].text, 'to contain', '<style>body{color:#fff;background-color:red}</style>')
+                            .and('not to contain', '<style>body{color:#fff;background-color:blue}</style>');
+                        expect(assetGraph.findAssets({fileName: 'index.en_us.html'})[0].text, 'to contain', '<style>body{color:#fff;background-color:blue}</style>')
+                            .and('not to contain', '<style>body{color:#fff;background-color:red}</style>');
+                    });
+            });
+        });
     });
 });
