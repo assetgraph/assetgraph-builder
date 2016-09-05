@@ -130,11 +130,6 @@ var chalk = require('chalk'),
             type: 'string',
             default: '\n'
         })
-        .options('removedeadifs', {
-            describe: 'Optimize away certain if (...) {...} constructs. Only makes sense with --nocompress as UglifyJS includes the same optimization',
-            type: 'boolean',
-            default: false
-        })
         .options('nofilerev', {
             describe: 'Revision files with a hash of their content in their file name for optimal far future caching',
             type: 'boolean',
@@ -428,7 +423,6 @@ new AssetGraph({root: rootUrl})
         minify: commandLineOptions.minify,
         noCompress: commandLineOptions.nocompress,
         pretty: commandLineOptions.pretty,
-        removeDeadIfs: commandLineOptions.removedeadifs,
         sharedBundles: commandLineOptions.sharedbundles,
         stripDebug: !commandLineOptions.debug,
         addInitialHtmlExtension: commandLineOptions.addinitialhtmlextension,
