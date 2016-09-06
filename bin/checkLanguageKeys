@@ -86,7 +86,7 @@ new AssetGraph({root: rootUrl})
     .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
     .loadAssets(inputUrls)
     .populate({from: {type: 'Html'}, followRelations: {type: 'HtmlScript', to: {url: /^file:/}}})
-    .bundleSystemJs({ sourceMaps: true })
+    .bundleSystemJs({ sourceMaps: true, conditions: { 'locale.js': defaultLocaleId, 'locale': defaultLocaleId } })
     .bundleRequireJs({ sourceMaps: true })
     .populate({
         followRelations: query.or(
