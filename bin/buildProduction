@@ -149,6 +149,10 @@ var chalk = require('chalk'),
             describe: '--condition name[=value] will be passed to System.js builder and used in #{...} interpolations (as described on http://jspm.io/0.17-beta-guide/conditional-interpolation.html). Can be repeated.',
             type: 'string'
         })
+        .options('splitcondition', {
+            describe: '--splitcondition name will create a separate .html file for each condition value. Can be repeated.',
+            type: 'string'
+        })
         .options('inline', {
             describe: 'Set size threshold for inlining. Supported values: false (never inline), true (always inline, except when found inside @media queries), number (inline if target is smaller than this number of bytes). Also supported: --inlinehtmlscript true, --inlinecssimage 8192 etc.',
             default: false
@@ -342,11 +346,19 @@ var defines = {};
     }
 });
 
+var splitConditions = commandLineOptions.splitcondition && _.flatten(_.flatten([commandLineOptions.splitcondition]).map(function (name) {
+    return name.split(',');
+}));
 var conditions = {};
 (commandLineOptions.condition ? _.flatten(_.flatten([commandLineOptions.condition])) : []).forEach(function (condition) {
-    var matchConditional = condition.match(/^([^=]+)=(.*)$/);
-    if (matchConditional) {
-        conditions[matchConditional[1]] = matchConditional[2];
+    var matchCondition = condition.match(/^([^=]+)=(.*)?$/);
+    if (matchCondition) {
+        var value = matchCondition[2];
+        if (value.indexOf(',') !== -1) {
+            // Array of values to trace
+            value = value.split(',');
+        }
+        conditions[matchCondition[1]] = value;
     } else {
         console.error('Invalid --condition ' + condition);
         process.exit(1);
@@ -407,6 +419,7 @@ new AssetGraph({root: rootUrl})
         noFileRev: commandLineOptions.nofilerev,
         defines: defines,
         conditions: conditions,
+        splitConditions: splitConditions,
         reservedNames: reservedNames,
         localeIds: localeIds,
         localeCookieName: commandLineOptions.localecookiename,
