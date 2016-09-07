@@ -1,0 +1,8 @@
+body:before {
+    display: block;
+    z-index: 99999999;
+    white-space: pre;
+    font-size: 100px;
+    color: black;
+    content: '☹';
+}
