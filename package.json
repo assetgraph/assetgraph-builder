@@ -49,7 +49,7 @@
     "escodegen": "^1.8.0",
     "esmangle": "^1.0.1",
     "estraverse": "^4.2.0",
-    "express-processimage": "5.12.0",
+    "express-processimage": "6.0.0",
     "extend": "^3.0.0",
     "jpegtran": "1.0.4",
     "lodash": "^4.14.1",
