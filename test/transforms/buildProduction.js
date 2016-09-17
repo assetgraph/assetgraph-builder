@@ -1125,4 +1125,76 @@ describe('buildProduction', function () {
             });
         });
     });
+
+    describe('with a JavaScript service worker registration', function () {
+        it('should keep the service worker unbundled', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/serviceWorker/'})
+                .loadAssets('javascriptregistration.html')
+                .populate()
+                .buildProduction()
+                .queue(function (assetGraph) {
+                    expect(assetGraph, 'to contain assets', 'JavaScript', 2);
+                });
+        });
+
+        it('should keep the service worker file name', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/serviceWorker/'})
+                .loadAssets('javascriptregistration.html')
+                .populate()
+                .buildProduction()
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets(), 'to satisfy', [
+                        {
+                            type: 'Html',
+                            fileName: 'javascriptregistration.html'
+                        },
+                        {
+                            type: 'JavaScript',
+                            fileName: 'service-worker.js',
+                            isInline: false
+                        },
+                        {
+                            type: 'JavaScript',
+                            isInline: true
+                        }
+                    ]);
+                });
+        });
+    });
+
+    describe('with a Html service worker registration', function () {
+        it('should keep the service worker unbundled', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/serviceWorker/'})
+                .loadAssets('htmlregistration.html')
+                .populate()
+                .buildProduction()
+                .queue(function (assetGraph) {
+                    expect(assetGraph, 'to contain assets', 'JavaScript', 2);
+                });
+        });
+
+        it('should keep the service worker unbundled', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/serviceWorker/'})
+                .loadAssets('htmlregistration.html')
+                .populate()
+                .buildProduction()
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets(), 'to satisfy', [
+                        {
+                            type: 'Html',
+                            fileName: 'htmlregistration.html'
+                        },
+                        {
+                            type: 'JavaScript',
+                            fileName: 'service-worker.js',
+                            isInline: false
+                        },
+                        {
+                            type: 'JavaScript',
+                            isInline: true
+                        }
+                    ]);
+                });
+        });
+    });
 });
