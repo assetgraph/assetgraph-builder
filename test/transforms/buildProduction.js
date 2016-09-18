@@ -1008,8 +1008,8 @@ describe('buildProduction', function () {
                             expect(assetGraph.findAssets({type: 'ContentSecurityPolicy'}), 'to satisfy', [
                                 {
                                     parseTree: expect.it('to equal', {
-                                        styleSrc: ['\'self\'', 'my.cdn.com'],
-                                        scriptSrc: ['\'self\'', 'my.cdn.com']
+                                        styleSrc: ['\'self\'', 'http://my.cdn.com/styles.399c62e85c.css'],
+                                        scriptSrc: ['\'self\'', 'http://my.cdn.com/script.af5c77b360.js']
                                     })
                                 }
                             ]);
