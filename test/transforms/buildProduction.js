@@ -1086,6 +1086,21 @@ describe('buildProduction', function () {
                     });
             });
         });
+
+        it('should pick up a non-CSS conditional asset from the asset list', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/systemJsConditionals/conditionalTemplate/'})
+                .loadAssets('index.html')
+                .populate()
+                .buildProduction({
+                    splitConditions: ['weather.js']
+                })
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets({fileName: 'index.sunny.html'})[0].text, 'to contain', '<script type=text/html id=foo-sunny')
+                        .and('not to contain', 'rainy');
+                    expect(assetGraph.findAssets({fileName: 'index.rainy.html'})[0].text, 'to contain', '<script type=text/html id=foo-rainy')
+                        .and('not to contain', 'sunny');
+                });
+        });
     });
 
     describe('with a #{locale.js} conditional', function () {
