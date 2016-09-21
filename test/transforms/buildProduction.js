@@ -13,9 +13,8 @@ var expect = require('../unexpected-with-plugins'),
     AssetGraph = require('../../lib/AssetGraph');
 
 describe('buildProduction', function () {
-    it('should handle a simple test case', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/simple/'})
-            .on('error', done)
+    it('should handle a simple test case', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/simple/'})
             .loadAssets('index.html')
             .buildProduction({
                 quiet: true,
@@ -23,9 +22,6 @@ describe('buildProduction', function () {
                 optimizeImages: true, // Test it
                 inlineSize: true, // Test it
                 mangleTopLevel: false, // Test it
-                localeIds: ['da', 'en'],
-                localeCookieName: 'myLocaleCookie', // Test it
-                defaultLocaleId: 'da', // Test it
                 manifest: true, // Test it
                 negotiateManifest: true, // Test it
                 asyncScripts: true, // Test it
@@ -34,28 +30,15 @@ describe('buildProduction', function () {
                 prettyPrint: false // Test it
             })
             .queue(function (assetGraph) {
-                expect(assetGraph, 'to contain assets', {type: 'Html', isInline: false}, 2);
-
-                var htmlAssets = assetGraph.findAssets({type: 'Html', url: /\/index\.da\.html$/});
-                expect(htmlAssets, 'to have length', 1);
-                var htmlAsset = htmlAssets[0];
-                expect(htmlAsset.parseTree.documentElement.getAttribute('lang'), 'to equal', 'da');
-                expect(htmlAsset.parseTree.title, 'to equal', 'Den danske titel');
-
-                htmlAssets = assetGraph.findAssets({type: 'Html', url: /\/index\.en\.html$/});
-                expect(htmlAssets, 'to have length', 1);
-                htmlAsset = htmlAssets[0];
-                expect(htmlAsset.parseTree.documentElement.getAttribute('lang'), 'to equal', 'en');
-                expect(htmlAsset.parseTree.title, 'to equal', 'The English title');
+                expect(assetGraph, 'to contain assets', {type: 'Html', isInline: false}, 1);
 
                 assetGraph.findAssets({type: 'Html', isInline: false}).forEach(function (htmlAsset) {
                     expect(htmlAsset.parseTree.querySelectorAll('html[data-version="The version number"]'), 'to have length', 1);
                 });
 
-                expect(assetGraph, 'to contain relations', {type: 'HtmlScript', from: {url: /\/index\.en\.html$/}}, 2);
+                expect(assetGraph, 'to contain relations', {type: 'HtmlScript', from: {fileName: 'index.html'}}, 2);
 
-                expect(assetGraph.findAssets({url: /\/index\.en\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" lang=en manifest=index.appcache><head><title>The English title</title><style>body div{width:100px}body{color:teal;color:maroon}</style><style>body{color:tan}</style></head><body><script src=' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.en\.html$/}})[0].to.url + ' async defer crossorigin=anonymous></script><script>alert("script3");</script></body></html>');
-                expect(assetGraph.findAssets({url: /\/index\.da\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" lang=da manifest=index.appcache><head><title>Den danske titel</title><style>body div{width:100px}body{color:teal;color:maroon}</style><style>body{color:tan}</style></head><body><script src=' + assetGraph.findRelations({type: 'HtmlScript', from: {url: /\/index\.da\.html$/}})[0].to.url + ' async defer crossorigin=anonymous></script><script>alert("script3");</script></body></html>');
+                expect(assetGraph.findAssets({fileName: 'index.html'})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" manifest=index.appcache><head><title>The fancy title</title><style>body div{width:100px}body{color:teal;color:maroon}</style><style>body{color:tan}</style></head><body><script src=' + assetGraph.findRelations({type: 'HtmlScript', from: {fileName: 'index.html'}})[0].to.url + ' async defer crossorigin=anonymous></script><script>alert("script3");</script></body></html>');
 
                 // someTextFile.txt should be found at /static/someTextFile.c7429a1035.txt (not on the CDN)
                 expect(assetGraph, 'to contain assets', {url: /\/static\/someTextFile.c7429a1035\.txt$/}, 1);
@@ -77,8 +60,7 @@ describe('buildProduction', function () {
                         ''
                     ]);
                 });
-            })
-            .run(done);
+            });
     });
 
     it('should handle a test case with two stylesheets that @import the same stylesheet (assetgraph issue #82)', function (done) {
@@ -143,26 +125,6 @@ describe('buildProduction', function () {
                     readStream.emit('end');
                 });
             });
-    });
-
-    it('should handle a test case with a SSI in the document title', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/ssi/'})
-            .on('error', done)
-            .loadAssets('index.html')
-            .buildProduction({
-                version: false,
-                localeIds: ['da', 'en']
-            })
-            .queue(function (assetGraph) {
-                expect(assetGraph, 'to contain assets', {type: 'Html'}, 2);
-
-                var htmlAssets = assetGraph.findAssets({type: 'Html', url: /\/index\.da\.html$/});
-                expect(htmlAssets, 'to have length', 1);
-                var htmlAsset = htmlAssets[0];
-                expect(htmlAsset.parseTree.documentElement.getAttribute('lang'), 'to equal', 'da');
-                expect(htmlAsset.text, 'to equal', '<!DOCTYPE html><html lang=da><head></head><body><div>Ja, <!--#echo "exactly" --> sådan</div><div><!--#echo "Here" --> er tingen</div></body></html>');
-            })
-            .run(done);
     });
 
     it('should handle a test case with Html fragments as initial assets', function () {
@@ -692,22 +654,6 @@ describe('buildProduction', function () {
             .run(done);
     });
 
-    it('should handle a test case with an I18n asset being referenced from a script with an id of "bootstrapper"', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/bootstrapperI18n/'})
-            .loadAssets(['index.html'])
-            .populate()
-            .buildProduction({version: false, localeIds: ['da', 'en']})
-            .queue(function (assetGraph) {
-                expect(assetGraph, 'to contain asset', {fileName: 'index.da.html'});
-                expect(assetGraph, 'to contain asset', {fileName: 'index.en.html'});
-
-                expect(assetGraph.findAssets({fileName: 'index.en.html'})[0].text, 'to contain', '<title>The title</title>');
-                expect(assetGraph.findAssets({fileName: 'index.da.html'})[0].text, 'to contain', '<title>Titelen</title>');
-
-            })
-            .run(done);
-    });
-
     it('should keep identical inline styles in svg files inlined', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/svgsWithIdenticalInlineStyle/'})
             .loadAssets(['*.svg'])
@@ -1059,23 +1005,24 @@ describe('buildProduction', function () {
                 .loadAssets({
                     type: 'Html',
                     url: 'http://example.com/foo.html',
-                    text: '<!DOCTYPE html><html><body><div data-bind="text: TR(\'key\', {one: 12345, other: 23456})"></div></body></html>'
+                    text: '<!DOCTYPE html><html><body><div data-bind="click: function () {console.log(\'click\')}"></div></body></html>'
                 })
-                .buildProduction({localeIds: ['en_us'], noCompress: false})
+                .buildProduction({localeIds: ['en_us'], noCompress: false, stripDebug: true})
                 .queue(function (assetGraph) {
-                    expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to contain', 'data-bind=text:{one:12345,other:23456}');
+                    expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to contain', 'data-bind=click:function(){;}');
                 });
         });
     });
 
     describe('with a #{locale} conditional', function () {
         describe('without a value provided up front', function () {
-            it('should attach the correct locale bundles to the pages in the cloneForEachLocale step', function () {
+            it('should attach the correct locale bundles to the pages in the cloneForEachConditionValue step', function () {
                 return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/systemJsConditionals/locale/'})
                     .loadAssets('index.html')
                     .populate()
                     .buildProduction({
-                        localeIds: ['en_us', 'da'],
+                        conditions: { locale: ['en_us', 'da'] },
+                        splitConditions: ['locale'],
                         inlineByRelationType: {'*': true}
                     })
                     .queue(function (assetGraph) {
@@ -1105,12 +1052,13 @@ describe('buildProduction', function () {
 
     describe('with a #{locale.js} conditional', function () {
         describe('without a value provided up front', function () {
-            it('should attach the correct locale bundles to the pages in the cloneForEachLocale step', function () {
+            it('should attach the correct locale bundles to the pages in the cloneForEachConditionValue step', function () {
                 return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/systemJsConditionals/localeJs/'})
                     .loadAssets('index.html')
                     .populate()
                     .buildProduction({
-                        localeIds: ['en_us', 'da'],
+                        conditions: { locale: ['en_us', 'da'] },
+                        splitConditions: ['locale'],
                         inlineByRelationType: {'*': true}
                     })
                     .queue(function (assetGraph) {
@@ -1123,12 +1071,13 @@ describe('buildProduction', function () {
         });
 
         describe('pointing at a stylesheet', function () {
-            it('should attach the correct stylesheet to the pages in the cloneForEachLocale step', function () {
+            it('should attach the correct stylesheet to the pages in the cloneForEachConditionValue step', function () {
                 return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/systemJsConditionals/stylesheet/'})
                     .loadAssets('index.html')
                     .populate()
                     .buildProduction({
-                        localeIds: ['en_us', 'da'],
+                        conditions: { locale: ['en_us', 'da'] },
+                        splitConditions: ['locale'],
                         inlineByRelationType: {'*': true}
                     })
                     .queue(function (assetGraph) {
