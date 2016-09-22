@@ -323,8 +323,8 @@ They work in JavaScript too:
 ```js
 var img = document.querySelector('.responsive-image');
 img.setAttribute('srcset',
-  GETSTATICURL('baz.gif') + ' 500w, ' +
-  GETSTATICURL('baz.gif?resize=300') + ' 300w');
+  'baz.gif'.toString('url') + ' 500w, ' +
+  'baz.gif?resize=300'.toString('url') + ' 300w');
 picturefill({ elements: [img] }); // reload if you're using Picturefill
 ```
 
