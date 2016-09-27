@@ -12,6 +12,12 @@ var chalk = require('chalk'),
             type: 'boolean',
             default: false
         })
+        .options('plugin', {
+            alias: 'p',
+            describe: 'Install a plugin. Must be a require-able, eg. assetgraph-i18n. Can be repeated.',
+            type: 'string',
+            default: false
+        })
         .options('root', {
             describe: 'Path to your web root (will be deduced from your input files if not specified)',
             type: 'string',
@@ -177,31 +183,12 @@ var chalk = require('chalk'),
             type: 'boolean',
             default: false
         })
-        .options('locales', {
-            describe: 'Comma-separated list of locales to build seperate versions for',
-            type: 'string',
-            demand: false
-        })
-        .options('defaultlocale', {
-            describe: 'The locale of the default value in TR statements and tags with a data-i18n attribute',
-            type: 'string',
-            default: 'en'
-        })
-        .options('localecookiename', {
-            describe: 'The name of your locale cookie (exposed as LOCALECOOKIENAME)',
-            type: 'string',
-            default: 'en'
-        })
         .options('repl', {
             describe: 'Start the REPL after a particular transform (or "error")',
             type: 'string'
         })
         .options('sweep', {
             describe: 'Experimental: Free up memory by cleaning up relations and assets after they have been removed from the graph',
-            type: 'boolean'
-        })
-        .options('angular', {
-            describe: 'Enable Angular.js specific annotations and template inlining',
             type: 'boolean'
         });
 
@@ -268,7 +255,6 @@ if (commandLineOptions.cdnoutroot) {
 
 var _ = require('lodash'),
     AssetGraph = require('../lib/AssetGraph'),
-    i18nTools = require('../lib/i18nTools'),
     query = AssetGraph.query,
     urlTools = require('urltools'),
     outRoot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
@@ -276,13 +262,10 @@ var _ = require('lodash'),
     fullCdnRoot = (/^\/\//.test(cdnRoot) ? 'http:' : '') + cdnRoot,
     canonicalUrl = commandLineOptions.canonicalurl && urlTools.ensureTrailingSlash(commandLineOptions.canonicalurl),
     rootUrl = commandLineOptions.root && urlTools.urlOrFsPathToUrl(commandLineOptions.root, true),
-    localeIds = commandLineOptions.locales && _.flatten(_.flatten([commandLineOptions.locales]).map(function (localeId) {
-        return localeId.split(',');
-    })).map(i18nTools.normalizeLocaleId),
     reservedNames = commandLineOptions.reservednames && _.flatten(_.flatten([commandLineOptions.reservednames]).map(function (reservedName) {
         return reservedName.split(',');
     })),
-    defaultLocaleId = commandLineOptions.defaultlocale && i18nTools.normalizeLocaleId(commandLineOptions.defaultlocale),
+    plugins = commandLineOptions.plugin ? _.flatten(_.flatten([commandLineOptions.plugin])) : [],
     inputUrls,
     inlineByRelationType = {};
 
@@ -384,8 +367,46 @@ if (commandLineOptions._.length > 0) {
     throw new Error('No input files and no --root specified (or it isn\'t file:), cannot proceed');
 }
 
+var buildProductionOptions = {
+    version: commandLineOptions.version,
+    browsers: browsers,
+    sourceMaps: commandLineOptions.sourcemaps,
+    sourcesContent: commandLineOptions.sourcescontent,
+    contentSecurityPolicy: commandLineOptions.contentsecuritypolicy,
+    subResourceIntegrity: commandLineOptions.subresourceintegrity,
+    optimizeImages: commandLineOptions.optimizeimages,
+    inlineByRelationType: inlineByRelationType,
+    gzip: commandLineOptions.gzip,
+    noFileRev: commandLineOptions.nofilerev,
+    defines: defines,
+    conditions: conditions,
+    splitConditions: splitConditions,
+    reservedNames: reservedNames,
+    localeCookieName: commandLineOptions.localecookiename,
+    manifest: commandLineOptions.manifest,
+    negotiateManifest: commandLineOptions.negotiatemanifest,
+    asyncScripts: commandLineOptions.asyncscripts,
+    deferScripts: commandLineOptions.deferscripts,
+    cdnRoot: cdnRoot,
+    recursive: commandLineOptions.recursive,
+    cdnFlash: !commandLineOptions.nocdnflash,
+    cdnHtml: commandLineOptions.cdnhtml,
+    svgo: commandLineOptions.svgo,
+    minify: commandLineOptions.minify,
+    noCompress: commandLineOptions.nocompress,
+    pretty: commandLineOptions.pretty,
+    sharedBundles: commandLineOptions.sharedbundles,
+    stripDebug: !commandLineOptions.debug,
+    addInitialHtmlExtension: commandLineOptions.addinitialhtmlextension,
+    canonicalUrl: canonicalUrl,
+    javaScriptSerializationOptions: javaScriptSerializationOptions
+};
+
 new AssetGraph({root: rootUrl})
     .queue(function (assetGraph) {
+        plugins.forEach(function (plugin) {
+            require(plugin)(assetGraph, buildProductionOptions, commandLineOptions);
+        });
         if (commandLineOptions.sweep) {
             assetGraph.on('removeAsset', function (asset) {
                 setImmediate(function () {
@@ -406,43 +427,7 @@ new AssetGraph({root: rootUrl})
     })
     .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
     .loadAssets(inputUrls)
-    .buildProduction({
-        version: commandLineOptions.version,
-        browsers: browsers,
-        sourceMaps: commandLineOptions.sourcemaps,
-        sourcesContent: commandLineOptions.sourcescontent,
-        contentSecurityPolicy: commandLineOptions.contentsecuritypolicy,
-        subResourceIntegrity: commandLineOptions.subresourceintegrity,
-        optimizeImages: commandLineOptions.optimizeimages,
-        inlineByRelationType: inlineByRelationType,
-        gzip: commandLineOptions.gzip,
-        noFileRev: commandLineOptions.nofilerev,
-        defines: defines,
-        conditions: conditions,
-        splitConditions: splitConditions,
-        reservedNames: reservedNames,
-        localeIds: localeIds,
-        localeCookieName: commandLineOptions.localecookiename,
-        defaultLocaleId: defaultLocaleId,
-        manifest: commandLineOptions.manifest,
-        negotiateManifest: commandLineOptions.negotiatemanifest,
-        asyncScripts: commandLineOptions.asyncscripts,
-        deferScripts: commandLineOptions.deferscripts,
-        cdnRoot: cdnRoot,
-        recursive: commandLineOptions.recursive,
-        cdnFlash: !commandLineOptions.nocdnflash,
-        cdnHtml: commandLineOptions.cdnhtml,
-        svgo: commandLineOptions.svgo,
-        minify: commandLineOptions.minify,
-        noCompress: commandLineOptions.nocompress,
-        pretty: commandLineOptions.pretty,
-        sharedBundles: commandLineOptions.sharedbundles,
-        stripDebug: !commandLineOptions.debug,
-        addInitialHtmlExtension: commandLineOptions.addinitialhtmlextension,
-        canonicalUrl: canonicalUrl,
-        javaScriptSerializationOptions: javaScriptSerializationOptions,
-        angular: commandLineOptions.angular
-    })
+    .buildProduction(buildProductionOptions)
     .writeAssetsToDisc({url: canonicalUrl ? query.createPrefixMatcher(canonicalUrl) : /^file:/, isLoaded: true}, outRoot, canonicalUrl)
     .if(cdnRoot)
         .writeAssetsToDisc({url: query.createPrefixMatcher(fullCdnRoot), isLoaded: true}, outRoot + 'static/cdn/', fullCdnRoot)

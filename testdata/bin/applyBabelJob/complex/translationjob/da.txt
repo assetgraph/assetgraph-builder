@@ -1,7 +1,0 @@
-foo=FooOversat
-bar=BarOversat
-placeholders=Denne oversatte nøgle har {0} pladsholdere
-WeirdlyFormattedKey=der kommer uændret retur i oversættelsesjobbet
-ComplexKey[that]=også kommer
-ComplexKey[back]=det samme
-KeyInSomeOtherI18nFile=Jubii
