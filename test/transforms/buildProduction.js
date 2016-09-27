@@ -643,8 +643,8 @@ describe('buildProduction', function () {
                 expect(assetGraph, 'to contain asset', {url: assetGraph.root + 'humans.txt'});
                 expect(assetGraph, 'to contain asset', {url: assetGraph.root + '.htaccess'});
                 expect(assetGraph, 'to contain asset', {url: assetGraph.root + 'favicon.ico'});
-                expect(assetGraph, 'to contain asset', {url: assetGraph.root + 'static/favicon.9f0922f8d9.ico'});
-                expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to equal', '<!DOCTYPE html><html><head><link rel=author href=humans.txt type=text/plain><link rel=icon href=static/favicon.9f0922f8d9.ico type=image/x-icon></head><body>Here\'s my <a href=.htaccess>.htaccess file</a>, grab it if you can! If you\'re a robot, please refer to <a href=robots.txt>robots.txt</a>.</body></html>');
+                expect(assetGraph, 'to contain asset', {url: assetGraph.root + 'static/favicon.copy.9f0922f8d9.ico'});
+                expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to equal', '<!DOCTYPE html><html><head><link rel=author href=humans.txt type=text/plain><link rel=icon href=static/favicon.copy.9f0922f8d9.ico type=image/x-icon></head><body>Here\'s my <a href=.htaccess>.htaccess file</a>, grab it if you can! If you\'re a robot, please refer to <a href=robots.txt>robots.txt</a>.</body></html>');
             })
             .run(done);
     });
@@ -938,7 +938,7 @@ describe('buildProduction', function () {
             })
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', 'Css');
-                expect(assetGraph.findAssets({ type: 'Css' })[0].text, 'to contain', 'sourceMappingURL=foo.8f6b70eaf4.map');
+                expect(assetGraph.findAssets({ type: 'Css' })[0].text, 'to contain', 'sourceMappingURL=foo.css.8f6b70eaf4.map');
                 expect(assetGraph, 'to contain asset', 'SourceMap');
                 expect(assetGraph.findAssets({ type: 'SourceMap' })[0].parseTree.sources, 'to contain', '/foo.less');
             });
