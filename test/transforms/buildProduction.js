@@ -1212,4 +1212,17 @@ describe('buildProduction', function () {
                 });
         });
     });
+
+    it('should keep everything before the (last) extension when moving to the static folder', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/fileNamesWithDots/'})
+            .loadAssets('index.html')
+            .populate()
+            .buildProduction({
+                inlineByRelationType: {'*': false}
+            })
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', {fileName: /^script\.with\.dots\.[a-f0-9]+\.js$/})
+                    .and('to contain asset', {fileName: /^style\.sheet\.with\.dots\.[a-f0-9]+\.css$/});
+            });
+    });
 });
