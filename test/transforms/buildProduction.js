@@ -1174,4 +1174,36 @@ describe('buildProduction', function () {
                     .and('to contain asset', {fileName: /^style\.sheet\.with\.dots\.[a-f0-9]+\.css$/});
             });
     });
+
+    it('should add a .css extension to transpiled assets', function () {
+        return new AssetGraph({root: __dirname  })
+            .loadAssets(new AssetGraph.Html({
+                url: 'file://' + __dirname + '/index.html',
+                text:
+                    '<!DOCTYPE html>' +
+                    '<html><head>' +
+                    '<link rel="stylesheet" nobundle href="styles.less">' +
+                    '<link rel="stylesheet" nobundle href="styles.scss?qs">' +
+                    '<link rel="stylesheet" nobundle href="styles.stylus">' +
+                    '</head></body></html>'
+            }), new AssetGraph.Css({
+                url: 'file://' + __dirname + '/styles.less',
+                text: 'body { color: red; }'
+            }), new AssetGraph.Css({
+                url: 'file://' + __dirname + '/styles.scss?qs',
+                text: 'body { color: blue; }'
+            }), new AssetGraph.Css({
+                url: 'file://' + __dirname + '/styles.stylus',
+                text: 'body { color: green; }'
+            }))
+            .populate()
+            .buildProduction({
+                inlineByRelationType: {'*': false}
+            })
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', {fileName: 'styles.less.css'})
+                    .and('to contain asset', {fileName: 'styles.scss.css', url: /\?qs$/})
+                    .and('to contain asset', {fileName: 'styles.stylus.css'});
+            });
+    });
 });
