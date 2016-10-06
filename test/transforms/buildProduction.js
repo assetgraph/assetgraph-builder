@@ -1206,4 +1206,18 @@ describe('buildProduction', function () {
                     .and('to contain asset', {fileName: 'styles.stylus.css'});
             });
     });
+
+    it('should not issue absolute file:// urls when pointing back into assetGraph.root from assets put on a CDN', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/systemJsAssetPlugin/'})
+            .loadAssets('index.html')
+            .populate()
+            .buildProduction({
+                inlineByRelationType: {'*': false},
+                cdnRoot: '//example.com/'
+            })
+            .queue(function (assetGraph) {
+                expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'not to contain', assetGraph.root);
+            });
+
+    });
 });
