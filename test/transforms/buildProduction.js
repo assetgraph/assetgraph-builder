@@ -935,7 +935,12 @@ describe('buildProduction', function () {
                 return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/'})
                     .loadAssets('index.html')
                     .populate()
-                    .buildProduction({contentSecurityPolicy: true, inlineByRelationType: {CssImage: true}})
+                    .buildProduction({
+                        contentSecurityPolicy: true,
+                        inlineByRelationType: {CssImage: true},
+                        // Prevent a non-inlined copy to be preserved in a stylesheet referenced from a conditional comment:
+                        browsers: [ 'ie > 9' ]
+                    })
                     .queue(function (assetGraph) {
                         expect(assetGraph, 'to contain asset', {type: 'Png', isInline: true});
                         expect(assetGraph.findAssets({type: 'ContentSecurityPolicy'})[0].parseTree, 'to satisfy', {
@@ -955,7 +960,8 @@ describe('buildProduction', function () {
                                 {
                                     parseTree: expect.it('to equal', {
                                         styleSrc: ['\'self\'', 'http://my.cdn.com/styles.399c62e85c.css'],
-                                        scriptSrc: ['\'self\'', 'http://my.cdn.com/script.af5c77b360.js']
+                                        scriptSrc: ['\'self\'', 'http://my.cdn.com/script.af5c77b360.js'],
+                                        imgSrc: ['my.cdn.com']
                                     })
                                 }
                             ]);
