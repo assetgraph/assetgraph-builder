@@ -95,6 +95,7 @@ Or on OS X, with [homebrew](http://brew.sh/):
 
 ```
 brew install cairo jpeg giflib optipng pngcrush pngquant pango graphicsmagick jpeg-turbo homebrew/gui/inkscape
+brew install homebrew/science/vips --with-webp --with-graphicsmagick
 export PKG_CONFIG_PATH=/opt/X11/lib/pkgconfig
 ```
 
