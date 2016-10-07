@@ -48,11 +48,9 @@ Features
    href="https://github.com/mishoo/UglifyJS">UglifyJS</a> and <a
    href="https://github.com/jbleuzen/node-cssmin">cssmin</a>, and <a
    href="https://github.com/tmpvar/jsdom">jsdom</a>).
- * Supports require.js `define` and `require` statements, rolls up the
-   dependency graph like <a
+ * Supports the <a
    href="http://requirejs.org/docs/optimization.html">the require.js
-   optimizer</a> does (still missing some features though). Understands
-   the require.js config options `baseUrl` and `paths`.
+   optimizer</a> and <a href="https://github.com/systemjs/builder">systemjs-builder</a>.
  * Sprites background images (see <a
    href="https://github.com/One-com/assetgraph-sprite">assetgraph-sprite</a>).
  * Inlines CSS `background-image`s less than 8192 bytes and provides an
@@ -70,13 +68,10 @@ Features
  * Updates an existing Content-Security-Policy meta tag to reflect the
    changes that happened during the build procedure, including hashing
    of inline scripts and stylesheets.
- * Supports internationalization of HTML, JavaScript, SVG, and Knockout.js
-   templates (support for more template formats will be added on demand).
  * Very customizable, the entire build script is only around 100 lines
    of code due to the reliance on high level <a
    href="https://github.com/One-com/assetgraph">AssetGraph</a>
    transforms.
- * Angular annotations with [ng-annotate](https://github.com/olov/ng-annotate) and angular template inlining.
  * Automatically adds `rel="noopener"` to cross domain anchors opening in new windows ([The performance benefits of rel=noopener](https://jakearchibald.com/2016/performance-benefits-of-rel-noopener/))
 
 
@@ -181,34 +176,6 @@ The value should be the path to `almond.js` like so:
 ```
 
 When you do this you should not use require as an external script loader, since almond does not support this.
-
-
-Working with Sass (.scss) assets
---------------------------------
-Assetgraph will compile your sass assets to CSS, but only if you link in your `.scss`-files like this:
-
-``` html
-<link rel="stylesheet" type="text/css" href="path/to/stylesheet.scss">
-```
-
-Or using a requirejs css plugin:
-
-``` javascript
-// RequireJS AMD syntax
-define(['css!path/to/stylesheet.scss'], function () {
-  // Your code here
-})
-
-// RequireJS CommonJS compatible syntax
-define(function (require) {
-  require('css!path/to/stylesheet.scss');
-
-  // Your code here
-})
-```
-
-In order to make this work for you in development you can use [livestyle](https://github.com/One-com/livestyle/) as a static webserver.
-It will automatically convert the sass files in the HTTP stream, making your page work out of the box with no configuration.
 
 
 Working with a Content Security Policy
