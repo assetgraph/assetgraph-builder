@@ -28,13 +28,13 @@ var chalk = require('chalk'),
             type: 'string',
             demand: true
         })
-        .options('cdnroot', {
-            describe: 'URI root where the static assets will be deployed. Must be either an absolute or a protocol-relative url',
+        .options('canonicalroot', {
+            describe: 'URI root where the site will be deployed. Must be either an absolute or a protocol-relative url',
             type: 'string',
             demand: false
         })
-        .options('canonicalurl', {
-            describe: 'URI root where the project being built will be deployed (experimental)',
+        .options('cdnroot', {
+            describe: 'URI root where the static assets will be deployed. Must be either an absolute or a protocol-relative url',
             type: 'string',
             demand: false
         })
@@ -248,6 +248,12 @@ if (commandLineOptions.cdnoutroot) {
     console.warn(chalk.yellow('INFO: the --cdnoutroot switch is deprecated. Default location for your cdn assets is now <outroot>/static/cdn'));
 }
 
+// Temporary deprecation message
+if (commandLineOptions.canonicalurl) {
+    console.warn(chalk.red('INFO: the --canonicalurl switch is deprecated. Please use --canonicalroot for the same effect plus more features'));
+    process.exit(1);
+}
+
 var _ = require('lodash'),
     AssetGraph = require('../lib/AssetGraph'),
     query = AssetGraph.query,
@@ -255,7 +261,6 @@ var _ = require('lodash'),
     outRoot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
     cdnRoot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
     fullCdnRoot = (/^\/\//.test(cdnRoot) ? 'http:' : '') + cdnRoot,
-    canonicalUrl = commandLineOptions.canonicalurl && urlTools.ensureTrailingSlash(commandLineOptions.canonicalurl),
     rootUrl = commandLineOptions.root && urlTools.urlOrFsPathToUrl(commandLineOptions.root, true),
     reservedNames = commandLineOptions.reservednames && _.flatten(_.flatten([commandLineOptions.reservednames]).map(function (reservedName) {
         return reservedName.split(',');
@@ -392,11 +397,13 @@ var buildProductionOptions = {
     sharedBundles: commandLineOptions.sharedbundles,
     stripDebug: !commandLineOptions.debug,
     addInitialHtmlExtension: commandLineOptions.addinitialhtmlextension,
-    canonicalUrl: canonicalUrl,
     javaScriptSerializationOptions: javaScriptSerializationOptions
 };
 
-new AssetGraph({root: rootUrl})
+new AssetGraph({
+        root: rootUrl,
+        canonicalRoot: commandLineOptions.canonicalroot
+    })
     .queue(function (assetGraph) {
         plugins.forEach(function (plugin) {
             require(plugin)(assetGraph, buildProductionOptions, commandLineOptions);
@@ -422,7 +429,7 @@ new AssetGraph({root: rootUrl})
     .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
     .loadAssets(inputUrls)
     .buildProduction(buildProductionOptions)
-    .writeAssetsToDisc({url: canonicalUrl ? query.createPrefixMatcher(canonicalUrl) : /^file:/, isLoaded: true}, outRoot, canonicalUrl)
+    .writeAssetsToDisc({url: /^file:/, isLoaded: true}, outRoot)
     .if(cdnRoot)
         .writeAssetsToDisc({url: query.createPrefixMatcher(fullCdnRoot), isLoaded: true}, outRoot + 'static/cdn/', fullCdnRoot)
     .endif()
