@@ -636,19 +636,37 @@ describe('buildProduction', function () {
     });
 
     it('should handle a test case with an RSS feed (#118)', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/rss/'})
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/rss/', canonicalRoot: 'http://www.someexamplerssdomain.com/'})
             .loadAssets(['index.html'])
             .populate()
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', {contentType: 'application/rss+xml', type: 'Rss'});
             })
             .buildProduction({
-                version: false,
-                canonicalUrl: 'http://www.someexamplerssdomain.com/'
+                version: false
             })
             .queue(function (assetGraph) {
-                expect(assetGraph, 'to contain asset', {url: 'http://www.someexamplerssdomain.com/rssFeed.xml'});
-                expect(assetGraph, 'to contain asset', {url: 'http://www.someexamplerssdomain.com/static/foo.d65dd5318f.png'});
+                expect(assetGraph.findRelations(), 'to satisfy', [
+                    {
+                        type: 'HtmlAlternateLink',
+                        href: 'rssFeed.xml',
+                        canonical: false
+                    },
+                    {
+                        type: 'RssChannelLink',
+                        href: 'index.html',
+                        canonical: false
+                    },
+                    {
+                        type: 'XmlHtmlInlineFragment'
+                    },
+                    {
+                        type: 'HtmlImage',
+                        canonical: true,
+                        href: 'http://www.someexamplerssdomain.com/static/foo.d65dd5318f.png'
+                    }
+                ]);
+
                 expect(assetGraph.findAssets({type: 'Rss'})[0].text, 'to equal', '<?xml version="1.0" encoding="UTF-8"?><rss version="2.0">\n<channel>\n <title>RSS Title</title>\n <description>This is an example of an RSS feed</description>\n <link>index.html</link>\n <lastBuildDate>Mon, 06 Sep 2010 00:01:00 +0000 </lastBuildDate>\n <pubDate>Mon, 06 Sep 2009 16:20:00 +0000 </pubDate>\n <ttl>1800</ttl>\n <item>\n  <title>Example entry</title>\n  <description>Here is some text containing an interesting description and an image: &lt;img src=http://www.someexamplerssdomain.com/static/foo.d65dd5318f.png>.</description>\n  <link>http://www.wikipedia.org/</link>\n  <guid>unique string per item</guid>\n  <pubDate>Mon, 06 Sep 2009 16:20:00 +0000 </pubDate>\n </item>\n</channel>\n</rss>');
             })
             .run(done);
