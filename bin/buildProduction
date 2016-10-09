@@ -178,11 +178,6 @@ var chalk = require('chalk'),
             type: 'boolean',
             default: false
         })
-        .options('negotiatemanifest', {
-            describe: 'Removes the locale id from the <html manifest="..."> references so all manifests are assumed to be accessible from the same url. Useful if you want the browser to pick up the right cache manifest and HTML after a locale change (your static file server needs to support content negotiation). Only makes sense when both  --manifest and --locale have been specified',
-            type: 'boolean',
-            default: false
-        })
         .options('repl', {
             describe: 'Start the REPL after a particular transform (or "error")',
             type: 'string'
@@ -384,7 +379,6 @@ var buildProductionOptions = {
     reservedNames: reservedNames,
     localeCookieName: commandLineOptions.localecookiename,
     manifest: commandLineOptions.manifest,
-    negotiateManifest: commandLineOptions.negotiatemanifest,
     asyncScripts: commandLineOptions.asyncscripts,
     deferScripts: commandLineOptions.deferscripts,
     cdnRoot: cdnRoot,

@@ -23,7 +23,6 @@ describe('buildProduction', function () {
                 inlineSize: true, // Test it
                 mangleTopLevel: false, // Test it
                 manifest: true, // Test it
-                negotiateManifest: true, // Test it
                 asyncScripts: true, // Test it
                 deferScripts: true, // Test it
                 cdnRoot: 'http://cdn.example.com/foo/',
