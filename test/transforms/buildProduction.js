@@ -967,22 +967,44 @@ describe('buildProduction', function () {
             });
 
             describe('along with a cdnRoot', function () {
-                it('should add the CDN host name to the relevant sections', function () {
-                    return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/'})
-                        .loadAssets('index.html')
-                        .populate()
-                        .buildProduction({contentSecurityPolicy: true, cdnRoot: '//my.cdn.com/', inlineByRelationType: {}})
-                        .queue(function (assetGraph) {
-                            expect(assetGraph.findAssets({type: 'ContentSecurityPolicy'}), 'to satisfy', [
-                                {
-                                    parseTree: expect.it('to equal', {
-                                        styleSrc: ['\'self\'', 'http://my.cdn.com/styles.399c62e85c.css'],
-                                        scriptSrc: ['\'self\'', 'http://my.cdn.com/script.af5c77b360.js'],
-                                        imgSrc: ['my.cdn.com']
-                                    })
-                                }
-                            ]);
-                        });
+                describe('given as a protocol-relative url', function () {
+                    it('should add the CDN host name to the relevant sections without any scheme', function () {
+                        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/'})
+                            .loadAssets('index.html')
+                            .populate()
+                            .buildProduction({contentSecurityPolicy: true, cdnRoot: '//my.cdn.com/', inlineByRelationType: {}})
+                            .queue(function (assetGraph) {
+                                expect(assetGraph.findAssets({type: 'ContentSecurityPolicy'}), 'to satisfy', [
+                                    {
+                                        parseTree: expect.it('to equal', {
+                                            styleSrc: ['\'self\'', 'my.cdn.com/styles.399c62e85c.css'],
+                                            scriptSrc: ['\'self\'', 'my.cdn.com/script.af5c77b360.js'],
+                                            imgSrc: ['my.cdn.com']
+                                        })
+                                    }
+                                ]);
+                            });
+                    });
+                });
+
+                describe('given as an absolute url', function () {
+                    it('should add the CDN host name and scheme to the relevant section', function () {
+                        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/'})
+                            .loadAssets('index.html')
+                            .populate()
+                            .buildProduction({contentSecurityPolicy: true, cdnRoot: 'https://my.cdn.com/', inlineByRelationType: {}})
+                            .queue(function (assetGraph) {
+                                expect(assetGraph.findAssets({type: 'ContentSecurityPolicy'}), 'to satisfy', [
+                                    {
+                                        parseTree: expect.it('to equal', {
+                                            styleSrc: ['\'self\'', 'https://my.cdn.com/styles.629a1c6071.css'],
+                                            scriptSrc: ['\'self\'', 'https://my.cdn.com/script.af5c77b360.js'],
+                                            imgSrc: ['https://my.cdn.com']
+                                        })
+                                    }
+                                ]);
+                            });
+                    });
                 });
             });
         });
