@@ -134,7 +134,7 @@ var chalk = require('chalk'),
         .options('newline', {
             describe: 'The newline character to use when serializing JavaScript',
             type: 'string',
-            default: '\n'
+            default: ''
         })
         .options('nofilerev', {
             describe: 'Revision files with a hash of their content in their file name for optimal far future caching',
