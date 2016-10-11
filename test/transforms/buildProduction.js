@@ -1279,4 +1279,21 @@ describe('buildProduction', function () {
                 expect(assetGraph.findAssets({type: 'Html'})[0].text, 'not to match', / <\/script>/);
             });
     });
+
+    it('should not leave extraneous whitespace in an inline JavaScript when the "newline" JavaScript serialization option is passed', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/trailingWhitespaceInInlineScript/'})
+            .loadAssets('index.html')
+            .populate({
+                followRelations: {crossorigin: false}
+            })
+            .buildProduction({ version: undefined,
+                sourceMaps: true,
+                contentSecurityPolicy: true,
+                gzip: false,
+                javaScriptSerializationOptions: { newline: '\n' }
+            })
+            .queue(function (assetGraph) {
+                expect(assetGraph.findAssets({type: 'Html'})[0].text, 'not to match', / <\/script>/);
+            });
+    });
 });
