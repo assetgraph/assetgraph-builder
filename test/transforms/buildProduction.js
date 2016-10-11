@@ -966,6 +966,56 @@ describe('buildProduction', function () {
                     });
             });
 
+            describe('when Safari 8 and 9 support is required', function () {
+                it('should whitelist the whole origin of external scripts and stylesheets', function () {
+                    return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/'})
+                        .loadAssets('index.html')
+                        .populate()
+                        .buildProduction({
+                            browsers: 'Safari >= 8',
+                            contentSecurityPolicy: true,
+                            cdnRoot: '//my.cdn.com/',
+                            inlineByRelationType: {}
+                        })
+                        .queue(function (assetGraph) {
+                            expect(assetGraph.findAssets({type: 'ContentSecurityPolicy'}), 'to satisfy', [
+                                {
+                                    parseTree: expect.it('to equal', {
+                                        styleSrc: ['\'self\'', 'my.cdn.com'],
+                                        scriptSrc: ['\'self\'', 'my.cdn.com'],
+                                        imgSrc: ['my.cdn.com']
+                                    })
+                                }
+                            ]);
+                        });
+                });
+            });
+
+            describe('when Safari 8 and 9 support is not required', function () {
+                it('should include the full path when whitelisting external scripts and stylesheets', function () {
+                    return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/'})
+                        .loadAssets('index.html')
+                        .populate()
+                        .buildProduction({
+                            browsers: 'Safari >= 10',
+                            contentSecurityPolicy: true,
+                            cdnRoot: '//my.cdn.com/',
+                            inlineByRelationType: {}
+                        })
+                        .queue(function (assetGraph) {
+                            expect(assetGraph.findAssets({type: 'ContentSecurityPolicy'}), 'to satisfy', [
+                                {
+                                    parseTree: expect.it('to equal', {
+                                        styleSrc: ['\'self\'', 'my.cdn.com/styles.399c62e85c.css'],
+                                        scriptSrc: ['\'self\'', 'my.cdn.com/script.af5c77b360.js'],
+                                        imgSrc: ['my.cdn.com']
+                                    })
+                                }
+                            ]);
+                        });
+                });
+            });
+
             describe('along with a cdnRoot', function () {
                 describe('given as a protocol-relative url', function () {
                     it('should add the CDN host name to the relevant sections without any scheme', function () {
@@ -977,8 +1027,8 @@ describe('buildProduction', function () {
                                 expect(assetGraph.findAssets({type: 'ContentSecurityPolicy'}), 'to satisfy', [
                                     {
                                         parseTree: expect.it('to equal', {
-                                            styleSrc: ['\'self\'', 'my.cdn.com/styles.399c62e85c.css'],
-                                            scriptSrc: ['\'self\'', 'my.cdn.com/script.af5c77b360.js'],
+                                            styleSrc: ['\'self\'', 'my.cdn.com'],
+                                            scriptSrc: ['\'self\'', 'my.cdn.com'],
                                             imgSrc: ['my.cdn.com']
                                         })
                                     }
@@ -997,8 +1047,8 @@ describe('buildProduction', function () {
                                 expect(assetGraph.findAssets({type: 'ContentSecurityPolicy'}), 'to satisfy', [
                                     {
                                         parseTree: expect.it('to equal', {
-                                            styleSrc: ['\'self\'', 'https://my.cdn.com/styles.629a1c6071.css'],
-                                            scriptSrc: ['\'self\'', 'https://my.cdn.com/script.af5c77b360.js'],
+                                            styleSrc: ['\'self\'', 'https://my.cdn.com'],
+                                            scriptSrc: ['\'self\'', 'https://my.cdn.com'],
                                             imgSrc: ['https://my.cdn.com']
                                         })
                                     }
