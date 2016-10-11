@@ -41,7 +41,7 @@
     "bin"
   ],
   "dependencies": {
-    "assetgraph": "3.0.0-27",
+    "assetgraph": "3.0.0-28",
     "async": "^2.0.0",
     "browserslist": "1.4.0",
     "chalk": "^1.1.3",

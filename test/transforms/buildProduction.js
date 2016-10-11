@@ -136,7 +136,7 @@ describe('buildProduction', function () {
             .buildProduction({version: false})
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', {type: 'Png'});
-                expect(assetGraph.findAssets({type: 'Html', fileName: 'index.html'})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var myTemplateUrl=\'/static/myTemplate.b8ee9bf196.html\';</script></body></html>');
+                expect(assetGraph.findAssets({type: 'Html', fileName: 'index.html'})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var myTemplateUrl=\'/static/myTemplate.b8ee9bf196.html\'</script></body></html>');
             });
     });
 
@@ -176,7 +176,7 @@ describe('buildProduction', function () {
                 cdnRoot: 'http://cdn.example.com/foo/'
             })
             .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var imgUrl=\'http://cdn.example.com/foo/test.d65dd5318f.png\';</script></body></html>');
+                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var imgUrl=\'http://cdn.example.com/foo/test.d65dd5318f.png\'</script></body></html>');
             })
             .run(done);
     });
@@ -202,7 +202,7 @@ describe('buildProduction', function () {
                 cdnRoot: 'http://cdn.example.com/foo/'
             })
             .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var swfUrl=\'static/foo.d41d8cd98f.swf\';</script></body></html>');
+                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var swfUrl=\'static/foo.d41d8cd98f.swf\'</script></body></html>');
             })
             .run(done);
     });
@@ -245,7 +245,7 @@ describe('buildProduction', function () {
                 cdnFlash: true
             })
             .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var swfUrl=\'http://cdn.example.com/foo/foo.d41d8cd98f.swf\';</script></body></html>');
+                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var swfUrl=\'http://cdn.example.com/foo/foo.d41d8cd98f.swf\'</script></body></html>');
             })
             .run(done);
     });
@@ -293,7 +293,7 @@ describe('buildProduction', function () {
             .queue(function (assetGraph) {
                 var javaScriptAssets = assetGraph.findAssets({type: 'JavaScript'});
                 expect(javaScriptAssets, 'to have length', 1);
-                expect(javaScriptAssets[0].text, 'to equal', 'var fileName=\'static/justThisOneFile.22324131a2.txt\';');
+                expect(javaScriptAssets[0].text, 'to equal', 'var fileName=\'static/justThisOneFile.22324131a2.txt\'');
             })
             .run(done);
     });
@@ -330,8 +330,8 @@ describe('buildProduction', function () {
             .queue(function (assetGraph) {
                 expect(
                     assetGraph.findAssets({type: 'JavaScript'})[0].text,
-                    'to match',
-                    /function foo\(([a-z])\)\{\1\.log\(\"foo\"\)\}var foo="bar";hey\.log\(\"foo\"\),foo=123,alert\(console.log\("blah"\)\);/
+                    'to equal',
+                    'function foo(a){a.log(\'foo\')}var foo=\'bar\';hey.log(\'foo\'),foo=123,alert(console.log(\'blah\'))'
                 );
             })
             .run(done);
@@ -422,7 +422,7 @@ describe('buildProduction', function () {
             .queue(function (assetGraph) {
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to match', /theValue/);
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'not to match', /theOtherValue/);
-                expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to match', /alert\(\'bar\'\);/);
+                expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to match', /alert\(\'bar\'\)$/);
             })
             .run(done);
     });
@@ -438,7 +438,7 @@ describe('buildProduction', function () {
             .queue(function (assetGraph) {
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to match', /theValue/);
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'not to match', /theOtherValue/);
-                expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to match', /alert\("bar"\);/);
+                expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to match', /alert\('bar'\)$/);
             })
             .run(done);
     });
@@ -582,7 +582,7 @@ describe('buildProduction', function () {
                 expect(assetGraph, 'to contain asset', {type: 'JavaScript'});
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text,
                     'to equal',
-                    'alert("a"),alert("b"),alert("almond"),alert("main"),define("main",function(){}),alert("d"),alert("e");'
+                    "alert('a'),alert('b'),alert('almond'),alert('main'),define('main',function(){}),alert('d'),alert('e')"
                 );
             })
             .run(done);
@@ -1264,5 +1264,19 @@ describe('buildProduction', function () {
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'not to contain', assetGraph.root);
             });
 
+    });
+
+    it('should not leave extraneous whitespace in an inline JavaScript', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/trailingWhitespaceInInlineScript/'})
+            .loadAssets('index.html')
+            .populate()
+            .buildProduction({
+                sourceMaps: true,
+                contentSecurityPolicy: true,
+                subResourceIntegrity: true
+            })
+            .queue(function (assetGraph) {
+                expect(assetGraph.findAssets({type: 'Html'})[0].text, 'not to match', / <\/script>/);
+            });
     });
 });
