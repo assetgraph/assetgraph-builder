@@ -5,8 +5,8 @@ var expect = require('../unexpected-with-plugins'),
     urlTools = require('urltools');
 
 describe('processImages', function () {
-    it('should handle a Css test case', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/css/'})
+    it('should handle a Css test case', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/css/'})
             .loadAssets('style.css')
             .populate()
             .queue(function (assetGraph) {
@@ -38,12 +38,11 @@ describe('processImages', function () {
 
                 cssBackgroundImages = assetGraph.findRelations({type: 'CssImage'});
                 expect(cssBackgroundImages[0].cssRule, 'to equal', cssBackgroundImages[1].cssRule);
-            })
-            .run(done);
+            });
     });
 
-    it('should handle an Html test case', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/html/'})
+    it('should handle an Html test case', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/html/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -52,8 +51,10 @@ describe('processImages', function () {
                 expect(_.map(assetGraph.findAssets({isImage: true}), 'url').sort(), 'to equal', [
                     urlTools.resolveUrl(assetGraph.root, 'myImage.png'),
                     urlTools.resolveUrl(assetGraph.root, 'myImage.png?resize=200+200'),
-                    urlTools.resolveUrl(assetGraph.root, 'myImage.png?resize=400+400#foo')
+                    urlTools.resolveUrl(assetGraph.root, 'myImage.png?resize=400+400')
                 ]);
+                expect(assetGraph, 'to contain relation', {href: 'myImage.png?resize=400+400#foo'});
+
                 assetGraph.findAssets({type: 'Png'}).forEach(function (pngAsset) {
                     expect(pngAsset.rawSrc, 'to have length', 8285);
                 });
@@ -64,15 +65,15 @@ describe('processImages', function () {
                 // The urls of the image assets should have the processing instructions removed from the query string, but added before the extension:
                 expect(_.map(assetGraph.findAssets({isImage: true}), 'url').sort(), 'to equal', [
                     urlTools.resolveUrl(assetGraph.root, 'myImage.resize=200-200.png'),
-                    urlTools.resolveUrl(assetGraph.root, 'myImage.resize=400-400.png#foo'),
+                    urlTools.resolveUrl(assetGraph.root, 'myImage.resize=400-400.png'),
                     urlTools.resolveUrl(assetGraph.root, 'myImage.png')
                 ].sort());
-            })
-            .run(done);
+                expect(assetGraph, 'to contain relation', {href: /myImage\.resize=400-400\.png#foo/});
+            });
     });
 
-    it('should handle a Css test case with a setFormat instruction in the query string of a background-image url', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/setFormat/'})
+    it('should handle a Css test case with a setFormat instruction in the query string of a background-image url', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/setFormat/'})
             .loadAssets('index.css')
             .populate()
             .queue(function (assetGraph) {
@@ -87,12 +88,11 @@ describe('processImages', function () {
                 expect(_.map(assetGraph.findAssets({isImage: true}), 'url').sort(), 'to equal', [
                     urlTools.resolveUrl(assetGraph.root, 'foo.setFormat=gif.gif')
                 ]);
-            })
-            .run(done);
+            });
     });
 
-    it('should handle a test case with a Jpeg', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/jpeg/'})
+    it('should handle a test case with a Jpeg', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/jpeg/'})
             .loadAssets('style.css')
             .populate()
             .queue(function (assetGraph) {
@@ -104,12 +104,11 @@ describe('processImages', function () {
             .processImages({type: 'Jpeg'}, {jpegtran: true})
             .queue(function (assetGraph) {
                 expect(assetGraph.findAssets({url: /\/turtle\.jpg$/})[0].rawSrc.length, 'to be less than', 105836);
-            })
-            .run(done);
+            });
     });
 
-    it('should handle a test case with a couple of pngs', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/pngs/'})
+    it('should handle a test case with a couple of pngs', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/pngs/'})
             .loadAssets('style.css')
             .populate()
             .queue(function (assetGraph) {
@@ -127,12 +126,11 @@ describe('processImages', function () {
                 var purpleAlpha24BitPngcrushed = assetGraph.findAssets({url: /\/purplealpha24bit\.pngcrush\.png$/})[0];
                 expect(_.toArray(purpleAlpha24BitPngcrushed.rawSrc.slice(0, 4)), 'to equal', [0x89, 0x50, 0x4e, 0x47]);
                 expect(purpleAlpha24BitPngcrushed.rawSrc.length, 'to be less than', 8285);
-            })
-            .run(done);
+            });
     });
 
-    it('should handle a test case with a Svg', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/svg/'})
+    it('should handle a test case with a Svg', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/svg/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -142,12 +140,11 @@ describe('processImages', function () {
             .processImages({type: 'Svg'})
             .queue(function (assetGraph) {
                 expect(assetGraph.findAssets({type: 'Svg'})[0].text, 'to match', /id="theBogusElementId"/);
-            })
-            .run(done);
+            });
     });
 
-    it('should handle dots in urls (regression test for a regexp issue)', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/dot.in.path/'})
+    it('should handle dots in urls (regression test for a regexp issue)', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/dot.in.path/'})
             .loadAssets('style.css')
             .populate()
             .queue(function (assetGraph) {
@@ -158,12 +155,11 @@ describe('processImages', function () {
             .queue(function (assetGraph) {
                 expect(assetGraph.findAssets({type: 'Png'})[0].url, 'to equal', urlTools.resolveUrl(assetGraph.root, 'redalpha24bit.optipng.png'));
                 expect(assetGraph.findAssets({type: 'Css'})[0].text, 'to match', /url\(redalpha24bit\.optipng\.png\)/);
-            })
-            .run(done);
+            });
     });
 
-    it('should apply device pixel ratio to images', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/devicePixelRatio/'})
+    it('should apply device pixel ratio to images', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/devicePixelRatio/'})
             .loadAssets('style.css')
             .populate()
             .queue(function (assetGraph) {
@@ -220,12 +216,11 @@ describe('processImages', function () {
                 expect(assetGraph.findAssets({ isImage: true }), 'to be an array whose items satisfy', function (img, idx) {
                     expect(img, 'to satisfy', outputs[idx]);
                 });
-            })
-            .run(done);
+            });
     });
 
-    it('should not touch images that have auto=false', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/autoFalse/'})
+    it('should not touch images that have auto=false', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/autoFalse/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -235,12 +230,11 @@ describe('processImages', function () {
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', 'Png', 1);
                 expect(assetGraph.findAssets({type: 'Png'})[0].rawSrc.length, 'to equal', 8285);
-            })
-            .run(done);
+            });
     });
 
-    it('should support a standalone svgfilter', function (done) {
-        new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/svgFilter/'})
+    it('should support a standalone svgfilter', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/processImages/svgFilter/'})
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
@@ -256,8 +250,7 @@ describe('processImages', function () {
                         }
                     }
                 ]);
-            })
-            .run(done);
+            });
     });
 
     it('should handle multiple gifsicle-powered operations on a gif', function () {
