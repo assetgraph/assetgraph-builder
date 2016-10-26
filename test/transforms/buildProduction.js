@@ -62,6 +62,18 @@ describe('buildProduction', function () {
             });
     });
 
+    it('should not inline script with async=async and defer=defer, but should still bundle the ones with identical attributes', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/asyncAndDeferredScripts/'})
+            .loadAssets('index.html')
+            .buildProduction({inlineByRelationType: {'*': true}})
+            .queue(function (assetGraph) {
+                expect(assetGraph.findAssets({fileName: 'index.html'})[0].text, 'not to contain', 'alert')
+                    .and('to match', /<script src=[^"]+ async>/)
+                    .and('to match', /<script src=[^"]+ defer>/);
+                expect(assetGraph, 'to contain assets', {type: 'JavaScript', isInline: false, text: /alert/}, 2);
+            });
+    });
+
     it('should handle a test case with two stylesheets that @import the same stylesheet (assetgraph issue #82)', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/duplicateImports/'})
             .loadAssets('index.html')
