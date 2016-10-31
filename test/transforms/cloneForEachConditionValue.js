@@ -67,5 +67,16 @@ describe('cloneForEachConditionValue', function () {
                     expect(assetGraph, 'to contain asset', { fileName: 'index.rainy.html' });
                 });
         });
+
+        it('should support a string being passed as a condition value (rather than an array)', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/cloneForEachConditionValue/noConditions/'})
+                .loadAssets('index.html')
+                .populate()
+                .cloneForEachConditionValue({type: 'Html'}, {splitConditions: 'weather', conditions: {weather: 'sunny'}})
+                .queue(function (assetGraph) {
+                    expect(assetGraph, 'to contain asset', 'Html');
+                    expect(assetGraph, 'to contain asset', { fileName: 'index.sunny.html' });
+                });
+        });
     });
 });
