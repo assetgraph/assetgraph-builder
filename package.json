@@ -87,7 +87,7 @@
     "webpack": "^1.13.1"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">= 4"
   },
   "directories": {
     "lib": "./lib",
