@@ -913,7 +913,7 @@ describe('buildProduction', function () {
             })
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', 'Css');
-                expect(assetGraph.findAssets({ type: 'Css' })[0].text, 'to contain', 'sourceMappingURL=foo.css.8f6b70eaf4.map');
+                expect(assetGraph.findAssets({ type: 'Css' })[0].text, 'to contain', 'sourceMappingURL=/static/foo.css.8f6b70eaf4.map');
                 expect(assetGraph, 'to contain asset', 'SourceMap');
                 expect(assetGraph.findAssets({ type: 'SourceMap' })[0].parseTree.sources, 'to contain', '/foo.less');
             });
@@ -926,7 +926,7 @@ describe('buildProduction', function () {
             .buildProduction({ sourceMaps: true })
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', 'JavaScript');
-                expect(assetGraph.findAssets({ type: 'JavaScript' })[0].text, 'to contain', '//# sourceMappingURL=static/');
+                expect(assetGraph.findAssets({ type: 'JavaScript' })[0].text, 'to contain', '//# sourceMappingURL=/static/');
                 expect(assetGraph, 'to contain asset', 'SourceMap');
                 expect(assetGraph.findAssets({ type: 'SourceMap' })[0].parseTree.sources, 'to contain', '/index.html');
             });
@@ -939,7 +939,7 @@ describe('buildProduction', function () {
             .buildProduction({ sourceMaps: true })
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', 'JavaScript');
-                expect(assetGraph.findAssets({ type: 'JavaScript' })[0].text, 'to contain', '//# sourceMappingURL=static/');
+                expect(assetGraph.findAssets({ type: 'JavaScript' })[0].text, 'to contain', '//# sourceMappingURL=/static/');
                 expect(assetGraph, 'to contain assets', 'SourceMap', 2);
                 expect(assetGraph.findRelations({ type: 'CssSourceMappingUrl' })[0].to.parseTree.sources, 'to contain', '/home/munter/assetgraph/builder/demoapp/main.scss');
                 expect(assetGraph.findRelations({ type: 'JavaScriptSourceMappingUrl' })[0].to.parseTree.sources, 'to contain', '/home/munter/assetgraph/builder/demoapp/main.jsx');
