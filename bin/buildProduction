@@ -128,13 +128,11 @@ var chalk = require('chalk'),
         })
         .options('space', {
             describe: 'The space character to use when serializing JavaScript',
-            type: 'string',
-            default: ' '
+            type: 'string'
         })
         .options('newline', {
             describe: 'The newline character to use when serializing JavaScript',
-            type: 'string',
-            default: ''
+            type: 'string'
         })
         .options('nofilerev', {
             describe: 'Revision files with a hash of their content in their file name for optimal far future caching',
