@@ -48,7 +48,7 @@
     "esanimate": "^1.1.0",
     "escodegen": "^1.8.0",
     "estraverse": "^4.2.0",
-    "express-processimage": "6.1.0",
+    "express-processimage": "6.2.1",
     "extend": "^3.0.0",
     "jpegtran": "1.0.4",
     "lodash": "^4.14.1",
@@ -56,7 +56,7 @@
     "optimist": "0.6.1",
     "optipng": "1.0.0",
     "passerror": "^1.1.1",
-    "pngcrush": "1.1.0",
+    "pngcrush": "1.1.1",
     "pngquant": "1.1.1",
     "urltools": "0.3.0"
   },
