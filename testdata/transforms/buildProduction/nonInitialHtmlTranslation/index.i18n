@@ -1,0 +1,10 @@
+{
+    "documentTitle": {
+        "en": "The English title",
+        "da": "Den danske titel"
+    },
+    "linkedDocumentTitle": {
+        "en": "The linked English title",
+        "da": "Den linkede danske titel"
+    }
+}
