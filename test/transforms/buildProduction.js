@@ -1385,4 +1385,109 @@ describe('buildProduction', function () {
                 expect(assetGraph.findAssets({type: 'Html'})[0].text, 'not to match', / <\/script>/);
             });
     });
+
+    describe('options.excludePatterns', function () {
+        it('should not exclude any asset when no pattern is defined', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/excludePattern/'})
+                .loadAssets('index.html')
+                .buildProduction({
+                    inlineByRelationType: {},
+                    noFileRev: true
+                })
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets(), 'to satisfy', [
+                        {
+                            type: 'Html',
+                            fileName: 'index.html'
+                        },
+                        {
+                            type: 'Css',
+                            fileName: 'bar.css'
+                        },
+                        {
+                            type: 'Png',
+                            fileName: 'quux.png'
+                        },
+                        {
+                            type: 'JavaScript',
+                            fileName: 'main.js'
+                        }
+                    ]);
+                });
+        });
+
+        it('should exclude all files with .css extensions', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/excludePattern/'})
+                .loadAssets('index.html')
+                .buildProduction({
+                    inlineByRelationType: {},
+                    noFileRev: true,
+                    excludePatterns: ['*.css']
+                })
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets(), 'to satisfy', [
+                        {
+                            type: 'Html',
+                            fileName: 'index.html'
+                        },
+                        {
+                            type: 'Png',
+                            fileName: 'quux.png'
+                        },
+                        {
+                            type: 'JavaScript',
+                            fileName: 'main.js'
+                        }
+                    ]);
+                });
+        });
+
+        it('should exclude all files within /foo/ directory', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/excludePattern/'})
+                .loadAssets('index.html')
+                .buildProduction({
+                    inlineByRelationType: {},
+                    noFileRev: true,
+                    excludePatterns: ['/foo/']
+                })
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets(), 'to satisfy', [
+                        {
+                            type: 'Html',
+                            fileName: 'index.html'
+                        },
+                        {
+                            type: 'Png',
+                            fileName: 'quux.png'
+                        },
+                        {
+                            type: 'JavaScript',
+                            fileName: 'main.js'
+                        }
+                    ]);
+                });
+        });
+
+        it('should exclude all non-initial assets', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/excludePattern/'})
+                .loadAssets('index.html')
+                .buildProduction({
+                    inlineByRelationType: {},
+                    noFileRev: true,
+                    excludePatterns: [
+                        '*bar.css',
+                        '/baz',
+                        '*/js/'
+                    ]
+                })
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets(), 'to satisfy', [
+                        {
+                            type: 'Html',
+                            fileName: 'index.html'
+                        }
+                    ]);
+                });
+        });
+    });
 });
