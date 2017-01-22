@@ -57,7 +57,7 @@
     "optipng": "1.0.0",
     "passerror": "^1.1.1",
     "pngcrush": "1.1.1",
-    "pngquant": "1.1.1",
+    "pngquant": "1.2.0",
     "urltools": "0.3.0"
   },
   "optionalDependencies": {
