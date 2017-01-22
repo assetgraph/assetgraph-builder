@@ -58,7 +58,7 @@
     "passerror": "^1.1.1",
     "pngcrush": "1.1.1",
     "pngquant": "1.2.0",
-    "urltools": "0.3.0"
+    "urltools": "0.3.1"
   },
   "optionalDependencies": {
     "assetgraph-sprite": "1.1.1",
