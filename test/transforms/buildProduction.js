@@ -500,6 +500,26 @@ describe('buildProduction', function () {
             .run(done);
     });
 
+    // FIXME: Breaks if noCompress:true is removed
+    it('should preserve sourcesContent from an existing source map', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/inlineSourceMapWithSourcesContent/'})
+            .loadAssets('index.html')
+            .buildProduction({version: false, sourceMaps: true, sourcesContent: true, noCompress: true})
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'SourceMap');
+                expect(assetGraph.findAssets({type: 'SourceMap'})[0].parseTree, 'to satisfy', {
+                    sourcesContent: [
+                        expect.it('to begin with', '(function e(t,n,r)'),
+                        expect.it('to begin with', 'module.exports = {\n  colors:'),
+                        expect.it('to begin with', 'var d3 = require(\'d3\');'),
+                        expect.it('to begin with', 'var projectionData'),
+                        expect.it('to begin with', 'module.exports = {\n  balanced:'),
+                        expect.it('to begin with', 'module.exports = function (graph, animationSpeed)')
+                    ]
+                });
+            });
+    });
+
     it('should handle a test case with some assets that can be inlined, with HtmlScript and HtmlStyle inlining thresholds of 100 bytes', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/inline/'})
             .loadAssets('index.html')
