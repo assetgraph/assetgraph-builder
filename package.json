@@ -68,7 +68,7 @@
   "devDependencies": {
     "autoprefixer": "^6.5.3",
     "coveralls": "^2.11.12",
-    "eslint": "3.14.0",
+    "eslint": "3.14.1",
     "eslint-config-onelint": "2.0.0",
     "gifsicle-stream": "^0.3.0",
     "gm": "^1.21.1",
