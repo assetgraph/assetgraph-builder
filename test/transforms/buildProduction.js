@@ -500,11 +500,10 @@ describe('buildProduction', function () {
             .run(done);
     });
 
-    // FIXME: Breaks if noCompress:true is removed
     it('should preserve sourcesContent from an existing source map', function () {
         return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/inlineSourceMapWithSourcesContent/'})
             .loadAssets('index.html')
-            .buildProduction({version: false, sourceMaps: true, sourcesContent: true, noCompress: true})
+            .buildProduction({version: false, sourceMaps: true, sourcesContent: true})
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', 'SourceMap');
                 expect(assetGraph.findAssets({type: 'SourceMap'})[0].parseTree, 'to satisfy', {
