@@ -1448,7 +1448,7 @@ describe('buildProduction', function () {
                 .buildProduction({
                     inlineByRelationType: {},
                     noFileRev: true,
-                    excludePatterns: ['/foo/']
+                    excludePatterns: ['testdata/transforms/buildProduction/excludePattern/foo/']
                 })
                 .queue(function (assetGraph) {
                     expect(assetGraph.findAssets(), 'to satisfy', [
@@ -1476,7 +1476,7 @@ describe('buildProduction', function () {
                     noFileRev: true,
                     excludePatterns: [
                         '*bar.css',
-                        '/baz',
+                        'testdata/transforms/buildProduction/excludePattern/baz',
                         '*/js/'
                     ]
                 })

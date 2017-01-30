@@ -261,12 +261,10 @@ of site links to sections that it shouldn't handle, this is where you use `--exc
 
 `--exclude` can be used multiple times in the same command line to specify more than one pattern.
 
-Exclude patterns match on assets complete URL, be it `file://` or `http://`.
+Exclude patterns are always prefixed with `process.cwd()`, making the path addressable in the same
+manner as the entry point arguments.
 
 You may use `*` for wildcards.
-
-If a pattern starts with `/` it is assumed to mean the assetgraph root, which will then be
-prepended to the pattern.
 
 
 Image optimization and processing
