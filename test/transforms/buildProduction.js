@@ -1405,6 +1405,10 @@ describe('buildProduction', function () {
                             fileName: 'bar.css'
                         },
                         {
+                            type: 'Css',
+                            fileName: 'æ.css'
+                        },
+                        {
                             type: 'Png',
                             fileName: 'quux.png'
                         },
@@ -1457,6 +1461,10 @@ describe('buildProduction', function () {
                             fileName: 'index.html'
                         },
                         {
+                            type: 'Css',
+                            fileName: 'æ.css'
+                        },
+                        {
                             type: 'Png',
                             fileName: 'quux.png'
                         },
@@ -1485,9 +1493,46 @@ describe('buildProduction', function () {
                         {
                             type: 'Html',
                             fileName: 'index.html'
+                        },
+                        {
+                            type: 'Css',
+                            fileName: 'æ.css'
                         }
                     ]);
                 });
         });
+
+        it('should exclude paths with non-url safe characters', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/excludePattern/'})
+                .loadAssets('index.html')
+                .buildProduction({
+                    inlineByRelationType: {},
+                    noFileRev: true,
+                    excludePatterns: [
+                        '*/æ.css'
+                    ]
+                })
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets(), 'to satisfy', [
+                        {
+                            type: 'Html',
+                            fileName: 'index.html'
+                        },
+                        {
+                            type: 'Css',
+                            fileName: 'bar.css'
+                        },
+                        {
+                            type: 'Png',
+                            fileName: 'quux.png'
+                        },
+                        {
+                            type: 'JavaScript',
+                            fileName: 'main.js'
+                        }
+                    ]);
+                });
+        });
+
     });
 });
