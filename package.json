@@ -85,7 +85,7 @@
     "unexpected-color": "^2.0.0",
     "unexpected-dom": "^3.0.2",
     "unexpected-sinon": "^10.1.1",
-    "webpack": "^1.13.1"
+    "webpack": "^2.2.1"
   },
   "engines": {
     "node": ">= 4"
