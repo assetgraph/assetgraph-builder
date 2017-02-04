@@ -1385,4 +1385,154 @@ describe('buildProduction', function () {
                 expect(assetGraph.findAssets({type: 'Html'})[0].text, 'not to match', / <\/script>/);
             });
     });
+
+    describe('options.excludePatterns', function () {
+        it('should not exclude any asset when no pattern is defined', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/excludePattern/'})
+                .loadAssets('index.html')
+                .buildProduction({
+                    inlineByRelationType: {},
+                    noFileRev: true
+                })
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets(), 'to satisfy', [
+                        {
+                            type: 'Html',
+                            fileName: 'index.html'
+                        },
+                        {
+                            type: 'Css',
+                            fileName: 'bar.css'
+                        },
+                        {
+                            type: 'Css',
+                            fileName: 'æ.css'
+                        },
+                        {
+                            type: 'Png',
+                            fileName: 'quux.png'
+                        },
+                        {
+                            type: 'JavaScript',
+                            fileName: 'main.js'
+                        }
+                    ]);
+                });
+        });
+
+        it('should exclude all files with .css extensions', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/excludePattern/'})
+                .loadAssets('index.html')
+                .buildProduction({
+                    inlineByRelationType: {},
+                    noFileRev: true,
+                    excludePatterns: ['*.css']
+                })
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets(), 'to satisfy', [
+                        {
+                            type: 'Html',
+                            fileName: 'index.html'
+                        },
+                        {
+                            type: 'Png',
+                            fileName: 'quux.png'
+                        },
+                        {
+                            type: 'JavaScript',
+                            fileName: 'main.js'
+                        }
+                    ]);
+                });
+        });
+
+        it('should exclude all files within /foo/ directory', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/excludePattern/'})
+                .loadAssets('index.html')
+                .buildProduction({
+                    inlineByRelationType: {},
+                    noFileRev: true,
+                    excludePatterns: ['testdata/transforms/buildProduction/excludePattern/foo/']
+                })
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets(), 'to satisfy', [
+                        {
+                            type: 'Html',
+                            fileName: 'index.html'
+                        },
+                        {
+                            type: 'Css',
+                            fileName: 'æ.css'
+                        },
+                        {
+                            type: 'Png',
+                            fileName: 'quux.png'
+                        },
+                        {
+                            type: 'JavaScript',
+                            fileName: 'main.js'
+                        }
+                    ]);
+                });
+        });
+
+        it('should exclude all non-initial assets', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/excludePattern/'})
+                .loadAssets('index.html')
+                .buildProduction({
+                    inlineByRelationType: {},
+                    noFileRev: true,
+                    excludePatterns: [
+                        '*bar.css',
+                        'testdata/transforms/buildProduction/excludePattern/baz',
+                        '*/js/'
+                    ]
+                })
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets(), 'to satisfy', [
+                        {
+                            type: 'Html',
+                            fileName: 'index.html'
+                        },
+                        {
+                            type: 'Css',
+                            fileName: 'æ.css'
+                        }
+                    ]);
+                });
+        });
+
+        it('should exclude paths with non-url safe characters', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/excludePattern/'})
+                .loadAssets('index.html')
+                .buildProduction({
+                    inlineByRelationType: {},
+                    noFileRev: true,
+                    excludePatterns: [
+                        '*/æ.css'
+                    ]
+                })
+                .queue(function (assetGraph) {
+                    expect(assetGraph.findAssets(), 'to satisfy', [
+                        {
+                            type: 'Html',
+                            fileName: 'index.html'
+                        },
+                        {
+                            type: 'Css',
+                            fileName: 'bar.css'
+                        },
+                        {
+                            type: 'Png',
+                            fileName: 'quux.png'
+                        },
+                        {
+                            type: 'JavaScript',
+                            fileName: 'main.js'
+                        }
+                    ]);
+                });
+        });
+
+    });
 });

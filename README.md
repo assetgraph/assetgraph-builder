@@ -248,6 +248,25 @@ The reason why this isn't automated is that `buildProduction` cannot know
 if a given external resource might change in the future, thus breaking your
 production build.
 
+
+Excluding assets from your build
+--------------------------------
+
+If you want `buildProduction` to avoid including specific assets, paths or entire parts of
+your page, you can use the `--exclude` option.
+
+This could come in handy if you have multiple different sections on your site, where
+assetgraph-builder only handles a subset of them. If the assetgraph-builder covered section
+of site links to sections that it shouldn't handle, this is where you use `--exclude`
+
+`--exclude` can be used multiple times in the same command line to specify more than one pattern.
+
+Exclude patterns are always prefixed with `process.cwd()`, making the path addressable in the same
+manner as the entry point arguments.
+
+You may use `*` for wildcards.
+
+
 Image optimization and processing
 ---------------------------------
 
