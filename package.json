@@ -50,7 +50,7 @@
     "estraverse": "^4.2.0",
     "express-processimage": "7.2.0",
     "extend": "^3.0.0",
-    "jpegtran": "1.0.4",
+    "jpegtran": "1.0.5",
     "lodash": "^4.14.1",
     "memoizesync": "0.5.0",
     "optimist": "0.6.1",
