@@ -48,6 +48,10 @@ var chalk = require('chalk'),
             type: 'boolean',
             default: false
         })
+        .options('contentsecuritypolicylevel', {
+            describe: 'Which Content-Security-Policy level to target. Supported values: 1 and 2. Defaults to a compromise where all target browsers are supported (see --browsers).',
+            type: 'number'
+        })
         .options('subresourceintegrity', {
             describe: 'Whether to add integrity=... attributes to stylesheets and scripts that are part of the build',
             type: 'boolean',
@@ -377,6 +381,7 @@ var buildProductionOptions = {
     sourceMaps: commandLineOptions.sourcemaps,
     sourcesContent: commandLineOptions.sourcescontent,
     contentSecurityPolicy: commandLineOptions.contentsecuritypolicy,
+    contentSecurityPolicyLevel: commandLineOptions.contentsecuritypolicylevel,
     subResourceIntegrity: commandLineOptions.subresourceintegrity,
     optimizeImages: commandLineOptions.optimizeimages,
     inlineByRelationType: inlineByRelationType,
