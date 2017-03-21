@@ -97,9 +97,10 @@ describe('buildProduction', function () {
                     fileName: /bundle/
                 });
                 expect(assetGraph.findRelations({
+                    type: 'HtmlScript',
                     from: { url: /index\.html$/ },
                     to: { fileName: /bundle/ }
-                })[0].to.text, 'to contain', 'alert("noExistingSourceMap")')
+                })[0].to.text, 'to match', /alert\(['"]noExistingSourceMap/)
                     .and('to contain', '* Sizzle CSS Selector Engine');
             });
     });
