@@ -81,7 +81,7 @@
     "source-map": "^0.5.3",
     "svgfilter": "1.2.0",
     "systemjs-builder": "^0.16.0",
-    "unexpected": "^10.8.1",
+    "unexpected": "^10.26.0",
     "unexpected-color": "^2.0.0",
     "unexpected-dom": "^3.0.2",
     "unexpected-sinon": "^10.1.1",
