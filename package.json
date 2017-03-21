@@ -52,7 +52,7 @@
     "extend": "^3.0.0",
     "jpegtran": "1.0.5",
     "lodash": "^4.14.1",
-    "memoizesync": "0.5.0",
+    "memoizesync": "1.0.0",
     "optimist": "0.6.1",
     "optipng": "1.0.0",
     "passerror": "^1.1.1",
