@@ -1534,6 +1534,16 @@ describe('buildProduction', function () {
                     ]);
                 });
         });
+    });
 
+    it('should not attempt to populate JavaScriptFetch relations', function () {
+        var warnSpy = sinon.spy();
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/javaScriptFetch/'})
+            .on('warn', warnSpy)
+            .loadAssets('index.html')
+            .buildProduction()
+            .then(function () {
+                expect(warnSpy, 'was not called');
+            });
     });
 });
