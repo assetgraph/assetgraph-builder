@@ -62,6 +62,10 @@ var chalk = require('chalk'),
             type: 'boolean',
             default: false
         })
+        .options('webpackconfig', {
+            describe: 'Path to where your webpack config resides. Will be loaded using require.main.require',
+            type: 'string'
+        })
         .options('optimizeimages', {
             describe: 'Perform automatic lossless optimization of all images using pngcrush, pngquant, optipng, and jpegtran',
             type: 'boolean',
@@ -383,6 +387,7 @@ var buildProductionOptions = {
     contentSecurityPolicy: commandLineOptions.contentsecuritypolicy,
     contentSecurityPolicyLevel: commandLineOptions.contentsecuritypolicylevel,
     subResourceIntegrity: commandLineOptions.subresourceintegrity,
+    webpackConfigPath: commandLineOptions.webpackconfig,
     optimizeImages: commandLineOptions.optimizeimages,
     inlineByRelationType: inlineByRelationType,
     gzip: commandLineOptions.gzip,
