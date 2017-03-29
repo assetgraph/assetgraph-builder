@@ -1,0 +1,2 @@
+require('./App');
+alert('index');
