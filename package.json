@@ -73,7 +73,7 @@
     "gifsicle-stream": "^0.3.0",
     "gm": "^1.21.1",
     "istanbul": "^0.4.4",
-    "jsdom": "^9.4.2",
+    "jsdom": "^9.9.0",
     "less": "^2.7.1",
     "mocha": "^3.0.0",
     "requirejs": "^2.3.3",
