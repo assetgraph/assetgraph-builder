@@ -61,7 +61,7 @@
     "urltools": "0.3.1"
   },
   "optionalDependencies": {
-    "assetgraph-sprite": "assetgraph/assetgraph-sprite#852388f47bc9aab3200c67d3eaa85b7ffdbc16f7",
+    "assetgraph-sprite": "assetgraph/assetgraph-sprite#c2f17610e890328c68c81ed5023d5f4cdd23be99",
     "histogram": "2.1.1",
     "node-zopfli": "2.0.2"
   },
