@@ -1,0 +1,103 @@
+#!/usr/bin/env node
+
+var _ = require('underscore'),
+    AssetGraph = require('../lib/AssetGraph'),
+    urltools = require('urltools'),
+    path = require('path'),
+    commandLineOptions = require('optimist')
+        .usage('$0 --root <inputRootDirectory> [--label <labelName>=<dir> ...] [--parentdir] [--limitsearch <directory>] <htmlFile> ...')
+        .boolean('parentdir')
+        .demand(['root'])
+        .argv;
+
+var assetGraph = new AssetGraph({root: commandLineOptions.root});
+
+//Run external process
+function runEx(command, callback, scope) {
+    var exec = require('child_process').exec;
+    exec(command, function (error, stdout, stderr) {
+        if (stderr) {
+            console.log(command);
+            console.log('stderr: ' + stderr);
+        } else {
+            stdout = stdout.replace(/([\r\n]+|[\r]+|[\n]+)/g, '\n'); //Normalize
+            var output = stdout.split('\n'); //Array
+            callback.call(scope, output);
+        }
+    });
+}
+
+assetGraph.on('afterTransform', function (transform, elapsedTime) {
+        console.log((elapsedTime / 1000).toFixed(3) + ' secs: ' + transform.name);
+    })
+    .on('warn', function (err) {
+        // These are way too noisy
+        if (err.relationType !== 'JavaScriptCommonJsRequire') {
+            console.warn((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.message);
+            if (commandLineOptions.stoponwarning) {
+                process.exit(1);
+            }
+        }
+    })
+    .on('error', function (err) {
+        console.error((err.asset ? err.asset.urlOrDescription + ': ' : '') + err.stack);
+        process.exit(1);
+    })
+    .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+    .registerLabelsAsCustomProtocols(commandLineOptions.label, {installFindParentDirectoryAsDefault: commandLineOptions.parentdir})
+    .loadAssets(commandLineOptions._.map(urltools.fsFilePathToFileUrl))
+    .populate({from: {type: 'Html'}, followRelations: {type: 'HtmlScript', to: {url: /^file:/}}})
+    .assumeRequireJsConfigHasBeenFound()
+    .moveAssets({isInitial: true}, function (asset) {return asset.url.replace(/\.template$/, ''); })
+    .populate({
+        followRelations: {
+            to: {url: assetGraph.query.not(/^https?:/)}
+        }
+    })
+    .flattenStaticIncludes({isInitial: true})
+    .run(function () {
+        var usedAssets = assetGraph.findAssets().filter(function (asset) {
+                return !!asset.url;
+            }).sort(function (a, b) {
+                if (a.url < b.url) {
+                    return -1;
+                }
+                return (a.url > b.url) ? 1 : 0;
+            });
+
+        var searchPath = path.resolve(commandLineOptions.limitsearch) + '/',
+            urlFilter = new RegExp('^file://' + searchPath),
+            foundAssets = [];
+        usedAssets.forEach(function (asset) {
+            if (urlFilter.test(asset.url)) {
+                foundAssets.push(asset.url.replace(urlFilter, '').replace(/\?sprite=.+/, ''));
+            }
+        });
+
+        searchPath = commandLineOptions.limitsearch;
+        if (searchPath.slice(-1) !== '/') {
+            searchPath += '/';
+        }
+        runEx('find ' + searchPath + ' -iname "*.*"', function (allAssets) {
+            var urlFilter = new RegExp('^' + searchPath);
+            allAssets.sort();
+            //Compare foundAssets and allAssets
+            var unusedAssets = [];
+            allAssets.forEach(function (url) {
+                url = url.replace(urlFilter, '');
+                if (url.trim() && foundAssets.indexOf(url) < 0) {
+                    unusedAssets.push(url);
+                }
+            });
+
+            console.log('\n');
+            if (unusedAssets.length) {
+                console.log('The following files seems to be unused: ');
+                unusedAssets.forEach(function (url) {
+                    console.log(url);
+                });
+            } else {
+                console.log('No unused files found.');
+            }
+        });
+    });
