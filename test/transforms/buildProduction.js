@@ -158,7 +158,7 @@ describe('buildProduction', function () {
             .buildProduction({version: false})
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', {type: 'Png'});
-                expect(assetGraph.findAssets({type: 'Html', fileName: 'index.html'})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var myTemplateUrl=\'/static/myTemplate.b8ee9bf196.html\'</script></body></html>');
+                expect(assetGraph.findAssets({type: 'Html', fileName: 'index.html'})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script>var myTemplateUrl=\'/static/myTemplate.d87b038d95.html\'</script></body></html>');
             });
     });
 
@@ -1564,11 +1564,23 @@ describe('buildProduction', function () {
                 cdnRoot: 'https://example.com/cdn/',
                 inlineByRelationType: {}
             })
-            .then(function (assetGraph) {
+            .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', { url: 'https://example.com/cdn/heart.ed30c45242.svg' })
-                    .and('to contain asset', { url: 'https://example.com/cdn/script.fbb8044e13.js' });
-
+                    .and('to contain asset', { url: 'https://example.com/cdn/script.6b8882d2e8.js' });
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to contain', '\'https://example.com/cdn/heart.ed30c45242.svg\'');
+            });
+    });
+
+    it('should issue the correct MD5 hashes for the moved files', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/md5Hashes/'})
+            .loadAssets('index.html')
+            .buildProduction({
+                cdnRoot: 'https://example.com/cdn/',
+                inlineByRelationType: {}
+            })
+            .queue(function (assetGraph) {
+                var js = assetGraph.findAssets({type: 'JavaScript'})[0];
+                expect(js.url, 'to contain', require('crypto').createHash('md5').update(js.rawSrc).digest('hex').substr(0, 10));
             });
     });
 });
