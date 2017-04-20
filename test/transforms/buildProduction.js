@@ -1555,4 +1555,20 @@ describe('buildProduction', function () {
                 expect(warnSpy, 'was not called');
             });
     });
+
+    it('should issue an absolute url for a JavaScriptStaticUrl relation pointing at the CDN', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/staticUrlMovedToHttpsCdn/'})
+            .loadAssets('index.html')
+            .buildProduction({
+                localeIds: ['en_us', 'da'],
+                cdnRoot: 'https://example.com/cdn/',
+                inlineByRelationType: {}
+            })
+            .then(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', { url: 'https://example.com/cdn/heart.ed30c45242.svg' })
+                    .and('to contain asset', { url: 'https://example.com/cdn/script.fbb8044e13.js' });
+
+                expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to contain', '\'https://example.com/cdn/heart.ed30c45242.svg\'');
+            });
+    });
 });
