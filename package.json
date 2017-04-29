@@ -53,7 +53,7 @@
     "lodash": "^4.14.1",
     "memoizesync": "1.0.0",
     "optimist": "0.6.1",
-    "optipng": "1.0.0",
+    "optipng": "1.1.0",
     "passerror": "^1.1.1",
     "pngcrush": "1.1.1",
     "pngquant": "1.2.0",
