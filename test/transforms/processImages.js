@@ -19,9 +19,9 @@ describe('processImages', function () {
                 expect(assetGraph, 'to contain assets', 'Png', 3);
 
                 expect(_.map(assetGraph.findAssets({isImage: true}), 'url').sort(), 'to equal', [
-                    urlTools.resolveUrl(assetGraph.root, 'purplealpha24bit.pngquant=256.png'),
+                    urlTools.resolveUrl(assetGraph.root, 'purplealpha24bit.pngquant256.png'),
                     urlTools.resolveUrl(assetGraph.root, 'redalpha24bit.png?irrelevant'),
-                    urlTools.resolveUrl(assetGraph.root, 'redalpha24bit.pngquant=128.png')
+                    urlTools.resolveUrl(assetGraph.root, 'redalpha24bit.pngquant128.png')
                 ]);
                 // The first two CssImage relations should be in the same cssRule
                 var cssBackgroundImages = assetGraph.findRelations({type: 'CssImage'});
@@ -64,11 +64,11 @@ describe('processImages', function () {
             .queue(function (assetGraph) {
                 // The urls of the image assets should have the processing instructions removed from the query string, but added before the extension:
                 expect(_.map(assetGraph.findAssets({isImage: true}), 'url').sort(), 'to equal', [
-                    urlTools.resolveUrl(assetGraph.root, 'myImage.resize=200-200.png'),
-                    urlTools.resolveUrl(assetGraph.root, 'myImage.resize=400-400.png'),
+                    urlTools.resolveUrl(assetGraph.root, 'myImage.resize200-200.png'),
+                    urlTools.resolveUrl(assetGraph.root, 'myImage.resize400-400.png'),
                     urlTools.resolveUrl(assetGraph.root, 'myImage.png')
                 ].sort());
-                expect(assetGraph, 'to contain relation', {href: /myImage\.resize=400-400\.png#foo/});
+                expect(assetGraph, 'to contain relation', {href: /myImage\.resize400-400\.png#foo/});
             });
     });
 
@@ -86,7 +86,7 @@ describe('processImages', function () {
                 expect(assetGraph, 'to contain no assets', 'Png');
                 expect(assetGraph, 'to contain asset', 'Gif');
                 expect(_.map(assetGraph.findAssets({isImage: true}), 'url').sort(), 'to equal', [
-                    urlTools.resolveUrl(assetGraph.root, 'foo.setFormat=gif.gif')
+                    urlTools.resolveUrl(assetGraph.root, 'foo.setFormatgif.gif')
                 ]);
             });
     });
@@ -119,7 +119,7 @@ describe('processImages', function () {
             })
             .processImages({type: 'Png'}, {pngcrush: true, optipng: true, pngquant: true})
             .queue(function (assetGraph) {
-                var redAlpha24BitPngquanted = assetGraph.findAssets({url: /\/redalpha24bit\.pngquant=256\.png$/})[0];
+                var redAlpha24BitPngquanted = assetGraph.findAssets({url: /\/redalpha24bit\.pngquant256\.png$/})[0];
                 expect(_.toArray(redAlpha24BitPngquanted.rawSrc.slice(0, 4)), 'to equal', [0x89, 0x50, 0x4e, 0x47]);
                 expect(redAlpha24BitPngquanted.rawSrc.length, 'to be less than', 6037);
 
@@ -191,12 +191,12 @@ describe('processImages', function () {
                     {
                         type: 'Png',
                         devicePixelRatio: 5,
-                        url: /foo\.resize=200,200\.png$/
+                        url: /foo\.resize200,200\.png$/
                     },
                     {
                         type: 'Png',
                         devicePixelRatio: 6,
-                        url: /foo\.resize=200,200\.png$/
+                        url: /foo\.resize200,200\.png$/
                     },
                     {
                         type: 'Png',
