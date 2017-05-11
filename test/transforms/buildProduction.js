@@ -353,7 +353,7 @@ describe('buildProduction', function () {
                 expect(
                     assetGraph.findAssets({type: 'JavaScript'})[0].text,
                     'to equal',
-                    'function foo(a){a.log(\'foo\')}var foo=\'bar\';hey.log(\'foo\'),foo=123,alert(console.log(\'blah\'))'
+                    'function foo(o){o.log(\'foo\')}var foo=\'bar\';hey.log(\'foo\'),foo=123,alert(console.log(\'blah\'))'
                 );
             })
             .run(done);
