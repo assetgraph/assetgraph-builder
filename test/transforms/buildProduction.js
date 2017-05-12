@@ -1595,4 +1595,23 @@ describe('buildProduction', function () {
                 expect(js.url, 'to contain', require('crypto').createHash('md5').update(js.rawSrc).digest('hex').substr(0, 10));
             });
     });
+
+    describe('with precacheServiceWorker:true', function () {
+        it('should generate a service worker', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/precacheServiceWorker/'})
+                .loadAssets('index.html')
+                .buildProduction({
+                    precacheServiceWorker: true,
+                    cdnRoot: 'https://example.com/cdn/',
+                    inlineByRelationType: {}
+                })
+                .queue(function (assetGraph) {
+                    expect(assetGraph, 'to contain relation', 'JavaScriptServiceWorkerRegistration');
+                    expect(assetGraph.findRelations({type: 'JavaScriptServiceWorkerRegistration'})[0].to.text, 'to contain', '/static/bar.c9e9c0fad6.txt')
+                        .and('to match', /https:\/\/example\.com\/cdn\/bundle-\d+\.e01f897076\.js/)
+                        .and('to contain', 'e01f8970765fda371bb397754c36e114')
+                        .and('not to contain', '.toString(\'url\')');
+                });
+        });
+    });
 });
