@@ -198,11 +198,14 @@ describe('cloneForEachLocale', function () {
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain assets', {type: 'Html', isFragment: true}, 2);
 
-                var danishKnockoutJsTemplate = assetGraph.findRelations({type: 'JavaScriptGetText', from: function (asset) {
-                    return asset.incomingRelations.some(function (incomingRelation) {
-                        return incomingRelation.from === assetGraph.findAssets({url: /\/index\.da\.html$/})[0];
-                    });
-                }})[0].to;
+                var danishKnockoutJsTemplate = assetGraph.findRelations({
+                    type: 'JavaScriptGetText',
+                    from: function (asset) {
+                        return asset.incomingRelations.some(function (incomingRelation) {
+                            return incomingRelation.from === assetGraph.findAssets({url: /\/index\.da\.html$/})[0];
+                        });
+                    }
+                })[0].to;
                 expect(danishKnockoutJsTemplate.text, 'to match', /Den danske værdi/);
             })
             .run(done);

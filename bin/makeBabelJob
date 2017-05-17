@@ -354,9 +354,13 @@ new AssetGraph({root: commandLineOptions.root})
                     });
                 }
 
-                var i18nAssetForKey = assetGraph.findAssets({type: 'I18n', isLoaded: true, parseTree: function (parseTree) {
-                    return key in parseTree;
-                }})[0] || i18nAsset;
+                var i18nAssetForKey = assetGraph.findAssets({
+                    type: 'I18n',
+                    isLoaded: true,
+                    parseTree: function (parseTree) {
+                        return key in parseTree;
+                    }
+                })[0] || i18nAsset;
 
                 if (i18nAssetForKey) {
                     if (!(key in i18nAssetForKey.parseTree)) {

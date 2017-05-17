@@ -865,11 +865,15 @@ describe('buildProduction', function () {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/noCompress/'})
             .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
-            .buildProduction({version: false, noCompress: true, defines: {
-                MYSYMBOL: { type: 'Literal', value: 'theValue' },
-                MYOTHERSYMBOL: { type: 'Literal', value: 'theOtherValue' },
-                MYOBJECT: { foo: 'bar' }
-            }})
+            .buildProduction({
+                version: false,
+                noCompress: true,
+                defines: {
+                    MYSYMBOL: { type: 'Literal', value: 'theValue' },
+                    MYOTHERSYMBOL: { type: 'Literal', value: 'theOtherValue' },
+                    MYOBJECT: { foo: 'bar' }
+                }
+            })
             .queue(function (assetGraph) {
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to match', /theValue/);
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'not to match', /theOtherValue/);
@@ -882,11 +886,15 @@ describe('buildProduction', function () {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/noCompress/'})
             .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
             .loadAssets('index.html')
-            .buildProduction({version: false, noCompress: false, defines: {
-                MYSYMBOL: { type: 'Literal', value: 'theValue' },
-                MYOTHERSYMBOL: { type: 'Literal', value: 'theOtherValue' },
-                MYOBJECT: { foo: 'bar' }
-            }})
+            .buildProduction({
+                version: false,
+                noCompress: false,
+                defines: {
+                    MYSYMBOL: { type: 'Literal', value: 'theValue' },
+                    MYOTHERSYMBOL: { type: 'Literal', value: 'theOtherValue' },
+                    MYOBJECT: { foo: 'bar' }
+                }
+            })
             .queue(function (assetGraph) {
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'to match', /theValue/);
                 expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'not to match', /theOtherValue/);
