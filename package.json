@@ -73,7 +73,7 @@
     "gm": "^1.21.1",
     "html-webpack-plugin": "2.28.0",
     "istanbul": "^0.4.4",
-    "jsdom": "^11.0.0",
+    "jsdom": "^9.9.0",
     "less": "^2.7.1",
     "mocha": "^3.0.0",
     "requirejs": "^2.3.3",
