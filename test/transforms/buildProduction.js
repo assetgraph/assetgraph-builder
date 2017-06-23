@@ -1556,6 +1556,18 @@ describe('buildProduction', function () {
             });
     });
 
+    it('should not rewrite the href of JavaScriptFetch relations', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/javaScriptFetch/'})
+            .loadAssets('index.html')
+            .buildProduction({
+                cdnRoot: '//example.com/',
+                inlineByRelationType: {}
+            })
+            .then(function (assetGraph) {
+                expect(assetGraph.findAssets({type: 'JavaScript'})[0].text, 'not to contain', 'file://');
+            });
+    });
+
     it('should issue an absolute url for a JavaScriptStaticUrl relation pointing at the CDN', function () {
         return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/staticUrlMovedToHttpsCdn/'})
             .loadAssets('index.html')
