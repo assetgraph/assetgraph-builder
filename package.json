@@ -71,7 +71,7 @@
     "eslint-config-onelint": "2.0.0",
     "gifsicle-stream": "^0.3.0",
     "gm": "^1.21.1",
-    "html-webpack-plugin": "2.28.0",
+    "html-webpack-plugin": "^2.29.0",
     "istanbul": "^0.4.4",
     "jsdom": "^9.9.0",
     "less": "^2.7.1",
@@ -85,7 +85,7 @@
     "unexpected-color": "^2.0.0",
     "unexpected-dom": "^4.0.0",
     "unexpected-sinon": "^10.1.1",
-    "webpack": "^2.2.1"
+    "webpack": "^3.0.0"
   },
   "engines": {
     "node": ">= 4"
