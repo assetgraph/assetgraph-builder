@@ -8,6 +8,7 @@ var expect = require('../unexpected-with-plugins'),
     Stream = require('stream'),
     gm = require('gm'),
     vm = require('vm'),
+    _ = require('lodash'),
     passError = require('passerror'),
     sinon = require('sinon'),
     AssetGraph = require('../../lib/AssetGraph'),
@@ -1013,7 +1014,7 @@ describe('buildProduction', function () {
             .loadAssets('index.html')
             .buildProduction({version: false})
             .queue(function (assetGraph) {
-                expect(assetGraph.findAssets({url: /static\/.*\.html/})[0].text, 'not to contain', 'style.css');
+                expect(assetGraph.findAssets({url: /component.html/})[0].text, 'not to contain', 'style.css');
             })
             .run(done);
     });
@@ -1575,5 +1576,25 @@ describe('buildProduction', function () {
                         'integrity="sha256-');
                 });
         });
+    });
+
+    it('should internationalize all Html assets, even non-initial ones, but not include the locale ids in incoming links', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/nonInitialHtmlTranslation/'})
+            .registerRequireJsConfig({preventPopulationOfJavaScriptAssetsUntilConfigHasBeenFound: true})
+            .loadAssets('index.html')
+            .populate()
+            .buildProduction({localeIds: ['en', 'da']})
+            .queue(function (assetGraph) {
+                expect(_.map(assetGraph.findAssets({type: 'Html'}), 'fileName'), 'to equal', [
+                    'index.en.html',
+                    'index.da.html',
+                    'linkedpage.en.html',
+                    'linkedpage.da.html'
+                ]);
+
+                expect(assetGraph.findAssets({fileName: 'index.en.html'})[0].text, 'to contain', '<a href=linkedpage.html>')
+                    .and('not to contain', 'linkedpage.en.html')
+                    .and('not to contain', 'linkedpage.da.html');
+            });
     });
 });
