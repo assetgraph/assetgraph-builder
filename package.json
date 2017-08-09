@@ -79,14 +79,14 @@
     "mocha": "^3.0.0",
     "requirejs": "^2.3.3",
     "rimraf": "2.6.1",
-    "sinon": "^2.1.0",
+    "sinon": "^3.1.0",
     "source-map": "^0.5.3",
     "svgfilter": "1.2.0",
     "systemjs-builder": "^0.16.0",
     "unexpected": "^10.8.1",
     "unexpected-color": "^2.0.0",
     "unexpected-dom": "^4.0.0",
-    "unexpected-sinon": "^10.1.1",
+    "unexpected-sinon": "^10.8.2",
     "webpack": "^3.0.0"
   },
   "engines": {
