@@ -563,15 +563,14 @@ describe('buildProduction', function () {
     });
 
     it('should call splitCssIfIeLimitIsReached unconditionally and correctly when IE >= 8 is to be supported', function (done) {
-        var stub = sinon.stub(require('assetgraph/lib/TransformQueue').prototype, 'splitCssIfIeLimitIsReached', function (queryObj, options) {
-            expect(options, 'to equal', {minimumIeVersion: 8});
-            return this;
-        });
+        var stub = sinon.stub(require('assetgraph/lib/TransformQueue').prototype, 'splitCssIfIeLimitIsReached').returnsThis();
         new AssetGraph()
             .loadAssets({url: 'http://example.com/index.html', type: 'Html', text: '<!DOCTYPE html>'})
             .buildProduction({version: false, browsers: 'ie >= 8'})
             .queue(function () {
-                expect(stub, 'was called once');
+                expect(stub, 'to have calls satisfying', function () {
+                    stub({ type: 'Css' }, { minimumIeVersion: 8 });
+                });
                 stub.restore();
             })
             .run(done);
