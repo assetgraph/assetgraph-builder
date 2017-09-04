@@ -1594,4 +1594,16 @@ describe('buildProduction', function () {
                 expect(js.url, 'to contain', require('crypto').createHash('md5').update(js.rawSrc).digest('hex').substr(0, 10));
             });
     });
+
+    // Regression test: Previously the self-references would be left in an unresolved state after
+    // minifySvgAssetsWithSvgo had run, causing moveAssetsInOrder to break:
+    it('should reconnect self-references from an Svg after minifying it with svgo', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/svgWithSelfReferences/'})
+            .loadAssets('index.html')
+            .populate()
+            .buildProduction({ svgo: true })
+            .queue(function (assetGraph) {
+                expect(assetGraph.findAssets({type: 'Svg'})[0].text, 'to contain', 'xlink:href="#a"');
+            });
+    });
 });
