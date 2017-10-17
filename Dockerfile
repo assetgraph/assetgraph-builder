@@ -15,8 +15,12 @@ RUN apt-get update \
         pngquant \
     && rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g \
+ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
+ENV PATH=$NPM_CONFIG_PREFIX/bin:$PATH
+USER node
+
+RUN npm --loglevel=warn install -g \
     assetgraph-builder \
     svgo
 
-ENTRYPOINT ["/usr/local/bin/buildProduction"]
+ENTRYPOINT ["buildProduction"]
