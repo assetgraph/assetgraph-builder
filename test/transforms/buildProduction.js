@@ -1595,6 +1595,25 @@ describe('buildProduction', function () {
             });
     });
 
+    it.only('should handle a test case with a JavaScript asset pointing at a SourceMap, then rewriting the relation to an absolute URL when running the buildProduction transform with the cdnRoot option', function (done) {
+        new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/absoluteUrlToSourceMapOnCdn/'})
+            .on('error', done)
+            .loadAssets('index.html')
+            .buildProduction({
+                version: false,
+                sourceMaps: true,
+                inlineByRelationType: {'*': false},
+                minify: true,
+                cdnRoot: 'http://cdn.example.com/foo/'
+            })
+            .queue(function (assetGraph) {
+                // expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script src=http://cdn.example.com/foo/bundle.9baef1d6a3.js crossorigin=anonymous></script></body></html>');
+                expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to match', /src=http:\/\/cdn.example.com\/foo\/bundle\.\w+\.js/);
+                expect(assetGraph.findAssets({url: /\/bundle\.\w+\.js$/})[0].text, 'to equal', 'alert(\'foo\')//# sourceMappingURL=http://cdn.example.com/foo/bundle.js.map\n');
+            })
+            .run(done);
+    });
+
     // Regression test: Previously the self-references would be left in an unresolved state after
     // minifySvgAssetsWithSvgo had run, causing moveAssetsInOrder to break:
     it('should reconnect self-references from an Svg after minifying it with svgo', function () {
