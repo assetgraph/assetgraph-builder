@@ -1595,7 +1595,7 @@ describe('buildProduction', function () {
             });
     });
 
-    it.only('should handle a test case with a JavaScript asset pointing at a SourceMap, then rewriting the relation to an absolute URL when running the buildProduction transform with the cdnRoot option', function (done) {
+    it('should handle a test case with a JavaScript asset pointing at a SourceMap, then rewriting the relation to an absolute URL when running the buildProduction transform with the cdnRoot option', function (done) {
         new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/absoluteUrlToSourceMapOnCdn/'})
             .on('error', done)
             .loadAssets('index.html')
