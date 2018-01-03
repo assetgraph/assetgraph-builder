@@ -425,6 +425,7 @@ new AssetGraph({
         root: rootUrl,
         canonicalRoot: commandLineOptions.canonicalroot
     })
+    .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
     .queue(function (assetGraph) {
         plugins.forEach(function (plugin) {
             require(plugin)(assetGraph, buildProductionOptions, commandLineOptions);
@@ -447,7 +448,6 @@ new AssetGraph({
             });
         }
     })
-    .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
     .loadAssets(inputUrls)
     .buildProduction(buildProductionOptions)
     .writeAssetsToDisc({url: /^file:/, isLoaded: true}, outRoot)
