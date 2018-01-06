@@ -919,7 +919,6 @@ describe('buildProduction', function () {
 
     it('should leave meaningful paths', function () {
         return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/webpackSourceMaps/webroot'})
-            .logEvents()
             .loadAssets('index.html')
             .populate()
             .buildProduction({
@@ -940,9 +939,9 @@ describe('buildProduction', function () {
                     };
                 });
 
-                expect(sourceMapSources, 'to equal', [
+                expect(sourceMapSources, 'to satisfy', [
                     {
-                        fileName: 'static/bundle.js.c01f7be0b5.map',
+                        fileName: expect.it('to begin with', 'static/bundle.js'),
                         sources: [
                             'webpack/bootstrap%20032413f5df1b0769617f',
                             '../../src/index.js'
@@ -950,7 +949,7 @@ describe('buildProduction', function () {
                         incomingRelations: []
                     },
                     {
-                        fileName: 'static/index-10.bbed90c85e.map',
+                        fileName: expect.it('to begin with', 'static/index-'),
                         sources: [
                             '/dist/webpack/bootstrap%20032413f5df1b0769617f',
                             '../src/index.js'
