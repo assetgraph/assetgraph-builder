@@ -902,6 +902,66 @@ describe('buildProduction', function () {
             });
     });
 
+    it('should preserve source map relations so that sourcesContent can be reestablished', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/existingJavaScriptSourceMapsWithSourcesContent/'})
+            .loadAssets('index.html')
+            .populate()
+            .buildProduction({
+                sourceMaps: true,
+                sourcesContent: true
+            })
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'SourceMap');
+                var sourceMap = assetGraph.findAssets({type: 'SourceMap'})[0];
+                expect(sourceMap.parseTree.sourcesContent, 'to equal', ['foo', 'bar']);
+            });
+    });
+
+    it('should leave meaningful paths', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/webpackSourceMaps/webroot'})
+            .loadAssets('index.html')
+            .populate()
+            .buildProduction({
+                webpackConfigPath: require('path').resolve(__dirname, '../../testdata/transforms/buildProduction/webpackSourceMaps/webpack.config.js'),
+                sourceMaps: true,
+                sourcesContent: true
+            })
+            .queue(function (assetGraph) {
+                // expect(assetGraph, 'to contain asset', 'SourceMap');
+                var sourceMaps = assetGraph.findAssets({type: 'SourceMap'});
+                var sourceMapSources = sourceMaps.map(function (asset) {
+                    return {
+                        fileName: require('path').relative(asset.assetGraph.root, asset.url),
+                        sources: asset.parseTree.sources,
+                        incomingRelations: asset.incomingRelations.map(function (relation) {
+                            return relation.from.fileName; // for some reason the referencing javascript asset has no content and no url
+                        })
+                    };
+                });
+
+                expect(sourceMapSources, 'to satisfy', [
+                    {
+                        fileName: expect.it('to begin with', 'static/bundle.js'),
+                        sources: [
+                            'webpack/bootstrap%20032413f5df1b0769617f',
+                            '../../src/index.js'
+                        ],
+                        incomingRelations: []
+                    },
+                    {
+                        fileName: expect.it('to begin with', 'static/index-'),
+                        sources: [
+                            '/dist/webpack/bootstrap%20032413f5df1b0769617f',
+                            '../src/index.js'
+                        ],
+                        incomingRelations: [
+                            'bundle.js'
+                        ]
+                    }
+                ]);
+            });
+    });
+
     describe('JavaScript serialization options', function () {
         it('should honor indent_level', function (done) {
             new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/javaScriptSerializationOptions/'})
