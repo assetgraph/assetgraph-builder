@@ -41,13 +41,15 @@ Features
    `@font-face { src: url(...) }`, .htc files linked via CSS
    `behavior` properties.
  * Bundles JavaScript and CSS.
+ * Discovers and optimizes Web Workers and Service Workers.
  * Removes duplicate images, JavaScript, CSS, etc.
  * Supports automatic optimization and custom processing of images using
-   pngquant, pngcrush, optipng, jpegtran, and GraphicsMagick.
+   pngquant, pngcrush, optipng, jpegtran, <a href="https://github.com/lovell/sharp">sharp</a>, and GraphicsMagick.
  * Minifies/packs JavaScript, CSS, and HTML (uses <a
-   href="https://github.com/mishoo/UglifyJS">UglifyJS</a> and <a
-   href="https://github.com/jbleuzen/node-cssmin">cssmin</a>, and <a
-   href="https://github.com/tmpvar/jsdom">jsdom</a>).
+   href="https://github.com/mishoo/UglifyJS">UglifyJS</a>, <a
+   href="https://github.com/ben-eb/cssnano">cssnano</a>, <a
+   href="https://github.com/tmpvar/jsdom">jsdom</a>,
+   and <a href="https://github.com/kangax/html-minifier">html-minifier</a>).
  * Supports the <a
    href="http://requirejs.org/docs/optimization.html">the require.js
    optimizer</a> and <a href="https://github.com/systemjs/builder">systemjs-builder</a>.
@@ -58,9 +60,6 @@ Features
  * Inlines CSS and Javascript with total size less than 4096 bytes to reduce HTTP requests.
  * Adds a cache manifest to each HTML page if `--manifest` is
    specified.
- * Compiles <a href="http://lesscss.org/">less</a> to CSS and strips
-   out the in-browser less compiler.
- * Compiles Sass to CSS
  * Renames JavaScript, CSS, images etc. to a 10-char MD5 prefix + the
    original extension so they can be served with a far-future expiry time.
  * Helps getting your static assets on a CDN by rewriting the
