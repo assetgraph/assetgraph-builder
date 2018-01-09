@@ -870,6 +870,25 @@ describe('buildProduction', function () {
             });
     });
 
+    it('should support an inline SVG island with an inline style tag inside an HTML asset', function () {
+        return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/HtmlSvgIslandWithStyle/'})
+            .loadAssets('index.html')
+            .populate()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain relation', 'SvgStyle');
+                expect(assetGraph, 'to contain no relations', 'HtmlStyle');
+                expect(assetGraph, 'to contain asset', 'Html');
+                expect(assetGraph, 'to contain asset', 'Svg');
+                expect(assetGraph, 'to contain asset', 'Css');
+            })
+            .buildProduction()
+            .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain asset', 'Html');
+                expect(assetGraph, 'to contain asset', 'Svg');
+                expect(assetGraph, 'to contain asset', 'Css');
+            });
+    });
+
     it('should read in location data from existing source maps and produce source maps for bundles', function () {
         return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/sourceMaps/'})
             .loadAssets('index.html')
