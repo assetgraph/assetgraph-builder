@@ -875,15 +875,17 @@ describe('buildProduction', function () {
             .loadAssets('index.html')
             .populate()
             .queue(function (assetGraph) {
+                expect(assetGraph, 'to contain relation', 'SvgStyle');
+                expect(assetGraph, 'to contain no relations', 'HtmlStyle');
                 expect(assetGraph, 'to contain asset', 'Html');
-                expect(assetGraph, 'to contain assets', 'Svg');
-                expect(assetGraph, 'to contain assets', 'Css');
+                expect(assetGraph, 'to contain asset', 'Svg');
+                expect(assetGraph, 'to contain asset', 'Css');
             })
             .buildProduction()
             .queue(function (assetGraph) {
                 expect(assetGraph, 'to contain asset', 'Html');
-                expect(assetGraph, 'to contain assets', 'Svg');
-                expect(assetGraph, 'to contain assets', 'Css');
+                expect(assetGraph, 'to contain asset', 'Svg');
+                expect(assetGraph, 'to contain asset', 'Css');
             });
     });
 
