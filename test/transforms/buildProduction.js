@@ -960,14 +960,6 @@ describe('buildProduction', function () {
 
                 expect(sourceMapSources, 'to satisfy', [
                     {
-                        fileName: expect.it('to begin with', 'static/bundle.js'),
-                        sources: [
-                            'webpack/bootstrap%20032413f5df1b0769617f',
-                            '../../src/index.js'
-                        ],
-                        incomingRelations: []
-                    },
-                    {
                         fileName: expect.it('to begin with', 'static/index-'),
                         sources: [
                             '/dist/webpack/bootstrap%20032413f5df1b0769617f',
