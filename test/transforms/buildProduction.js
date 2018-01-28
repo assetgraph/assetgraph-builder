@@ -543,7 +543,7 @@ describe('buildProduction', function () {
         expect(assetGraph, 'to contain asset', {type: 'Css'});
         expect(assetGraph, 'to contain relation', {type: 'HtmlScript'});
         expect(assetGraph, 'to contain asset', {type: 'JavaScript'});
-        expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to equal', '<style>body{color:#aaa;color:#bbb}</style><script>alert("a"),alert("b");</script>');
+        expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to equal', '<style>body{color:#aaa;color:#bbb}</style><script>alert(\'a\'),alert(\'b\')</script>');
     });
 
     it('should handle a test case with require.js, a data-main and a data-almond attribute', async function () {
@@ -1093,7 +1093,7 @@ describe('buildProduction', function () {
             });
             await assetGraph.buildProduction({localeIds: ['en_us'], noCompress: false, stripDebug: true});
 
-            expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to contain', 'data-bind=click:function(){;}');
+            expect(assetGraph.findAssets({type: 'Html'})[0].text, 'to contain', 'data-bind=click:function(){}');
         });
     });
 
