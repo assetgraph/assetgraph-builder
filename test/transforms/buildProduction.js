@@ -1295,10 +1295,10 @@ describe('buildProduction', function () {
                         inlineByRelationType: {'*': true}
                     })
                     .queue(function (assetGraph) {
-                        expect(assetGraph.findAssets({fileName: 'index.da.html'})[0].text, 'to contain', '<style>body{color:#fff;background-color:red}</style>')
-                            .and('not to contain', '<style>body{color:#fff;background-color:blue}</style>');
-                        expect(assetGraph.findAssets({fileName: 'index.en_us.html'})[0].text, 'to contain', '<style>body{color:#fff;background-color:blue}</style>')
-                            .and('not to contain', '<style>body{color:#fff;background-color:red}</style>');
+                        expect(assetGraph.findAssets({fileName: 'index.da.html'})[0].text, 'to contain', '<style>body{background-color:red;color:#fff}</style>')
+                            .and('not to contain', '<style>body{background-color:blue;color:#fff}</style>');
+                        expect(assetGraph.findAssets({fileName: 'index.en_us.html'})[0].text, 'to contain', '<style>body{background-color:blue;color:#fff}</style>')
+                            .and('not to contain', '<style>body{background-color:red;color:#fff}</style>');
                     });
             });
         });
