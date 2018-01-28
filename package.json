@@ -60,7 +60,7 @@
     "urltools": "0.3.1"
   },
   "optionalDependencies": {
-    "assetgraph-sprite": "2.0.0",
+    "assetgraph-sprite": "github:assetgraph/assetgraph-sprite#08c5c7f3d6dd33008342c9feb1fadd2f8671cba4",
     "histogram": "^3.0.0",
     "node-zopfli": "2.0.2"
   },
