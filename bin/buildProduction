@@ -76,6 +76,11 @@ var chalk = require('chalk'),
             type: 'boolean',
             default: false
         })
+        .options('precacheserviceworker', {
+            describe: 'Generate service workers that make the static assets available offline (uses https://github.com/GoogleChrome/sw-precache)',
+            type: 'boolean',
+            default: false
+        })
         .options('browsers', {
             alias: 'b',
             describe: 'Specify which browsers to support. Configures autoprefixer and controls which hacks and fallbacks to apply. Defaults to all known browsers. Syntax: https://github.com/ai/browserslist',
@@ -418,7 +423,8 @@ var buildProductionOptions = {
     sharedBundles: commandLineOptions.sharedbundles,
     stripDebug: !commandLineOptions.debug,
     addInitialHtmlExtension: commandLineOptions.addinitialhtmlextension,
-    javaScriptSerializationOptions: javaScriptSerializationOptions
+    javaScriptSerializationOptions: javaScriptSerializationOptions,
+    precacheServiceWorker: commandLineOptions.precacheserviceworker
 };
 
 new AssetGraph({

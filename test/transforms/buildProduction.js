@@ -1695,4 +1695,23 @@ describe('buildProduction', function () {
                 expect(assetGraph.findAssets({type: 'Svg'})[0].text, 'to contain', 'xlink:href="#a"');
             });
     });
+
+    describe('with precacheServiceWorker:true', function () {
+        it('should generate a service worker', function () {
+            return new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/precacheServiceWorker/'})
+                .loadAssets('index.html')
+                .buildProduction({
+                    precacheServiceWorker: true,
+                    cdnRoot: 'https://example.com/cdn/',
+                    inlineByRelationType: {}
+                })
+                .queue(function (assetGraph) {
+                    expect(assetGraph, 'to contain relation', 'JavaScriptServiceWorkerRegistration');
+                    expect(assetGraph.findRelations({type: 'JavaScriptServiceWorkerRegistration'})[0].to.text, 'to contain', '/static/bar.c9e9c0fad6.txt')
+                        .and('to match', /https:\/\/example\.com\/cdn\/bundle-\d+\.e01f897076\.js/)
+                        .and('to contain', 'e01f8970765fda371bb397754c36e114')
+                        .and('not to contain', '.toString(\'url\')');
+                });
+        });
+    });
 });
