@@ -277,7 +277,6 @@ if (commandLineOptions.canonicalurl) {
 
 var _ = require('lodash'),
     AssetGraph = require('../lib/AssetGraph'),
-    query = AssetGraph.query,
     urlTools = require('urltools'),
     outRoot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
     cdnRoot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
@@ -456,9 +455,12 @@ new AssetGraph({
     })
     .loadAssets(inputUrls)
     .buildProduction(buildProductionOptions)
-    .writeAssetsToDisc({url: /^file:/, isLoaded: true}, outRoot)
+    .writeAssetsToDisc({protocol: 'file:', isLoaded: true}, outRoot)
     .if(cdnRoot)
-        .writeAssetsToDisc({url: query.createPrefixMatcher(fullCdnRoot), isLoaded: true}, outRoot + 'static/cdn/', fullCdnRoot)
+        .writeAssetsToDisc({
+            url: url => url && url.startsWith(fullCdnRoot),
+            isLoaded: true
+        }, outRoot + 'static/cdn/', fullCdnRoot)
     .endif()
     .writeStatsToStderr()
     .run();
