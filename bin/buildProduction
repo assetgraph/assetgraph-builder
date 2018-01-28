@@ -275,20 +275,20 @@ if (commandLineOptions.canonicalurl) {
     process.exit(1);
 }
 
-var _ = require('lodash'),
-    AssetGraph = require('../lib/AssetGraph'),
-    urlTools = require('urltools'),
-    outRoot = urlTools.fsDirToFileUrl(commandLineOptions.outroot),
-    cdnRoot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot),
-    fullCdnRoot = (/^\/\//.test(cdnRoot) ? 'http:' : '') + cdnRoot,
-    rootUrl = commandLineOptions.root && urlTools.urlOrFsPathToUrl(commandLineOptions.root, true),
-    excludePatterns = commandLineOptions.exclude && [].concat(commandLineOptions.exclude),
-    reservedNames = commandLineOptions.reservednames && _.flatten(_.flatten([commandLineOptions.reservednames]).map(function (reservedName) {
-        return reservedName.split(',');
-    })),
-    plugins = commandLineOptions.plugin ? _.flatten(_.flatten([commandLineOptions.plugin])) : [],
-    inputUrls,
-    inlineByRelationType = {};
+const _ = require('lodash');
+const AssetGraph = require('../lib/AssetGraph');
+const urlTools = require('urltools');
+const outRoot = urlTools.fsDirToFileUrl(commandLineOptions.outroot);
+const cdnRoot = commandLineOptions.cdnroot && urlTools.ensureTrailingSlash(commandLineOptions.cdnroot);
+const fullCdnRoot = (/^\/\//.test(cdnRoot) ? 'http:' : '') + cdnRoot;
+let rootUrl = commandLineOptions.root && urlTools.urlOrFsPathToUrl(commandLineOptions.root, true);
+const excludePatterns = commandLineOptions.exclude && [].concat(commandLineOptions.exclude);
+const reservedNames = commandLineOptions.reservednames && _.flatten(_.flatten([commandLineOptions.reservednames]).map(
+    reservedName => reservedName.split(',')
+));
+const plugins = commandLineOptions.plugin ? _.flatten(_.flatten([commandLineOptions.plugin])) : [];
+const inlineByRelationType = {};
+let inputUrls;
 
 if (commandLineOptions.inline) {
     inlineByRelationType['*'] = true;
@@ -330,7 +330,7 @@ if (commandLineOptions.inlinesize) {
     inlineByRelationType.CssImage = 8192;
 }
 
-var defines = {};
+const defines = {};
 (commandLineOptions.define ? _.flatten(_.flatten([commandLineOptions.define])) : []).forEach(function (define) {
     var matchDefine = define.match(/^(\w+)(?:=(.*))?$/);
     if (matchDefine) {
@@ -350,10 +350,10 @@ var defines = {};
     }
 });
 
-var splitConditions = commandLineOptions.splitcondition && _.flatten(_.flatten([commandLineOptions.splitcondition]).map(function (name) {
+const splitConditions = commandLineOptions.splitcondition && _.flatten(_.flatten([commandLineOptions.splitcondition]).map(function (name) {
     return name.split(',');
 }));
-var conditions = {};
+const conditions = {};
 (commandLineOptions.condition ? _.flatten(_.flatten([commandLineOptions.condition])) : []).forEach(function (condition) {
     var matchCondition = condition.match(/^([^=]+)=(.*)?$/);
     if (matchCondition) {
@@ -388,7 +388,7 @@ if (commandLineOptions._.length > 0) {
     throw new Error('No input files and no --root specified (or it isn\'t file:), cannot proceed');
 }
 
-var buildProductionOptions = {
+const buildProductionOptions = {
     version: commandLineOptions.version,
     browsers: browsers,
     sourceMaps: commandLineOptions.sourcemaps,
@@ -426,41 +426,44 @@ var buildProductionOptions = {
     precacheServiceWorker: commandLineOptions.precacheserviceworker
 };
 
-new AssetGraph({
+(async () => {
+    const assetGraph = new AssetGraph({
         root: rootUrl,
         canonicalRoot: commandLineOptions.canonicalroot
-    })
-    .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
-    .queue(function (assetGraph) {
-        plugins.forEach(function (plugin) {
-            require(plugin)(assetGraph, buildProductionOptions, commandLineOptions);
-        });
-        if (commandLineOptions.sweep) {
-            assetGraph.on('removeAsset', function (asset) {
-                setImmediate(function () {
-                    if (!asset.assetGraph) {
-                        asset.unload();
-                    }
-                });
-            }).on('removeRelation', function (relation) {
-                setImmediate(function () {
-                    if (!relation.assetGraph) {
-                        Object.keys(relation).forEach(function (key) {
-                            relation[key] = null;
-                        });
-                    }
-                });
+    });
+    await assetGraph.logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true});
+
+    for (const plugin of plugins) {
+        require(plugin)(assetGraph, buildProductionOptions, commandLineOptions);
+    }
+    if (commandLineOptions.sweep) {
+        assetGraph.on('removeAsset', asset => {
+            setImmediate(() => {
+                if (!asset.assetGraph) {
+                    asset.unload();
+                }
             });
-        }
-    })
-    .loadAssets(inputUrls)
-    .buildProduction(buildProductionOptions)
-    .writeAssetsToDisc({protocol: 'file:', isLoaded: true}, outRoot)
-    .if(cdnRoot)
-        .writeAssetsToDisc({
+        }).on('removeRelation', relation => {
+            setImmediate(() => {
+                if (!relation.assetGraph) {
+                    for (const key of Object.keys(relation)) {
+                        relation[key] = null;
+                    }
+                }
+            });
+        });
+    }
+
+    await assetGraph.loadAssets(inputUrls);
+    await assetGraph.buildProduction(buildProductionOptions);
+    await assetGraph.writeAssetsToDisc({protocol: 'file:', isLoaded: true}, outRoot);
+    if (cdnRoot) {
+        await assetGraph.writeAssetsToDisc({
             url: url => url && url.startsWith(fullCdnRoot),
             isLoaded: true
-        }, outRoot + 'static/cdn/', fullCdnRoot)
-    .endif()
-    .writeStatsToStderr()
-    .run();
+        }, outRoot + 'static/cdn/', fullCdnRoot);
+    }
+
+    await assetGraph.writeStatsToStderr();
+})();
+
