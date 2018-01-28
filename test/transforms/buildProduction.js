@@ -1296,8 +1296,8 @@ describe('buildProduction', function () {
                     })
                     .queue(function (assetGraph) {
                         expect(assetGraph.findAssets({fileName: 'index.da.html'})[0].text, 'to contain', '<style>body{background-color:red;color:#fff}</style>')
-                            .and('not to contain', '<style>body{background-color:blue;color:#fff}</style>');
-                        expect(assetGraph.findAssets({fileName: 'index.en_us.html'})[0].text, 'to contain', '<style>body{background-color:blue;color:#fff}</style>')
+                            .and('not to contain', '<style>body{background-color:#00f;color:#fff}</style>');
+                        expect(assetGraph.findAssets({fileName: 'index.en_us.html'})[0].text, 'to contain', '<style>body{background-color:#00f;color:#fff}</style>')
                             .and('not to contain', '<style>body{background-color:red;color:#fff}</style>');
                     });
             });
@@ -1391,7 +1391,8 @@ describe('buildProduction', function () {
 
     it('should add a .css extension to transpiled assets', function () {
         return new AssetGraph({root: __dirname  })
-            .loadAssets(new AssetGraph.Html({
+            .loadAssets({
+                type: 'Html',
                 url: 'file://' + __dirname + '/index.html',
                 text:
                     '<!DOCTYPE html>' +
@@ -1400,16 +1401,19 @@ describe('buildProduction', function () {
                     '<link rel="stylesheet" nobundle href="styles.scss?qs">' +
                     '<link rel="stylesheet" nobundle href="styles.stylus">' +
                     '</head></body></html>'
-            }), new AssetGraph.Css({
+            }, {
+                type: 'Css',
                 url: 'file://' + __dirname + '/styles.less',
                 text: 'body { color: red; }'
-            }), new AssetGraph.Css({
+            }, {
+                type: 'Css',
                 url: 'file://' + __dirname + '/styles.scss?qs',
                 text: 'body { color: blue; }'
-            }), new AssetGraph.Css({
+            }, {
+                type: 'Css',
                 url: 'file://' + __dirname + '/styles.stylus',
                 text: 'body { color: green; }'
-            }))
+            })
             .populate()
             .buildProduction({
                 inlineByRelationType: {'*': false}
