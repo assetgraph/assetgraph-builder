@@ -65,7 +65,7 @@
     "node-zopfli": "2.0.2"
   },
   "devDependencies": {
-    "autoprefixer": "^7.0.0",
+    "autoprefixer": "^7.2.5",
     "coveralls": "^2.11.12",
     "eslint": "^4.16.0",
     "eslint-config-onelint": "2.0.0",
