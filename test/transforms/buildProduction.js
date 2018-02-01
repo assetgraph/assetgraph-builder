@@ -1368,7 +1368,7 @@ describe('buildProduction', function () {
                 excludePatterns: ['*.css']
             });
 
-            expect(assetGraph.findAssets(), 'to satisfy', [
+            expect(assetGraph.findAssets({isLoaded: true}), 'to satisfy', [
                 {
                     type: 'Html',
                     fileName: 'index.html'
