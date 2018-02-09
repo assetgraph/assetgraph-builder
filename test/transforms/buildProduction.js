@@ -1393,7 +1393,7 @@ describe('buildProduction', function () {
                 excludePatterns: ['testdata/transforms/buildProduction/excludePattern/foo/']
             });
 
-            expect(assetGraph.findAssets(), 'to satisfy', [
+            expect(assetGraph.findAssets({ isLoaded: true }), 'to satisfy', [
                 {
                     type: 'Html',
                     fileName: 'index.html'
