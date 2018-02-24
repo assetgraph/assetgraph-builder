@@ -102,8 +102,8 @@
   },
   "scripts": {
     "lint": "eslint . bin/*",
-    "test": "npm run lint && mocha",
-    "travis": "npm run lint && npm run coverage",
+    "test": "mocha",
+    "travis": "npm run lint && npm run coverage && npm run lint",
     "coverage": "NODE_ENV=development istanbul cover --include-all-sources -x '**/testdata/**' -x lib/i18nTools.js -x lib/bootstrapper.js _mocha -- --reporter dot"
   }
 }
