@@ -73,10 +73,10 @@
     "gifsicle-stream": "^0.3.0",
     "gm": "^1.21.1",
     "html-webpack-plugin": "^2.29.0",
-    "istanbul": "^0.4.4",
     "jsdom": "^11.1.0",
     "less": "^2.7.1",
     "mocha": "^3.0.0",
+    "nyc": "^11.4.1",
     "requirejs": "^2.3.3",
     "rimraf": "2.6.1",
     "sinon": "^3.1.0",
@@ -104,6 +104,12 @@
     "lint": "eslint . bin/*",
     "test": "mocha",
     "travis": "npm run lint && npm run coverage && npm run lint",
-    "coverage": "NODE_ENV=development istanbul cover --include-all-sources -x '**/testdata/**' -x lib/i18nTools.js -x lib/bootstrapper.js _mocha -- --reporter dot"
+    "coverage": "NODE_ENV=test nyc --reporter=lcov --reporter=text --all -- mocha --reporter dot && echo google-chrome coverage/lcov-report/index.html"
+  },
+  "nyc": {
+    "include": [
+      "lib/**",
+      "bin/**"
+    ]
   }
 }
