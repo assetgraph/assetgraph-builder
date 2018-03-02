@@ -15,14 +15,14 @@ describe('buildProduction', function () {
         await assetGraph.buildProduction({
             quiet: true,
             version: 'The version number',
-            optimizeImages: true, // Test it
-            inlineSize: true, // Test it
-            mangleTopLevel: false, // Test it
-            manifest: true, // Test it
-            asyncScripts: true, // Test it
-            deferScripts: true, // Test it
+            optimizeImages: true,
+            inlineSize: true,
+            mangleTopLevel: false,
+            manifest: true,
+            asyncScripts: true,
+            deferScripts: true,
             cdnRoot: 'http://cdn.example.com/foo/',
-            prettyPrint: false // Test it
+            prettyPrint: false
         });
 
         expect(assetGraph, 'to contain assets', {type: 'Html', isInline: false}, 1);
@@ -33,10 +33,10 @@ describe('buildProduction', function () {
 
         expect(assetGraph, 'to contain relations', {type: 'HtmlScript', from: {fileName: 'index.html'}}, 2);
 
-        expect(assetGraph.findAssets({fileName: 'index.html'})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" manifest=index.appcache><head><title>The fancy title</title><style>body div{width:100px}body{color:teal;color:maroon}</style><style>body{color:tan}</style></head><body><script src=' + assetGraph.findRelations({type: 'HtmlScript', from: {fileName: 'index.html'}})[0].to.url + ' async defer crossorigin=anonymous></script><script>alert("script3");</script></body></html>');
+        expect(assetGraph.findAssets({fileName: 'index.html'})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" manifest=index.appcache><head><title>The fancy title</title><style>body{color:tan}</style><style>body{color:teal;color:maroon}body div{width:100px}</style></head><body><script src=http://cdn.example.com/foo/bundle.aa79b2788e.js async defer crossorigin=anonymous></script><script>alert(\'script3\')</script></body></html>');
 
         // someTextFile.txt should be found at /static/someTextFile.c7429a1035.txt (not on the CDN)
-        expect(assetGraph, 'to contain assets', {url: /\/static\/someTextFile.c7429a1035\.txt$/}, 1);
+        expect(assetGraph, 'to contain asset', {url: {$regex: /\/static\/someTextFile.c7429a1035\.txt$/}});
 
         for (const htmlAsset of assetGraph.findAssets({type: 'Html', isInline: false})) {
             const htmlCacheManifestRelations = assetGraph.findRelations({from: htmlAsset, type: 'HtmlCacheManifest'});

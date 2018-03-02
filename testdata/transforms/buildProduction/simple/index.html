@@ -1,33 +1,36 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>The fancy title</title>
-        <link rel="stylesheet" href="styles1.css">
-        <link rel="stylesheet" href="styles2.css">
-        <link rel="stylesheet" href="styles3.css" nobundle="nobundle">
-    </head>
-    <body>
-        <script>
-            var myStaticUrl = '/someTextFile.txt'.toString('url');
-        </script>
-        <script>
-            var require = {
-                shim: {
-                    shimmed: ['somethingElse']
-                },
-                separateCSS: true,
-                packages: [
-                    {
-                        name: 'less',
-                        location: 'require-less',
-                        main: 'less'
-                    }
-                ]
-            };
-        </script>
-        <script src="script1.js"></script>
-        <script src="script2.js"></script>
-        <script src="require.js" data-main="morescripts/main"></script>
-        <script src="script3.js" nobundle="nobundle"></script>
-    </body>
+
+<head>
+    <title>The fancy title</title>
+    <link rel="stylesheet" href="styles3.css" nobundle="nobundle">
+    <link rel="stylesheet" href="styles1.css">
+    <link rel="stylesheet" href="styles2.css">
+</head>
+
+<body>
+    <script>
+        var myStaticUrl = '/someTextFile.txt'.toString('url');
+    </script>
+    <script>
+        var require = {
+            shim: {
+                shimmed: ['somethingElse']
+            },
+            separateCSS: true,
+            packages: [
+                {
+                    name: 'less',
+                    location: 'require-less',
+                    main: 'less'
+                }
+            ]
+        };
+    </script>
+    <script src="script1.js"></script>
+    <script src="script2.js"></script>
+    <script src="require.js" data-main="morescripts/main"></script>
+    <script src="script3.js" nobundle="nobundle"></script>
+</body>
+
 </html>
