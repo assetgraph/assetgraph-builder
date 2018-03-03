@@ -671,8 +671,8 @@ describe('buildProduction', function () {
         expect(assetGraph, 'to contain relations', 'HtmlStyle', 2);
 
         const htmlStyles = assetGraph.findRelations({type: 'HtmlStyle'});
-        expect(htmlStyles[0].node.outerHTML, 'to equal', '<style type="text/css" foo="bar"></style>');
-        expect(htmlStyles[1].node.outerHTML, 'to equal', '<style type="text/css" media="screen" foo="bar"></style>');
+        expect(htmlStyles[0].node.outerHTML, 'to equal', '<style foo="bar"></style>');
+        expect(htmlStyles[1].node.outerHTML, 'to equal', '<style media="screen" foo="bar"></style>');
 
         expect(assetGraph, 'to contain relations', 'HtmlScript', 1);
         const htmlScripts = assetGraph.findRelations({type: 'HtmlScript'});
