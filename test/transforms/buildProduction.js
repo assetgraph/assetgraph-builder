@@ -924,7 +924,6 @@ describe('buildProduction', function () {
     it('should read the existing inline source maps correctly from the output of Fusile', async function () {
         const assetGraph = new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/sourceMaps/fusile-output'});
         await assetGraph.loadAssets('index.html');
-        await assetGraph.populate();
         await assetGraph.buildProduction({ sourceMaps: true });
 
         expect(assetGraph, 'to contain asset', 'JavaScript');
