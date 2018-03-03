@@ -732,7 +732,7 @@ describe('buildProduction', function () {
         await assetGraph.buildProduction({version: false, browsers: 'ie > 9'});
 
         const htmlAsset = assetGraph.findAssets({type: 'Html'})[0];
-        expect(htmlAsset.text, 'to contain', 'data-bind="template:{name:\'application\',\'if\':isInitialized');
+        expect(htmlAsset.text, 'to contain', 'data-bind=template:{name:&quot;application&quot;,if:isInitialized');
     });
 
     it('should support a standalone svgfilter', async function () {
