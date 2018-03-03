@@ -165,11 +165,20 @@ describe('buildProduction', function () {
 
     it('should handle a test case with an HtmlScript relation pointing at an extension-less, non-existent file', async function () {
         const assetGraph = new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/nonExistentFileWithoutExtension/'});
+        const warnSpy = sinon.spy().named('warn');
         await assetGraph.loadAssets('index.html');
 
-        expect(assetGraph, 'to contain asset', {});
+        expect(assetGraph, 'to contain assets', {}, 2);
 
+        assetGraph.on('warn', warnSpy);
         await assetGraph.buildProduction({version: false});
+        // The event is actually emitted four times because populate is used four times during buildProduction.
+        // It would be nice to suppress some of that noise. Perhaps by scoping the populates. Imagine if a transform
+        // could forward a set of assets as a selection/subgraph so we could do something like:
+        // await assetGraph.bundleRequireJs().populate();
+        expect(warnSpy, 'to have a call satisfying', () => {
+            warnSpy(/ENOENT/);
+        });
 
         expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to equal', '<!DOCTYPE html><html><head></head><body><script src=foo></script></body></html>');
     });
@@ -214,7 +223,7 @@ describe('buildProduction', function () {
             inlineByRelationType: {'*': false}
         });
 
-        expect(assetGraph.findRelations({type: ['HtmlStyle', 'HtmlScript']}), 'to have length', 2)
+        expect(assetGraph.findRelations({type: { $in: ['HtmlStyle', 'HtmlScript'] }}), 'to have length', 2)
             .and('to have items satisfying', { node: { attributes: { crossorigin: 'anonymous' } } });
     });
 
@@ -227,7 +236,7 @@ describe('buildProduction', function () {
             inlineByRelationType: {'*': false}
         });
 
-        expect(assetGraph.findRelations({type: ['HtmlStyle', 'HtmlScript']}), 'to have length', 2)
+        expect(assetGraph.findRelations({type: { $in: ['HtmlStyle', 'HtmlScript'] }}), 'to have length', 2)
             .and('to have items satisfying', { node: { attributes: { crossorigin: 'anonymous' } } });
     });
 
