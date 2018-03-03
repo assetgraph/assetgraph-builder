@@ -922,6 +922,7 @@ describe('buildProduction', function () {
     });
 
     it('should read the existing inline source maps correctly from the output of Fusile', async function () {
+
         const assetGraph = new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/sourceMaps/fusile-output'});
         await assetGraph.loadAssets('index.html');
         await assetGraph.buildProduction({ sourceMaps: true });
@@ -941,7 +942,7 @@ describe('buildProduction', function () {
 
         expect(assetGraph, 'to contain assets', 'JavaScript', 3);
         expect(assetGraph, 'to contain asset', {fileName: 'worker.js'});
-        expect(assetGraph.findAssets({fileName: 'worker.js'})[0].text, 'to match', /^importScripts\('static\/bundle-[\w.]+\.js'\);$/);
+        expect(assetGraph.findAssets({fileName: 'worker.js'})[0].text, 'to match', /^importScripts\('static\/bundle.[\w.]+\.js'\);$/);
     });
 
     describe('with contentSecurityPolicy=true', function () {
