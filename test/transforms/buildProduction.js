@@ -1535,7 +1535,7 @@ describe('buildProduction', function () {
         });
 
         expect(assetGraph.findAssets({url: /\/index\.html$/})[0].text, 'to match', /src=http:\/\/cdn.example.com\/foo\/bundle\.\w+\.js/);
-        expect(assetGraph.findAssets({url: /\/bundle\.\w+\.js$/})[0].text, 'to equal', 'alert(\'foo\')//# sourceMappingURL=http://cdn.example.com/foo/bundle.js.256cdc4f81.map\n');
+        expect(assetGraph.findAssets({url: /\/bundle\.\w+\.js$/})[0].text, 'to equal', 'alert(\'foo\')//# sourceMappingURL=http://cdn.example.com/foo/bundle.js.0f6c1fed26.map\n');
     });
 
     // Regression test: Previously the self-references would be left in an unresolved state after
