@@ -903,7 +903,7 @@ describe('buildProduction', function () {
             inlineByRelationType: { HtmlStyle: false }
         });
 
-        expect(assetGraph, 'to contain asset', 'Css');
+        expect(assetGraph, 'to contain asset', {type: 'Css', isLoaded: true});
         expect(assetGraph.findAssets({ type: 'Css' })[0].text, 'to contain', 'sourceMappingURL=/static/foo.css.8f6b70eaf4.map');
         expect(assetGraph, 'to contain asset', 'SourceMap');
         expect(assetGraph.findAssets({ type: 'SourceMap' })[0].parseTree.sources, 'to contain', '/foo.less');
