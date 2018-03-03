@@ -63,8 +63,8 @@ describe('buildProduction', function () {
         await assetGraph.buildProduction({inlineByRelationType: {'*': true}});
 
         expect(assetGraph.findAssets({fileName: 'index.html'})[0].text, 'not to contain', 'alert')
-            .and('to match', /<script src=[^"]+ async>/)
-            .and('to match', /<script src=[^"]+ defer>/);
+            .and('to match', /<script async src=[^"]+>/)
+            .and('to match', /<script defer src=[^"]+>/);
         expect(assetGraph, 'to contain assets', {type: 'JavaScript', isInline: false, text: /alert/}, 2);
     });
 
