@@ -833,7 +833,6 @@ describe('buildProduction', function () {
     it('should leave meaningful paths', async function () {
         const assetGraph = new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/webpackSourceMaps/webroot'});
         await assetGraph.loadAssets('index.html');
-        await assetGraph.populate();
         await assetGraph.buildProduction({
             webpackConfigPath: require('path').resolve(__dirname, '../../testdata/transforms/buildProduction/webpackSourceMaps/webpack.config.js'),
             sourceMaps: true,
@@ -852,7 +851,7 @@ describe('buildProduction', function () {
             {
                 fileName: expect.it('to begin with', 'static/index-'),
                 sources: [
-                    '/dist/webpack/bootstrap%20032413f5df1b0769617f',
+                    'webpack://webpack/bootstrap%20032413f5df1b0769617f',
                     '../src/index.js'
                 ],
                 incomingRelations: [
