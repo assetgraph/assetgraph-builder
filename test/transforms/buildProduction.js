@@ -839,8 +839,6 @@ describe('buildProduction', function () {
             sourceMaps: true,
             sourcesContent: true
         });
-
-        // expect(assetGraph, 'to contain asset', 'SourceMap');
         const sourceMaps = assetGraph.findAssets({type: 'SourceMap'});
         const sourceMapSources = sourceMaps.map(asset => ({
             fileName: require('path').relative(asset.assetGraph.root, asset.url),
