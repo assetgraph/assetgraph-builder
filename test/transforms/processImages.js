@@ -191,12 +191,12 @@ describe('processImages', function () {
                     {
                         type: 'Png',
                         devicePixelRatio: 5,
-                        url: /foo\.resize200,200\.png$/
+                        url: /foo.*\.resize200,200\.png$/
                     },
                     {
                         type: 'Png',
                         devicePixelRatio: 6,
-                        url: /foo\.resize200,200\.png$/
+                        url: /foo.*\.resize200,200\.png$/
                     },
                     {
                         type: 'Png',

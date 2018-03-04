@@ -2,8 +2,17 @@ module.exports = {
     extends: [
         'onelint'
     ],
-    env: {
-        es6: false
+    rules: {
+        'no-const-assign': 2
     },
-    parserOptions: null
+    env: {
+        es6: true
+    },
+    parserOptions: {
+        ecmaVersion: 2017,
+        ecmaFeatures: {
+            experimentalObjectRestSpread: true
+
+        }
+    }
 };

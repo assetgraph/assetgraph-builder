@@ -36,7 +36,7 @@ describe('buildProduction', function () {
         ], 'run as a shell command').then(function (stdout) {
             return fs.readFileAsync(pathModule.resolve(tmpDir, 'index.html'), 'utf-8');
         }).then(function (builtIndexHtml) {
-            expect(builtIndexHtml, 'to contain', 'foo["catch"]=123');
+            expect(builtIndexHtml, 'to contain', "foo['catch']=123");
         }).finally(function () {
             return rimrafAsync(tmpDir);
         });
@@ -52,7 +52,7 @@ describe('buildProduction', function () {
         ], 'run as a shell command').then(function (stdout) {
             return fs.readFileAsync(pathModule.resolve(tmpDir, 'index.html'), 'utf-8');
         }).then(function (builtIndexHtml) {
-            expect(builtIndexHtml, 'to contain', 'foo["catch"]=123');
+            expect(builtIndexHtml, 'to contain', "foo['catch']=123");
         }).finally(function () {
             return rimrafAsync(tmpDir);
         });
