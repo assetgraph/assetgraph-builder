@@ -1566,4 +1566,15 @@ describe('buildProduction', function () {
                 .and('not to contain', '.toString(\'url\')');
         });
     });
+
+    // Turning on deduplication for fonts via mergeIdenticalAssets would require changes here:
+    it('should handle a case with an ?#iefix hack', async function () {
+        const assetGraph = new AssetGraph({root: __dirname + '/../../testdata/transforms/buildProduction/fontWithIeFix/'});
+        await assetGraph.loadAssets('index.html');
+        await assetGraph.buildProduction();
+
+        expect(assetGraph, 'to contain assets', 4);
+        expect(assetGraph, 'to contain asset', {path: '/static/', fileName: 'font.0c064252fc.eot'})
+            .and('to contain asset', {path: '/static/', fileName: 'font.0c064252fc.eot'});
+    });
 });
