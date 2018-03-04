@@ -40,7 +40,7 @@
     "bin"
   ],
   "dependencies": {
-    "assetgraph": "github:assetgraph/assetgraph#eb880ab445ec2609ada22c7b819f14fee718b654",
+    "assetgraph": "4.0.0",
     "bluebird": "^3.5.0",
     "browserslist": "2.1.4",
     "chalk": "^1.1.3",
