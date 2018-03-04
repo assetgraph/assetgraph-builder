@@ -33,7 +33,7 @@ describe('buildProduction', function () {
 
         expect(assetGraph, 'to contain relations', {type: 'HtmlScript', from: {fileName: 'index.html'}}, 2);
 
-        expect(assetGraph.findAssets({fileName: 'index.html'})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" manifest=index.appcache><head><title>The fancy title</title><style>body{color:tan}</style><style>body{color:teal;color:maroon}body div{width:100px}</style></head><body><script src=http://cdn.example.com/foo/bundle.aa79b2788e.js async defer crossorigin=anonymous></script><script>alert(\'script3\')</script></body></html>');
+        expect(assetGraph.findAssets({fileName: 'index.html'})[0].text, 'to equal', '<!DOCTYPE html><html data-version="The version number" manifest=index.appcache><head><title>The fancy title</title><style>body{color:tan}</style><style>body{color:teal;color:maroon}body div{width:100px}</style></head><body><script src=http://cdn.example.com/foo/bundle.43bf9f14c8.js async defer crossorigin=anonymous></script><script>alert(\'script3\')</script></body></html>');
 
         // someTextFile.txt should be found at /static/someTextFile.c7429a1035.txt (not on the CDN)
         expect(assetGraph, 'to contain asset', {url: {$regex: /\/static\/someTextFile.c7429a1035\.txt$/}});
