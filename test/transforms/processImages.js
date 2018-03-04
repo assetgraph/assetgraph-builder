@@ -182,7 +182,7 @@ describe('processImages', function () {
                     {
                         type: 'Png',
                         devicePixelRatio: 3,
-                        url: /foo-1\.png$/
+                        url: /foo\.png$/
                     },
                     {
                         type: 'Png',
