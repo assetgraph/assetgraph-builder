@@ -642,7 +642,7 @@ describe('buildProduction', function() {
     expect(
       assetGraph.findAssets({ type: 'JavaScript' })[0].text,
       'to match',
-      /alert\(\'bar\'\)$/
+      /alert\('bar'\)$/
     );
   });
 

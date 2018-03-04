@@ -1,6 +1,6 @@
 /*global describe, it*/
-var expect = require('../unexpected-with-plugins'),
-  AssetGraph = require('../../lib/AssetGraph');
+const expect = require('../unexpected-with-plugins');
+const AssetGraph = require('../../lib/AssetGraph');
 
 describe('cloneForEachConditionValue', function() {
   it('should fan out based on a single condition', function() {

@@ -1,8 +1,8 @@
 /*global describe, it*/
-var expect = require('../unexpected-with-plugins'),
-  _ = require('lodash'),
-  AssetGraph = require('../../lib/AssetGraph'),
-  urlTools = require('urltools');
+const expect = require('../unexpected-with-plugins');
+const _ = require('lodash');
+const AssetGraph = require('../../lib/AssetGraph');
+const urlTools = require('urltools');
 
 describe('processImages', function() {
   it('should handle a Css test case', function() {

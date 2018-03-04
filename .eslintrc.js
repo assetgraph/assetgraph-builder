@@ -1,5 +1,8 @@
 const config = {
-  extends: ['pretty-standard']
+  extends: ['pretty-standard'],
+  rules: {
+    'no-path-concat': 0
+  }
 };
 
 if (process.stdin.isTTY) {
@@ -8,7 +11,6 @@ if (process.stdin.isTTY) {
   // editors.
   config.plugins = config.plugins || [];
   config.plugins.push('prettier');
-  config.rules = config.rules || {};
   config.rules['prettier/prettier'] = 'error';
 }
 
