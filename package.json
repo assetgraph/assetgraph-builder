@@ -82,7 +82,7 @@
     "sinon": "^3.1.0",
     "source-map": "^0.5.3",
     "svgfilter": "papandreou/node-svgfilter#e165dabf8c79fb58b4c62ab86aca78f573a1d56f",
-    "svgo": "0.7.2",
+    "svgo": "1.0.5",
     "systemjs-builder": "^0.16.0",
     "unexpected": "^10.8.1",
     "unexpected-color": "^2.0.0",
