@@ -1,35 +1,34 @@
 #!/usr/bin/env node
 
-var AssetGraph = require('../lib/AssetGraph'),
-    _ = require('lodash'),
-    urlTools = require('urltools'),
-    commandLineOptions = require('optimist')
-        .usage('$0 [--root <inputRootDirectory>] <htmlFile>...')
-        .demand(1)
-        .argv;
+const AssetGraph = require('../lib/AssetGraph');
+const _ = require('lodash');
+const urlTools = require('urltools');
+const commandLineOptions = require('optimist')
+  .usage('$0 [--root <inputRootDirectory>] <htmlFile>...')
+  .demand(1).argv;
 
-var ignorePseudoClasses = [
-    'active',
-    'checked',
-    'default',
-    'disabled',
-    'empty',
-    'enabled',
-    'first',
-    'fullscreen',
-    'focus',
-    'hover',
-    'indeterminate',
-    'in-range',
-    'invalid',
-    'visited',
-    'left',
-    'right',
-    'read-only',
-    'read-write',
-    'optional',
-    'out-of-range',
-    'link'
+const ignorePseudoClasses = [
+  'active',
+  'checked',
+  'default',
+  'disabled',
+  'empty',
+  'enabled',
+  'first',
+  'fullscreen',
+  'focus',
+  'hover',
+  'indeterminate',
+  'in-range',
+  'invalid',
+  'visited',
+  'left',
+  'right',
+  'read-only',
+  'read-write',
+  'optional',
+  'out-of-range',
+  'link'
 ];
 
 // Pseudo-classes intentionally not on the above list because they make sense
@@ -39,57 +38,75 @@ var ignorePseudoClasses = [
 // Give up:
 // lang() not() nth-child() nth-last-child() nth-last-of-type() nth-of-type()
 
-new AssetGraph({root: commandLineOptions.root})
-    .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
-    .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
-    .populate({
-        followRelations: {type: ['HtmlStyle', 'CssImport'], to: {url: /^file:/}}
-    })
-    .queue(function (assetGraph) {
-        var documents = _.map(assetGraph.findAssets({type: 'Html'}), 'parseTree');
-        function isSelectorUsed(selector) {
-            var giveUp = false;
-            // Preprocess pseudo-classes
-            selector = selector.replace(/:([a-z-]+)(\()?/g, function ($0, pseudoClassName, leadingParen) {
-                if (leadingParen) {
-                    // Give up on :not(...) etc., anything that takes parameters
-                    giveUp = true;
-                    return $0;
-                } else if (ignorePseudoClasses.indexOf(pseudoClassName) !== -1) {
-                    return '';
-                } else {
-                    return $0;
-                }
-            });
-            if (giveUp) {
-                return true;
-            }
-
-            return documents.some(function (document) {
-                try {
-                    return document.querySelectorAll(selector).length > 0;
-                } catch (e) {
-                    // Assume that selectors jsdom doesn't support are in use:
-                    return true;
-                }
-            });
+new AssetGraph({ root: commandLineOptions.root })
+  .logEvents({
+    repl: commandLineOptions.repl,
+    stopOnWarning: commandLineOptions.stoponwarning,
+    suppressJavaScriptCommonJsRequireWarnings: true
+  })
+  .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
+  .populate({
+    followRelations: { type: ['HtmlStyle', 'CssImport'], to: { url: /^file:/ } }
+  })
+  .queue(function(assetGraph) {
+    var documents = _.map(assetGraph.findAssets({ type: 'Html' }), 'parseTree');
+    function isSelectorUsed(selector) {
+      var giveUp = false;
+      // Preprocess pseudo-classes
+      selector = selector.replace(/:([a-z-]+)(\()?/g, function(
+        $0,
+        pseudoClassName,
+        leadingParen
+      ) {
+        if (leadingParen) {
+          // Give up on :not(...) etc., anything that takes parameters
+          giveUp = true;
+          return $0;
+        } else if (ignorePseudoClasses.indexOf(pseudoClassName) !== -1) {
+          return '';
+        } else {
+          return $0;
         }
-        assetGraph.findAssets({type: 'Css'}).forEach(function (cssAsset) {
-            cssAsset.constructor.eachRuleInParseTree(cssAsset.parseTree, function (cssRule) {
-                if (cssRule.type === 'rule') { // STYLE_RULE
-                    var selectors = cssRule.selectors;
-                    var unusedSelectors = cssRule.selectors.filter(function (selector) {
-                        return !isSelectorUsed(selector);
-                    });
-                    if (unusedSelectors.length > 0) {
-                        if (unusedSelectors.length === selectors.length) {
-                            console.warn('Unused rule: ' + cssRule.toString());
-                        } else {
-                            console.warn('Unused selector' + (unusedSelectors.length === 1 ? '' : 's') + ' "' + unusedSelectors.join('", "') + '" in rule: ' + cssRule.toString());
-                        }
-                    }
-                }
-            });
-        });
-    })
-    .run();
+      });
+      if (giveUp) {
+        return true;
+      }
+
+      return documents.some(function(document) {
+        try {
+          return document.querySelectorAll(selector).length > 0;
+        } catch (e) {
+          // Assume that selectors jsdom doesn't support are in use:
+          return true;
+        }
+      });
+    }
+    assetGraph.findAssets({ type: 'Css' }).forEach(function(cssAsset) {
+      cssAsset.constructor.eachRuleInParseTree(cssAsset.parseTree, function(
+        cssRule
+      ) {
+        if (cssRule.type === 'rule') {
+          // STYLE_RULE
+          var selectors = cssRule.selectors;
+          var unusedSelectors = cssRule.selectors.filter(function(selector) {
+            return !isSelectorUsed(selector);
+          });
+          if (unusedSelectors.length > 0) {
+            if (unusedSelectors.length === selectors.length) {
+              console.warn('Unused rule: ' + cssRule.toString());
+            } else {
+              console.warn(
+                'Unused selector' +
+                  (unusedSelectors.length === 1 ? '' : 's') +
+                  ' "' +
+                  unusedSelectors.join('", "') +
+                  '" in rule: ' +
+                  cssRule.toString()
+              );
+            }
+          }
+        }
+      });
+    });
+  })
+  .run();

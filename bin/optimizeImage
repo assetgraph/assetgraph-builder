@@ -1,23 +1,26 @@
 #!/usr/bin/env node
 
-var AssetGraph = require('../lib/AssetGraph'),
-    urlTools = require('urltools'),
-    commandLineOptions = require('optimist')
-        .usage('$0 image1 image2...')
-        .demand(1)
-        .argv;
+const AssetGraph = require('../lib/AssetGraph');
+const urlTools = require('urltools');
+const commandLineOptions = require('optimist')
+  .usage('$0 image1 image2...')
+  .demand(1).argv;
 
-new AssetGraph({root: commandLineOptions.root})
-    .logEvents({repl: commandLineOptions.repl, stopOnWarning: commandLineOptions.stoponwarning, suppressJavaScriptCommonJsRequireWarnings: true})
-    .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
-    .queue(function () {
-        console.warn('BEFORE:');
-    })
-    .writeStatsToStderr()
-    .processImages({isImage: true}, {autoLossless: true})
-    .writeAssetsToDisc({url: /^file:/, isImage: true, isDirty: true})
-    .queue(function () {
-        console.warn('\nAFTER:');
-    })
-    .writeStatsToStderr()
-    .run();
+new AssetGraph({ root: commandLineOptions.root })
+  .logEvents({
+    repl: commandLineOptions.repl,
+    stopOnWarning: commandLineOptions.stoponwarning,
+    suppressJavaScriptCommonJsRequireWarnings: true
+  })
+  .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
+  .queue(function() {
+    console.warn('BEFORE:');
+  })
+  .writeStatsToStderr()
+  .processImages({ isImage: true }, { autoLossless: true })
+  .writeAssetsToDisc({ protocol: 'file:', isImage: true, isDirty: true })
+  .queue(function() {
+    console.warn('\nAFTER:');
+  })
+  .writeStatsToStderr()
+  .run();
