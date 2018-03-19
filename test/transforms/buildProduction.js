@@ -55,9 +55,11 @@ describe('buildProduction', function() {
     );
 
     expect(
-      assetGraph.findAssets({ fileName: 'index.html' })[0].text,
+      assetGraph
+        .findAssets({ fileName: 'index.html' })[0]
+        .text.replace(/bundle\.[0-9a-f]{10}\./, 'bundle.xxxxxxxxxx.'),
       'to equal',
-      '<!DOCTYPE html><html data-version="The version number" manifest=index.appcache><head><title>The fancy title</title><style>body{color:tan}</style><style>body{color:teal;color:maroon}body div{width:100px}</style></head><body><script src=http://cdn.example.com/foo/bundle.43bf9f14c8.js async defer crossorigin=anonymous></script><script>alert(\'script3\')</script></body></html>'
+      '<!DOCTYPE html><html data-version="The version number" manifest=index.appcache><head><title>The fancy title</title><style>body{color:tan}</style><style>body{color:teal;color:maroon}body div{width:100px}</style></head><body><script src=http://cdn.example.com/foo/bundle.xxxxxxxxxx.js async defer crossorigin=anonymous></script><script>alert(\'script3\')</script></body></html>'
     );
 
     // someTextFile.txt should be found at /static/someTextFile.c7429a1035.txt (not on the CDN)
