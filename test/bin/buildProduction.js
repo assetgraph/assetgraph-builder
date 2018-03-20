@@ -17,7 +17,7 @@ async function run(commandAndArgs) {
       arg => (/[^\w./-]/.test(arg) ? "'" + arg.replace(/'/g, "\\'") + "'" : arg)
     )
     .join(' ');
-  console.log(command);
+
   return await Promise.fromNode(cb => childProcess.exec(command, cb), {
     multiArgs: true
   });
