@@ -8,21 +8,19 @@ var childProcess = Promise.promisifyAll(require('child_process'), {
   multiArgs: true
 });
 
-function run(commandAndArgs) {
+async function run(commandAndArgs) {
   if (typeof commandAndArgs !== 'undefined' && !Array.isArray(commandAndArgs)) {
     commandAndArgs = [commandAndArgs];
   }
-  var command = commandAndArgs
-    .map(function(arg) {
-      return /[^\w./-]/.test(arg) ? "'" + arg.replace(/'/g, "\\'") + "'" : arg;
-    })
+  const command = commandAndArgs
+    .map(
+      arg => (/[^\w./-]/.test(arg) ? "'" + arg.replace(/'/g, "\\'") + "'" : arg)
+    )
     .join(' ');
-  return Promise.fromNode(
-    function(cb) {
-      childProcess.exec(command, cb);
-    },
-    { multiArgs: true }
-  );
+  console.log(command);
+  return await Promise.fromNode(cb => childProcess.exec(command, cb), {
+    multiArgs: true
+  });
 }
 
 expect.addAssertion(
@@ -35,9 +33,9 @@ expect.addAssertion(
 );
 
 describe('buildProduction', function() {
-  it('should honor --browsers "IE 8" when serializing Javascript', function() {
-    var tmpDir = getTemporaryFilePath();
-    return expect(
+  it('should honor --browsers "IE 8" when serializing Javascript', async function() {
+    const tmpDir = getTemporaryFilePath();
+    await expect(
       [
         pathModule.resolve(__dirname, '..', '..', 'bin', 'buildProduction'),
         '--root',
@@ -66,24 +64,61 @@ describe('buildProduction', function() {
         )
       ],
       'run as a shell command'
-    )
-      .then(function(stdout) {
-        return fs.readFileAsync(
-          pathModule.resolve(tmpDir, 'index.html'),
-          'utf-8'
-        );
-      })
-      .then(function(builtIndexHtml) {
-        expect(builtIndexHtml, 'to contain', "foo['catch']=123");
-      })
-      .finally(function() {
-        return rimrafAsync(tmpDir);
-      });
+    );
+
+    const builtIndexHtml = await fs.readFileAsync(
+      pathModule.resolve(tmpDir, 'index.html'),
+      'utf-8'
+    );
+
+    try {
+      expect(builtIndexHtml, 'to contain', "foo['catch']=123");
+    } finally {
+      await rimrafAsync(tmpDir);
+    }
   });
 
-  it('should assume that IE 8 compatibility is wanted when no --browsers switch is passed', function() {
-    var tmpDir = getTemporaryFilePath();
-    return expect(
+  it('should pick up the browserslist configuration from package.json', async function() {
+    const dir = pathModule.resolve(
+      __dirname,
+      '..',
+      '..',
+      'testdata',
+      'bin',
+      'buildProduction',
+      'browserslistInPackageJson'
+    );
+    const tmpDir = getTemporaryFilePath();
+    const originalDir = process.cwd();
+    process.chdir(dir);
+    await expect(
+      [
+        pathModule.resolve(__dirname, '..', '..', 'bin', 'buildProduction'),
+        '--root',
+        dir,
+        '--outroot',
+        tmpDir,
+        pathModule.resolve(dir, 'index.html')
+      ],
+      'run as a shell command'
+    );
+
+    const builtIndexHtml = await fs.readFileAsync(
+      pathModule.resolve(tmpDir, 'index.html'),
+      'utf-8'
+    );
+
+    try {
+      expect(builtIndexHtml, 'to contain', 'foo.catch=123');
+    } finally {
+      await rimrafAsync(tmpDir);
+      process.chdir(originalDir);
+    }
+  });
+
+  it('should assume that IE 8 compatibility is wanted when no --browsers switch is passed and no .browserslistrc etc. is found', async function() {
+    const tmpDir = getTemporaryFilePath();
+    await expect(
       [
         pathModule.resolve(__dirname, '..', '..', 'bin', 'buildProduction'),
         '--root',
@@ -110,18 +145,17 @@ describe('buildProduction', function() {
         )
       ],
       'run as a shell command'
-    )
-      .then(function(stdout) {
-        return fs.readFileAsync(
-          pathModule.resolve(tmpDir, 'index.html'),
-          'utf-8'
-        );
-      })
-      .then(function(builtIndexHtml) {
-        expect(builtIndexHtml, 'to contain', "foo['catch']=123");
-      })
-      .finally(function() {
-        return rimrafAsync(tmpDir);
-      });
+    );
+
+    const builtIndexHtml = await fs.readFileAsync(
+      pathModule.resolve(tmpDir, 'index.html'),
+      'utf-8'
+    );
+
+    try {
+      expect(builtIndexHtml, 'to contain', "foo['catch']=123");
+    } finally {
+      await rimrafAsync(tmpDir);
+    }
   });
 });
