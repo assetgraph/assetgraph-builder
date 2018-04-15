@@ -82,7 +82,7 @@
     "requirejs": "^2.3.3",
     "rimraf": "^2.6.2",
     "sinon": "^4.5.0",
-    "source-map": "^0.5.3",
+    "source-map": "^0.7.2",
     "svgfilter": "^2.0.0",
     "svgo": "^1.0.5",
     "systemjs-builder": "^0.16.0",
