@@ -2350,7 +2350,6 @@ describe('buildProduction', function() {
       minify: true,
       cdnRoot: 'http://cdn.example.com/foo/'
     });
-
     expect(
       assetGraph.findAssets({ url: /\/index\.html$/ })[0].text,
       'to match',
@@ -2359,7 +2358,7 @@ describe('buildProduction', function() {
     expect(
       assetGraph.findAssets({ url: /\/bundle\.\w+\.js$/ })[0].text,
       'to equal',
-      "alert('foo')//# sourceMappingURL=http://cdn.example.com/foo/bundle.js.0f6c1fed26.map\n"
+      '(function(){alert(function(n){return n*n}(10))}.call(this))//# sourceMappingURL=http://cdn.example.com/foo/bundle.js.15cb4bd60f.map\n'
     );
   });
 

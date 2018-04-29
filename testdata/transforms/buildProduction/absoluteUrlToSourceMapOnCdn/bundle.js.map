@@ -1,1 +1,13 @@
-{"version":3,"file":"bundle.js","sources":["index.js"],"names":[],"mappings":""}
+{
+  "version": 3,
+  "file": "demo.js",
+  "sourceRoot": "",
+  "sources": [
+    "demo.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA;;EAAA,MAAA,GAAS,QAAA,CAAC,CAAD,CAAA;WAAO,CAAA,GAAI;EAAX;;EAET,KAAA,CAAM,MAAA,CAAO,EAAP,CAAN;AAFA",
+  "sourcesContent": [
+    "square = (x) -> x * x\n\nalert(square(10));\n"
+  ]
+}
