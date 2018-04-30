@@ -2357,9 +2357,16 @@ describe('buildProduction', function() {
     );
     expect(
       assetGraph.findAssets({ url: /\/bundle\.\w+\.js$/ })[0].text,
-      'to equal',
-      '(function(){alert(function(n){return n*n}(10))}.call(this))//# sourceMappingURL=http://cdn.example.com/foo/bundle.js.15cb4bd60f.map\n'
+      'to begin with',
+      '(function(){alert(function(n){return n*n}(10))}.call(this))//# sourceMappingURL=http://cdn.example.com/foo/bundle.js.'
     );
+    const sourceMap = assetGraph.findAssets({type: 'SourceMap'})[0];
+    expect(sourceMap.parseTree, 'to satisfy', {
+      version: 3,
+      sources: [ `${assetGraph.root}demo.coffee` ],
+      names: [ 'alert', 'n', 'call' ],
+      mappings: 'CAAA,WAEAA,KAAA,CAFS,SAACC,CAAD,CAAC,QAAMA,CAAA,CAAIA,CAAV,CAAD,CAEI,EAFJ,CAET,CAFA,C,CAEaC,I,CAAA,I'
+    });
   });
 
   // Regression test: Previously the self-references would be left in an unresolved state after
