@@ -90,7 +90,7 @@
     "unexpected-color": "^2.0.0",
     "unexpected-dom": "^4.3.0",
     "unexpected-sinon": "^10.8.2",
-    "webpack": "^3.0.0"
+    "webpack": "^4.8.1"
   },
   "engines": {
     "node": ">= 4"
