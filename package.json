@@ -99,9 +99,6 @@
     "lib": "./lib",
     "bin": "./bin"
   },
-  "publishConfig": {
-    "registry": "http://registry.npmjs.org/"
-  },
   "scripts": {
     "lint": "eslint . bin/*",
     "test": "mocha",
