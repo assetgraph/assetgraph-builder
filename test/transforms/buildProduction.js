@@ -2436,4 +2436,28 @@ describe('buildProduction', function() {
       fileName: 'font.0c064252fc.eot'
     });
   });
+
+  it('should handle FileRedirect relations', async function() {
+    const assetGraph = new AssetGraph({
+      root:
+        __dirname + '/../../testdata/transforms/buildProduction/fileRedirect/'
+    });
+    await assetGraph.loadAssets('index.html');
+    await assetGraph.populate();
+
+    expect(assetGraph, 'to contain relation', 'FileRedirect');
+    // Make sure that this bogus asset hasn't been moved to /static/
+    expect(assetGraph, 'to contain asset', {
+      url: assetGraph.root + 'directory'
+    });
+
+    await assetGraph.buildProduction();
+
+    expect(assetGraph, 'to contain assets', 'Html', 2);
+    expect(assetGraph, 'to contain relation', 'FileRedirect');
+    // Make sure that this bogus asset hasn't been moved to /static/
+    expect(assetGraph, 'to contain asset', {
+      url: assetGraph.root + 'directory'
+    });
+  });
 });
