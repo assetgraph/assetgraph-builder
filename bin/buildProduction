@@ -369,9 +369,9 @@ const excludePatterns =
 const reservedNames =
   commandLineOptions.reservednames &&
   _.flatten(
-    _
-      .flatten([commandLineOptions.reservednames])
-      .map(reservedName => reservedName.split(','))
+    _.flatten([commandLineOptions.reservednames]).map(reservedName =>
+      reservedName.split(',')
+    )
   );
 const plugins = commandLineOptions.plugin
   ? _.flatten(_.flatten([commandLineOptions.plugin]))
