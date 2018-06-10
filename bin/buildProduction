@@ -580,7 +580,7 @@ const buildProductionOptions = {
   await assetGraph.loadAssets(inputUrls);
   await assetGraph.buildProduction(buildProductionOptions);
   await assetGraph.writeAssetsToDisc(
-    { protocol: 'file:', isLoaded: true },
+    { protocol: 'file:', isLoaded: true, isRedirect: false },
     outRoot
   );
   if (cdnRoot) {
