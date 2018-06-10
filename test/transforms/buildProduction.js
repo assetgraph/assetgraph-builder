@@ -1014,49 +1014,73 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case with an RSS feed (#118)', async function() {
-    const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/rss/',
-      canonicalRoot: 'http://www.someexamplerssdomain.com/'
+  describe('with the canonicalRoot option', function() {
+    it('should handle a test case with an RSS feed (#118)', async function() {
+      const assetGraph = new AssetGraph({
+        root: __dirname + '/../../testdata/transforms/buildProduction/rss/',
+        canonicalRoot: 'http://www.someexamplerssdomain.com/'
+      });
+      await assetGraph.loadAssets('index.html');
+      await assetGraph.populate();
+
+      expect(assetGraph, 'to contain asset', {
+        contentType: 'application/rss+xml',
+        type: 'Rss'
+      });
+
+      await assetGraph.buildProduction({
+        version: false
+      });
+
+      expect(assetGraph.findRelations(), 'to satisfy', [
+        {
+          type: 'HtmlAlternateLink',
+          href: 'rssFeed.xml',
+          canonical: false
+        },
+        {
+          type: 'RssChannelLink',
+          href: 'index.html',
+          canonical: false
+        },
+        {
+          type: 'XmlHtmlInlineFragment'
+        },
+        {
+          type: 'HtmlImage',
+          canonical: true,
+          href: 'http://www.someexamplerssdomain.com/static/foo.d65dd5318f.png'
+        }
+      ]);
+
+      expect(
+        assetGraph.findAssets({ type: 'Rss' })[0].text,
+        'to equal',
+        '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0">\n<channel>\n <title>RSS Title</title>\n <description>This is an example of an RSS feed</description>\n <link>index.html</link>\n <lastBuildDate>Mon, 06 Sep 2010 00:01:00 +0000 </lastBuildDate>\n <pubDate>Mon, 06 Sep 2009 16:20:00 +0000 </pubDate>\n <ttl>1800</ttl>\n <item>\n  <title>Example entry</title>\n  <description>Here is some text containing an interesting description and an image: &lt;img src=http://www.someexamplerssdomain.com/static/foo.d65dd5318f.png>.</description>\n  <link>http://www.wikipedia.org/</link>\n  <guid>unique string per item</guid>\n  <pubDate>Mon, 06 Sep 2009 16:20:00 +0000 </pubDate>\n </item>\n</channel>\n</rss>'
+      );
     });
-    await assetGraph.loadAssets('index.html');
-    await assetGraph.populate();
 
-    expect(assetGraph, 'to contain asset', {
-      contentType: 'application/rss+xml',
-      type: 'Rss'
+    // https://github.com/mochajs/mocha/pull/3412#issuecomment-396038075
+    it('should keep static files within assetGraph.root', async function() {
+      const assetGraph = new AssetGraph({
+        root:
+          __dirname +
+          '/../../testdata/transforms/buildProduction/canonicalRoot/',
+        canonicalRoot: 'http://www.example.com/'
+      });
+      await assetGraph.loadAssets('index.html');
+      await assetGraph.populate();
+
+      await assetGraph.buildProduction({
+        version: false,
+        inlineByRelationType: {}
+      });
+
+      expect(assetGraph, 'to contain asset', {
+        type: 'JavaScript',
+        url: `${assetGraph.root}static/script.7e514b97a9.js`
+      });
     });
-
-    await assetGraph.buildProduction({
-      version: false
-    });
-
-    expect(assetGraph.findRelations(), 'to satisfy', [
-      {
-        type: 'HtmlAlternateLink',
-        href: 'rssFeed.xml',
-        canonical: false
-      },
-      {
-        type: 'RssChannelLink',
-        href: 'index.html',
-        canonical: false
-      },
-      {
-        type: 'XmlHtmlInlineFragment'
-      },
-      {
-        type: 'HtmlImage',
-        canonical: true,
-        href: 'http://www.someexamplerssdomain.com/static/foo.d65dd5318f.png'
-      }
-    ]);
-
-    expect(
-      assetGraph.findAssets({ type: 'Rss' })[0].text,
-      'to equal',
-      '<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0">\n<channel>\n <title>RSS Title</title>\n <description>This is an example of an RSS feed</description>\n <link>index.html</link>\n <lastBuildDate>Mon, 06 Sep 2010 00:01:00 +0000 </lastBuildDate>\n <pubDate>Mon, 06 Sep 2009 16:20:00 +0000 </pubDate>\n <ttl>1800</ttl>\n <item>\n  <title>Example entry</title>\n  <description>Here is some text containing an interesting description and an image: &lt;img src=http://www.someexamplerssdomain.com/static/foo.d65dd5318f.png>.</description>\n  <link>http://www.wikipedia.org/</link>\n  <guid>unique string per item</guid>\n  <pubDate>Mon, 06 Sep 2009 16:20:00 +0000 </pubDate>\n </item>\n</channel>\n</rss>'
-    );
   });
 
   it('should keep identical inline styles in svg files inlined', async function() {
