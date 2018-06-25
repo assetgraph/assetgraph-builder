@@ -68,7 +68,7 @@
     "autoprefixer": "^8.2.0",
     "coveralls": "^3.0.0",
     "eslint": "^5.0.0",
-    "eslint-config-pretty-standard": "^1.3.0",
+    "eslint-config-pretty-standard": "^2.0.0",
     "eslint-plugin-prettier": "2.6.1",
     "gettemporaryfilepath": "^1.0.0",
     "gifsicle-stream": "^0.3.0",
