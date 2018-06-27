@@ -2484,4 +2484,23 @@ describe('buildProduction', function() {
       url: assetGraph.root + 'directory'
     });
   });
+
+  it('should not append .css to the url of an extension-less CSS asset outside of the assetGraph root', async function() {
+    const assetGraph = new AssetGraph({
+      root: __dirname
+    });
+    const asset = assetGraph.addAsset({
+      type: 'Html',
+      url: `${assetGraph.root}/index.html`,
+      text: `
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese">
+      `
+    });
+    await assetGraph.buildProduction();
+    expect(
+      asset.text,
+      'to contain',
+      'href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese"'
+    );
+  });
 });
