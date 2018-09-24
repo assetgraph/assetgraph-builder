@@ -2525,4 +2525,28 @@ describe('buildProduction', function() {
       url: `${assetGraph.root}other.html`
     });
   });
+
+  it('should not move non-initial Html assets with incoming HtmlAnchor => FileRedirect relations to /static', async function() {
+    const assetGraph = new AssetGraph({
+      root:
+        __dirname +
+        '/../../testdata/transforms/buildProduction/linkedNonInitialHtmlWithFileRedirect/'
+    });
+    await assetGraph.loadAssets('index.html');
+    await assetGraph.populate();
+
+    expect(assetGraph, 'to contain asset', { isInitial: true });
+    expect(assetGraph, 'to contain assets', 'Html', 2);
+
+    expect(assetGraph, 'to contain relation', 'FileRedirect');
+
+    await assetGraph.buildProduction();
+
+    expect(assetGraph, 'to contain asset', {
+      url: `${assetGraph.root}index.html`
+    });
+    expect(assetGraph, 'to contain asset', {
+      url: `${assetGraph.root}other/index.html`
+    });
+  });
 });
