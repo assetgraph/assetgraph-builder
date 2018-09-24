@@ -2503,4 +2503,26 @@ describe('buildProduction', function() {
       'href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese"'
     );
   });
+
+  it('should not move non-initial Html assets with incoming HtmlAnchor relations to /static', async function() {
+    const assetGraph = new AssetGraph({
+      root:
+        __dirname +
+        '/../../testdata/transforms/buildProduction/linkedNonInitialHtml/'
+    });
+    await assetGraph.loadAssets('index.html');
+    await assetGraph.populate();
+
+    expect(assetGraph, 'to contain asset', { isInitial: true });
+    expect(assetGraph, 'to contain assets', 'Html', 2);
+
+    await assetGraph.buildProduction();
+
+    expect(assetGraph, 'to contain asset', {
+      url: `${assetGraph.root}index.html`
+    });
+    expect(assetGraph, 'to contain asset', {
+      url: `${assetGraph.root}other.html`
+    });
+  });
 });
