@@ -69,7 +69,7 @@
     "coveralls": "^3.0.0",
     "eslint": "^5.0.0",
     "eslint-config-pretty-standard": "^2.0.0",
-    "eslint-plugin-prettier": "2.6.2",
+    "eslint-plugin-prettier": "3.0.0",
     "gettemporaryfilepath": "^1.0.0",
     "gifsicle-stream": "^0.3.0",
     "gm": "^1.21.1",
