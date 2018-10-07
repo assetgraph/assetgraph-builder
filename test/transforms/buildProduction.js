@@ -1625,7 +1625,7 @@ describe('buildProduction', function() {
             [
               {
                 parseTree: expect.it('to equal', {
-                  styleSrc: ["'self'", 'my.cdn.com/styles.4c29e2c0d4.css'],
+                  styleSrc: ["'self'", 'my.cdn.com/styles.399c62e85c.css'],
                   scriptSrc: ["'self'", 'my.cdn.com/script.af5c77b360.js'],
                   imgSrc: ['my.cdn.com']
                 })
@@ -1887,18 +1887,18 @@ describe('buildProduction', function() {
         expect(
           assetGraph.findAssets({ fileName: 'index.da.html' })[0].text,
           'to contain',
-          '<style>body{background-color:red;color:#fff}</style>'
+          '<style>body{color:#fff;background-color:red}</style>'
         ).and(
           'not to contain',
-          '<style>body{background-color:#00f;color:#fff}</style>'
+          '<style>body{color:#fff;background-color:#00f}</style>'
         );
         expect(
           assetGraph.findAssets({ fileName: 'index.en_us.html' })[0].text,
           'to contain',
-          '<style>body{background-color:#00f;color:#fff}</style>'
+          '<style>body{color:#fff;background-color:#00f}</style>'
         ).and(
           'not to contain',
-          '<style>body{background-color:red;color:#fff}</style>'
+          '<style>body{color:#fff;background-color:red}</style>'
         );
       });
     });
