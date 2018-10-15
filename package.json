@@ -83,7 +83,7 @@
     "rimraf": "^2.6.2",
     "sinon": "^7.0.0",
     "source-map": "^0.7.2",
-    "svgfilter": "^2.0.0",
+    "svgfilter": "^3.0.0",
     "svgo": "^1.0.5",
     "systemjs-builder": "^0.16.0",
     "unexpected": "^10.8.1",
