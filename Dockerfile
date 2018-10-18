@@ -7,12 +7,7 @@ RUN apt-get update \
         libcairo2-dev \
         libgif-dev \
         libgsf-1-dev \
-        libjpeg-progs \
         libpango1.0-dev \
-        libvips-dev \
-        optipng \
-        pngcrush \
-        pngquant \
     && rm -rf /var/lib/apt/lists/*
 
 ENV NPM_CONFIG_PREFIX=/home/node/.npm-global

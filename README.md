@@ -82,13 +82,13 @@ and optimization features, you need several libraries and command line
 utilities installed. On Ubuntu you can grab them all by running:
 
 ```
-sudo apt-get install -y libcairo2-dev libjpeg8-dev libgif-dev optipng pngcrush pngquant libpango1.0-dev graphicsmagick libjpeg-progs inkscape
+sudo apt-get install -y libcairo2-dev libjpeg8-dev libgif-dev libpango1.0-dev graphicsmagick inkscape
 ```
 
 Or on OS X, with [homebrew](http://brew.sh/):
 
 ```
-brew install cairo jpeg giflib optipng pngcrush pngquant pango graphicsmagick jpeg-turbo homebrew/gui/inkscape
+brew install cairo giflib pango graphicsmagick jpeg-turbo homebrew/gui/inkscape
 brew install homebrew/science/vips --with-webp --with-graphicsmagick
 export PKG_CONFIG_PATH=/opt/X11/lib/pkgconfig
 ```
