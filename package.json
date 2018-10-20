@@ -61,7 +61,7 @@
   },
   "optionalDependencies": {
     "assetgraph-sprite": "^3.0.0",
-    "histogram": "^3.0.0",
+    "histogram": "^3.0.1",
     "node-zopfli": "2.0.2"
   },
   "devDependencies": {
