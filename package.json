@@ -60,12 +60,11 @@
     "urltools": "0.4.1"
   },
   "optionalDependencies": {
-    "assetgraph-sprite": "^3.0.0",
-    "histogram": "^3.0.1",
     "node-zopfli": "2.0.2"
   },
   "devDependencies": {
     "autoprefixer": "^9.0.0",
+    "assetgraph-sprite": "^3.0.0",
     "coveralls": "^3.0.0",
     "eslint": "^5.0.0",
     "eslint-config-pretty-standard": "^2.0.0",
@@ -73,6 +72,7 @@
     "gettemporaryfilepath": "^1.0.0",
     "gifsicle-stream": "^0.3.0",
     "gm": "^1.21.1",
+    "histogram": "^3.0.1",
     "html-webpack-plugin": "^3.2.0",
     "jsdom": "^12.0.0",
     "less": "^2.7.1",
