@@ -60,8 +60,7 @@
   },
   "optionalDependencies": {
     "assetgraph-sprite": "^3.1.0",
-    "histogram": "^3.0.0",
-    "node-zopfli": "2.0.2"
+    "histogram": "^3.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^9.0.0",
