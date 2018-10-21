@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^9.0.0",
-    "assetgraph-sprite": "^3.0.0",
+    "assetgraph-sprite": "^3.0.1",
     "coveralls": "^3.0.0",
     "eslint": "^5.0.0",
     "eslint-config-prettier": "^4.0.0",
