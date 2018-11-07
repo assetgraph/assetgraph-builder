@@ -13,8 +13,8 @@ async function run(commandAndArgs) {
     commandAndArgs = [commandAndArgs];
   }
   const command = commandAndArgs
-    .map(
-      arg => (/[^\w./-]/.test(arg) ? "'" + arg.replace(/'/g, "\\'") + "'" : arg)
+    .map(arg =>
+      /[^\w./-]/.test(arg) ? "'" + arg.replace(/'/g, "\\'") + "'" : arg
     )
     .join(' ');
 
