@@ -42,7 +42,6 @@
   "dependencies": {
     "assetgraph": "5.8.1",
     "assetgraph-sprite": "^3.0.1",
-    "bluebird": "^3.5.0",
     "browserslist": "^4.4.2",
     "chalk": "^2.3.2",
     "esanimate": "^1.1.0",
@@ -55,6 +54,7 @@
     "memoizesync": "^1.1.1",
     "optimist": "^0.6.1",
     "optipng": "^2.0.0",
+    "p-map": "^2.0.0",
     "passerror": "^1.1.1",
     "pngcrush": "^2.0.1",
     "pngquant": "^2.0.1",
