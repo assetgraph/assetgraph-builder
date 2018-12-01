@@ -87,9 +87,16 @@ sudo apt-get install -y graphicsmagick inkscape
 
 Or on OS X, with [homebrew](http://brew.sh/):
 
-```
-brew install graphicsmagick homebrew/gui/inkscape
-brew install homebrew/science/vips --with-webp --with-graphicsmagick
+```sh
+# Image manipulation
+brew install graphicsmagick
+brew install vips --with-webp --with-graphicsmagick
+
+# SVG rengering with Inkscape
+brew cask install xquartz
+brew cask install inkscape
+
+# Export PKG_CONFIG_PATH to make Inkscape work. Put this in your .profile or .bashrc
 export PKG_CONFIG_PATH=/opt/X11/lib/pkgconfig
 ```
 
