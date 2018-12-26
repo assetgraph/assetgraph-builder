@@ -318,13 +318,7 @@ describe('processImages', function() {
           }
         ];
 
-        expect(
-          assetGraph.findAssets({ isImage: true }),
-          'to be an array whose items satisfy',
-          function(img, idx) {
-            expect(img, 'to satisfy', outputs[idx]);
-          }
-        );
+        expect(assetGraph.findAssets({ isImage: true }), 'to satisfy', outputs);
       });
   });
 
