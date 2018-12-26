@@ -86,7 +86,7 @@
     "svgfilter": "^3.0.0",
     "svgo": "^1.0.5",
     "systemjs-builder": "^0.16.0",
-    "unexpected": "^10.8.1",
+    "unexpected": "^11.0.0-0",
     "unexpected-color": "^2.0.0",
     "unexpected-dom": "^4.9.3",
     "unexpected-sinon": "^10.8.2",
