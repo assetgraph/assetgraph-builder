@@ -40,7 +40,7 @@
     "bin"
   ],
   "dependencies": {
-    "assetgraph": "5.4.0",
+    "assetgraph": "5.4.1",
     "bluebird": "^3.5.0",
     "browserslist": "4.3.7",
     "chalk": "^2.3.2",
