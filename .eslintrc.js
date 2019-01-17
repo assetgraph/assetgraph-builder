@@ -1,7 +1,14 @@
 const config = {
-  extends: ['pretty-standard'],
+  extends: ['standard', 'prettier', 'prettier/standard'],
+  plugins: ['import', 'mocha'],
+  env: {
+    mocha: true
+  },
   rules: {
-    'no-path-concat': 0
+    'no-path-concat': 0,
+    'mocha/no-exclusive-tests': 'error',
+    'mocha/no-nested-tests': 'error',
+    'mocha/no-identical-title': 'error'
   }
 };
 
