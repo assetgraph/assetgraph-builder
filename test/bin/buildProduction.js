@@ -8,7 +8,7 @@ var childProcess = Promise.promisifyAll(require('child_process'), {
   multiArgs: true
 });
 
-async function run(commandAndArgs) {
+function run(commandAndArgs) {
   if (typeof commandAndArgs !== 'undefined' && !Array.isArray(commandAndArgs)) {
     commandAndArgs = [commandAndArgs];
   }
@@ -18,7 +18,7 @@ async function run(commandAndArgs) {
     )
     .join(' ');
 
-  return await Promise.fromNode(cb => childProcess.exec(command, cb), {
+  return Promise.fromNode(cb => childProcess.exec(command, cb), {
     multiArgs: true
   });
 }

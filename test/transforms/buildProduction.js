@@ -1957,19 +1957,6 @@ describe('buildProduction', function() {
       await assetGraph.populate();
       await assetGraph.buildProduction();
 
-      expect(assetGraph, 'to contain assets', 'JavaScript', 2);
-    });
-
-    it('should keep the service worker unbundled', async function() {
-      const assetGraph = new AssetGraph({
-        root:
-          __dirname +
-          '/../../testdata/transforms/buildProduction/serviceWorker/'
-      });
-      await assetGraph.loadAssets('htmlregistration.html');
-      await assetGraph.populate();
-      await assetGraph.buildProduction();
-
       expect(assetGraph.findAssets(), 'to satisfy', [
         {
           type: 'Html',
