@@ -73,7 +73,6 @@
     "eslint-plugin-markdown": "^1.0.0",
     "eslint-plugin-mocha": "^5.2.1",
     "eslint-plugin-node": "^8.0.1",
-    "eslint-plugin-prettier": "3.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
     "gettemporaryfilepath": "^1.0.0",
@@ -106,7 +105,7 @@
     "bin": "./bin"
   },
   "scripts": {
-    "lint": "eslint . bin/*",
+    "lint": "eslint . bin/* && prettier --check '**/*.js' 'bin/*'",
     "test": "mocha",
     "ci": "npm run lint && npm run coverage && npm run lint",
     "coverage": "NODE_ENV=test nyc --reporter=lcov --reporter=text --all -- mocha --reporter dot && echo google-chrome coverage/lcov-report/index.html"
