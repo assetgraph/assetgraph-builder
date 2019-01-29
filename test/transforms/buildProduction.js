@@ -2124,7 +2124,7 @@ describe('buildProduction', function() {
         },
         {
           type: 'Css',
-          fileName: 'æ.css'
+          fileName: '%C3%A6.css'
         },
         {
           type: 'Png',
@@ -2188,7 +2188,7 @@ describe('buildProduction', function() {
         },
         {
           type: 'Css',
-          fileName: 'æ.css'
+          fileName: '%C3%A6.css'
         },
         {
           type: 'Png',
@@ -2225,7 +2225,7 @@ describe('buildProduction', function() {
         },
         {
           type: 'Css',
-          fileName: 'æ.css'
+          fileName: '%C3%A6.css'
         }
       ]);
     });
@@ -2240,7 +2240,7 @@ describe('buildProduction', function() {
       await assetGraph.buildProduction({
         inlineByRelationType: {},
         noFileRev: true,
-        excludePatterns: ['*/æ.css']
+        excludePatterns: ['*/%C3%A6.css']
       });
 
       expect(assetGraph.findAssets({ isLoaded: true }), 'to satisfy', [

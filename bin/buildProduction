@@ -365,7 +365,13 @@ let rootUrl =
   commandLineOptions.root &&
   urlTools.urlOrFsPathToUrl(commandLineOptions.root, true);
 const excludePatterns =
-  commandLineOptions.exclude && [].concat(commandLineOptions.exclude);
+  commandLineOptions.exclude &&
+  []
+    .concat(commandLineOptions.exclude)
+    .map(excludePattern =>
+      excludePattern.replace(/[^\x21-\x7f]/g, encodeURIComponent)
+    );
+
 const reservedNames =
   commandLineOptions.reservednames &&
   _.flatten(
