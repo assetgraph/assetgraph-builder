@@ -94,7 +94,7 @@
     "unexpected": "^11.0.0",
     "unexpected-color": "^2.0.0",
     "unexpected-dom": "^4.9.3",
-    "unexpected-sinon": "^10.8.2",
+    "unexpected-sinon": "^10.11.1",
     "webpack": "^4.8.3"
   },
   "engines": {
