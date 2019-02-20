@@ -31,6 +31,12 @@ const optimist = require('optimist')
     type: 'string',
     demand: true
   })
+  .options('mountroot', {
+    describe:
+      'Prefix to add to all internal root-relative urls, for when not deploying to the root of a domain',
+    type: 'string',
+    demand: false
+  })
   .options('canonicalroot', {
     describe:
       'URI root where the site will be deployed. Must be either an absolute or a protocol-relative url',
@@ -554,7 +560,8 @@ const buildProductionOptions = {
 (async () => {
   const assetGraph = new AssetGraph({
     root: rootUrl,
-    canonicalRoot: commandLineOptions.canonicalroot
+    canonicalRoot: commandLineOptions.canonicalroot,
+    mountRoot: commandLineOptions.mountroot
   });
   await assetGraph.logEvents({
     repl: commandLineOptions.repl,
