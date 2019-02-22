@@ -93,6 +93,11 @@ const optimist = require('optimist')
     type: 'boolean',
     default: false
   })
+  .options('precacheserviceworkerconfig', {
+    describe:
+      'Path to where your sw-precache config resides. Will be loaded using require.main.require',
+    type: 'string'
+  })
   .options('browsers', {
     alias: 'b',
     describe:
@@ -541,7 +546,8 @@ const buildProductionOptions = {
   stripDebug: !commandLineOptions.debug,
   addInitialHtmlExtension: commandLineOptions.addinitialhtmlextension,
   javaScriptSerializationOptions: javaScriptSerializationOptions,
-  precacheServiceWorker: commandLineOptions.precacheserviceworker
+  precacheServiceWorker: commandLineOptions.precacheserviceworker,
+  precacheServiceWorkerConfigPath: commandLineOptions.precacheserviceworkerconfig
 };
 
 (async () => {
