@@ -1,4 +1,3 @@
 {
-  "singleQuote": true,
-  "parser": "babylon"
+  "singleQuote": true
 }
