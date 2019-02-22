@@ -249,11 +249,7 @@ javaScriptSerializationOptionNames.forEach(function(
     javaScriptSerializationOptionName === 'indent_level' ? 'number' : 'boolean';
   // Also accept the option without underscores, or with the underscores replaced with dashes:
   optimist.options(javaScriptSerializationOptionName.replace(/_/g, ''), {
-    alias: [
-      javaScriptSerializationOptionName,
-      javaScriptSerializationOptionName.replace(/_/g, '-')
-    ],
-    type: type,
+    type,
     description:
       'UglifyJS serialization option, see http://lisperator.net/uglifyjs/codegen'
   });
