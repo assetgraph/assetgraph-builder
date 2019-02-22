@@ -16,12 +16,12 @@ Quick start
 # Conventional
 ```
 npm install -g assetgraph-builder
-buildProduction path/to/your/index.html --outroot path/to/output/directory
+buildProduction path/to/your/index.html -o path/to/output/directory
 ```
 
 # [Docker](https://www.docker.com/)
 ```
-docker run --rm -it  -v "$(pwd)":/app/ -w /app/ assetgraph/assetgraph-builder path/to/your/index.html --outroot path/to/output/directory
+docker run --rm -it  -v "$(pwd)":/app/ -w /app/ assetgraph/assetgraph-builder path/to/your/index.html -o path/to/output/directory
 ```
 
 Congratulations, you just optimized your web page!
@@ -107,12 +107,12 @@ Usage
 -----
 
 ```
-$ buildProduction --outroot outputPath [--root webrootPath] [startingAssets]
+$ buildProduction -o outputPath [--root webrootPath] [startingAssets]
 ```
 
 Assetgraph needs a web root to resolve URLs correctly. If you pass in the `--root` option assetgraph will use it, otherwise it will take a best guess based on your `startingAssets`.
 
-The `--outroot` option tells assetgraph-builder where to write the built files to. If the directory does not exist it will be created for you.
+The `-o` option tells assetgraph-builder where to write the built files to. If the directory does not exist it will be created for you.
 
 Your `startingAssets` can be one or more file paths or minimatch patterns, which will be used as the starting point of assetgraphs automatic discovery process. The default is `index.html`, but you might also want to add any file here that is not linked to by your website, but still has to be a part of the build, for example `robots.txt`, `.htaccess` or `404.html`. If one or more files are missing from your build, check that you are actually linking to them. If you are not, and it is by design, then you should add these files as input paths in `startingAssets`.
 
@@ -124,7 +124,7 @@ Example usage
 Build a single page application:
 
 ```
-buildProduction --outroot path/to/production --root path/to/dev path/to/dev/index.html
+buildProduction -o path/to/production --root path/to/dev path/to/dev/index.html
 ```
 
 This will load path/to/dev/index.html, follow all local relations to
@@ -134,7 +134,7 @@ output the result to the directory `path/to/production`.
 Create a CDN-enabled build:
 
 ```
-buildProduction --outroot path/to/production --root path/to/dev path/to/dev/index.html \
+buildProduction -o path/to/production --root path/to/dev path/to/dev/index.html \
                 --cdnroot http://xxxxxx.cloudfront.net/static/cdn \
                 --cdnoutroot path/to/production/static/cdn
 ```

@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 
 const optimist = require('optimist')
-  .usage(
-    '$0 --root <inputRootDirectory> --outroot <dir> [options] <htmlFile(s)>'
-  )
+  .usage('$0 --root <inputRootDirectory> -o <dir> [options] <htmlFile(s)>')
   .wrap(72)
   .options('h', {
     alias: 'help',
@@ -23,7 +21,8 @@ const optimist = require('optimist')
     type: 'string',
     demand: false
   })
-  .options('outroot', {
+  .options('output', {
+    alias: ['o', 'outroot'],
     describe:
       'Path to the output folder (will be generated if non-existing). Defaults to overwrite the source files in-place',
     type: 'string',
@@ -39,9 +38,9 @@ if (commandLineOptions.h) {
 
 const AssetGraph = require('../lib/AssetGraph');
 const urlTools = require('urltools');
-const outRoot =
-  commandLineOptions.outroot &&
-  urlTools.fsDirToFileUrl(commandLineOptions.outroot);
+const output =
+  commandLineOptions.output &&
+  urlTools.fsDirToFileUrl(commandLineOptions.output);
 let rootUrl =
   commandLineOptions.root &&
   urlTools.urlOrFsPathToUrl(commandLineOptions.root, true);
@@ -83,7 +82,7 @@ new AssetGraph({ root: rootUrl })
   )
   .writeAssetsToDisc(
     { url: /^file:/, type: 'Html', isLoaded: true, isDirty: true },
-    outRoot || rootUrl
+    output || rootUrl
   )
   .writeStatsToStderr()
   .run();

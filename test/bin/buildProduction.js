@@ -48,7 +48,7 @@ describe('buildProduction', function() {
           'buildProduction',
           'javaScriptWithInternetExplorer8'
         ),
-        '--outroot',
+        '-o',
         tmpDir,
         '--browsers',
         'IE 8',
@@ -96,7 +96,7 @@ describe('buildProduction', function() {
         pathModule.resolve(__dirname, '..', '..', 'bin', 'buildProduction'),
         '--root',
         dir,
-        '--outroot',
+        '-o',
         tmpDir,
         pathModule.resolve(dir, 'index.html')
       ],
@@ -131,7 +131,7 @@ describe('buildProduction', function() {
           'buildProduction',
           'javaScriptWithInternetExplorer8'
         ),
-        '--outroot',
+        '-o',
         tmpDir,
         pathModule.resolve(
           __dirname,

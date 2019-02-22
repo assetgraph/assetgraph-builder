@@ -4,9 +4,7 @@
 const chalk = require('chalk');
 const parseExpression = require('assetgraph/lib/parseExpression');
 const optimist = require('optimist')
-  .usage(
-    '$0 --root <inputRootDirectory> --outroot <dir> [options] <htmlFile(s)>'
-  )
+  .usage('$0 --root <inputRootDirectory> -o <dir> [options] <htmlFile(s)>')
   .wrap(72)
   .options('h', {
     alias: 'help',
@@ -27,7 +25,8 @@ const optimist = require('optimist')
     type: 'string',
     demand: false
   })
-  .options('outroot', {
+  .options('output', {
+    alias: ['o', 'outroot'],
     describe: 'Path to the output folder. Will be generated if non-existing',
     type: 'string',
     demand: true
@@ -356,7 +355,7 @@ if (commandLineOptions.canonicalurl) {
 const _ = require('lodash');
 const AssetGraph = require('../lib/AssetGraph');
 const urlTools = require('urltools');
-const outRoot = urlTools.fsDirToFileUrl(commandLineOptions.outroot);
+const output = urlTools.fsDirToFileUrl(commandLineOptions.output);
 const cdnRoot =
   commandLineOptions.cdnroot &&
   urlTools.ensureTrailingSlash(commandLineOptions.cdnroot);
@@ -587,7 +586,7 @@ const buildProductionOptions = {
   await assetGraph.buildProduction(buildProductionOptions);
   await assetGraph.writeAssetsToDisc(
     { protocol: 'file:', isLoaded: true, isRedirect: false },
-    outRoot
+    output
   );
   if (cdnRoot) {
     await assetGraph.writeAssetsToDisc(
@@ -595,7 +594,7 @@ const buildProductionOptions = {
         url: url => url && url.startsWith(fullCdnRoot),
         isLoaded: true
       },
-      outRoot + 'static/cdn/',
+      `${output}static/cdn/`,
       fullCdnRoot
     );
   }
