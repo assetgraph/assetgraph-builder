@@ -547,7 +547,8 @@ const buildProductionOptions = {
   addInitialHtmlExtension: commandLineOptions.addinitialhtmlextension,
   javaScriptSerializationOptions: javaScriptSerializationOptions,
   precacheServiceWorker: commandLineOptions.precacheserviceworker,
-  precacheServiceWorkerConfigPath: commandLineOptions.precacheserviceworkerconfig
+  precacheServiceWorkerConfigPath:
+    commandLineOptions.precacheserviceworkerconfig
 };
 
 (async () => {
