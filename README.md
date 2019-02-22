@@ -135,8 +135,7 @@ Create a CDN-enabled build:
 
 ```
 buildProduction -o path/to/production --root path/to/dev path/to/dev/index.html \
-                --cdnroot http://xxxxxx.cloudfront.net/static/cdn \
-                --cdnoutroot path/to/production/static/cdn
+                --cdnroot http://xxxxxx.cloudfront.net/static/cdn
 ```
 
 This will produce a build that assumes that the contents of `path/to/production/static/cdn`
