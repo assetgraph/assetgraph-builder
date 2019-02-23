@@ -33,7 +33,7 @@ expect.addAssertion(
 );
 
 describe('buildProduction', function() {
-  it('should honor --browsers "IE 8" when serializing Javascript', async function() {
+  it('should honor --browsers "IE 8" when serializing JavaScript', async function() {
     const tmpDir = getTemporaryFilePath();
     await expect(
       [

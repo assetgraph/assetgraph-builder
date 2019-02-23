@@ -57,7 +57,7 @@ Features
    href="https://github.com/One-com/assetgraph-sprite">assetgraph-sprite</a>).
  * Inlines CSS `background-image`s less than 8192 bytes and provides an
    alternative stylesheet for older IE versions via conditional comments.
- * Inlines CSS and Javascript with total size less than 4096 bytes to reduce HTTP requests.
+ * Inlines CSS and JavaScript with total size less than 4096 bytes to reduce HTTP requests.
  * Adds a cache manifest to each HTML page if `--manifest` is
    specified.
  * Renames JavaScript, CSS, images etc. to a 10-char MD5 prefix + the

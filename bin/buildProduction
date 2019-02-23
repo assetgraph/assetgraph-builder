@@ -154,7 +154,7 @@ const optimist = require('optimist')
     demand: false
   })
   .options('minify', {
-    describe: 'Minifies HTML, CSS and Javascript.',
+    describe: 'Minifies HTML, CSS and JavaScript.',
     type: 'boolean',
     default: true
   })
