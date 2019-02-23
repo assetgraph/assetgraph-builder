@@ -33,7 +33,7 @@ const optimist = require('optimist')
   })
   .options('canonicalroot', {
     describe:
-      'URI root where the site will be deployed. Must be either an absolute or a protocol-relative url',
+      'URI root where the site will be deployed. Must be either an absolute, a protocol-relative, or a root-relative url',
     type: 'string',
     demand: false
   })
