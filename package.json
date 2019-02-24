@@ -42,7 +42,7 @@
   "dependencies": {
     "assetgraph": "5.7.1",
     "bluebird": "^3.5.0",
-    "browserslist": "4.4.1",
+    "browserslist": "4.4.2",
     "chalk": "^2.3.2",
     "esanimate": "^1.1.0",
     "estraverse": "^4.2.0",
