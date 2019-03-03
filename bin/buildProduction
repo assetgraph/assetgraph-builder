@@ -291,7 +291,7 @@ var javaScriptSerializationOptions = {
       throw new Error(
         '--' +
           alias +
-          ' is no longer supported after UglifyJS was replaced with esprima/escodegen'
+          ' is no longer supported after we stopped using UglifyJS as the JavaScript AST provider'
       );
     }
   });
