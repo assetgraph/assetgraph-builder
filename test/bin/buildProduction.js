@@ -1,10 +1,10 @@
-var expect = require('../unexpected-with-plugins');
-var pathModule = require('path');
-var Promise = require('bluebird');
-var rimrafAsync = Promise.promisify(require('rimraf'));
-var fs = Promise.promisifyAll(require('fs'));
-var getTemporaryFilePath = require('gettemporaryfilepath');
-var childProcess = Promise.promisifyAll(require('child_process'), {
+const expect = require('../unexpected-with-plugins');
+const pathModule = require('path');
+const Promise = require('bluebird');
+const rimrafAsync = Promise.promisify(require('rimraf'));
+const fs = Promise.promisifyAll(require('fs'));
+const getTemporaryFilePath = require('gettemporaryfilepath');
+const childProcess = Promise.promisifyAll(require('child_process'), {
   multiArgs: true
 });
 
@@ -154,6 +154,49 @@ describe('buildProduction', function() {
 
     try {
       expect(builtIndexHtml, 'to contain', "foo['catch']=123");
+    } finally {
+      await rimrafAsync(tmpDir);
+    }
+  });
+
+  it('should run autoprefixer when no --browsers is passed', async function() {
+    const tmpDir = getTemporaryFilePath();
+    await expect(
+      [
+        pathModule.resolve(__dirname, '..', '..', 'bin', 'buildProduction'),
+        '--root',
+        pathModule.resolve(
+          __dirname,
+          '..',
+          '..',
+          'testdata',
+          'bin',
+          'buildProduction',
+          'autoprefixer'
+        ),
+        '-o',
+        tmpDir,
+        pathModule.resolve(
+          __dirname,
+          '..',
+          '..',
+          'testdata',
+          'bin',
+          'buildProduction',
+          'autoprefixer',
+          'index.html'
+        )
+      ],
+      'run as a shell command'
+    );
+
+    const builtIndexHtml = await fs.readFileAsync(
+      pathModule.resolve(tmpDir, 'index.html'),
+      'utf-8'
+    );
+
+    try {
+      expect(builtIndexHtml, 'to contain', '::-ms-input-placeholder');
     } finally {
       await rimrafAsync(tmpDir);
     }
