@@ -227,7 +227,7 @@ describe('processImages', function() {
       })
         .loadAssets({
           type: 'Css',
-          text: `.a { background-image: url(purplealpha24bit.png?pngcrush) }`
+          text: `.a { background-image: url(purplealpha24bit.png?pngcrush=-noreduce) }`
         })
         .populate()
         .processImages(
@@ -279,7 +279,7 @@ describe('processImages', function() {
       })
         .loadAssets({
           type: 'Css',
-          text: `.a { background-image: url(purplealpha24bit.png?pngquant&pngcrush&optipng) }`
+          text: `.a { background-image: url(purplealpha24bit.png?pngquant&pngcrush=-noreduce&optipng) }`
         })
         .populate()
         .processImages(
@@ -305,7 +305,7 @@ describe('processImages', function() {
       })
         .loadAssets({
           type: 'Css',
-          text: `.a { background-image: url(purplealpha24bit.png?pngcrush&pngquant&optipng) }`
+          text: `.a { background-image: url(purplealpha24bit.png?pngcrush=-noreduce&pngquant&optipng) }`
         })
         .populate()
         .processImages(
@@ -331,7 +331,7 @@ describe('processImages', function() {
       })
         .loadAssets({
           type: 'Css',
-          text: `.a { background-image: url(purplealpha24bit.png?optipng&pngquant&pngcrush) }`
+          text: `.a { background-image: url(purplealpha24bit.png?optipng&pngquant&pngcrush=-noreduce) }`
         })
         .populate()
         .processImages(
