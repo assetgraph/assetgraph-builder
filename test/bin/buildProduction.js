@@ -186,7 +186,7 @@ describe('buildProduction', function() {
       'run as a shell command'
     );
 
-    const builtIndexHtml = await fs.readFileAsync(
+    const builtIndexHtml = await readFile(
       pathModule.resolve(tmpDir, 'index.html'),
       'utf-8'
     );
@@ -194,7 +194,7 @@ describe('buildProduction', function() {
     try {
       expect(builtIndexHtml, 'to contain', '::-ms-input-placeholder');
     } finally {
-      await rimrafAsync(tmpDir);
+      await rimraf(tmpDir);
     }
   });
 });
