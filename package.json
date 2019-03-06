@@ -46,7 +46,7 @@
     "chalk": "^2.3.2",
     "esanimate": "^1.1.0",
     "estraverse": "^4.2.0",
-    "express-processimage": "^8.0.2",
+    "express-processimage": "^8.1.0",
     "extend": "^3.0.0",
     "histogram": "^3.0.1",
     "jpegtran": "^1.0.6",
