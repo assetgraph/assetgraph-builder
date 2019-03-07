@@ -168,6 +168,190 @@ describe('processImages', function() {
       });
   });
 
+  describe('filters ordering', function() {
+    it('should handle filters default autolossless order', function() {
+      return new AssetGraph({
+        root: __dirname + '/../../testdata/transforms/processImages/pngs/'
+      })
+        .loadAssets({
+          type: 'Css',
+          text: `.a { background-image: url(purplealpha24bit.png) }`
+        })
+        .populate()
+        .processImages(
+          { type: 'Png' },
+          { pngcrush: true, optipng: true, pngquant: true }
+        )
+        .queue(function(assetGraph) {
+          var purpleAlpha24BitPngcrushed = assetGraph.findAssets({
+            fileName: /^purplealpha24bit/
+          })[0];
+
+          expect(
+            purpleAlpha24BitPngcrushed.rawSrc.length,
+            'to be less than',
+            8285
+          );
+        });
+    });
+
+    it('should handle a single filter with autolossless: pngquant', function() {
+      return new AssetGraph({
+        root: __dirname + '/../../testdata/transforms/processImages/pngs/'
+      })
+        .loadAssets({
+          type: 'Css',
+          text: `.a { background-image: url(purplealpha24bit.png?pngquant) }`
+        })
+        .populate()
+        .processImages(
+          { type: 'Png' },
+          { pngcrush: true, optipng: true, pngquant: true }
+        )
+        .queue(function(assetGraph) {
+          var purpleAlpha24BitPngcrushed = assetGraph.findAssets({
+            fileName: /^purplealpha24bit/
+          })[0];
+
+          expect(
+            purpleAlpha24BitPngcrushed.rawSrc.length,
+            'to be less than',
+            8285
+          );
+        });
+    });
+
+    it('should handle a single filter with autolossless: pngcrush', function() {
+      return new AssetGraph({
+        root: __dirname + '/../../testdata/transforms/processImages/pngs/'
+      })
+        .loadAssets({
+          type: 'Css',
+          text: `.a { background-image: url(purplealpha24bit.png?pngcrush=-noreduce) }`
+        })
+        .populate()
+        .processImages(
+          { type: 'Png' },
+          { pngcrush: true, optipng: true, pngquant: true }
+        )
+        .queue(function(assetGraph) {
+          var purpleAlpha24BitPngcrushed = assetGraph.findAssets({
+            fileName: /^purplealpha24bit/
+          })[0];
+
+          expect(
+            purpleAlpha24BitPngcrushed.rawSrc.length,
+            'to be less than',
+            8285
+          );
+        });
+    });
+
+    it('should handle a single filter with autolossless: optipng', function() {
+      return new AssetGraph({
+        root: __dirname + '/../../testdata/transforms/processImages/pngs/'
+      })
+        .loadAssets({
+          type: 'Css',
+          text: `.a { background-image: url(purplealpha24bit.png?optipng) }`
+        })
+        .populate()
+        .processImages(
+          { type: 'Png' },
+          { pngcrush: true, optipng: true, pngquant: true }
+        )
+        .queue(function(assetGraph) {
+          var purpleAlpha24BitPngcrushed = assetGraph.findAssets({
+            fileName: /^purplealpha24bit/
+          })[0];
+
+          expect(
+            purpleAlpha24BitPngcrushed.rawSrc.length,
+            'to be less than',
+            8285
+          );
+        });
+    });
+
+    it('should handle filters in order: pngquant, pngcrush, optipng', function() {
+      return new AssetGraph({
+        root: __dirname + '/../../testdata/transforms/processImages/pngs/'
+      })
+        .loadAssets({
+          type: 'Css',
+          text: `.a { background-image: url(purplealpha24bit.png?pngquant&pngcrush=-noreduce&optipng) }`
+        })
+        .populate()
+        .processImages(
+          { type: 'Png' },
+          { pngcrush: true, optipng: true, pngquant: true }
+        )
+        .queue(function(assetGraph) {
+          var purpleAlpha24BitPngcrushed = assetGraph.findAssets({
+            fileName: /^purplealpha24bit/
+          })[0];
+
+          expect(
+            purpleAlpha24BitPngcrushed.rawSrc.length,
+            'to be less than',
+            8285
+          );
+        });
+    });
+
+    it('should handle filters in order: pngcrush, pngquant, optipng', function() {
+      return new AssetGraph({
+        root: __dirname + '/../../testdata/transforms/processImages/pngs/'
+      })
+        .loadAssets({
+          type: 'Css',
+          text: `.a { background-image: url(purplealpha24bit.png?pngcrush=-noreduce&pngquant&optipng) }`
+        })
+        .populate()
+        .processImages(
+          { type: 'Png' },
+          { pngcrush: true, optipng: true, pngquant: true }
+        )
+        .queue(function(assetGraph) {
+          var purpleAlpha24BitPngcrushed = assetGraph.findAssets({
+            fileName: /^purplealpha24bit/
+          })[0];
+
+          expect(
+            purpleAlpha24BitPngcrushed.rawSrc.length,
+            'to be less than',
+            8285
+          );
+        });
+    });
+
+    it('should handle filters in order: optipng, pngquant, pngcrush', function() {
+      return new AssetGraph({
+        root: __dirname + '/../../testdata/transforms/processImages/pngs/'
+      })
+        .loadAssets({
+          type: 'Css',
+          text: `.a { background-image: url(purplealpha24bit.png?optipng&pngquant&pngcrush=-noreduce) }`
+        })
+        .populate()
+        .processImages(
+          { type: 'Png' },
+          { pngcrush: true, optipng: true, pngquant: true }
+        )
+        .queue(function(assetGraph) {
+          var purpleAlpha24BitPngcrushed = assetGraph.findAssets({
+            fileName: /^purplealpha24bit/
+          })[0];
+
+          expect(
+            purpleAlpha24BitPngcrushed.rawSrc.length,
+            'to be less than',
+            8285
+          );
+        });
+    });
+  });
+
   it('should handle a test case with a couple of pngs', function() {
     return new AssetGraph({
       root: __dirname + '/../../testdata/transforms/processImages/pngs/'
