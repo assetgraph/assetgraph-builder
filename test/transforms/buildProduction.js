@@ -1463,7 +1463,7 @@ describe('buildProduction', function() {
     expect(
       assetGraph.findAssets({ type: 'Css' })[0].text,
       'to contain',
-      'sourceMappingURL=/static/foo.css.8f6b70eaf4.map'
+      'sourceMappingURL=/static/foo.css.'
     );
     expect(assetGraph, 'to contain asset', 'SourceMap');
     expect(
