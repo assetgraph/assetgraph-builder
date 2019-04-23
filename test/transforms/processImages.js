@@ -1,8 +1,12 @@
 /* global describe, it */
 const expect = require('../unexpected-with-plugins');
+const sinon = require('sinon');
 const _ = require('lodash');
 const AssetGraph = require('../../lib/AssetGraph');
 const urlTools = require('urltools');
+const childProcess = require('child_process');
+const { EventEmitter } = require('events');
+const { PassThrough } = require('stream');
 
 describe('processImages', function() {
   it('should handle a Css test case', function() {
@@ -568,5 +572,68 @@ describe('processImages', function() {
       .queue(function(assetGraph) {
         expect(assetGraph, 'to contain asset', 'Gif', 1);
       });
+  });
+
+  describe('when graphicsmagick is unavailable', function() {
+    beforeEach(function() {
+      const enoentError = new Error();
+      sinon
+        .stub(childProcess, 'spawn')
+        .callThrough()
+        .withArgs('gm')
+        .callsFake(() => {
+          const ee = new EventEmitter();
+          ee.stdin = new PassThrough();
+          ee.stderr = new PassThrough();
+          ee.stdout = new PassThrough();
+          setTimeout(() => {
+            ee.stdout.end();
+            ee.emit('error', enoentError);
+          }, 10);
+          return ee;
+        });
+    });
+
+    afterEach(function() {
+      childProcess.spawn.restore();
+    });
+
+    it('should warn if graphicsmagick is required for the processing instructions', async function() {
+      const assetGraph = new AssetGraph({
+        root: __dirname + '/../../testdata/transforms/processImages/gm/'
+      });
+
+      await assetGraph.loadAssets('index.html');
+      await assetGraph.populate();
+
+      const warnSpy = sinon.spy().named('warn');
+
+      assetGraph.on('warn', warnSpy);
+
+      await expect(
+        assetGraph.processImages(),
+        'to be rejected with',
+        'processImages transform: testdata/transforms/processImages/gm/myImage.png: Error executing Stream: The gm stream ended without emitting any data'
+      );
+    });
+
+    it('should not warn if graphicsmagick is not required', async function() {
+      const assetGraph = new AssetGraph({
+        root: __dirname + '/../../testdata/transforms/processImages/gm/'
+      });
+
+      await assetGraph.loadAssets('index.html');
+      await assetGraph.populate();
+
+      delete assetGraph.findAssets({ type: 'Png' })[0].query.gm;
+
+      const warnSpy = sinon.spy().named('warn');
+
+      assetGraph.on('warn', warnSpy);
+
+      await assetGraph.processImages();
+
+      expect(warnSpy, 'was not called');
+    });
   });
 });
