@@ -64,7 +64,7 @@
     "autoprefixer": "^9.0.0",
     "coveralls": "^3.0.0",
     "eslint": "^5.0.0",
-    "eslint-config-prettier": "^4.0.0",
+    "eslint-config-prettier": "^5.0.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-markdown": "^1.0.0",
