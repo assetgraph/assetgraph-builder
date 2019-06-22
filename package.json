@@ -40,7 +40,7 @@
     "bin"
   ],
   "dependencies": {
-    "assetgraph": "5.9.0",
+    "assetgraph": "5.10.0",
     "assetgraph-sprite": "^3.0.1",
     "browserslist": "^4.4.2",
     "chalk": "^2.3.2",
