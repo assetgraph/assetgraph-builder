@@ -1,4 +1,3 @@
-/* global describe, it */
 const expect = require('../unexpected-with-plugins');
 const sinon = require('sinon');
 const _ = require('lodash');
