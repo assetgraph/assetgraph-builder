@@ -70,12 +70,6 @@ const optimist = require('optimist')
     type: 'boolean',
     default: false
   })
-  .options('subsetfonts', {
-    describe:
-      'Whether to automatically create smaller webfont subsets with the statically decidable characters',
-    type: 'boolean',
-    default: false
-  })
   .options('webpackconfig', {
     describe:
       'Path to where your webpack config resides. Will be loaded using require.main.require',
@@ -516,7 +510,6 @@ const buildProductionOptions = {
   browsers: browsers,
   sourceMaps: commandLineOptions.sourcemaps,
   sourcesContent: commandLineOptions.sourcescontent,
-  subsetFonts: commandLineOptions.subsetfonts,
   contentSecurityPolicy: commandLineOptions.contentsecuritypolicy,
   contentSecurityPolicyLevel: commandLineOptions.contentsecuritypolicylevel,
   subResourceIntegrity: commandLineOptions.subresourceintegrity,
