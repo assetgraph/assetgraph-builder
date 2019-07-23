@@ -2534,4 +2534,31 @@ describe('buildProduction', function() {
       url: `${assetGraph.root}other/index.html`
     });
   });
+
+  // Regression test for https://github.com/assetgraph/assetgraph-builder/issues/687
+  it('should not break an svg with <use xlink:href=...> even when told to inline relations', async function() {
+    const assetGraph = new AssetGraph({
+      root:
+        __dirname +
+        '/../../testdata/transforms/buildProduction/svgWithUseXlinkHref/'
+    });
+    await assetGraph.loadAssets('index.html');
+    await assetGraph.populate();
+
+    expect(assetGraph, 'to contain asset', { isInitial: true });
+
+    await assetGraph.buildProduction({
+      inlineByRelationType: { '*': true }
+    });
+
+    const svgAssets = assetGraph.findAssets({
+      type: 'Svg'
+    });
+    expect(svgAssets, 'to have length', 1);
+    expect(
+      svgAssets[0].text,
+      'to contain',
+      '<use width="100%" height="100%" transform="rotate(41.3 140.4 356.1)" xlink:href="#a"/>'
+    );
+  });
 });
