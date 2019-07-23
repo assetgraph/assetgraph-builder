@@ -245,12 +245,10 @@ const optimist = require('optimist')
   });
 
 // These names originally come from UglifyJS' code generator, but are now mapped to their escodegen equivalents
-var javaScriptSerializationOptionNames = ['indent_level', 'ascii_only'];
+const javaScriptSerializationOptionNames = ['indent_level', 'ascii_only'];
 
-javaScriptSerializationOptionNames.forEach(function(
-  javaScriptSerializationOptionName
-) {
-  var type =
+for (const javaScriptSerializationOptionName of javaScriptSerializationOptionNames) {
+  const type =
     javaScriptSerializationOptionName === 'indent_level' ? 'number' : 'boolean';
   // Also accept the option without underscores, or with the underscores replaced with dashes:
   optimist.options(javaScriptSerializationOptionName.replace(/_/g, ''), {
@@ -258,18 +256,17 @@ javaScriptSerializationOptionNames.forEach(function(
     description:
       'UglifyJS serialization option, see http://lisperator.net/uglifyjs/codegen'
   });
-});
+}
 
-var commandLineOptions = optimist.argv;
-var browsers = commandLineOptions.browsers;
+const commandLineOptions = optimist.argv;
 
-var javaScriptSerializationOptions = {
+const javaScriptSerializationOptions = {
   compact: commandLineOptions.compact,
   space: commandLineOptions.space,
   newline: commandLineOptions.newline
 };
 
-[
+for (const deprecatedUglifyJsOption of [
   'preserve_line',
   'preamble',
   'quote_char',
@@ -281,12 +278,12 @@ var javaScriptSerializationOptions = {
   'max_line_len',
   'beautify',
   'bracketize'
-].forEach(function(deprecatedUglifyJsOption) {
-  [
+]) {
+  for (const alias of [
     deprecatedUglifyJsOption,
     deprecatedUglifyJsOption.replace(/_/g, ''),
     deprecatedUglifyJsOption.replace(/_/g, '-')
-  ].forEach(function(alias) {
+  ]) {
     if (typeof commandLineOptions[alias] !== 'undefined') {
       throw new Error(
         '--' +
@@ -294,22 +291,21 @@ var javaScriptSerializationOptions = {
           ' is no longer supported after we stopped using UglifyJS as the JavaScript AST provider'
       );
     }
-  });
-});
-
-if (Array.isArray(browsers)) {
-  browsers = browsers.join(',');
+  }
 }
 
-javaScriptSerializationOptionNames.forEach(function(
-  javaScriptSerializationOptionName
-) {
-  var value =
+for (const javaScriptSerializationOptionName of javaScriptSerializationOptionNames) {
+  const value =
     commandLineOptions[javaScriptSerializationOptionName.replace(/_/g, '')];
   if (typeof value !== 'undefined') {
     javaScriptSerializationOptions[javaScriptSerializationOptionName] = value;
   }
-});
+}
+
+let browsers = commandLineOptions.browsers;
+if (Array.isArray(browsers)) {
+  browsers = browsers.join(',');
+}
 
 if (commandLineOptions.h) {
   optimist.showHelp();
@@ -402,22 +398,22 @@ function convertStringToBoolean(str) {
 }
 
 // Look for --inline<relationType> command line arguments:
-Object.keys(AssetGraph).forEach(function(propertyName) {
-  var inlineThreshold = convertStringToBoolean(
+for (const propertyName of Object.keys(AssetGraph)) {
+  const inlineThreshold = convertStringToBoolean(
     commandLineOptions['inline' + propertyName.toLowerCase()]
   );
   if (typeof inlineThreshold !== 'undefined') {
     inlineByRelationType[propertyName] = inlineThreshold;
   }
-});
+}
 
 // Use a default inline threshold of 8192 bytes for HtmlStyle and HtmlScript, unless --inlinehtmlscript/--inlinehtmlstyle (or --inline) was given
 if (typeof inlineByRelationType['*'] === 'undefined') {
-  ['HtmlScript', 'HtmlStyle'].forEach(function(relationType) {
+  for (const relationType of ['HtmlScript', 'HtmlStyle']) {
     if (typeof inlineByRelationType[relationType] === 'undefined') {
       inlineByRelationType[relationType] = 8192;
     }
-  });
+  }
 }
 
 if (commandLineOptions.inlinesize) {
@@ -432,13 +428,12 @@ if (commandLineOptions.inlinesize) {
 }
 
 const defines = {};
-(commandLineOptions.define
+for (const define of commandLineOptions.define
   ? _.flatten(_.flatten([commandLineOptions.define]))
-  : []
-).forEach(function(define) {
-  var matchDefine = define.match(/^(\w+)(?:=(.*))?$/);
+  : []) {
+  const matchDefine = define.match(/^(\w+)(?:=(.*))?$/);
   if (matchDefine) {
-    var valueAst;
+    let valueAst;
     if (matchDefine[2]) {
       try {
         valueAst = parseExpression(matchDefine[2]);
@@ -460,7 +455,7 @@ const defines = {};
     }
     defines[matchDefine[1]] = valueAst;
   }
-});
+}
 
 const splitConditions =
   commandLineOptions.splitcondition &&
@@ -470,13 +465,12 @@ const splitConditions =
     })
   );
 const conditions = {};
-(commandLineOptions.condition
+for (const condition of commandLineOptions.condition
   ? _.flatten(_.flatten([commandLineOptions.condition]))
-  : []
-).forEach(function(condition) {
-  var matchCondition = condition.match(/^([^=]+)=(.*)?$/);
+  : []) {
+  const matchCondition = condition.match(/^([^=]+)=(.*)?$/);
   if (matchCondition) {
-    var value = matchCondition[2];
+    let value = matchCondition[2];
     if (value.indexOf(',') !== -1) {
       // Array of values to trace
       value = value.split(',');
@@ -486,7 +480,7 @@ const conditions = {};
     console.error('Invalid --condition ' + condition);
     process.exit(1);
   }
-});
+}
 
 if (commandLineOptions._.length > 0) {
   inputUrls = commandLineOptions._.map(function(urlOrFsPath) {
