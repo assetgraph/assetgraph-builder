@@ -82,7 +82,7 @@
     "nyc": "^14.0.0",
     "prettier": "~1.18.2",
     "requirejs": "^2.3.3",
-    "rimraf": "^2.6.2",
+    "rimraf": "^3.0.0",
     "sinon": "^7.0.0",
     "source-map": "^0.7.2",
     "svgfilter": "^3.0.0",
