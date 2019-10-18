@@ -546,14 +546,17 @@ describe('buildProduction', function() {
       root: __dirname + '/../../testdata/transforms/buildProduction/issue69/'
     });
     await assetGraph.loadAssets('index.html');
-    await assetGraph.buildProduction({ version: false });
+    await assetGraph.buildProduction({
+      version: false,
+      compressJavaScript: false
+    });
 
     const javaScriptAssets = assetGraph.findAssets({ type: 'JavaScript' });
     expect(javaScriptAssets, 'to have length', 1);
     expect(
       javaScriptAssets[0].text,
       'to match',
-      /SockJS=[\s\S]*define\("main",function\(\)\{\}\);/
+      /SockJS=[\s\S]*define\("main",\(?function\(\)\{\}\)?\);/
     );
 
     return new Promise((resolve, reject) => {
