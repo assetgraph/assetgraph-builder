@@ -546,10 +546,7 @@ describe('buildProduction', function() {
       root: __dirname + '/../../testdata/transforms/buildProduction/issue69/'
     });
     await assetGraph.loadAssets('index.html');
-    await assetGraph.buildProduction({
-      version: false,
-      compressJavaScript: false
-    });
+    await assetGraph.buildProduction({ version: false });
 
     const javaScriptAssets = assetGraph.findAssets({ type: 'JavaScript' });
     expect(javaScriptAssets, 'to have length', 1);
