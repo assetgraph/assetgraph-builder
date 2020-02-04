@@ -1,8 +1,8 @@
 #redalpha24bit {
     background-image: url(redalpha24bit.png?irrelevant);
-    _background-image: url(redalpha24bit.png?pngquant=128);
+    _background-image: url(redalpha24bit.png?pngquant=5);
 }
 
 #purplealpha24bit {
-    background-image: url(purplealpha24bit.png?pngquant=256);
+    background-image: url(purplealpha24bit.png?pngquant=11);
 }
