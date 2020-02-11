@@ -49,7 +49,7 @@
     "express-processimage": "git://github.com/papandreou/express-processimage.git#46e49a1",
     "extend": "^3.0.0",
     "histogram": "^3.0.1",
-    "impro": "git://github.com/papandreou/impro.git#a51c0ca",
+    "impro": "git://github.com/papandreou/impro.git#ab95728",
     "jpegtran": "^1.0.6",
     "lodash": "^4.14.1",
     "memoizesync": "^1.1.1",
