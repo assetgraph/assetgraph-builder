@@ -46,7 +46,7 @@
     "chalk": "^3.0.0",
     "esanimate": "^1.1.0",
     "estraverse": "^4.2.0",
-    "express-processimage": "git://github.com/papandreou/express-processimage.git#46e49a1",
+    "express-processimage": "git://github.com/papandreou/express-processimage.git#6bdedf8",
     "extend": "^3.0.0",
     "histogram": "^3.0.1",
     "impro": "git://github.com/papandreou/impro.git#16f8638",
