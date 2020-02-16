@@ -372,7 +372,6 @@ describe('processImages', function() {
         { pngcrush: true, optipng: true, pngquant: true }
       )
       .queue(function(assetGraph) {
-        /* FIXME:
         var redAlpha24BitPngquanted = assetGraph.findAssets({
           url: /\/redalpha24bit\.pngquant256\.png$/
         })[0];
@@ -382,7 +381,6 @@ describe('processImages', function() {
           [0x89, 0x50, 0x4e, 0x47]
         );
         expect(redAlpha24BitPngquanted.rawSrc.length, 'to be less than', 6037);
-        */
 
         var purpleAlpha24BitPngcrushed = assetGraph.findAssets({
           url: /\/purplealpha24bit\.pngcrush\.png$/
@@ -420,7 +418,6 @@ describe('processImages', function() {
       });
   });
 
-  /* FIXME:
   it('should handle dots in urls (regression test for a regexp issue)', function() {
     return new AssetGraph({
       root: __dirname + '/../../testdata/transforms/processImages/dot.in.path/'
@@ -445,7 +442,6 @@ describe('processImages', function() {
         );
       });
   });
-  */
 
   it('should apply device pixel ratio to images', function() {
     return new AssetGraph({
