@@ -373,7 +373,7 @@ describe('processImages', function() {
       )
       .queue(function(assetGraph) {
         var redAlpha24BitPngquanted = assetGraph.findAssets({
-          url: /\/redalpha24bit\.pngquant256\.png$/
+          fileName: 'redalpha24bit.pngquant-speed5.png'
         })[0];
         expect(
           _.toArray(redAlpha24BitPngquanted.rawSrc.slice(0, 4)),
@@ -383,7 +383,7 @@ describe('processImages', function() {
         expect(redAlpha24BitPngquanted.rawSrc.length, 'to be less than', 6037);
 
         var purpleAlpha24BitPngcrushed = assetGraph.findAssets({
-          url: /\/purplealpha24bit\.pngcrush\.png$/
+          fileName: 'purplealpha24bit.pngcrush.png'
         })[0];
         expect(
           _.toArray(purpleAlpha24BitPngcrushed.rawSrc.slice(0, 4)),
