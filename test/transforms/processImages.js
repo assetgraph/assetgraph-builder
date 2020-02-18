@@ -39,7 +39,7 @@ describe('processImages', function() {
       ]
     );
     // The first two CssImage relations should be in the same cssRule
-    var cssBackgroundImages = assetGraph.findRelations({
+    let cssBackgroundImages = assetGraph.findRelations({
       type: 'CssImage'
     });
     expect(
@@ -48,7 +48,7 @@ describe('processImages', function() {
       cssBackgroundImages[1].cssRule
     );
 
-    var rawSrcs = assetGraph
+    const rawSrcs = assetGraph
       .findRelations({ type: 'CssImage' })
       .map(function(cssImageRelation) {
         return cssImageRelation.to.rawSrc;
@@ -181,7 +181,7 @@ describe('filters ordering', async function() {
       { pngcrush: true, optipng: true, pngquant: true }
     );
 
-    var purpleAlpha24BitPngcrushed = assetGraph.findAssets({
+    const purpleAlpha24BitPngcrushed = assetGraph.findAssets({
       fileName: /^purplealpha24bit/
     })[0];
 
@@ -204,7 +204,7 @@ it('should handle a single filter with autolossless: pngquant', async function()
     { pngcrush: true, optipng: true, pngquant: true }
   );
 
-  var purpleAlpha24BitPngcrushed = assetGraph.findAssets({
+  const purpleAlpha24BitPngcrushed = assetGraph.findAssets({
     fileName: /^purplealpha24bit/
   })[0];
 
@@ -226,7 +226,7 @@ it('should handle a single filter with autolossless: pngcrush', async function()
     { pngcrush: true, optipng: true, pngquant: true }
   );
 
-  var purpleAlpha24BitPngcrushed = assetGraph.findAssets({
+  const purpleAlpha24BitPngcrushed = assetGraph.findAssets({
     fileName: /^purplealpha24bit/
   })[0];
 
@@ -249,7 +249,7 @@ it('should handle a single filter with autolossless: optipng', async function() 
     { pngcrush: true, optipng: true, pngquant: true }
   );
 
-  var purpleAlpha24BitPngcrushed = assetGraph.findAssets({
+  const purpleAlpha24BitPngcrushed = assetGraph.findAssets({
     fileName: /^purplealpha24bit/
   })[0];
 
@@ -272,7 +272,7 @@ it('should handle filters in order: pngquant, pngcrush, optipng', async function
     { pngcrush: true, optipng: true, pngquant: true }
   );
 
-  var purpleAlpha24BitPngcrushed = assetGraph.findAssets({
+  const purpleAlpha24BitPngcrushed = assetGraph.findAssets({
     fileName: /^purplealpha24bit/
   })[0];
 
@@ -295,7 +295,7 @@ it('should handle filters in order: pngcrush, pngquant, optipng', async function
     { pngcrush: true, optipng: true, pngquant: true }
   );
 
-  var purpleAlpha24BitPngcrushed = assetGraph.findAssets({
+  const purpleAlpha24BitPngcrushed = assetGraph.findAssets({
     fileName: /^purplealpha24bit/
   })[0];
 
@@ -318,7 +318,7 @@ it('should handle filters in order: optipng, pngquant, pngcrush', async function
     { pngcrush: true, optipng: true, pngquant: true }
   );
 
-  var purpleAlpha24BitPngcrushed = assetGraph.findAssets({
+  const purpleAlpha24BitPngcrushed = assetGraph.findAssets({
     fileName: /^purplealpha24bit/
   })[0];
 
@@ -342,7 +342,7 @@ it('should handle a test case with a couple of pngs', async function() {
     { pngcrush: true, optipng: true, pngquant: true }
   );
 
-  var redAlpha24BitPngquanted = assetGraph.findAssets({
+  const redAlpha24BitPngquanted = assetGraph.findAssets({
     fileName: 'redalpha24bit.pngquant-speed5.png'
   })[0];
   expect(_.toArray(redAlpha24BitPngquanted.rawSrc.slice(0, 4)), 'to equal', [
@@ -353,7 +353,7 @@ it('should handle a test case with a couple of pngs', async function() {
   ]);
   expect(redAlpha24BitPngquanted.rawSrc.length, 'to be less than', 6037);
 
-  var purpleAlpha24BitPngcrushed = assetGraph.findAssets({
+  const purpleAlpha24BitPngcrushed = assetGraph.findAssets({
     fileName: 'purplealpha24bit.pngcrush.png'
   })[0];
   expect(_.toArray(purpleAlpha24BitPngcrushed.rawSrc.slice(0, 4)), 'to equal', [
@@ -427,7 +427,7 @@ it('should apply device pixel ratio to images', async function() {
 
   await assetGraph.processImages();
 
-  var outputs = [
+  const outputs = [
     {
       type: 'Png',
       devicePixelRatio: 1
