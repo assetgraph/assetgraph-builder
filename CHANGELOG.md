@@ -1,3 +1,33 @@
+### v8.0.0 (2020-03-07)
+
+#### Pull requests
+
+- [#714](https://github.com/assetgraph/assetgraph-builder/pull/714) Upgrade sinon to version 9.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#711](https://github.com/assetgraph/assetgraph-builder/pull/711) Impro port of processImages transform ([Alex J Burke](mailto:alex@alexjeffburke.com))
+- [#713](https://github.com/assetgraph/assetgraph-builder/pull/713) Upgrade jsdom to version 16.2.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#707](https://github.com/assetgraph/assetgraph-builder/pull/707) Upgrade mocha to version 7.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#706](https://github.com/assetgraph/assetgraph-builder/pull/706) Upgrade assetgraph to version 6.0.5 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#705](https://github.com/assetgraph/assetgraph-builder/pull/705) Upgrade eslint-plugin-node to version 11.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#703](https://github.com/assetgraph/assetgraph-builder/pull/703) Upgrade nyc to version 15.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#704](https://github.com/assetgraph/assetgraph-builder/pull/704) Upgrade sinon to version 8.0.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#702](https://github.com/assetgraph/assetgraph-builder/pull/702) Upgrade assetgraph to version 6.0.4 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#701](https://github.com/assetgraph/assetgraph-builder/pull/701) Upgrade assetgraph to version 6.0.3 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#700](https://github.com/assetgraph/assetgraph-builder/pull/700) Upgrade assetgraph to version 6.0.2 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#697](https://github.com/assetgraph/assetgraph-builder/pull/697) Upgrade chalk to version 3.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#698](https://github.com/assetgraph/assetgraph-builder/pull/698) Upgrade prettier to version 1.19.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#696](https://github.com/assetgraph/assetgraph-builder/pull/696) Upgrade assetgraph to version 6.0.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#694](https://github.com/assetgraph/assetgraph-builder/pull/694) Upgrade eslint-plugin-node to version 10.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#693](https://github.com/assetgraph/assetgraph-builder/pull/693) Upgrade eslint-config-standard to version 14.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+
+#### Commits to master
+
+- [lebab --replace test --transform let](https://github.com/assetgraph/assetgraph-builder/commit/54016f3154c2cc8e33840f170221e84fea41f3eb) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Clean up processImages tests](https://github.com/assetgraph/assetgraph-builder/commit/5e4376eb9211d7937206aaa45bdccff939891549) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Regenerate CHANGELOG.md, fixes \#664](https://github.com/assetgraph/assetgraph-builder/commit/662b5a6e9ebeb06a0f283a2d7b6a4eecbdb47405) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Add offline-github-changelog](https://github.com/assetgraph/assetgraph-builder/commit/0cc0bd1cb739959810d496f7ead1eaaf08c88846) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Drop node.js 8 support \(semver-major\)](https://github.com/assetgraph/assetgraph-builder/commit/4ed0cab7181b1080cd6ab01684e93ca833d2740f) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [+2 more](https://github.com/assetgraph/assetgraph-builder/compare/v7.0.0...v8.0.0)
+
 ### v7.0.0 (2019-08-18)
 
 #### Pull requests
