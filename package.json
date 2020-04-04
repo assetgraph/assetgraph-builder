@@ -106,8 +106,8 @@
   "scripts": {
     "lint": "eslint . bin/* && prettier --check '**/*.{js,md}' 'bin/*'",
     "test": "mocha",
-    "ci": "npm run lint && npm run coverage && npm run lint",
-    "coverage": "NODE_ENV=test nyc --reporter=lcov --reporter=text --all -- mocha --reporter dot && echo google-chrome coverage/lcov-report/index.html",
+    "test:ci": "npm run coverage",
+    "coverage": "nyc --reporter=lcov --reporter=text --all -- mocha --reporter dot && echo google-chrome coverage/lcov-report/index.html",
     "preversion": "offline-github-changelog --next=${npm_package_version} > CHANGELOG.md && git add CHANGELOG.md"
   },
   "nyc": {

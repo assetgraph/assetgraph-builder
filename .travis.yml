@@ -1,7 +1,16 @@
 language: node_js
 node_js:
-  - '10'
-  - '11'
+  - 10
+  - 11
+  - 12
+  - node
+
+matrix:
+  include:
+    - name: Lint
+      node_js: 12
+      script: npm run lint
+
 addons:
   apt:
     sources:
@@ -9,7 +18,8 @@ addons:
     packages:
       - graphicsmagick
       - inkscape
-script: 'npm run ci'
+
+script: npm run test:ci
 after_success: '<coverage/lcov.info ./node_modules/coveralls/bin/coveralls.js'
 
 notifications:
