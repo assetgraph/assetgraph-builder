@@ -82,7 +82,7 @@
     "mocha": "^7.0.0",
     "nyc": "^15.0.0",
     "offline-github-changelog": "^1.6.1",
-    "prettier": "~1.19.1",
+    "prettier": "~2.0.2",
     "requirejs": "^2.3.3",
     "rimraf": "^3.0.0",
     "sinon": "^9.0.0",
@@ -104,10 +104,10 @@
     "bin": "./bin"
   },
   "scripts": {
-    "lint": "eslint . bin/* && prettier --check '**/*.js' 'bin/*'",
+    "lint": "eslint . bin/* && prettier --check '**/*.{js,md}' 'bin/*'",
     "test": "mocha",
-    "ci": "npm run lint && npm run coverage && npm run lint",
-    "coverage": "NODE_ENV=test nyc --reporter=lcov --reporter=text --all -- mocha --reporter dot && echo google-chrome coverage/lcov-report/index.html",
+    "test:ci": "npm run coverage",
+    "coverage": "nyc --reporter=lcov --reporter=text --all -- mocha --reporter dot && echo google-chrome coverage/lcov-report/index.html",
     "preversion": "offline-github-changelog --next=${npm_package_version} > CHANGELOG.md && git add CHANGELOG.md"
   },
   "nyc": {
