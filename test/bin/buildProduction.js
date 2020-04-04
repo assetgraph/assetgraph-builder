@@ -11,25 +11,25 @@ function run(commandAndArgs) {
     commandAndArgs = [commandAndArgs];
   }
   const command = commandAndArgs
-    .map(arg =>
+    .map((arg) =>
       /[^\w./-]/.test(arg) ? "'" + arg.replace(/'/g, "\\'") + "'" : arg
     )
     .join(' ');
 
-  return Promise.fromNode(cb => childProcess.exec(command, cb), {
-    multiArgs: true
+  return Promise.fromNode((cb) => childProcess.exec(command, cb), {
+    multiArgs: true,
   });
 }
 
 expect.addAssertion(
   '<string|array> [when] run as a shell command <assertion?>',
-  function(expect, subject) {
-    return run(subject).then(stdout => expect.shift(stdout));
+  function (expect, subject) {
+    return run(subject).then((stdout) => expect.shift(stdout));
   }
 );
 
-describe('buildProduction', function() {
-  it('should honor --browsers "IE 8" when serializing JavaScript', async function() {
+describe('buildProduction', function () {
+  it('should honor --browsers "IE 8" when serializing JavaScript', async function () {
     const tmpDir = getTemporaryFilePath();
     await expect(
       [
@@ -57,7 +57,7 @@ describe('buildProduction', function() {
           'buildProduction',
           'javaScriptWithInternetExplorer8',
           'index.html'
-        )
+        ),
       ],
       'run as a shell command'
     );
@@ -74,7 +74,7 @@ describe('buildProduction', function() {
     }
   });
 
-  it('should pick up the browserslist configuration from package.json', async function() {
+  it('should pick up the browserslist configuration from package.json', async function () {
     const dir = pathModule.resolve(
       __dirname,
       '..',
@@ -94,7 +94,7 @@ describe('buildProduction', function() {
         dir,
         '-o',
         tmpDir,
-        pathModule.resolve(dir, 'index.html')
+        pathModule.resolve(dir, 'index.html'),
       ],
       'run as a shell command'
     );
@@ -112,7 +112,7 @@ describe('buildProduction', function() {
     }
   });
 
-  it('should assume that IE 8 compatibility is wanted when no --browsers switch is passed and no .browserslistrc etc. is found', async function() {
+  it('should assume that IE 8 compatibility is wanted when no --browsers switch is passed and no .browserslistrc etc. is found', async function () {
     const tmpDir = getTemporaryFilePath();
     await expect(
       [
@@ -138,7 +138,7 @@ describe('buildProduction', function() {
           'buildProduction',
           'javaScriptWithInternetExplorer8',
           'index.html'
-        )
+        ),
       ],
       'run as a shell command'
     );
@@ -155,7 +155,7 @@ describe('buildProduction', function() {
     }
   });
 
-  it('should run autoprefixer when no --browsers is passed', async function() {
+  it('should run autoprefixer when no --browsers is passed', async function () {
     const tmpDir = getTemporaryFilePath();
     await expect(
       [
@@ -181,7 +181,7 @@ describe('buildProduction', function() {
           'buildProduction',
           'autoprefixer',
           'index.html'
-        )
+        ),
       ],
       'run as a shell command'
     );

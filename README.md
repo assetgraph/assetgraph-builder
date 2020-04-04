@@ -1,5 +1,5 @@
-AssetGraph-builder
-==================
+# AssetGraph-builder
+
 [![NPM version](https://badge.fury.io/js/assetgraph-builder.svg)](http://badge.fury.io/js/assetgraph-builder)
 [![Build Status](https://travis-ci.org/assetgraph/assetgraph-builder.svg?branch=master)](https://travis-ci.org/assetgraph/assetgraph-builder)
 [![Coverage Status](https://coveralls.io/repos/assetgraph/assetgraph-builder/badge.svg)](https://coveralls.io/r/assetgraph/assetgraph-builder)
@@ -10,72 +10,70 @@ applications.
 
 Looking for a Grunt integration? Try [grunt-reduce](https://github.com/Munter/grunt-reduce)
 
-Quick start
------------
+## Quick start
 
 # Conventional
+
 ```
 npm install -g assetgraph-builder
 buildProduction path/to/your/index.html -o path/to/output/directory
 ```
 
 # [Docker](https://www.docker.com/)
+
 ```
 docker run --rm -it  -v "$(pwd)":/app/ -w /app/ assetgraph/assetgraph-builder path/to/your/index.html -o path/to/output/directory
 ```
 
 Congratulations, you just optimized your web page!
 
-Features
---------
+## Features
 
- * Requires no build manifest. All information about your project is
-   gathered from the HTML/CSS/JavaScript itself. Just tell it where to
-   find your HTML file(s), and it will find the referenced JavaScript,
-   CSS, etc.
- * Reads your web application from one directory, manipulates and
-   optimizes it, then writes the resulting build to a separate
-   directory with everything included.
- * Supports a multitude of asset/relation types, even shortcut icons,
-   `AlphaImageLoader` images, conditional comments, fonts linked via
-   `@font-face { src: url(...) }`, .htc files linked via CSS
-   `behavior` properties.
- * Bundles JavaScript and CSS.
- * Discovers and optimizes Web Workers and Service Workers.
- * Removes duplicate images, JavaScript, CSS, etc.
- * Supports automatic optimization and custom processing of images using
-   pngquant, pngcrush, optipng, jpegtran, <a href="https://github.com/lovell/sharp">sharp</a>, and GraphicsMagick.
- * Minifies/packs JavaScript, CSS, and HTML (uses <a
-   href="https://github.com/mishoo/UglifyJS">UglifyJS</a>, <a
-   href="https://github.com/ben-eb/cssnano">cssnano</a>, <a
-   href="https://github.com/tmpvar/jsdom">jsdom</a>,
-   and <a href="https://github.com/kangax/html-minifier">html-minifier</a>).
- * Supports the <a
-   href="http://requirejs.org/docs/optimization.html">the require.js
-   optimizer</a> and <a href="https://github.com/systemjs/builder">systemjs-builder</a>.
- * Sprites background images (see <a
-   href="https://github.com/One-com/assetgraph-sprite">assetgraph-sprite</a>).
- * Inlines CSS `background-image`s less than 8192 bytes and provides an
-   alternative stylesheet for older IE versions via conditional comments.
- * Inlines CSS and JavaScript with total size less than 4096 bytes to reduce HTTP requests.
- * Adds a cache manifest to each HTML page if `--manifest` is
-   specified.
- * Renames JavaScript, CSS, images etc. to a 10-char MD5 prefix + the
-   original extension so they can be served with a far-future expiry time.
- * Helps getting your static assets on a CDN by rewriting the
-   references to them (controlled by the `--cdnroot` switch).
- * Updates an existing Content-Security-Policy meta tag to reflect the
-   changes that happened during the build procedure, including hashing
-   of inline scripts and stylesheets.
- * Very customizable, the entire build script is only around 100 lines
-   of code due to the reliance on high level <a
-   href="https://github.com/One-com/assetgraph">AssetGraph</a>
-   transforms.
- * Automatically adds `rel="noopener"` to cross domain anchors opening in new windows ([The performance benefits of rel=noopener](https://jakearchibald.com/2016/performance-benefits-of-rel-noopener/))
+- Requires no build manifest. All information about your project is
+  gathered from the HTML/CSS/JavaScript itself. Just tell it where to
+  find your HTML file(s), and it will find the referenced JavaScript,
+  CSS, etc.
+- Reads your web application from one directory, manipulates and
+  optimizes it, then writes the resulting build to a separate
+  directory with everything included.
+- Supports a multitude of asset/relation types, even shortcut icons,
+  `AlphaImageLoader` images, conditional comments, fonts linked via
+  `@font-face { src: url(...) }`, .htc files linked via CSS
+  `behavior` properties.
+- Bundles JavaScript and CSS.
+- Discovers and optimizes Web Workers and Service Workers.
+- Removes duplicate images, JavaScript, CSS, etc.
+- Supports automatic optimization and custom processing of images using
+  pngquant, pngcrush, optipng, jpegtran, <a href="https://github.com/lovell/sharp">sharp</a>, and GraphicsMagick.
+- Minifies/packs JavaScript, CSS, and HTML (uses <a
+  href="https://github.com/mishoo/UglifyJS">UglifyJS</a>, <a
+  href="https://github.com/ben-eb/cssnano">cssnano</a>, <a
+  href="https://github.com/tmpvar/jsdom">jsdom</a>,
+  and <a href="https://github.com/kangax/html-minifier">html-minifier</a>).
+- Supports the <a
+  href="http://requirejs.org/docs/optimization.html">the require.js
+  optimizer</a> and <a href="https://github.com/systemjs/builder">systemjs-builder</a>.
+- Sprites background images (see <a
+  href="https://github.com/One-com/assetgraph-sprite">assetgraph-sprite</a>).
+- Inlines CSS `background-image`s less than 8192 bytes and provides an
+  alternative stylesheet for older IE versions via conditional comments.
+- Inlines CSS and JavaScript with total size less than 4096 bytes to reduce HTTP requests.
+- Adds a cache manifest to each HTML page if `--manifest` is
+  specified.
+- Renames JavaScript, CSS, images etc. to a 10-char MD5 prefix + the
+  original extension so they can be served with a far-future expiry time.
+- Helps getting your static assets on a CDN by rewriting the
+  references to them (controlled by the `--cdnroot` switch).
+- Updates an existing Content-Security-Policy meta tag to reflect the
+  changes that happened during the build procedure, including hashing
+  of inline scripts and stylesheets.
+- Very customizable, the entire build script is only around 100 lines
+  of code due to the reliance on high level <a
+  href="https://github.com/One-com/assetgraph">AssetGraph</a>
+  transforms.
+- Automatically adds `rel="noopener"` to cross domain anchors opening in new windows ([The performance benefits of rel=noopener](https://jakearchibald.com/2016/performance-benefits-of-rel-noopener/))
 
-
-Installation
-------------
+## Installation
 
 Optional first step: To take full advantage of the image processing
 and optimization features, you need several libraries and command line
@@ -100,7 +98,6 @@ brew cask install inkscape
 export PKG_CONFIG_PATH=/opt/X11/lib/pkgconfig
 ```
 
-
 Then make sure you have node.js and <a href="http://npmjs.org/">npm</a> installed,
 then run:
 
@@ -110,8 +107,7 @@ $ npm install -g assetgraph-builder
 
 Now you'll have the `buildProduction` script in your PATH.
 
-Usage
------
+## Usage
 
 ```
 $ buildProduction -o outputPath [--root webrootPath] [startingAssets]
@@ -125,8 +121,7 @@ Your `startingAssets` can be one or more file paths or minimatch patterns, which
 
 There are many more options to assetgraph-builder. We suggest you consult the help with `buildProduction -h`.
 
-Example usage
--------------
+## Example usage
 
 Build a single page application:
 
@@ -152,17 +147,16 @@ distribution at the root of your origin server. As long as you serve `/static` a
 below it with a far-future expires, you won't need to touch your CDN config or manually
 upload anything to your CDN provider.
 
-Specifying which browsers to support
-------------------------------------
+## Specifying which browsers to support
 
 It's highly recommended that you tell `buildProduction` which browsers you need
 to support via the `--browsers` switch. It draws its syntax from the
 [browserslist](https://github.com/ai/browserslist) module and governs a wide
 range of tweaks and hacks, for example:
 
-* Whether the `screw IE8` option is passed to [UglifyJS](https://github.com/mishoo/UglifyJS2#usage).
-* The set of browsers autoprefixer is instructed to support, if autoprefixer is available.
-* Whether to add fallback stylesheets referenced via conditional comments when images
+- Whether the `screw IE8` option is passed to [UglifyJS](https://github.com/mishoo/UglifyJS2#usage).
+- The set of browsers autoprefixer is instructed to support, if autoprefixer is available.
+- Whether to add fallback stylesheets referenced via conditional comments when images
   are inlined in CSS (due to IE7 not supporting `data:` urls and IE8's 32 KB `data:` url limit).
 
 The default is to support all browsers, which will cause a heavier build,
@@ -170,27 +164,31 @@ especially when IE8 and below are included and inlining of CSS images is active
 (which it is by default). If you're lucky enough that you don't need to support
 those browsers, you can add `--browsers ">0%, not ie <= 8"` and avoid those hacks.
 
+## Replacing require.js with almond.js on build
 
-Replacing require.js with almond.js on build
---------------------------------------------
 Simply add a `data-almond`-attribute to the script tag that has `require.js` as its source.
 The value should be the path to `almond.js` like so:
 
-``` html
-<script data-main="app/main" data-almond="path/to/almond.js" src="path/to/require.js"></script>
+```html
+<script
+  data-main="app/main"
+  data-almond="path/to/almond.js"
+  src="path/to/require.js"
+></script>
 ```
 
 When you do this you should not use require as an external script loader, since almond does not support this.
 
-
-Working with a Content Security Policy
---------------------------------------
+## Working with a Content Security Policy
 
 If you add the `--contentsecuritypolicy` switch and one or more of your HTML
 files contain a CSP in a meta tag such as:
 
 ```html
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src foo.com">
+<meta
+  http-equiv="Content-Security-Policy"
+  content="default-src 'self'; script-src foo.com"
+/>
 ```
 
 it will be read and updated to reflect the changes that were made during the build.
@@ -213,18 +211,22 @@ use a nonce in development:
 ```html
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Security-Policy"
-              content="script-src 'nonce-yeah', style-src 'nonce-yeah'">
-        <style rel="stylesheet" nonce="yeah">
-            body { color: red; }
-        </style>
-    </head>
-    <body>
-        <script nonce="yeah">
-            alert("Hello");
-        </script>
-    </body>
+  <head>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="script-src 'nonce-yeah', style-src 'nonce-yeah'"
+    />
+    <style rel="stylesheet" nonce="yeah">
+      body {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <script nonce="yeah">
+      alert('Hello');
+    </script>
+  </body>
 </html>
 ```
 
@@ -232,9 +234,7 @@ use a nonce in development:
 token if the scripts and stylesheets are still inline when the bundling/externalization
 steps have been carried out.
 
-
-Sub resource integrity
-----------------------
+## Sub resource integrity
 
 The `--subresourceintegrity` switch will make `buildProduction` add an `integrity`
 attribute to every `<script src=...>` and `<link rel="stylesheet" href=...>`
@@ -253,9 +253,7 @@ The reason why this isn't automated is that `buildProduction` cannot know
 if a given external resource might change in the future, thus breaking your
 production build.
 
-
-Excluding assets from your build
---------------------------------
+## Excluding assets from your build
 
 If you want `buildProduction` to avoid including specific assets, paths or entire parts of
 your page, you can use the `--exclude` option.
@@ -271,9 +269,7 @@ manner as the entry point arguments.
 
 You may use `*` for wildcards.
 
-
-Image optimization and processing
----------------------------------
+## Image optimization and processing
 
 The `buildProduction` switch `--optimizeimages` turns on automatic lossless
 optimization of all images of the relevant type in the graph.
@@ -284,8 +280,8 @@ reduce the palette of an image to a specific number of colors or apply
 a specific compression level:
 
 ```html
-<img src="myImage.png?pngquant=37">
-<img src="myOtherImage.png?optipng=-o7&amp;pngcrush=-rem+tEXT">
+<img src="myImage.png?pngquant=37" />
+<img src="myOtherImage.png?optipng=-o7&amp;pngcrush=-rem+tEXT" />
 ```
 
 The image processing is supported everywhere you can refer to an
@@ -297,26 +293,34 @@ href="https://github.com/aheckmann/gm">gm module</a>) are supported:
 
 ```css
 body {
-    background-image: url(foo.png?resize=500+300&flip&magnify&pngcrush);
+  background-image: url(foo.png?resize=500 + 300&flip&magnify&pngcrush);
 }
 ```
 
 These are especially useful for responsive images:
 
 ```html
-<img srcset="bar.jpg 1024w,
-             bar.jpg?resize=600 600w,
-             bar.jpg?resize=500&amp;gravity=Center&amp;crop=300+300 300w"
-     sizes="(min-width: 768px) 50vw, 100vw">
+<img
+  srcset="
+    bar.jpg                                                1024w,
+    bar.jpg?resize=600                                      600w,
+    bar.jpg?resize=500&amp;gravity=Center&amp;crop=300+300  300w
+  "
+  sizes="(min-width: 768px) 50vw, 100vw"
+/>
 ```
 
 They work in JavaScript too:
 
 ```js
 var img = document.querySelector('.responsive-image');
-img.setAttribute('srcset',
-  'baz.gif'.toString('url') + ' 500w, ' +
-  'baz.gif?resize=300'.toString('url') + ' 300w');
+img.setAttribute(
+  'srcset',
+  'baz.gif'.toString('url') +
+    ' 500w, ' +
+    'baz.gif?resize=300'.toString('url') +
+    ' 300w'
+);
 picturefill({ elements: [img] }); // reload if you're using Picturefill
 ```
 
@@ -331,9 +335,7 @@ and <a href="https://github.com/One-com/LiveStyle">livestyle</a> with the
 `--processimage` switch. You can use one of those to have the image
 processing instructions applied on your development setup.
 
-
-License
--------
+## License
 
 AssetGraph-builder is licensed under a standard 3-clause BSD license
 -- see the `LICENSE`-file for details.

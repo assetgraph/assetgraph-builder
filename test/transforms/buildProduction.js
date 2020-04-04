@@ -6,10 +6,10 @@ const passError = require('passerror');
 const sinon = require('sinon');
 const AssetGraph = require('../../lib/AssetGraph');
 
-describe('buildProduction', function() {
-  it('should handle a simple test case', async function() {
+describe('buildProduction', function () {
+  it('should handle a simple test case', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/simple/'
+      root: __dirname + '/../../testdata/transforms/buildProduction/simple/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
@@ -22,7 +22,7 @@ describe('buildProduction', function() {
       asyncScripts: true,
       deferScripts: true,
       cdnRoot: 'http://cdn.example.com/foo/',
-      prettyPrint: false
+      prettyPrint: false,
     });
 
     expect(
@@ -34,7 +34,7 @@ describe('buildProduction', function() {
 
     for (const htmlAsset of assetGraph.findAssets({
       type: 'Html',
-      isInline: false
+      isInline: false,
     })) {
       expect(
         htmlAsset.parseTree.querySelectorAll(
@@ -62,16 +62,16 @@ describe('buildProduction', function() {
 
     // someTextFile.txt should be found at /static/someTextFile.c7429a1035.txt (not on the CDN)
     expect(assetGraph, 'to contain asset', {
-      url: { $regex: /\/static\/someTextFile.c7429a1035\.txt$/ }
+      url: { $regex: /\/static\/someTextFile.c7429a1035\.txt$/ },
     });
 
     for (const htmlAsset of assetGraph.findAssets({
       type: 'Html',
-      isInline: false
+      isInline: false,
     })) {
       const htmlCacheManifestRelations = assetGraph.findRelations({
         from: htmlAsset,
-        type: 'HtmlCacheManifest'
+        type: 'HtmlCacheManifest',
       });
       expect(htmlCacheManifestRelations, 'to have length', 1);
       const cacheManifest = htmlCacheManifestRelations[0].to;
@@ -86,16 +86,16 @@ describe('buildProduction', function() {
           .url,
         'NETWORK:',
         '*',
-        ''
+        '',
       ]);
     }
   });
 
-  it('should not inline script with async=async and defer=defer, but should still bundle the ones with identical attributes', async function() {
+  it('should not inline script with async=async and defer=defer, but should still bundle the ones with identical attributes', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/asyncAndDeferredScripts/'
+        '/../../testdata/transforms/buildProduction/asyncAndDeferredScripts/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ inlineByRelationType: { '*': true } });
@@ -115,11 +115,11 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case with two stylesheets that @import the same stylesheet (assetgraph issue #82)', async function() {
+  it('should handle a test case with two stylesheets that @import the same stylesheet (assetgraph issue #82)', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/duplicateImports/'
+        '/../../testdata/transforms/buildProduction/duplicateImports/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ version: false });
@@ -132,9 +132,9 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should support webpack', async function() {
+  it('should support webpack', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/webpack/'
+      root: __dirname + '/../../testdata/transforms/buildProduction/webpack/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction();
@@ -148,13 +148,13 @@ describe('buildProduction', function() {
     );
     expect(assetGraph, 'to contain asset', {
       type: 'JavaScript',
-      fileName: /bundle/
+      fileName: /bundle/,
     });
     expect(
       assetGraph.findRelations({
         type: 'HtmlScript',
         from: { url: /index\.html$/ },
-        to: { fileName: /bundle/ }
+        to: { fileName: /bundle/ },
       })[0].to.text,
       'to match',
       /alert\(['"]noExistingSourceMap/
@@ -162,26 +162,26 @@ describe('buildProduction', function() {
   });
 
   // Derived from a vanilla application output by create-react-app (1.3.0)
-  it('should support pages rendered by HtmlWebpackPlugin', async function() {
+  it('should support pages rendered by HtmlWebpackPlugin', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/htmlWebpackPlugin'
+        '/../../testdata/transforms/buildProduction/htmlWebpackPlugin',
     });
     await assetGraph.buildProduction();
 
     expect(assetGraph, 'to contain asset', {
       type: 'Html',
       url: /\/build\/index\.html$/,
-      isInitial: true
+      isInitial: true,
     });
   });
 
-  it('should handle a test case with a JavaScriptStaticUrl pointing at an image to be processed', async function() {
+  it('should handle a test case with a JavaScriptStaticUrl pointing at an image to be processed', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/JavaScriptStaticUrlWithProcessedImage/'
+        '/../../testdata/transforms/buildProduction/JavaScriptStaticUrlWithProcessedImage/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ version: false });
@@ -194,11 +194,11 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case that uses both processImage instructions for both sprited images and the sprite itself', async function() {
+  it('should handle a test case that uses both processImage instructions for both sprited images and the sprite itself', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/spriteAndProcessImages/'
+        '/../../testdata/transforms/buildProduction/spriteAndProcessImages/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ version: false });
@@ -212,7 +212,7 @@ describe('buildProduction', function() {
       const readStream = new Stream();
       readStream.readable = true;
       gm(readStream).identify(
-        passError(reject, function(metadata) {
+        passError(reject, function (metadata) {
           expect(metadata.Format, 'to match', /^GIF/i);
           expect(metadata.Geometry, 'to equal', '10x10');
           resolve();
@@ -228,11 +228,11 @@ describe('buildProduction', function() {
     });
   });
 
-  it('should handle a test case with Html fragments as initial assets', async function() {
+  it('should handle a test case with Html fragments as initial assets', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/initialHtmlFragments/'
+        '/../../testdata/transforms/buildProduction/initialHtmlFragments/',
     });
     await assetGraph.loadAssets('**/*.html');
 
@@ -249,11 +249,11 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case with an Html fragment as an initial asset, but without loading the asset referencing it', async function() {
+  it('should handle a test case with an Html fragment as an initial asset, but without loading the asset referencing it', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/initialHtmlFragments/'
+        '/../../testdata/transforms/buildProduction/initialHtmlFragments/',
     });
     await assetGraph.loadAssets('myTemplate.html');
 
@@ -270,11 +270,11 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case with an HtmlScript relation pointing at an extension-less, non-existent file', async function() {
+  it('should handle a test case with an HtmlScript relation pointing at an extension-less, non-existent file', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/nonExistentFileWithoutExtension/'
+        '/../../testdata/transforms/buildProduction/nonExistentFileWithoutExtension/',
     });
     const warnSpy = sinon.spy().named('warn');
     await assetGraph.loadAssets('index.html');
@@ -298,16 +298,16 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case with a JavaScriptStaticUrl relation pointing at an image, without the cdnRoot option', async function() {
+  it('should handle a test case with a JavaScriptStaticUrl relation pointing at an image, without the cdnRoot option', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/GetStaticUrlImageOnCdn/'
+        '/../../testdata/transforms/buildProduction/GetStaticUrlImageOnCdn/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
       version: false,
-      cdnRoot: 'http://cdn.example.com/foo/'
+      cdnRoot: 'http://cdn.example.com/foo/',
     });
 
     expect(
@@ -317,35 +317,35 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case with a HtmlRequireDataMain relation pointing at a script with a relation pointing at an I18n asset', async function() {
+  it('should handle a test case with a HtmlRequireDataMain relation pointing at a script with a relation pointing at an I18n asset', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/htmlDataMainWithI18n/'
+        '/../../testdata/transforms/buildProduction/htmlDataMainWithI18n/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
       version: false,
-      localeIds: ['da', 'en_US']
+      localeIds: ['da', 'en_US'],
     });
 
     expect(assetGraph, 'to contain no assets', {
       type: 'JavaScript',
-      text: /toString('url')/
+      text: /toString('url')/,
     });
   });
 
-  it('should handle a test case with a JavaScriptStaticUrl relation pointing at a flash file, then running the buildProduction transform with the cdnRoot option', async function() {
+  it('should handle a test case with a JavaScriptStaticUrl relation pointing at a flash file, then running the buildProduction transform with the cdnRoot option', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/GetStaticUrlFlash/'
+        '/../../testdata/transforms/buildProduction/GetStaticUrlFlash/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
       version: false,
       minify: true,
-      cdnRoot: 'http://cdn.example.com/foo/'
+      cdnRoot: 'http://cdn.example.com/foo/',
     });
 
     expect(
@@ -355,17 +355,17 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should set crossorigin=anonymous on script and link tags that end up pointing to the configured cdn', async function() {
+  it('should set crossorigin=anonymous on script and link tags that end up pointing to the configured cdn', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/crossoriginAnonymous/'
+        '/../../testdata/transforms/buildProduction/crossoriginAnonymous/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
       version: false,
       cdnRoot: '//cdn.example.com/foo/',
-      inlineByRelationType: { '*': false }
+      inlineByRelationType: { '*': false },
     });
 
     expect(
@@ -373,21 +373,21 @@ describe('buildProduction', function() {
       'to have length',
       2
     ).and('to have items satisfying', {
-      node: { attributes: { crossorigin: 'anonymous' } }
+      node: { attributes: { crossorigin: 'anonymous' } },
     });
   });
 
-  it('should set crossorigin=anonymous on script and link tags that end up pointing to the configured cdn, also when the cdnRoot is specified as an absolute url', async function() {
+  it('should set crossorigin=anonymous on script and link tags that end up pointing to the configured cdn, also when the cdnRoot is specified as an absolute url', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/crossoriginAnonymous/'
+        '/../../testdata/transforms/buildProduction/crossoriginAnonymous/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
       version: false,
       cdnRoot: 'https://cdn.example.com/foo/',
-      inlineByRelationType: { '*': false }
+      inlineByRelationType: { '*': false },
     });
 
     expect(
@@ -395,21 +395,21 @@ describe('buildProduction', function() {
       'to have length',
       2
     ).and('to have items satisfying', {
-      node: { attributes: { crossorigin: 'anonymous' } }
+      node: { attributes: { crossorigin: 'anonymous' } },
     });
   });
 
-  it('should handle a test case with a JavaScriptStaticUrl relation pointing at a flash file, then running the buildProduction transform with the cdnRoot and cdnFlash options', async function() {
+  it('should handle a test case with a JavaScriptStaticUrl relation pointing at a flash file, then running the buildProduction transform with the cdnRoot and cdnFlash options', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/GetStaticUrlFlash/'
+        '/../../testdata/transforms/buildProduction/GetStaticUrlFlash/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
       version: false,
       cdnRoot: 'http://cdn.example.com/foo/',
-      cdnFlash: true
+      cdnFlash: true,
     });
 
     expect(
@@ -419,11 +419,11 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case with an @import rule in a stylesheet pulled in via require.js, then running the buildProduction transform', async function() {
+  it('should handle a test case with an @import rule in a stylesheet pulled in via require.js, then running the buildProduction transform', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/requiredCssImport/'
+        '/../../testdata/transforms/buildProduction/requiredCssImport/',
     });
 
     await assetGraph.loadAssets('index.html');
@@ -438,11 +438,11 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case with a require.js paths config pointing at an http url', async function() {
+  it('should handle a test case with a require.js paths config pointing at an http url', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/requireJsCdnPath/'
+        '/../../testdata/transforms/buildProduction/requireJsCdnPath/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ version: false });
@@ -450,9 +450,10 @@ describe('buildProduction', function() {
     expect(assetGraph, 'to contain asset', { type: 'JavaScript' });
   });
 
-  it('should handle a test case using the less! plugin, then running the buildProduction transform', async function() {
+  it('should handle a test case using the less! plugin, then running the buildProduction transform', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/lessPlugin/'
+      root:
+        __dirname + '/../../testdata/transforms/buildProduction/lessPlugin/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction();
@@ -466,10 +467,10 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case with a JavaScriptStaticUrl', async function() {
+  it('should handle a test case with a JavaScriptStaticUrl', async function () {
     const assetGraph = new AssetGraph({
       root:
-        __dirname + '/../../testdata/transforms/buildProduction/GetStaticUrl/'
+        __dirname + '/../../testdata/transforms/buildProduction/GetStaticUrl/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ version: false });
@@ -483,9 +484,9 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case for issue #54', async function() {
+  it('should handle a test case for issue #54', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/issue54/'
+      root: __dirname + '/../../testdata/transforms/buildProduction/issue54/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ version: false });
@@ -499,9 +500,9 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case for issue #58', async function() {
+  it('should handle a test case for issue #58', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/issue58/'
+      root: __dirname + '/../../testdata/transforms/buildProduction/issue58/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ version: false });
@@ -515,9 +516,10 @@ describe('buildProduction', function() {
     ).and('to contain', 'require(["text!../templates/header.html"');
   });
 
-  it('should handle a with a JavaScript asset that contains debugger statement and console.log, with stripDebug:true', async function() {
+  it('should handle a with a JavaScript asset that contains debugger statement and console.log, with stripDebug:true', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/stripDebug/'
+      root:
+        __dirname + '/../../testdata/transforms/buildProduction/stripDebug/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ stripDebug: true });
@@ -529,11 +531,11 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test where some require.js-loaded JavaScript files could become orphaned, then run the buildProduction transform', async function() {
+  it('should handle a test where some require.js-loaded JavaScript files could become orphaned, then run the buildProduction transform', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/requireJsOrphans/'
+        '/../../testdata/transforms/buildProduction/requireJsOrphans/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ version: false });
@@ -541,9 +543,9 @@ describe('buildProduction', function() {
     expect(assetGraph, 'to contain asset', { type: 'JavaScript' });
   });
 
-  it('should handle a test case for issue #69', async function() {
+  it('should handle a test case for issue #69', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/issue69/'
+      root: __dirname + '/../../testdata/transforms/buildProduction/issue69/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ version: false });
@@ -563,12 +565,12 @@ describe('buildProduction', function() {
       const window = {
         document: html.parseTree,
         navigator: { userAgent: 'foo' },
-        addEventListener() {}
+        addEventListener() {},
       };
 
       Object.assign(context, window);
       context.window = context;
-      context.alert = message => {
+      context.alert = (message) => {
         if (/^got sockjs/.test(message)) {
           setImmediate(resolve);
         }
@@ -577,21 +579,21 @@ describe('buildProduction', function() {
       try {
         vm.runInContext(javaScript.text, context, javaScript.url);
       } catch (e) {
-        setImmediate(function() {
+        setImmediate(function () {
           reject(e);
         });
       }
     });
   });
 
-  it('should handle a test case for issue #83', async function() {
+  it('should handle a test case for issue #83', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/issue83/'
+      root: __dirname + '/../../testdata/transforms/buildProduction/issue83/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
       version: false,
-      reservedNames: ['$$super', 'quux']
+      reservedNames: ['$$super', 'quux'],
     });
 
     const javaScriptAssets = assetGraph.findAssets({ type: 'JavaScript' });
@@ -600,12 +602,12 @@ describe('buildProduction', function() {
     expect(javaScriptAssets[0].text, 'to match', /\$\$super\.foo/);
   });
 
-  it('should handle a test case where multiple HTML files reference the same require.js config in an external JavaScript file, then run the buildProduction transform', async function() {
+  it('should handle a test case where multiple HTML files reference the same require.js config in an external JavaScript file, then run the buildProduction transform', async function () {
     const warnSpy = sinon.spy();
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/multipleHtmlsReferencingTheSameExternalRequireJsConfig/'
+        '/../../testdata/transforms/buildProduction/multipleHtmlsReferencingTheSameExternalRequireJsConfig/',
     });
     assetGraph.on('warn', warnSpy);
     await assetGraph.loadAssets('*.html');
@@ -614,9 +616,10 @@ describe('buildProduction', function() {
     expect(warnSpy, 'to have calls satisfying', []);
   });
 
-  it('should handle a test case with a JavaScript that needs a symbol replaced, then running the buildProduction transform with noCompress:true', async function() {
+  it('should handle a test case with a JavaScript that needs a symbol replaced, then running the buildProduction transform with noCompress:true', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/noCompress/'
+      root:
+        __dirname + '/../../testdata/transforms/buildProduction/noCompress/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
@@ -625,8 +628,8 @@ describe('buildProduction', function() {
       defines: {
         MYSYMBOL: { type: 'Literal', value: 'theValue' },
         MYOTHERSYMBOL: { type: 'Literal', value: 'theOtherValue' },
-        MYOBJECT: { foo: 'bar' }
-      }
+        MYOBJECT: { foo: 'bar' },
+      },
     });
 
     expect(
@@ -646,9 +649,10 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case with a JavaScript that needs a symbol replaced, then running the buildProduction transform with noCompress:false', async function() {
+  it('should handle a test case with a JavaScript that needs a symbol replaced, then running the buildProduction transform with noCompress:false', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/noCompress/'
+      root:
+        __dirname + '/../../testdata/transforms/buildProduction/noCompress/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
@@ -657,8 +661,8 @@ describe('buildProduction', function() {
       defines: {
         MYSYMBOL: { type: 'Literal', value: 'theValue' },
         MYOTHERSYMBOL: { type: 'Literal', value: 'theOtherValue' },
-        MYOBJECT: { foo: 'bar' }
-      }
+        MYOBJECT: { foo: 'bar' },
+      },
     });
 
     expect(
@@ -678,9 +682,9 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case then running the buildProduction transform with gzip:true', async function() {
+  it('should handle a test case then running the buildProduction transform with gzip:true', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/gzip/'
+      root: __dirname + '/../../testdata/transforms/buildProduction/gzip/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ version: false, gzip: true });
@@ -695,11 +699,11 @@ describe('buildProduction', function() {
     expect(requireJsGz.rawSrc.length, 'to be less than', 10000);
   });
 
-  it('should handle a test case with an HTML fragment that has an unpopulated relation, then running the buildProduction transform (regression test)', async function() {
+  it('should handle a test case with an HTML fragment that has an unpopulated relation, then running the buildProduction transform (regression test)', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/fragmentWithUnpopulatedRelation/'
+        '/../../testdata/transforms/buildProduction/fragmentWithUnpopulatedRelation/',
     });
     await assetGraph.loadAssets('**/*.html');
     await assetGraph.buildProduction({ version: false });
@@ -707,11 +711,11 @@ describe('buildProduction', function() {
     expect(assetGraph, 'to contain assets', { type: 'Html' }, 2);
   });
 
-  it('should handle a test case with an existing source map, then running the buildProduction transform with gzip:true', async function() {
+  it('should handle a test case with an existing source map, then running the buildProduction transform with gzip:true', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/existingSourceMap/'
+        '/../../testdata/transforms/buildProduction/existingSourceMap/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ version: false, gzip: true });
@@ -719,17 +723,17 @@ describe('buildProduction', function() {
     expect(assetGraph, 'to contain asset', { url: /\.gz$/ });
   });
 
-  it('should preserve sourcesContent from an existing source map', async function() {
+  it('should preserve sourcesContent from an existing source map', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/inlineSourceMapWithSourcesContent/'
+        '/../../testdata/transforms/buildProduction/inlineSourceMapWithSourcesContent/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
       version: false,
       sourceMaps: true,
-      sourcesContent: true
+      sourcesContent: true,
     });
 
     expect(assetGraph, 'to contain asset', 'SourceMap');
@@ -746,20 +750,20 @@ describe('buildProduction', function() {
           expect.it(
             'to begin with',
             'module.exports = function (graph, animationSpeed)'
-          )
-        ]
+          ),
+        ],
       }
     );
   });
 
-  it('should handle a test case with some assets that can be inlined, with HtmlScript and HtmlStyle inlining thresholds of 100 bytes', async function() {
+  it('should handle a test case with some assets that can be inlined, with HtmlScript and HtmlStyle inlining thresholds of 100 bytes', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/inline/'
+      root: __dirname + '/../../testdata/transforms/buildProduction/inline/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
       version: false,
-      inlineByRelationType: { HtmlScript: 100, HtmlStyle: 100 }
+      inlineByRelationType: { HtmlScript: 100, HtmlStyle: 100 },
     });
 
     expect(
@@ -774,14 +778,14 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case with some assets that can be inlined, with HtmlScript and HtmlStyle inlining thresholds of 5 bytes', async function() {
+  it('should handle a test case with some assets that can be inlined, with HtmlScript and HtmlStyle inlining thresholds of 5 bytes', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/inline/'
+      root: __dirname + '/../../testdata/transforms/buildProduction/inline/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
       version: false,
-      inlineByRelationType: { HtmlScript: 5, HtmlStyle: 5 }
+      inlineByRelationType: { HtmlScript: 5, HtmlStyle: 5 },
     });
 
     expect(
@@ -796,14 +800,14 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case with some assets that can be inlined, with HtmlScript and HtmlStyle inlining thresholds of false', async function() {
+  it('should handle a test case with some assets that can be inlined, with HtmlScript and HtmlStyle inlining thresholds of false', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/inline/'
+      root: __dirname + '/../../testdata/transforms/buildProduction/inline/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
       version: false,
-      inlineByRelationType: { HtmlScript: false, HtmlStyle: false }
+      inlineByRelationType: { HtmlScript: false, HtmlStyle: false },
     });
 
     expect(
@@ -818,7 +822,7 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should call splitCssIfIeLimitIsReached unconditionally and correctly when IE >= 8 is to be supported', async function() {
+  it('should call splitCssIfIeLimitIsReached unconditionally and correctly when IE >= 8 is to be supported', async function () {
     const stub = sinon
       .stub(
         require('assetgraph/lib/TransformQueue').prototype,
@@ -829,12 +833,12 @@ describe('buildProduction', function() {
     await assetGraph.loadAssets({
       url: 'http://example.com/index.html',
       type: 'Html',
-      text: '<!DOCTYPE html>'
+      text: '<!DOCTYPE html>',
     });
     try {
       await assetGraph.buildProduction({ version: false, browsers: 'ie >= 8' });
 
-      expect(stub, 'to have calls satisfying', function() {
+      expect(stub, 'to have calls satisfying', function () {
         stub({ type: 'Css' }, { minimumIeVersion: 8 });
       });
     } finally {
@@ -842,11 +846,11 @@ describe('buildProduction', function() {
     }
   });
 
-  it('should handle a test case where an initial asset has no <html> element and no incoming relations (#109)', async function() {
+  it('should handle a test case where an initial asset has no <html> element and no incoming relations (#109)', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/initialAssetWithoutHtmlElement/'
+        '/../../testdata/transforms/buildProduction/initialAssetWithoutHtmlElement/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ version: false });
@@ -854,15 +858,15 @@ describe('buildProduction', function() {
     expect(assetGraph, 'to contain asset', { type: 'Html' });
     expect(assetGraph, 'to contain asset', {
       type: 'JavaScript',
-      isInline: true
+      isInline: true,
     });
   });
 
-  it('should handle a test case with a web component that has a stylesheet reference inside a template tag', async function() {
+  it('should handle a test case with a web component that has a stylesheet reference inside a template tag', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/styleSheetInTemplate/'
+        '/../../testdata/transforms/buildProduction/styleSheetInTemplate/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ version: false });
@@ -874,9 +878,9 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case where a JavaScript is eliminated by stripDebug and uglifiction (#114)', async function() {
+  it('should handle a test case where a JavaScript is eliminated by stripDebug and uglifiction (#114)', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/issue114/'
+      root: __dirname + '/../../testdata/transforms/buildProduction/issue114/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ stripDebug: true, version: false });
@@ -889,11 +893,11 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case with an HTML fragment that has bundleable scripts and stylesheets', async function() {
+  it('should handle a test case with an HTML fragment that has bundleable scripts and stylesheets', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/bundlingInHtmlFragments/'
+        '/../../testdata/transforms/buildProduction/bundlingInHtmlFragments/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ version: false });
@@ -909,11 +913,11 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case with require.js, a data-main and a data-almond attribute', async function() {
+  it('should handle a test case with require.js, a data-main and a data-almond attribute', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/dataMainAndAlmondJs/'
+        '/../../testdata/transforms/buildProduction/dataMainAndAlmondJs/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ version: false });
@@ -926,44 +930,44 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case with some assets that should remain at the root (see assetgraph#185)', async function() {
+  it('should handle a test case with some assets that should remain at the root (see assetgraph#185)', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/assetsThatShouldNotBeMoved/'
+        '/../../testdata/transforms/buildProduction/assetsThatShouldNotBeMoved/',
     });
     await assetGraph.loadAssets(['index.html']);
     await assetGraph.populate();
 
     expect(assetGraph, 'to contain asset', {
-      url: assetGraph.root + 'robots.txt'
+      url: assetGraph.root + 'robots.txt',
     });
     expect(assetGraph, 'to contain asset', {
-      url: assetGraph.root + 'humans.txt'
+      url: assetGraph.root + 'humans.txt',
     });
     expect(assetGraph, 'to contain asset', {
-      url: assetGraph.root + '.htaccess'
+      url: assetGraph.root + '.htaccess',
     });
     expect(assetGraph, 'to contain asset', {
-      url: assetGraph.root + 'favicon.ico'
+      url: assetGraph.root + 'favicon.ico',
     });
 
     await assetGraph.buildProduction({ version: false });
 
     expect(assetGraph, 'to contain asset', {
-      url: assetGraph.root + 'robots.txt'
+      url: assetGraph.root + 'robots.txt',
     });
     expect(assetGraph, 'to contain asset', {
-      url: assetGraph.root + 'humans.txt'
+      url: assetGraph.root + 'humans.txt',
     });
     expect(assetGraph, 'to contain asset', {
-      url: assetGraph.root + '.htaccess'
+      url: assetGraph.root + '.htaccess',
     });
     expect(assetGraph, 'to contain asset', {
-      url: assetGraph.root + 'favicon.ico'
+      url: assetGraph.root + 'favicon.ico',
     });
     expect(assetGraph, 'to contain asset', {
-      url: assetGraph.root + 'static/favicon.copy.9f0922f8d9.ico'
+      url: assetGraph.root + 'static/favicon.copy.9f0922f8d9.ico',
     });
     expect(
       assetGraph.findAssets({ type: 'Html' })[0].text,
@@ -972,18 +976,18 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should move a favicon.ico file not located at the root to /static/', async function() {
+  it('should move a favicon.ico file not located at the root to /static/', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/faviconOutsideRoot/'
+        '/../../testdata/transforms/buildProduction/faviconOutsideRoot/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
     await assetGraph.buildProduction({ version: false });
 
     expect(assetGraph, 'to contain asset', {
-      url: assetGraph.root + 'static/favicon.9f0922f8d9.ico'
+      url: assetGraph.root + 'static/favicon.9f0922f8d9.ico',
     });
     expect(
       assetGraph.findAssets({ type: 'Html' })[0].text,
@@ -992,18 +996,18 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should keep favicon.ico at its original location when file revision is disabled', async function() {
+  it('should keep favicon.ico at its original location when file revision is disabled', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/faviconOutsideRoot/'
+        '/../../testdata/transforms/buildProduction/faviconOutsideRoot/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
     await assetGraph.buildProduction({ version: false, noFileRev: true });
 
     expect(assetGraph, 'to contain asset', {
-      url: assetGraph.root + 'foo/favicon.ico'
+      url: assetGraph.root + 'foo/favicon.ico',
     });
     expect(
       assetGraph.findAssets({ type: 'Html' })[0].text,
@@ -1012,43 +1016,43 @@ describe('buildProduction', function() {
     );
   });
 
-  describe('with the canonicalRoot option', function() {
-    it('should handle a test case with an RSS feed (#118)', async function() {
+  describe('with the canonicalRoot option', function () {
+    it('should handle a test case with an RSS feed (#118)', async function () {
       const assetGraph = new AssetGraph({
         root: __dirname + '/../../testdata/transforms/buildProduction/rss/',
-        canonicalRoot: 'http://www.someexamplerssdomain.com/'
+        canonicalRoot: 'http://www.someexamplerssdomain.com/',
       });
       await assetGraph.loadAssets('index.html');
       await assetGraph.populate();
 
       expect(assetGraph, 'to contain asset', {
         contentType: 'application/rss+xml',
-        type: 'Rss'
+        type: 'Rss',
       });
 
       await assetGraph.buildProduction({
-        version: false
+        version: false,
       });
 
       expect(assetGraph.findRelations(), 'to satisfy', [
         {
           type: 'HtmlAlternateLink',
           href: 'rssFeed.xml',
-          canonical: false
+          canonical: false,
         },
         {
           type: 'RssChannelLink',
           href: 'index.html',
-          canonical: false
+          canonical: false,
         },
         {
-          type: 'XmlHtmlInlineFragment'
+          type: 'XmlHtmlInlineFragment',
         },
         {
           type: 'HtmlImage',
           canonical: true,
-          href: 'http://www.someexamplerssdomain.com/static/foo.d65dd5318f.png'
-        }
+          href: 'http://www.someexamplerssdomain.com/static/foo.d65dd5318f.png',
+        },
       ]);
 
       expect(
@@ -1059,33 +1063,33 @@ describe('buildProduction', function() {
     });
 
     // https://github.com/mochajs/mocha/pull/3412#issuecomment-396038075
-    it('should keep static files within assetGraph.root', async function() {
+    it('should keep static files within assetGraph.root', async function () {
       const assetGraph = new AssetGraph({
         root:
           __dirname +
           '/../../testdata/transforms/buildProduction/canonicalRoot/',
-        canonicalRoot: 'http://www.example.com/'
+        canonicalRoot: 'http://www.example.com/',
       });
       await assetGraph.loadAssets('index.html');
       await assetGraph.populate();
 
       await assetGraph.buildProduction({
         version: false,
-        inlineByRelationType: {}
+        inlineByRelationType: {},
       });
 
       expect(assetGraph, 'to contain asset', {
         type: 'JavaScript',
-        url: `${assetGraph.root}static/script.7e514b97a9.js`
+        url: `${assetGraph.root}static/script.7e514b97a9.js`,
       });
     });
   });
 
-  it('should keep identical inline styles in svg files inlined', async function() {
+  it('should keep identical inline styles in svg files inlined', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/svgsWithIdenticalInlineStyle/'
+        '/../../testdata/transforms/buildProduction/svgsWithIdenticalInlineStyle/',
     });
     await assetGraph.loadAssets('*.svg');
     await assetGraph.populate();
@@ -1094,15 +1098,15 @@ describe('buildProduction', function() {
     expect(assetGraph, 'to contain assets', 'Svg', 2);
     expect(assetGraph, 'to contain no assets', {
       type: 'Css',
-      isInline: false
+      isInline: false,
     });
   });
 
-  it('should not rename Html assets that are linked to with HtmlAnchor relations', async function() {
+  it('should not rename Html assets that are linked to with HtmlAnchor relations', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/nonInitialAssetWithIncomingHtmlAnchor/'
+        '/../../testdata/transforms/buildProduction/nonInitialAssetWithIncomingHtmlAnchor/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
@@ -1112,11 +1116,11 @@ describe('buildProduction', function() {
     expect(assetGraph, 'to contain asset', { fileName: 'index2.html' });
   });
 
-  it('should only remove empty scripts and stylesheets without extra attributes', async function() {
+  it('should only remove empty scripts and stylesheets without extra attributes', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/emptyScriptsAndStylesheetsWithAttributes/'
+        '/../../testdata/transforms/buildProduction/emptyScriptsAndStylesheetsWithAttributes/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
@@ -1149,11 +1153,11 @@ describe('buildProduction', function() {
   // requireJs configuration resolving in AssetGraph. We have looked
   // into it, but couldn't find a way to make this pass without
   // breaking other tests.
-  it.skip('should handle implicitly defined baseUrl for requireJs', async function() {
+  it.skip('should handle implicitly defined baseUrl for requireJs', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/implicitBaseUrl/'
+        '/../../testdata/transforms/buildProduction/implicitBaseUrl/',
     });
     const warnSpy = sinon.spy().named('warn');
     assetGraph.on('warn', warnSpy);
@@ -1165,11 +1169,11 @@ describe('buildProduction', function() {
   });
 
   // FIXME: This one fails half the time on Travis
-  it.skip('should handle images with wrong extensions', async function() {
+  it.skip('should handle images with wrong extensions', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/imagesWithWrongExtensions/'
+        '/../../testdata/transforms/buildProduction/imagesWithWrongExtensions/',
     });
     const warnSpy = sinon.spy().named('warn');
     assetGraph.on('warn', warnSpy);
@@ -1197,9 +1201,9 @@ describe('buildProduction', function() {
     expect(assetGraph, 'to contain relation', 'HtmlStyle');
   });
 
-  it('should not lose the type of an image that has been run through inkscape (regression test for an issue in express-processimage 1.0.0)', async function() {
+  it('should not lose the type of an image that has been run through inkscape (regression test for an issue in express-processimage 1.0.0)', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/inkscape/'
+      root: __dirname + '/../../testdata/transforms/buildProduction/inkscape/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
@@ -1207,7 +1211,7 @@ describe('buildProduction', function() {
       version: false,
       optimizeImages: true,
       browsers: 'ie > 9',
-      inlineByRelationType: { CssImage: 8192 }
+      inlineByRelationType: { CssImage: 8192 },
     });
 
     const cssAsset = assetGraph.findAssets({ type: 'Css' })[0];
@@ -1215,11 +1219,11 @@ describe('buildProduction', function() {
     expect(cssAsset.text, 'not to match', /url\(image\.[a-f0-9]{10}\)/);
   });
 
-  it('should not remove a data-bind attribute', async function() {
+  it('should not remove a data-bind attribute', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/missingDataBind/'
+        '/../../testdata/transforms/buildProduction/missingDataBind/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
@@ -1233,9 +1237,9 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should support a standalone svgfilter', async function() {
+  it('should support a standalone svgfilter', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/svgFilter/'
+      root: __dirname + '/../../testdata/transforms/buildProduction/svgFilter/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
@@ -1254,17 +1258,17 @@ describe('buildProduction', function() {
       [
         {
           attributes: {
-            stroke: expect.it('to be colored', 'red')
-          }
-        }
+            stroke: expect.it('to be colored', 'red'),
+          },
+        },
       ]
     );
   });
 
-  it('should support an inline SVG island inside an HTML asset', async function() {
+  it('should support an inline SVG island inside an HTML asset', async function () {
     const assetGraph = new AssetGraph({
       root:
-        __dirname + '/../../testdata/transforms/buildProduction/HtmlSvgIsland/'
+        __dirname + '/../../testdata/transforms/buildProduction/HtmlSvgIsland/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
@@ -1282,11 +1286,11 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should support an inline SVG island with an inline style tag inside an HTML asset', async function() {
+  it('should support an inline SVG island with an inline style tag inside an HTML asset', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/HtmlSvgIslandWithStyle/'
+        '/../../testdata/transforms/buildProduction/HtmlSvgIslandWithStyle/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
@@ -1304,9 +1308,10 @@ describe('buildProduction', function() {
     expect(assetGraph, 'to contain asset', 'Css');
   });
 
-  it('should read in location data from existing source maps and produce source maps for bundles', async function() {
+  it('should read in location data from existing source maps and produce source maps for bundles', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/sourceMaps/'
+      root:
+        __dirname + '/../../testdata/transforms/buildProduction/sourceMaps/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
@@ -1319,14 +1324,15 @@ describe('buildProduction', function() {
     const sourceMaps = assetGraph.findAssets({ type: 'SourceMap' });
     expect(sourceMaps[0].parseTree.sources, 'to equal', [
       '/jquery-1.10.1.js',
-      '/a.js'
+      '/a.js',
     ]);
     expect(sourceMaps[1].parseTree.sources, 'to equal', ['/b.js', '/c.js']);
   });
 
-  it('should read in location data from existing source maps and produce source maps for bundles, without noCompress switch', async function() {
+  it('should read in location data from existing source maps and produce source maps for bundles, without noCompress switch', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/sourceMaps/'
+      root:
+        __dirname + '/../../testdata/transforms/buildProduction/sourceMaps/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
@@ -1339,22 +1345,22 @@ describe('buildProduction', function() {
     const sourceMaps = assetGraph.findAssets({ type: 'SourceMap' });
     expect(sourceMaps[0].parseTree.sources, 'to equal', [
       '/jquery-1.10.1.js',
-      '/a.js'
+      '/a.js',
     ]);
     expect(sourceMaps[1].parseTree.sources, 'to equal', ['/b.js', '/c.js']);
   });
 
-  it('should preserve source map relations so that sourcesContent can be reestablished', async function() {
+  it('should preserve source map relations so that sourcesContent can be reestablished', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/existingJavaScriptSourceMapsWithSourcesContent/'
+        '/../../testdata/transforms/buildProduction/existingJavaScriptSourceMapsWithSourcesContent/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
     await assetGraph.buildProduction({
       sourceMaps: true,
-      sourcesContent: true
+      sourcesContent: true,
     });
 
     expect(assetGraph, 'to contain asset', 'SourceMap');
@@ -1362,11 +1368,11 @@ describe('buildProduction', function() {
     expect(sourceMap.parseTree.sourcesContent, 'to equal', ['foo', 'bar']);
   });
 
-  it('should leave meaningful paths', async function() {
+  it('should leave meaningful paths', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/webpackSourceMaps/webroot'
+        '/../../testdata/transforms/buildProduction/webpackSourceMaps/webroot',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
@@ -1375,39 +1381,39 @@ describe('buildProduction', function() {
         '../../testdata/transforms/buildProduction/webpackSourceMaps/webpack.config.js'
       ),
       sourceMaps: true,
-      sourcesContent: true
+      sourcesContent: true,
     });
     const sourceMaps = assetGraph.findAssets({ type: 'SourceMap' });
-    const sourceMapSources = sourceMaps.map(asset => ({
+    const sourceMapSources = sourceMaps.map((asset) => ({
       fileName: require('path').relative(asset.assetGraph.root, asset.url),
       sources: asset.parseTree.sources,
       incomingRelations: asset.incomingRelations.map(
-        relation => relation.from.fileName // for some reason the referencing javascript asset has no content and no url
-      )
+        (relation) => relation.from.fileName // for some reason the referencing javascript asset has no content and no url
+      ),
     }));
 
     expect(sourceMapSources, 'to satisfy', [
       {
         fileName: expect.it('to begin with', 'static/index-'),
         sources: ['webpack://webpack/bootstrap', '../src/index.js'],
-        incomingRelations: ['bundle.js']
-      }
+        incomingRelations: ['bundle.js'],
+      },
     ]);
   });
 
-  describe('JavaScript serialization options', function() {
-    it('should honor indent_level', async function() {
+  describe('JavaScript serialization options', function () {
+    it('should honor indent_level', async function () {
       const assetGraph = new AssetGraph({
         root:
           __dirname +
-          '/../../testdata/transforms/buildProduction/javaScriptSerializationOptions/'
+          '/../../testdata/transforms/buildProduction/javaScriptSerializationOptions/',
       });
       await assetGraph.loadAssets('script.js');
       await assetGraph.populate();
       await assetGraph.buildProduction({
         noCompress: true,
         pretty: true,
-        javaScriptSerializationOptions: { indent_level: 1 }
+        javaScriptSerializationOptions: { indent_level: 1 },
       });
 
       expect(
@@ -1417,18 +1423,18 @@ describe('buildProduction', function() {
       );
     });
 
-    it('should honor ascii_only', async function() {
+    it('should honor ascii_only', async function () {
       const assetGraph = new AssetGraph({
         root:
           __dirname +
-          '/../../testdata/transforms/buildProduction/javaScriptSerializationOptions/'
+          '/../../testdata/transforms/buildProduction/javaScriptSerializationOptions/',
       });
       await assetGraph.loadAssets('script.js');
       await assetGraph.populate();
       await assetGraph.buildProduction({
         noCompress: true,
         pretty: true,
-        javaScriptSerializationOptions: { ascii_only: true }
+        javaScriptSerializationOptions: { ascii_only: true },
       });
 
       expect(
@@ -1439,11 +1445,11 @@ describe('buildProduction', function() {
     });
   });
 
-  it('should preserve source maps when autoprefixer is enabled', async function() {
+  it('should preserve source maps when autoprefixer is enabled', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/existingExternalSourceMap'
+        '/../../testdata/transforms/buildProduction/existingExternalSourceMap',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
@@ -1454,7 +1460,7 @@ describe('buildProduction', function() {
     await assetGraph.buildProduction({
       browsers: 'last 2 versions, ie > 8, ff > 28',
       sourceMaps: true,
-      inlineByRelationType: { HtmlStyle: false }
+      inlineByRelationType: { HtmlStyle: false },
     });
 
     expect(assetGraph, 'to contain asset', { type: 'Css', isLoaded: true });
@@ -1471,11 +1477,11 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should provide an external source map for an inline JavaScript asset', async function() {
+  it('should provide an external source map for an inline JavaScript asset', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/addSourceMapToInlineJavaScript'
+        '/../../testdata/transforms/buildProduction/addSourceMapToInlineJavaScript',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
@@ -1495,11 +1501,11 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should read the existing inline source maps correctly from the output of Fusile', async function() {
+  it('should read the existing inline source maps correctly from the output of Fusile', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/sourceMaps/fusile-output'
+        '/../../testdata/transforms/buildProduction/sourceMaps/fusile-output',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({ sourceMaps: true });
@@ -1525,9 +1531,9 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should bundle importScripts(...) calls in a web worker', async function() {
+  it('should bundle importScripts(...) calls in a web worker', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/webWorker'
+      root: __dirname + '/../../testdata/transforms/buildProduction/webWorker',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
@@ -1542,13 +1548,13 @@ describe('buildProduction', function() {
     );
   });
 
-  describe('with contentSecurityPolicy=true', function() {
-    describe('with an existing policy', function() {
-      it('should add image-src data: to an existing CSP when an image has been inlined', async function() {
+  describe('with contentSecurityPolicy=true', function () {
+    describe('with an existing policy', function () {
+      it('should add image-src data: to an existing CSP when an image has been inlined', async function () {
         const assetGraph = new AssetGraph({
           root:
             __dirname +
-            '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/'
+            '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/',
         });
         await assetGraph.loadAssets('index.html');
         await assetGraph.populate();
@@ -1556,7 +1562,7 @@ describe('buildProduction', function() {
           contentSecurityPolicy: true,
           inlineByRelationType: { CssImage: true },
           // Prevent a non-inlined copy to be preserved in a stylesheet referenced from a conditional comment:
-          browsers: ['ie > 9']
+          browsers: ['ie > 9'],
         });
 
         expect(assetGraph, 'to contain asset', { type: 'Png', isInline: true });
@@ -1564,17 +1570,17 @@ describe('buildProduction', function() {
           assetGraph.findAssets({ type: 'ContentSecurityPolicy' })[0].parseTree,
           'to satisfy',
           {
-            imgSrc: ['data:']
+            imgSrc: ['data:'],
           }
         );
       });
 
-      describe('when Safari 8 and 9 support is required', function() {
-        it('should whitelist the whole origin of external scripts and stylesheets', async function() {
+      describe('when Safari 8 and 9 support is required', function () {
+        it('should whitelist the whole origin of external scripts and stylesheets', async function () {
           const assetGraph = new AssetGraph({
             root:
               __dirname +
-              '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/'
+              '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/',
           });
           await assetGraph.loadAssets('index.html');
           await assetGraph.populate();
@@ -1582,7 +1588,7 @@ describe('buildProduction', function() {
             browsers: 'Safari >= 8',
             contentSecurityPolicy: true,
             cdnRoot: '//my.cdn.com/',
-            inlineByRelationType: {}
+            inlineByRelationType: {},
           });
 
           expect(
@@ -1593,20 +1599,20 @@ describe('buildProduction', function() {
                 parseTree: expect.it('to equal', {
                   styleSrc: ["'self'", 'my.cdn.com'],
                   scriptSrc: ["'self'", 'my.cdn.com'],
-                  imgSrc: ['my.cdn.com']
-                })
-              }
+                  imgSrc: ['my.cdn.com'],
+                }),
+              },
             ]
           );
         });
       });
 
-      describe('when Safari 8 and 9 support is not required', function() {
-        it('should include the full path when whitelisting external scripts and stylesheets', async function() {
+      describe('when Safari 8 and 9 support is not required', function () {
+        it('should include the full path when whitelisting external scripts and stylesheets', async function () {
           const assetGraph = new AssetGraph({
             root:
               __dirname +
-              '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/'
+              '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/',
           });
           await assetGraph.loadAssets('index.html');
           await assetGraph.populate();
@@ -1614,7 +1620,7 @@ describe('buildProduction', function() {
             browsers: 'Safari >= 10',
             contentSecurityPolicy: true,
             cdnRoot: '//my.cdn.com/',
-            inlineByRelationType: {}
+            inlineByRelationType: {},
           });
 
           expect(
@@ -1625,28 +1631,28 @@ describe('buildProduction', function() {
                 parseTree: expect.it('to equal', {
                   styleSrc: ["'self'", 'my.cdn.com/styles.399c62e85c.css'],
                   scriptSrc: ["'self'", 'my.cdn.com/script.af5c77b360.js'],
-                  imgSrc: ['my.cdn.com']
-                })
-              }
+                  imgSrc: ['my.cdn.com'],
+                }),
+              },
             ]
           );
         });
       });
 
-      describe('along with a cdnRoot', function() {
-        describe('given as a protocol-relative url', function() {
-          it('should add the CDN host name to the relevant sections without any scheme', async function() {
+      describe('along with a cdnRoot', function () {
+        describe('given as a protocol-relative url', function () {
+          it('should add the CDN host name to the relevant sections without any scheme', async function () {
             const assetGraph = new AssetGraph({
               root:
                 __dirname +
-                '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/'
+                '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/',
             });
             await assetGraph.loadAssets('index.html');
             await assetGraph.populate();
             await assetGraph.buildProduction({
               contentSecurityPolicy: true,
               cdnRoot: '//my.cdn.com/',
-              inlineByRelationType: {}
+              inlineByRelationType: {},
             });
 
             expect(
@@ -1657,27 +1663,27 @@ describe('buildProduction', function() {
                   parseTree: expect.it('to equal', {
                     styleSrc: ["'self'", 'my.cdn.com'],
                     scriptSrc: ["'self'", 'my.cdn.com'],
-                    imgSrc: ['my.cdn.com']
-                  })
-                }
+                    imgSrc: ['my.cdn.com'],
+                  }),
+                },
               ]
             );
           });
         });
 
-        describe('given as an absolute url', function() {
-          it('should add the CDN host name and scheme to the relevant section', async function() {
+        describe('given as an absolute url', function () {
+          it('should add the CDN host name and scheme to the relevant section', async function () {
             const assetGraph = new AssetGraph({
               root:
                 __dirname +
-                '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/'
+                '/../../testdata/transforms/buildProduction/contentSecurityPolicy/existingPolicy/',
             });
             await assetGraph.loadAssets('index.html');
             await assetGraph.populate();
             await assetGraph.buildProduction({
               contentSecurityPolicy: true,
               cdnRoot: 'https://my.cdn.com/',
-              inlineByRelationType: {}
+              inlineByRelationType: {},
             });
 
             expect(
@@ -1688,9 +1694,9 @@ describe('buildProduction', function() {
                   parseTree: expect.it('to equal', {
                     styleSrc: ["'self'", 'my.cdn.com'],
                     scriptSrc: ["'self'", 'my.cdn.com'],
-                    imgSrc: ['my.cdn.com']
-                  })
-                }
+                    imgSrc: ['my.cdn.com'],
+                  }),
+                },
               ]
             );
           });
@@ -1699,16 +1705,16 @@ describe('buildProduction', function() {
     });
   });
 
-  describe('with subResourceIntegrity=true', function() {
-    it('should leave relations to other domains alone', async function() {
+  describe('with subResourceIntegrity=true', function () {
+    it('should leave relations to other domains alone', async function () {
       const assetGraph = new AssetGraph({
         root:
           __dirname +
-          '/../../testdata/transforms/buildProduction/subResourceIntegrity/scriptsAndStylesheetOnForeignDomain/'
+          '/../../testdata/transforms/buildProduction/subResourceIntegrity/scriptsAndStylesheetOnForeignDomain/',
       });
       await assetGraph.loadAssets('index.html');
       await assetGraph.populate({
-        followRelations: { to: { protocol: { $not: 'https:' } } }
+        followRelations: { to: { protocol: { $not: 'https:' } } },
       });
       await assetGraph.buildProduction({ subResourceIntegrity: true });
 
@@ -1719,17 +1725,17 @@ describe('buildProduction', function() {
       );
     });
 
-    it('should add integrity attributes to local relations', async function() {
+    it('should add integrity attributes to local relations', async function () {
       const assetGraph = new AssetGraph({
         root:
           __dirname +
-          '/../../testdata/transforms/buildProduction/subResourceIntegrity/externalScriptAndStylesheet/'
+          '/../../testdata/transforms/buildProduction/subResourceIntegrity/externalScriptAndStylesheet/',
       });
       await assetGraph.loadAssets('index.html');
       await assetGraph.populate();
       await assetGraph.buildProduction({
         subResourceIntegrity: true,
-        inlineByRelationType: {}
+        inlineByRelationType: {},
       });
 
       expect(
@@ -1740,18 +1746,18 @@ describe('buildProduction', function() {
       );
     });
 
-    it('should add integrity attributes to assets that are put on a CDN', async function() {
+    it('should add integrity attributes to assets that are put on a CDN', async function () {
       const assetGraph = new AssetGraph({
         root:
           __dirname +
-          '/../../testdata/transforms/buildProduction/subResourceIntegrity/externalScriptAndStylesheet/'
+          '/../../testdata/transforms/buildProduction/subResourceIntegrity/externalScriptAndStylesheet/',
       });
       await assetGraph.loadAssets('index.html');
       await assetGraph.populate();
       await assetGraph.buildProduction({
         subResourceIntegrity: true,
         cdnRoot: '//my.cdn.com/',
-        inlineByRelationType: {}
+        inlineByRelationType: {},
       });
 
       expect(
@@ -1762,18 +1768,18 @@ describe('buildProduction', function() {
       );
     });
 
-    it('should use suitable serialization options after processing a data-bind attribute', async function() {
+    it('should use suitable serialization options after processing a data-bind attribute', async function () {
       const assetGraph = new AssetGraph();
       await assetGraph.loadAssets({
         type: 'Html',
         url: 'http://example.com/foo.html',
         text:
-          '<!DOCTYPE html><html><body><div data-bind="click: function () {console.log(\'click\')}"></div></body></html>'
+          '<!DOCTYPE html><html><body><div data-bind="click: function () {console.log(\'click\')}"></div></body></html>',
       });
       await assetGraph.buildProduction({
         localeIds: ['en_us'],
         noCompress: false,
-        stripDebug: true
+        stripDebug: true,
       });
 
       expect(
@@ -1784,20 +1790,20 @@ describe('buildProduction', function() {
     });
   });
 
-  describe('with a #{locale} conditional', function() {
-    describe('without a value provided up front', function() {
-      it('should attach the correct locale bundles to the pages in the cloneForEachConditionValue step', async function() {
+  describe('with a #{locale} conditional', function () {
+    describe('without a value provided up front', function () {
+      it('should attach the correct locale bundles to the pages in the cloneForEachConditionValue step', async function () {
         const assetGraph = new AssetGraph({
           root:
             __dirname +
-            '/../../testdata/transforms/buildProduction/systemJsConditionals/locale/'
+            '/../../testdata/transforms/buildProduction/systemJsConditionals/locale/',
         });
         await assetGraph.loadAssets('index.html');
         await assetGraph.populate();
         await assetGraph.buildProduction({
           conditions: { locale: ['en_us', 'da'] },
           splitConditions: ['locale'],
-          inlineByRelationType: { '*': true }
+          inlineByRelationType: { '*': true },
         });
 
         expect(
@@ -1813,16 +1819,16 @@ describe('buildProduction', function() {
       });
     });
 
-    it('should pick up a non-CSS conditional asset from the asset list', async function() {
+    it('should pick up a non-CSS conditional asset from the asset list', async function () {
       const assetGraph = new AssetGraph({
         root:
           __dirname +
-          '/../../testdata/transforms/buildProduction/systemJsConditionals/conditionalTemplate/'
+          '/../../testdata/transforms/buildProduction/systemJsConditionals/conditionalTemplate/',
       });
       await assetGraph.loadAssets('index.html');
       await assetGraph.populate();
       await assetGraph.buildProduction({
-        splitConditions: ['weather.js']
+        splitConditions: ['weather.js'],
       });
 
       expect(
@@ -1838,20 +1844,20 @@ describe('buildProduction', function() {
     });
   });
 
-  describe('with a #{locale.js} conditional', function() {
-    describe('without a value provided up front', function() {
-      it('should attach the correct locale bundles to the pages in the cloneForEachConditionValue step', async function() {
+  describe('with a #{locale.js} conditional', function () {
+    describe('without a value provided up front', function () {
+      it('should attach the correct locale bundles to the pages in the cloneForEachConditionValue step', async function () {
         const assetGraph = new AssetGraph({
           root:
             __dirname +
-            '/../../testdata/transforms/buildProduction/systemJsConditionals/localeJs/'
+            '/../../testdata/transforms/buildProduction/systemJsConditionals/localeJs/',
         });
         await assetGraph.loadAssets('index.html');
         await assetGraph.populate();
         await assetGraph.buildProduction({
           conditions: { locale: ['en_us', 'da'] },
           splitConditions: ['locale'],
-          inlineByRelationType: { '*': true }
+          inlineByRelationType: { '*': true },
         });
 
         expect(
@@ -1867,19 +1873,19 @@ describe('buildProduction', function() {
       });
     });
 
-    describe('pointing at a stylesheet', function() {
-      it('should attach the correct stylesheet to the pages in the cloneForEachConditionValue step', async function() {
+    describe('pointing at a stylesheet', function () {
+      it('should attach the correct stylesheet to the pages in the cloneForEachConditionValue step', async function () {
         const assetGraph = new AssetGraph({
           root:
             __dirname +
-            '/../../testdata/transforms/buildProduction/systemJsConditionals/stylesheet/'
+            '/../../testdata/transforms/buildProduction/systemJsConditionals/stylesheet/',
         });
         await assetGraph.loadAssets('index.html');
         await assetGraph.populate();
         await assetGraph.buildProduction({
           conditions: { locale: ['en_us', 'da'] },
           splitConditions: ['locale'],
-          inlineByRelationType: { '*': true }
+          inlineByRelationType: { '*': true },
         });
 
         expect(
@@ -1902,12 +1908,12 @@ describe('buildProduction', function() {
     });
   });
 
-  describe('with a JavaScript service worker registration', function() {
-    it('should keep the service worker unbundled', async function() {
+  describe('with a JavaScript service worker registration', function () {
+    it('should keep the service worker unbundled', async function () {
       const assetGraph = new AssetGraph({
         root:
           __dirname +
-          '/../../testdata/transforms/buildProduction/serviceWorker/'
+          '/../../testdata/transforms/buildProduction/serviceWorker/',
       });
       await assetGraph.loadAssets('javascriptregistration.html');
       await assetGraph.populate();
@@ -1916,11 +1922,11 @@ describe('buildProduction', function() {
       expect(assetGraph, 'to contain assets', 'JavaScript', 2);
     });
 
-    it('should keep the service worker file name', async function() {
+    it('should keep the service worker file name', async function () {
       const assetGraph = new AssetGraph({
         root:
           __dirname +
-          '/../../testdata/transforms/buildProduction/serviceWorker/'
+          '/../../testdata/transforms/buildProduction/serviceWorker/',
       });
       await assetGraph.loadAssets('javascriptregistration.html');
       await assetGraph.populate();
@@ -1929,27 +1935,27 @@ describe('buildProduction', function() {
       expect(assetGraph.findAssets(), 'to satisfy', [
         {
           type: 'Html',
-          fileName: 'javascriptregistration.html'
+          fileName: 'javascriptregistration.html',
         },
         {
           type: 'JavaScript',
           fileName: 'service-worker.js',
-          isInline: false
+          isInline: false,
         },
         {
           type: 'JavaScript',
-          isInline: true
-        }
+          isInline: true,
+        },
       ]);
     });
   });
 
-  describe('with a Html service worker registration', function() {
-    it('should keep the service worker unbundled', async function() {
+  describe('with a Html service worker registration', function () {
+    it('should keep the service worker unbundled', async function () {
       const assetGraph = new AssetGraph({
         root:
           __dirname +
-          '/../../testdata/transforms/buildProduction/serviceWorker/'
+          '/../../testdata/transforms/buildProduction/serviceWorker/',
       });
       await assetGraph.loadAssets('htmlregistration.html');
       await assetGraph.populate();
@@ -1958,41 +1964,41 @@ describe('buildProduction', function() {
       expect(assetGraph.findAssets(), 'to satisfy', [
         {
           type: 'Html',
-          fileName: 'htmlregistration.html'
+          fileName: 'htmlregistration.html',
         },
         {
           type: 'JavaScript',
           fileName: 'service-worker.js',
-          isInline: false
+          isInline: false,
         },
         {
           type: 'JavaScript',
-          isInline: true
-        }
+          isInline: true,
+        },
       ]);
     });
   });
 
-  it('should keep everything before the (last) extension when moving to the static folder', async function() {
+  it('should keep everything before the (last) extension when moving to the static folder', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/fileNamesWithDots/'
+        '/../../testdata/transforms/buildProduction/fileNamesWithDots/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
     await assetGraph.buildProduction({
-      inlineByRelationType: { '*': false }
+      inlineByRelationType: { '*': false },
     });
 
     expect(assetGraph, 'to contain asset', {
-      fileName: /^script\.with\.dots\.[a-f0-9]+\.js$/
+      fileName: /^script\.with\.dots\.[a-f0-9]+\.js$/,
     }).and('to contain asset', {
-      fileName: /^style\.sheet\.with\.dots\.[a-f0-9]+\.css$/
+      fileName: /^style\.sheet\.with\.dots\.[a-f0-9]+\.css$/,
     });
   });
 
-  it('should add a .css extension to transpiled assets', async function() {
+  it('should add a .css extension to transpiled assets', async function () {
     const assetGraph = new AssetGraph({ root: __dirname });
     await assetGraph.loadAssets(
       {
@@ -2004,27 +2010,27 @@ describe('buildProduction', function() {
           '<link rel="stylesheet" nobundle href="styles.less">' +
           '<link rel="stylesheet" nobundle href="styles.scss?qs">' +
           '<link rel="stylesheet" nobundle href="styles.stylus">' +
-          '</head></body></html>'
+          '</head></body></html>',
       },
       {
         type: 'Css',
         url: 'file://' + __dirname + '/styles.less',
-        text: 'body { color: red; }'
+        text: 'body { color: red; }',
       },
       {
         type: 'Css',
         url: 'file://' + __dirname + '/styles.scss?qs',
-        text: 'body { color: blue; }'
+        text: 'body { color: blue; }',
       },
       {
         type: 'Css',
         url: 'file://' + __dirname + '/styles.stylus',
-        text: 'body { color: green; }'
+        text: 'body { color: green; }',
       }
     );
     await assetGraph.populate();
     await assetGraph.buildProduction({
-      inlineByRelationType: { '*': false }
+      inlineByRelationType: { '*': false },
     });
 
     expect(assetGraph, 'to contain asset', { fileName: 'styles.less.css' })
@@ -2032,17 +2038,17 @@ describe('buildProduction', function() {
       .and('to contain asset', { fileName: 'styles.stylus.css' });
   });
 
-  it('should not issue absolute file:// urls when pointing back into assetGraph.root from assets put on a CDN', async function() {
+  it('should not issue absolute file:// urls when pointing back into assetGraph.root from assets put on a CDN', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/systemJsAssetPlugin/'
+        '/../../testdata/transforms/buildProduction/systemJsAssetPlugin/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
     await assetGraph.buildProduction({
       inlineByRelationType: { '*': false },
-      cdnRoot: '//example.com/'
+      cdnRoot: '//example.com/',
     });
 
     expect(
@@ -2052,18 +2058,18 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should not leave extraneous whitespace in an inline JavaScript', async function() {
+  it('should not leave extraneous whitespace in an inline JavaScript', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/trailingWhitespaceInInlineScript/'
+        '/../../testdata/transforms/buildProduction/trailingWhitespaceInInlineScript/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
     await assetGraph.buildProduction({
       sourceMaps: true,
       contentSecurityPolicy: true,
-      subResourceIntegrity: true
+      subResourceIntegrity: true,
     });
 
     expect(
@@ -2073,22 +2079,22 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should not leave extraneous whitespace in an inline JavaScript when the "newline" JavaScript serialization option is passed', async function() {
+  it('should not leave extraneous whitespace in an inline JavaScript when the "newline" JavaScript serialization option is passed', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/trailingWhitespaceInInlineScript/'
+        '/../../testdata/transforms/buildProduction/trailingWhitespaceInInlineScript/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate({
-      followRelations: { crossorigin: false }
+      followRelations: { crossorigin: false },
     });
     await assetGraph.buildProduction({
       version: undefined,
       sourceMaps: true,
       contentSecurityPolicy: true,
       gzip: false,
-      javaScriptSerializationOptions: { newline: '\n' }
+      javaScriptSerializationOptions: { newline: '\n' },
     });
 
     expect(
@@ -2098,112 +2104,112 @@ describe('buildProduction', function() {
     );
   });
 
-  describe('options.excludePatterns', function() {
-    it('should not exclude any asset when no pattern is defined', async function() {
+  describe('options.excludePatterns', function () {
+    it('should not exclude any asset when no pattern is defined', async function () {
       const assetGraph = new AssetGraph({
         root:
           __dirname +
-          '/../../testdata/transforms/buildProduction/excludePattern/'
-      });
-      await assetGraph.loadAssets('index.html');
-      await assetGraph.buildProduction({
-        inlineByRelationType: {},
-        noFileRev: true
-      });
-
-      expect(assetGraph.findAssets(), 'to satisfy', [
-        {
-          type: 'Html',
-          fileName: 'index.html'
-        },
-        {
-          type: 'Css',
-          fileName: 'bar.css'
-        },
-        {
-          type: 'Css',
-          fileName: '%C3%A6.css'
-        },
-        {
-          type: 'Png',
-          fileName: 'quux.png'
-        },
-        {
-          type: 'JavaScript',
-          fileName: 'main.js'
-        }
-      ]);
-    });
-
-    it('should exclude all files with .css extensions', async function() {
-      const assetGraph = new AssetGraph({
-        root:
-          __dirname +
-          '/../../testdata/transforms/buildProduction/excludePattern/'
+          '/../../testdata/transforms/buildProduction/excludePattern/',
       });
       await assetGraph.loadAssets('index.html');
       await assetGraph.buildProduction({
         inlineByRelationType: {},
         noFileRev: true,
-        excludePatterns: ['*.css']
+      });
+
+      expect(assetGraph.findAssets(), 'to satisfy', [
+        {
+          type: 'Html',
+          fileName: 'index.html',
+        },
+        {
+          type: 'Css',
+          fileName: 'bar.css',
+        },
+        {
+          type: 'Css',
+          fileName: '%C3%A6.css',
+        },
+        {
+          type: 'Png',
+          fileName: 'quux.png',
+        },
+        {
+          type: 'JavaScript',
+          fileName: 'main.js',
+        },
+      ]);
+    });
+
+    it('should exclude all files with .css extensions', async function () {
+      const assetGraph = new AssetGraph({
+        root:
+          __dirname +
+          '/../../testdata/transforms/buildProduction/excludePattern/',
+      });
+      await assetGraph.loadAssets('index.html');
+      await assetGraph.buildProduction({
+        inlineByRelationType: {},
+        noFileRev: true,
+        excludePatterns: ['*.css'],
       });
 
       expect(assetGraph.findAssets({ isLoaded: true }), 'to satisfy', [
         {
           type: 'Html',
-          fileName: 'index.html'
+          fileName: 'index.html',
         },
         {
           type: 'Png',
-          fileName: 'quux.png'
+          fileName: 'quux.png',
         },
         {
           type: 'JavaScript',
-          fileName: 'main.js'
-        }
+          fileName: 'main.js',
+        },
       ]);
     });
 
-    it('should exclude all files within /foo/ directory', async function() {
+    it('should exclude all files within /foo/ directory', async function () {
       const assetGraph = new AssetGraph({
         root:
           __dirname +
-          '/../../testdata/transforms/buildProduction/excludePattern/'
+          '/../../testdata/transforms/buildProduction/excludePattern/',
       });
       await assetGraph.loadAssets('index.html');
       await assetGraph.buildProduction({
         inlineByRelationType: {},
         noFileRev: true,
         excludePatterns: [
-          'testdata/transforms/buildProduction/excludePattern/foo/'
-        ]
+          'testdata/transforms/buildProduction/excludePattern/foo/',
+        ],
       });
 
       expect(assetGraph.findAssets({ isLoaded: true }), 'to satisfy', [
         {
           type: 'Html',
-          fileName: 'index.html'
+          fileName: 'index.html',
         },
         {
           type: 'Css',
-          fileName: '%C3%A6.css'
+          fileName: '%C3%A6.css',
         },
         {
           type: 'Png',
-          fileName: 'quux.png'
+          fileName: 'quux.png',
         },
         {
           type: 'JavaScript',
-          fileName: 'main.js'
-        }
+          fileName: 'main.js',
+        },
       ]);
     });
 
-    it('should exclude all non-initial assets', async function() {
+    it('should exclude all non-initial assets', async function () {
       const assetGraph = new AssetGraph({
         root:
           __dirname +
-          '/../../testdata/transforms/buildProduction/excludePattern/'
+          '/../../testdata/transforms/buildProduction/excludePattern/',
       });
       await assetGraph.loadAssets('index.html');
       await assetGraph.buildProduction({
@@ -2212,62 +2218,62 @@ describe('buildProduction', function() {
         excludePatterns: [
           '*bar.css',
           'testdata/transforms/buildProduction/excludePattern/baz',
-          '*/js/'
-        ]
+          '*/js/',
+        ],
       });
 
       expect(assetGraph.findAssets({ isLoaded: true }), 'to satisfy', [
         {
           type: 'Html',
-          fileName: 'index.html'
+          fileName: 'index.html',
         },
         {
           type: 'Css',
-          fileName: '%C3%A6.css'
-        }
+          fileName: '%C3%A6.css',
+        },
       ]);
     });
 
-    it('should exclude paths with non-url safe characters', async function() {
+    it('should exclude paths with non-url safe characters', async function () {
       const assetGraph = new AssetGraph({
         root:
           __dirname +
-          '/../../testdata/transforms/buildProduction/excludePattern/'
+          '/../../testdata/transforms/buildProduction/excludePattern/',
       });
       await assetGraph.loadAssets('index.html');
       await assetGraph.buildProduction({
         inlineByRelationType: {},
         noFileRev: true,
-        excludePatterns: ['*/%C3%A6.css']
+        excludePatterns: ['*/%C3%A6.css'],
       });
 
       expect(assetGraph.findAssets({ isLoaded: true }), 'to satisfy', [
         {
           type: 'Html',
-          fileName: 'index.html'
+          fileName: 'index.html',
         },
         {
           type: 'Css',
-          fileName: 'bar.css'
+          fileName: 'bar.css',
         },
         {
           type: 'Png',
-          fileName: 'quux.png'
+          fileName: 'quux.png',
         },
         {
           type: 'JavaScript',
-          fileName: 'main.js'
-        }
+          fileName: 'main.js',
+        },
       ]);
     });
   });
 
-  it('should not attempt to populate JavaScriptFetch relations', async function() {
+  it('should not attempt to populate JavaScriptFetch relations', async function () {
     const warnSpy = sinon.spy();
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/javaScriptFetch/'
+        '/../../testdata/transforms/buildProduction/javaScriptFetch/',
     });
     assetGraph.on('warn', warnSpy);
     await assetGraph.loadAssets('index.html');
@@ -2276,16 +2282,16 @@ describe('buildProduction', function() {
     expect(warnSpy, 'was not called');
   });
 
-  it('should not rewrite the href of JavaScriptFetch relations', async function() {
+  it('should not rewrite the href of JavaScriptFetch relations', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/javaScriptFetch/'
+        '/../../testdata/transforms/buildProduction/javaScriptFetch/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
       cdnRoot: '//example.com/',
-      inlineByRelationType: {}
+      inlineByRelationType: {},
     });
 
     expect(
@@ -2295,23 +2301,23 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should issue an absolute url for a JavaScriptStaticUrl relation pointing at the CDN', async function() {
+  it('should issue an absolute url for a JavaScriptStaticUrl relation pointing at the CDN', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/staticUrlMovedToHttpsCdn/'
+        '/../../testdata/transforms/buildProduction/staticUrlMovedToHttpsCdn/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
       localeIds: ['en_us', 'da'],
       cdnRoot: 'https://example.com/cdn/',
-      inlineByRelationType: {}
+      inlineByRelationType: {},
     });
 
     expect(assetGraph, 'to contain asset', {
-      url: 'https://example.com/cdn/heart.ed30c45242.svg'
+      url: 'https://example.com/cdn/heart.ed30c45242.svg',
     }).and('to contain asset', {
-      url: 'https://example.com/cdn/script.6b8882d2e8.js'
+      url: 'https://example.com/cdn/script.6b8882d2e8.js',
     });
     expect(
       assetGraph.findAssets({ type: 'JavaScript' })[0].text,
@@ -2320,14 +2326,14 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should issue the correct MD5 hashes for the moved files', async function() {
+  it('should issue the correct MD5 hashes for the moved files', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/buildProduction/md5Hashes/'
+      root: __dirname + '/../../testdata/transforms/buildProduction/md5Hashes/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
       cdnRoot: 'https://example.com/cdn/',
-      inlineByRelationType: {}
+      inlineByRelationType: {},
     });
 
     const js = assetGraph.findAssets({ type: 'JavaScript' })[0];
@@ -2342,11 +2348,11 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should handle a test case with a JavaScript asset pointing at a SourceMap, then rewriting the relation to an absolute URL when running the buildProduction transform with the cdnRoot option', async function() {
+  it('should handle a test case with a JavaScript asset pointing at a SourceMap, then rewriting the relation to an absolute URL when running the buildProduction transform with the cdnRoot option', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/absoluteUrlToSourceMapOnCdn/'
+        '/../../testdata/transforms/buildProduction/absoluteUrlToSourceMapOnCdn/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction({
@@ -2354,7 +2360,7 @@ describe('buildProduction', function() {
       sourceMaps: true,
       inlineByRelationType: { '*': false },
       minify: true,
-      cdnRoot: 'http://cdn.example.com/foo/'
+      cdnRoot: 'http://cdn.example.com/foo/',
     });
     expect(
       assetGraph.findAssets({ url: /\/index\.html$/ })[0].text,
@@ -2372,17 +2378,17 @@ describe('buildProduction', function() {
       sources: [`${assetGraph.root}demo.coffee`],
       names: ['alert', 'n', 'call'],
       mappings:
-        'CAAA,WAEAA,KAAA,CAFS,SAACC,CAAD,CAAC,QAAMA,CAAA,CAAIA,CAAV,CAAD,CAEI,EAFJ,CAET,CAFA,C,CAEaC,I,CAAA,I'
+        'CAAA,WAEAA,KAAA,CAFS,SAACC,CAAD,CAAC,QAAMA,CAAA,CAAIA,CAAV,CAAD,CAEI,EAFJ,CAET,CAFA,C,CAEaC,I,CAAA,I',
     });
   });
 
   // Regression test: Previously the self-references would be left in an unresolved state after
   // minifySvgAssetsWithSvgo had run, causing moveAssetsInOrder to break:
-  it('should reconnect self-references from an Svg after minifying it with svgo', async function() {
+  it('should reconnect self-references from an Svg after minifying it with svgo', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/svgWithSelfReferences/'
+        '/../../testdata/transforms/buildProduction/svgWithSelfReferences/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
@@ -2395,18 +2401,18 @@ describe('buildProduction', function() {
     );
   });
 
-  describe('with precacheServiceWorker:true', function() {
-    it('should generate a service worker', async function() {
+  describe('with precacheServiceWorker:true', function () {
+    it('should generate a service worker', async function () {
       const assetGraph = new AssetGraph({
         root:
           __dirname +
-          '/../../testdata/transforms/buildProduction/precacheServiceWorker/'
+          '/../../testdata/transforms/buildProduction/precacheServiceWorker/',
       });
       await assetGraph.loadAssets('index.html');
       await assetGraph.buildProduction({
         precacheServiceWorker: true,
         cdnRoot: 'https://example.com/cdn/',
-        inlineByRelationType: {}
+        inlineByRelationType: {},
       });
 
       expect(
@@ -2416,7 +2422,7 @@ describe('buildProduction', function() {
       );
       expect(
         assetGraph.findRelations({
-          type: 'JavaScriptServiceWorkerRegistration'
+          type: 'JavaScriptServiceWorkerRegistration',
         })[0].to.text,
         'to contain',
         '/static/bar.c9e9c0fad6.txt'
@@ -2428,10 +2434,10 @@ describe('buildProduction', function() {
   });
 
   // Turning on deduplication for fonts via mergeIdenticalAssets would require changes here:
-  it('should handle a case with an ?#iefix hack', async function() {
+  it('should handle a case with an ?#iefix hack', async function () {
     const assetGraph = new AssetGraph({
       root:
-        __dirname + '/../../testdata/transforms/buildProduction/fontWithIeFix/'
+        __dirname + '/../../testdata/transforms/buildProduction/fontWithIeFix/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.buildProduction();
@@ -2439,17 +2445,17 @@ describe('buildProduction', function() {
     expect(assetGraph, 'to contain assets', 4);
     expect(assetGraph, 'to contain asset', {
       path: '/static/',
-      fileName: 'font.0c064252fc.eot'
+      fileName: 'font.0c064252fc.eot',
     }).and('to contain asset', {
       path: '/static/',
-      fileName: 'font.0c064252fc.eot'
+      fileName: 'font.0c064252fc.eot',
     });
   });
 
-  it('should handle FileRedirect relations', async function() {
+  it('should handle FileRedirect relations', async function () {
     const assetGraph = new AssetGraph({
       root:
-        __dirname + '/../../testdata/transforms/buildProduction/fileRedirect/'
+        __dirname + '/../../testdata/transforms/buildProduction/fileRedirect/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
@@ -2457,7 +2463,7 @@ describe('buildProduction', function() {
     expect(assetGraph, 'to contain relation', 'FileRedirect');
     // Make sure that this bogus asset hasn't been moved to /static/
     expect(assetGraph, 'to contain asset', {
-      url: assetGraph.root + 'directory'
+      url: assetGraph.root + 'directory',
     });
 
     await assetGraph.buildProduction();
@@ -2466,20 +2472,20 @@ describe('buildProduction', function() {
     expect(assetGraph, 'to contain relation', 'FileRedirect');
     // Make sure that this bogus asset hasn't been moved to /static/
     expect(assetGraph, 'to contain asset', {
-      url: assetGraph.root + 'directory'
+      url: assetGraph.root + 'directory',
     });
   });
 
-  it('should not append .css to the url of an extension-less CSS asset outside of the assetGraph root', async function() {
+  it('should not append .css to the url of an extension-less CSS asset outside of the assetGraph root', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname
+      root: __dirname,
     });
     const asset = assetGraph.addAsset({
       type: 'Html',
       url: `${assetGraph.root}/index.html`,
       text: `
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese">
-      `
+      `,
     });
     await assetGraph.buildProduction();
     expect(
@@ -2489,11 +2495,11 @@ describe('buildProduction', function() {
     );
   });
 
-  it('should not move non-initial Html assets with incoming HtmlAnchor relations to /static', async function() {
+  it('should not move non-initial Html assets with incoming HtmlAnchor relations to /static', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/linkedNonInitialHtml/'
+        '/../../testdata/transforms/buildProduction/linkedNonInitialHtml/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
@@ -2504,18 +2510,18 @@ describe('buildProduction', function() {
     await assetGraph.buildProduction();
 
     expect(assetGraph, 'to contain asset', {
-      url: `${assetGraph.root}index.html`
+      url: `${assetGraph.root}index.html`,
     });
     expect(assetGraph, 'to contain asset', {
-      url: `${assetGraph.root}other.html`
+      url: `${assetGraph.root}other.html`,
     });
   });
 
-  it('should not move non-initial Html assets with incoming HtmlAnchor => FileRedirect relations to /static', async function() {
+  it('should not move non-initial Html assets with incoming HtmlAnchor => FileRedirect relations to /static', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/linkedNonInitialHtmlWithFileRedirect/'
+        '/../../testdata/transforms/buildProduction/linkedNonInitialHtmlWithFileRedirect/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
@@ -2528,19 +2534,19 @@ describe('buildProduction', function() {
     await assetGraph.buildProduction();
 
     expect(assetGraph, 'to contain asset', {
-      url: `${assetGraph.root}index.html`
+      url: `${assetGraph.root}index.html`,
     });
     expect(assetGraph, 'to contain asset', {
-      url: `${assetGraph.root}other/index.html`
+      url: `${assetGraph.root}other/index.html`,
     });
   });
 
   // Regression test for https://github.com/assetgraph/assetgraph-builder/issues/687
-  it('should not break an svg with <use xlink:href=...> even when told to inline relations', async function() {
+  it('should not break an svg with <use xlink:href=...> even when told to inline relations', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/buildProduction/svgWithUseXlinkHref/'
+        '/../../testdata/transforms/buildProduction/svgWithUseXlinkHref/',
     });
     await assetGraph.loadAssets('index.html');
     await assetGraph.populate();
@@ -2548,11 +2554,11 @@ describe('buildProduction', function() {
     expect(assetGraph, 'to contain asset', { isInitial: true });
 
     await assetGraph.buildProduction({
-      inlineByRelationType: { '*': true }
+      inlineByRelationType: { '*': true },
     });
 
     const svgAssets = assetGraph.findAssets({
-      type: 'Svg'
+      type: 'Svg',
     });
     expect(svgAssets, 'to have length', 1);
     expect(

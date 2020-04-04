@@ -7,10 +7,10 @@ const childProcess = require('child_process');
 const { EventEmitter } = require('events');
 const { PassThrough } = require('stream');
 
-describe('processImages', function() {
-  it('should handle a Css test case', async function() {
+describe('processImages', function () {
+  it('should handle a Css test case', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/processImages/css/'
+      root: __dirname + '/../../testdata/transforms/processImages/css/',
     });
     await assetGraph.loadAssets('style.css');
     await assetGraph.populate();
@@ -35,12 +35,12 @@ describe('processImages', function() {
         urlTools.resolveUrl(
           assetGraph.root,
           'redalpha24bit.pngquant-speed5.png'
-        )
+        ),
       ]
     );
     // The first two CssImage relations should be in the same cssRule
     let cssBackgroundImages = assetGraph.findRelations({
-      type: 'CssImage'
+      type: 'CssImage',
     });
     expect(
       cssBackgroundImages[0].cssRule,
@@ -50,7 +50,7 @@ describe('processImages', function() {
 
     const rawSrcs = assetGraph
       .findRelations({ type: 'CssImage' })
-      .map(function(cssImageRelation) {
+      .map(function (cssImageRelation) {
         return cssImageRelation.to.rawSrc;
       });
 
@@ -59,13 +59,13 @@ describe('processImages', function() {
       0x89,
       0x50,
       0x4e,
-      0x47
+      0x47,
     ]);
     expect(_.toArray(rawSrcs[1].slice(0, 4)), 'to equal', [
       0x89,
       0x50,
       0x4e,
-      0x47
+      0x47,
     ]);
     expect(rawSrcs[1].length, 'to be less than', rawSrcs[0].length);
 
@@ -78,9 +78,9 @@ describe('processImages', function() {
   });
 });
 
-it('should handle an Html test case', async function() {
+it('should handle an Html test case', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/html/'
+    root: __dirname + '/../../testdata/transforms/processImages/html/',
   });
   await assetGraph.loadAssets('index.html');
   await assetGraph.populate();
@@ -93,14 +93,14 @@ it('should handle an Html test case', async function() {
     [
       urlTools.resolveUrl(assetGraph.root, 'myImage.png'),
       urlTools.resolveUrl(assetGraph.root, 'myImage.png?resize=200+200'),
-      urlTools.resolveUrl(assetGraph.root, 'myImage.png?resize=400+400')
+      urlTools.resolveUrl(assetGraph.root, 'myImage.png?resize=400+400'),
     ]
   );
   expect(assetGraph, 'to contain relation', {
-    href: 'myImage.png?resize=400+400#foo'
+    href: 'myImage.png?resize=400+400#foo',
   });
 
-  assetGraph.findAssets({ type: 'Png' }).forEach(function(pngAsset) {
+  assetGraph.findAssets({ type: 'Png' }).forEach(function (pngAsset) {
     expect(pngAsset.rawSrc, 'to have length', 8285);
   });
   expect(assetGraph, 'to contain asset', 'Html');
@@ -114,17 +114,17 @@ it('should handle an Html test case', async function() {
     [
       urlTools.resolveUrl(assetGraph.root, 'myImage.resize200,200.png'),
       urlTools.resolveUrl(assetGraph.root, 'myImage.resize400,400.png'),
-      urlTools.resolveUrl(assetGraph.root, 'myImage.png')
+      urlTools.resolveUrl(assetGraph.root, 'myImage.png'),
     ].sort()
   );
   expect(assetGraph, 'to contain relation', {
-    href: /myImage\.resize400,400\.png#foo/
+    href: /myImage\.resize400,400\.png#foo/,
   });
 });
 
-it('should handle a Css test case with a setFormat instruction in the query string of a background-image url', async function() {
+it('should handle a Css test case with a setFormat instruction in the query string of a background-image url', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/setFormat/'
+    root: __dirname + '/../../testdata/transforms/processImages/setFormat/',
   });
   await assetGraph.loadAssets('index.css');
   await assetGraph.populate();
@@ -144,9 +144,9 @@ it('should handle a Css test case with a setFormat instruction in the query stri
   );
 });
 
-it('should handle a test case with a Jpeg', async function() {
+it('should handle a test case with a Jpeg', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/jpeg/'
+    root: __dirname + '/../../testdata/transforms/processImages/jpeg/',
   });
   await assetGraph.loadAssets('style.css');
   await assetGraph.populate();
@@ -165,15 +165,15 @@ it('should handle a test case with a Jpeg', async function() {
   );
 });
 
-describe('filters ordering', async function() {
-  it('should handle filters default autolossless order', async function() {
+describe('filters ordering', async function () {
+  it('should handle filters default autolossless order', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/processImages/pngs/'
+      root: __dirname + '/../../testdata/transforms/processImages/pngs/',
     });
 
     await assetGraph.loadAssets({
       type: 'Css',
-      text: `.a { background-image: url(purplealpha24bit.png) }`
+      text: `.a { background-image: url(purplealpha24bit.png) }`,
     });
     await assetGraph.populate();
     await assetGraph.processImages(
@@ -182,21 +182,21 @@ describe('filters ordering', async function() {
     );
 
     const purpleAlpha24BitPngcrushed = assetGraph.findAssets({
-      fileName: /^purplealpha24bit/
+      fileName: /^purplealpha24bit/,
     })[0];
 
     expect(purpleAlpha24BitPngcrushed.rawSrc.length, 'to be less than', 8285);
   });
 });
 
-it('should handle a single filter with autolossless: pngquant', async function() {
+it('should handle a single filter with autolossless: pngquant', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/pngs/'
+    root: __dirname + '/../../testdata/transforms/processImages/pngs/',
   });
 
   await assetGraph.loadAssets({
     type: 'Css',
-    text: `.a { background-image: url(purplealpha24bit.png?pngquant) }`
+    text: `.a { background-image: url(purplealpha24bit.png?pngquant) }`,
   });
   await assetGraph.populate();
   await assetGraph.processImages(
@@ -205,20 +205,20 @@ it('should handle a single filter with autolossless: pngquant', async function()
   );
 
   const purpleAlpha24BitPngcrushed = assetGraph.findAssets({
-    fileName: /^purplealpha24bit/
+    fileName: /^purplealpha24bit/,
   })[0];
 
   expect(purpleAlpha24BitPngcrushed.rawSrc.length, 'to be less than', 8285);
 });
 
-it('should handle a single filter with autolossless: pngcrush', async function() {
+it('should handle a single filter with autolossless: pngcrush', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/pngs/'
+    root: __dirname + '/../../testdata/transforms/processImages/pngs/',
   });
 
   await assetGraph.loadAssets({
     type: 'Css',
-    text: `.a { background-image: url(purplealpha24bit.png?pngcrush=-noreduce) }`
+    text: `.a { background-image: url(purplealpha24bit.png?pngcrush=-noreduce) }`,
   });
   await assetGraph.populate();
   await assetGraph.processImages(
@@ -227,43 +227,20 @@ it('should handle a single filter with autolossless: pngcrush', async function()
   );
 
   const purpleAlpha24BitPngcrushed = assetGraph.findAssets({
-    fileName: /^purplealpha24bit/
+    fileName: /^purplealpha24bit/,
   })[0];
 
   expect(purpleAlpha24BitPngcrushed.rawSrc.length, 'to be less than', 8285);
 });
 
-it('should handle a single filter with autolossless: optipng', async function() {
+it('should handle a single filter with autolossless: optipng', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/pngs/'
+    root: __dirname + '/../../testdata/transforms/processImages/pngs/',
   });
 
   await assetGraph.loadAssets({
     type: 'Css',
-    text: `.a { background-image: url(purplealpha24bit.png?optipng) }`
-  });
-
-  await assetGraph.populate();
-  await assetGraph.processImages(
-    { type: 'Png' },
-    { pngcrush: true, optipng: true, pngquant: true }
-  );
-
-  const purpleAlpha24BitPngcrushed = assetGraph.findAssets({
-    fileName: /^purplealpha24bit/
-  })[0];
-
-  expect(purpleAlpha24BitPngcrushed.rawSrc.length, 'to be less than', 8285);
-});
-
-it('should handle filters in order: pngquant, pngcrush, optipng', async function() {
-  const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/pngs/'
-  });
-
-  await assetGraph.loadAssets({
-    type: 'Css',
-    text: `.a { background-image: url(purplealpha24bit.png?pngquant&pngcrush=-noreduce&optipng) }`
+    text: `.a { background-image: url(purplealpha24bit.png?optipng) }`,
   });
 
   await assetGraph.populate();
@@ -273,20 +250,20 @@ it('should handle filters in order: pngquant, pngcrush, optipng', async function
   );
 
   const purpleAlpha24BitPngcrushed = assetGraph.findAssets({
-    fileName: /^purplealpha24bit/
+    fileName: /^purplealpha24bit/,
   })[0];
 
   expect(purpleAlpha24BitPngcrushed.rawSrc.length, 'to be less than', 8285);
 });
 
-it('should handle filters in order: pngcrush, pngquant, optipng', async function() {
+it('should handle filters in order: pngquant, pngcrush, optipng', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/pngs/'
+    root: __dirname + '/../../testdata/transforms/processImages/pngs/',
   });
 
   await assetGraph.loadAssets({
     type: 'Css',
-    text: `.a { background-image: url(purplealpha24bit.png?pngcrush=-noreduce&pngquant&optipng) }`
+    text: `.a { background-image: url(purplealpha24bit.png?pngquant&pngcrush=-noreduce&optipng) }`,
   });
 
   await assetGraph.populate();
@@ -296,20 +273,20 @@ it('should handle filters in order: pngcrush, pngquant, optipng', async function
   );
 
   const purpleAlpha24BitPngcrushed = assetGraph.findAssets({
-    fileName: /^purplealpha24bit/
+    fileName: /^purplealpha24bit/,
   })[0];
 
   expect(purpleAlpha24BitPngcrushed.rawSrc.length, 'to be less than', 8285);
 });
 
-it('should handle filters in order: optipng, pngquant, pngcrush', async function() {
+it('should handle filters in order: pngcrush, pngquant, optipng', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/pngs/'
+    root: __dirname + '/../../testdata/transforms/processImages/pngs/',
   });
 
   await assetGraph.loadAssets({
     type: 'Css',
-    text: `.a { background-image: url(purplealpha24bit.png?optipng&pngquant&pngcrush=-noreduce) }`
+    text: `.a { background-image: url(purplealpha24bit.png?pngcrush=-noreduce&pngquant&optipng) }`,
   });
 
   await assetGraph.populate();
@@ -319,15 +296,38 @@ it('should handle filters in order: optipng, pngquant, pngcrush', async function
   );
 
   const purpleAlpha24BitPngcrushed = assetGraph.findAssets({
-    fileName: /^purplealpha24bit/
+    fileName: /^purplealpha24bit/,
   })[0];
 
   expect(purpleAlpha24BitPngcrushed.rawSrc.length, 'to be less than', 8285);
 });
 
-it('should handle a test case with a couple of pngs', async function() {
+it('should handle filters in order: optipng, pngquant, pngcrush', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/pngs/'
+    root: __dirname + '/../../testdata/transforms/processImages/pngs/',
+  });
+
+  await assetGraph.loadAssets({
+    type: 'Css',
+    text: `.a { background-image: url(purplealpha24bit.png?optipng&pngquant&pngcrush=-noreduce) }`,
+  });
+
+  await assetGraph.populate();
+  await assetGraph.processImages(
+    { type: 'Png' },
+    { pngcrush: true, optipng: true, pngquant: true }
+  );
+
+  const purpleAlpha24BitPngcrushed = assetGraph.findAssets({
+    fileName: /^purplealpha24bit/,
+  })[0];
+
+  expect(purpleAlpha24BitPngcrushed.rawSrc.length, 'to be less than', 8285);
+});
+
+it('should handle a test case with a couple of pngs', async function () {
+  const assetGraph = new AssetGraph({
+    root: __dirname + '/../../testdata/transforms/processImages/pngs/',
   });
   await assetGraph.loadAssets('style.css');
   await assetGraph.populate();
@@ -343,31 +343,31 @@ it('should handle a test case with a couple of pngs', async function() {
   );
 
   const redAlpha24BitPngquanted = assetGraph.findAssets({
-    fileName: 'redalpha24bit.pngquant-speed5.png'
+    fileName: 'redalpha24bit.pngquant-speed5.png',
   })[0];
   expect(_.toArray(redAlpha24BitPngquanted.rawSrc.slice(0, 4)), 'to equal', [
     0x89,
     0x50,
     0x4e,
-    0x47
+    0x47,
   ]);
   expect(redAlpha24BitPngquanted.rawSrc.length, 'to be less than', 6037);
 
   const purpleAlpha24BitPngcrushed = assetGraph.findAssets({
-    fileName: 'purplealpha24bit.pngcrush.png'
+    fileName: 'purplealpha24bit.pngcrush.png',
   })[0];
   expect(_.toArray(purpleAlpha24BitPngcrushed.rawSrc.slice(0, 4)), 'to equal', [
     0x89,
     0x50,
     0x4e,
-    0x47
+    0x47,
   ]);
   expect(purpleAlpha24BitPngcrushed.rawSrc.length, 'to be less than', 8285);
 });
 
-it('should handle a test case with a Svg', async function() {
+it('should handle a test case with a Svg', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/svg/'
+    root: __dirname + '/../../testdata/transforms/processImages/svg/',
   });
   await assetGraph.loadAssets('index.html');
   await assetGraph.populate();
@@ -384,9 +384,9 @@ it('should handle a test case with a Svg', async function() {
   );
 });
 
-it('should handle dots in urls (regression test for a regexp issue)', async function() {
+it('should handle dots in urls (regression test for a regexp issue)', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/dot.in.path/'
+    root: __dirname + '/../../testdata/transforms/processImages/dot.in.path/',
   });
   await assetGraph.loadAssets('style.css');
   await assetGraph.populate();
@@ -408,10 +408,10 @@ it('should handle dots in urls (regression test for a regexp issue)', async func
   );
 });
 
-it('should apply device pixel ratio to images', async function() {
+it('should apply device pixel ratio to images', async function () {
   const assetGraph = new AssetGraph({
     root:
-      __dirname + '/../../testdata/transforms/processImages/devicePixelRatio/'
+      __dirname + '/../../testdata/transforms/processImages/devicePixelRatio/',
   });
   await assetGraph.loadAssets('style.css');
   await assetGraph.populate();
@@ -430,52 +430,52 @@ it('should apply device pixel ratio to images', async function() {
   const outputs = [
     {
       type: 'Png',
-      devicePixelRatio: 1
+      devicePixelRatio: 1,
     },
     {
       type: 'Png',
-      devicePixelRatio: 2
+      devicePixelRatio: 2,
     },
     {
       type: 'Png',
       devicePixelRatio: 3,
-      url: /foo\.png$/
+      url: /foo\.png$/,
     },
     {
       type: 'Png',
-      devicePixelRatio: 1
+      devicePixelRatio: 1,
     },
     {
       type: 'Png',
       devicePixelRatio: 5,
-      url: /foo.*\.resize200,200\.png$/
+      url: /foo.*\.resize200,200\.png$/,
     },
     {
       type: 'Png',
       devicePixelRatio: 6,
-      url: /foo.*\.resize200,200\.png$/
+      url: /foo.*\.resize200,200\.png$/,
     },
     {
       type: 'Png',
       devicePixelRatio: 7,
-      url: /foo\.png\?foo=bar$/
+      url: /foo\.png\?foo=bar$/,
     },
     {
       type: 'Png',
-      devicePixelRatio: 1
+      devicePixelRatio: 1,
     },
     {
       type: 'Jpeg',
-      devicePixelRatio: 9
-    }
+      devicePixelRatio: 9,
+    },
   ];
 
   expect(assetGraph.findAssets({ isImage: true }), 'to satisfy', outputs);
 });
 
-it('should not touch images that have auto=false', async function() {
+it('should not touch images that have auto=false', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/autoFalse/'
+    root: __dirname + '/../../testdata/transforms/processImages/autoFalse/',
   });
   await assetGraph.loadAssets('index.html');
   await assetGraph.populate();
@@ -492,9 +492,9 @@ it('should not touch images that have auto=false', async function() {
   );
 });
 
-it('should support a standalone svgfilter', async function() {
+it('should support a standalone svgfilter', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/svgFilter/'
+    root: __dirname + '/../../testdata/transforms/processImages/svgFilter/',
   });
   await assetGraph.loadAssets('index.html');
   await assetGraph.populate();
@@ -513,16 +513,16 @@ it('should support a standalone svgfilter', async function() {
     [
       {
         attributes: {
-          stroke: expect.it('to be colored', 'red')
-        }
-      }
+          stroke: expect.it('to be colored', 'red'),
+        },
+      },
     ]
   );
 });
 
-it('should handle multiple gifsicle-powered operations on a gif', async function() {
+it('should handle multiple gifsicle-powered operations on a gif', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/gifsicle/'
+    root: __dirname + '/../../testdata/transforms/processImages/gifsicle/',
   });
   await assetGraph.loadAssets('index.html');
   await assetGraph.populate();
@@ -534,8 +534,8 @@ it('should handle multiple gifsicle-powered operations on a gif', async function
   expect(assetGraph, 'to contain asset', 'Gif', 1);
 });
 
-describe('when graphicsmagick is unavailable', async function() {
-  beforeEach(function() {
+describe('when graphicsmagick is unavailable', async function () {
+  beforeEach(function () {
     const enoentError = new Error();
     sinon
       .stub(childProcess, 'spawn')
@@ -554,13 +554,13 @@ describe('when graphicsmagick is unavailable', async function() {
       });
   });
 
-  afterEach(function() {
+  afterEach(function () {
     childProcess.spawn.restore();
   });
 
-  it('should warn if graphicsmagick is required for the processing instructions', async function() {
+  it('should warn if graphicsmagick is required for the processing instructions', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/processImages/gm/'
+      root: __dirname + '/../../testdata/transforms/processImages/gm/',
     });
 
     await assetGraph.loadAssets('index.html');
@@ -577,9 +577,9 @@ describe('when graphicsmagick is unavailable', async function() {
     );
   });
 
-  it('should not warn if graphicsmagick is not required', async function() {
+  it('should not warn if graphicsmagick is not required', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/processImages/gm/'
+      root: __dirname + '/../../testdata/transforms/processImages/gm/',
     });
 
     await assetGraph.loadAssets('index.html');

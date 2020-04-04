@@ -1,12 +1,12 @@
 const expect = require('../unexpected-with-plugins');
 const AssetGraph = require('../../lib/AssetGraph');
 
-describe('cloneForEachConditionValue', function() {
-  it('should fan out based on a single condition', function() {
+describe('cloneForEachConditionValue', function () {
+  it('should fan out based on a single condition', function () {
     return new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/cloneForEachConditionValue/singleCondition/'
+        '/../../testdata/transforms/cloneForEachConditionValue/singleCondition/',
     })
       .loadAssets('index.html')
       .populate()
@@ -14,7 +14,7 @@ describe('cloneForEachConditionValue', function() {
         { type: 'Html' },
         { splitConditions: ['weather'] }
       )
-      .queue(function(assetGraph) {
+      .queue(function (assetGraph) {
         expect(assetGraph, 'to contain assets', 'Html', 2);
         expect(
           assetGraph.findAssets({ fileName: 'index.sunny.html' })[0].text,
@@ -39,11 +39,11 @@ describe('cloneForEachConditionValue', function() {
       });
   });
 
-  it('should fan out based on two independent conditions', function() {
+  it('should fan out based on two independent conditions', function () {
     return new AssetGraph({
       root:
         __dirname +
-        '/../../testdata/transforms/cloneForEachConditionValue/twoIndependentConditions/'
+        '/../../testdata/transforms/cloneForEachConditionValue/twoIndependentConditions/',
     })
       .loadAssets('index.html')
       .populate()
@@ -51,7 +51,7 @@ describe('cloneForEachConditionValue', function() {
         { type: 'Html' },
         { splitConditions: ['weather', 'mood'] }
       )
-      .queue(function(assetGraph) {
+      .queue(function (assetGraph) {
         expect(assetGraph, 'to contain assets', 'Html', 4);
         expect(
           assetGraph,
@@ -117,12 +117,12 @@ describe('cloneForEachConditionValue', function() {
       });
   });
 
-  describe('when no explicit condition values are provided', function() {
-    it('should not fan out when there are no relevant data-assetgraph-conditions attributes in the HTML', function() {
+  describe('when no explicit condition values are provided', function () {
+    it('should not fan out when there are no relevant data-assetgraph-conditions attributes in the HTML', function () {
       return new AssetGraph({
         root:
           __dirname +
-          '/../../testdata/transforms/cloneForEachConditionValue/noConditions/'
+          '/../../testdata/transforms/cloneForEachConditionValue/noConditions/',
       })
         .loadAssets('index.html')
         .populate()
@@ -130,18 +130,18 @@ describe('cloneForEachConditionValue', function() {
           { type: 'Html' },
           { splitConditions: ['weather'] }
         )
-        .queue(function(assetGraph) {
+        .queue(function (assetGraph) {
           expect(assetGraph, 'to contain assets', 'Html', 1);
         });
     });
   });
 
-  describe('when explicit condition values are given', function() {
-    it('should fan out even when there are no relevant data-assetgraph-conditions attributes in the HTML', function() {
+  describe('when explicit condition values are given', function () {
+    it('should fan out even when there are no relevant data-assetgraph-conditions attributes in the HTML', function () {
       return new AssetGraph({
         root:
           __dirname +
-          '/../../testdata/transforms/cloneForEachConditionValue/noConditions/'
+          '/../../testdata/transforms/cloneForEachConditionValue/noConditions/',
       })
         .loadAssets('index.html')
         .populate()
@@ -149,25 +149,25 @@ describe('cloneForEachConditionValue', function() {
           { type: 'Html' },
           {
             splitConditions: ['weather'],
-            conditions: { weather: ['sunny', 'rainy'] }
+            conditions: { weather: ['sunny', 'rainy'] },
           }
         )
-        .queue(function(assetGraph) {
+        .queue(function (assetGraph) {
           expect(assetGraph, 'to contain assets', 'Html', 2);
           expect(assetGraph, 'to contain asset', {
-            fileName: 'index.sunny.html'
+            fileName: 'index.sunny.html',
           });
           expect(assetGraph, 'to contain asset', {
-            fileName: 'index.rainy.html'
+            fileName: 'index.rainy.html',
           });
         });
     });
 
-    it('should support a string being passed as a condition value (rather than an array)', function() {
+    it('should support a string being passed as a condition value (rather than an array)', function () {
       return new AssetGraph({
         root:
           __dirname +
-          '/../../testdata/transforms/cloneForEachConditionValue/noConditions/'
+          '/../../testdata/transforms/cloneForEachConditionValue/noConditions/',
       })
         .loadAssets('index.html')
         .populate()
@@ -175,10 +175,10 @@ describe('cloneForEachConditionValue', function() {
           { type: 'Html' },
           { splitConditions: 'weather', conditions: { weather: 'sunny' } }
         )
-        .queue(function(assetGraph) {
+        .queue(function (assetGraph) {
           expect(assetGraph, 'to contain asset', 'Html');
           expect(assetGraph, 'to contain asset', {
-            fileName: 'index.sunny.html'
+            fileName: 'index.sunny.html',
           });
         });
     });
