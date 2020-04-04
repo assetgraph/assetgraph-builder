@@ -10,232 +10,232 @@ const optimist = require('optimist')
     alias: 'help',
     describe: 'Show this help',
     type: 'boolean',
-    default: false
+    default: false,
   })
   .options('plugin', {
     alias: 'p',
     describe:
       'Install a plugin. Must be a require-able, eg. assetgraph-i18n. Can be repeated.',
     type: 'string',
-    default: false
+    default: false,
   })
   .options('root', {
     describe:
       'Path to your web root (will be deduced from your input files if not specified)',
     type: 'string',
-    demand: false
+    demand: false,
   })
   .options('output', {
     alias: ['o', 'outroot'],
     describe: 'Path to the output folder. Will be generated if non-existing',
     type: 'string',
-    demand: true
+    demand: true,
   })
   .options('canonicalroot', {
     describe:
       'URI root where the site will be deployed. Must be either an absolute, a protocol-relative, or a root-relative url',
     type: 'string',
-    demand: false
+    demand: false,
   })
   .options('cdnroot', {
     describe:
       'URI root where the static assets will be deployed. Must be either an absolute or a protocol-relative url',
     type: 'string',
-    demand: false
+    demand: false,
   })
   .options('sourcemaps', {
     describe: 'Whether to include source maps',
     type: 'boolean',
-    default: false
+    default: false,
   })
   .options('contentsecuritypolicy', {
     describe: 'Whether to update existing Content-Security-Policy meta tags',
     type: 'boolean',
-    default: false
+    default: false,
   })
   .options('contentsecuritypolicylevel', {
     describe:
       'Which Content-Security-Policy level to target. Supported values: 1 and 2. Defaults to a compromise where all target browsers are supported (see --browsers).',
-    type: 'number'
+    type: 'number',
   })
   .options('subresourceintegrity', {
     describe:
       'Whether to add integrity=... attributes to stylesheets and scripts that are part of the build',
     type: 'boolean',
-    default: false
+    default: false,
   })
   .options('sourcescontent', {
     describe:
       'Whether to include the source contents in the source maps (requires --sourcemaps), only works for CSS (not yet JavaScript)',
     type: 'boolean',
-    default: false
+    default: false,
   })
   .options('webpackconfig', {
     describe:
       'Path to where your webpack config resides. Will be loaded using require.main.require',
-    type: 'string'
+    type: 'string',
   })
   .options('optimizeimages', {
     describe:
       'Perform automatic lossless optimization of all images using pngcrush, pngquant, optipng, and jpegtran',
     type: 'boolean',
-    default: false
+    default: false,
   })
   .options('precacheserviceworker', {
     describe:
       'Generate service workers that make the static assets available offline (uses https://github.com/GoogleChrome/sw-precache)',
     type: 'boolean',
-    default: false
+    default: false,
   })
   .options('precacheserviceworkerconfig', {
     describe:
       'Path to where your sw-precache config resides. Will be loaded using require.main.require',
-    type: 'string'
+    type: 'string',
   })
   .options('browsers', {
     alias: 'b',
     describe:
       'Specify which browsers to support. Configures autoprefixer and controls which hacks and fallbacks to apply. Defaults to all known browsers. Syntax: https://github.com/ai/browserslist',
     type: 'string',
-    demand: false
+    demand: false,
   })
   .options('debug', {
     describe:
       'Keep statement level console.*() calls and debugger statements in JavaScript assets',
     type: 'boolean',
-    default: false
+    default: false,
   })
   .options('version', {
     describe:
       'Adds or updates <html data-version="..."> to the specified value. Use {0} to refer to the current value, eg. --version {0}/production or --version `git describe --long --tags --always --dirty 2>/dev/null || echo unknown`',
-    type: 'string'
+    type: 'string',
   })
   .options('gzip', {
     describe:
       'Include a gzipped copy of text-based assets > 860 bytes for which it yields a saving',
-    default: false
+    default: false,
   })
   .options('deferscripts', {
     describe: 'Sets the "defer" attribute on all script tags',
     type: 'boolean',
-    default: false
+    default: false,
   })
   .options('asyncscripts', {
     describe: 'Sets the "async" attribute on all script tags',
     type: 'boolean',
-    default: false
+    default: false,
   })
   .options('reservednames', {
     describe:
-      'Exclude certain variable names from mangling (equivalent to uglifyjs --reserved-names ...)'
+      'Exclude certain variable names from mangling (equivalent to uglifyjs --reserved-names ...)',
   })
   .options('stoponwarning', {
     describe:
       'Whether to stop with a non-zero exit code when a warning is encountered',
     type: 'boolean',
-    default: false
+    default: false,
   })
   .options('recursive', {
     describe:
       'Follow local HTML anchors when populating the graph (use --no-recursive to turn off this behavior)',
     type: 'boolean',
-    default: true
+    default: true,
   })
   .options('exclude', {
     describe:
       'Url pattern to exclude from the build. Supports * wildcards. You can create multiple of these: --exclude *.php --exclude http://example.com/*.gif',
     type: 'string',
-    demand: false
+    demand: false,
   })
   .options('minify', {
     describe: 'Minifies HTML, CSS and JavaScript.',
     type: 'boolean',
-    default: true
+    default: true,
   })
   .options('svgo', {
     describe:
       'Minify SVG with svgo (requires the svgo module to be installed in your app)',
     type: 'boolean',
-    default: true
+    default: true,
   })
   .options('nocompress', {
     describe: 'Disables JavaScript compression via UglifyJS',
     alias: 'no-compress',
     type: 'boolean',
-    default: false
+    default: false,
   })
   .options('pretty', {
     describe: 'Whether to pretty-print JavaScript, CSS and HTML assets',
     type: 'boolean',
-    default: false
+    default: false,
   })
   .options('space', {
     describe: 'The space character to use when serializing JavaScript',
-    type: 'string'
+    type: 'string',
   })
   .options('newline', {
     describe: 'The newline character to use when serializing JavaScript',
-    type: 'string'
+    type: 'string',
   })
   .options('nofilerev', {
     describe:
       'Revision files with a hash of their content in their file name for optimal far future caching',
     type: 'boolean',
-    default: false
+    default: false,
   })
   .options('nocdnflash', {
     describe:
       'Avoid putting flash files on the cdnroot. Use this if you have problems setting up CORS',
     type: 'boolean',
-    default: false
+    default: false,
   })
   .options('define', {
     alias: 'd',
     describe:
       '--define SYMBOL[=value] will be passed to UglifyJS as is (see the docs at https://github.com/mishoo/UglifyJS#usage). Can be repeated. Remember to protect quotes from the shell, eg. --define foo=\\"bar\\".',
-    type: 'string'
+    type: 'string',
   })
   .options('condition', {
     describe:
       '--condition name[=value] will be passed to System.js builder and used in #{...} interpolations (as described on http://jspm.io/0.17-beta-guide/conditional-interpolation.html). Can be repeated.',
-    type: 'string'
+    type: 'string',
   })
   .options('splitcondition', {
     describe:
       '--splitcondition name will create a separate .html file for each condition value. Can be repeated.',
-    type: 'string'
+    type: 'string',
   })
   .options('inline', {
     describe:
       'Set size threshold for inlining. Supported values: false (never inline), true (always inline, except when found inside @media queries), number (inline if target is smaller than this number of bytes). Also supported: --inlinehtmlscript true, --inlinecssimage 8192 etc.',
-    default: false
+    default: false,
   })
   .options('cdnhtml', {
     describe:
       "Put non-initial HTML files on the cdnroot as well. Some CDN packages (such as Akamai's cheapest one) don't allow this",
     type: 'boolean',
-    default: false
+    default: false,
   })
   .options('sharedbundles', {
     describe:
       'Try to create shared bundles including commin files across multiple pages',
     type: 'boolean',
-    default: false
+    default: false,
   })
   .options('manifest', {
     describe:
       'Generates an appcache manifest file with all static assets included',
     type: 'boolean',
-    default: false
+    default: false,
   })
   .options('repl', {
     describe: 'Start the REPL after a particular transform (or "error")',
-    type: 'string'
+    type: 'string',
   })
   .options('sweep', {
     describe:
       'Experimental: Free up memory by cleaning up relations and assets after they have been removed from the graph',
-    type: 'boolean'
+    type: 'boolean',
   });
 
 // These names originally come from UglifyJS' code generator, but are now mapped to their escodegen equivalents
@@ -248,7 +248,7 @@ for (const javaScriptSerializationOptionName of javaScriptSerializationOptionNam
   optimist.options(javaScriptSerializationOptionName.replace(/_/g, ''), {
     type,
     description:
-      'UglifyJS serialization option, see http://lisperator.net/uglifyjs/codegen'
+      'UglifyJS serialization option, see http://lisperator.net/uglifyjs/codegen',
   });
 }
 
@@ -257,7 +257,7 @@ const commandLineOptions = optimist.argv;
 const javaScriptSerializationOptions = {
   compact: commandLineOptions.compact,
   space: commandLineOptions.space,
-  newline: commandLineOptions.newline
+  newline: commandLineOptions.newline,
 };
 
 for (const deprecatedUglifyJsOption of [
@@ -271,12 +271,12 @@ for (const deprecatedUglifyJsOption of [
   'width',
   'max_line_len',
   'beautify',
-  'bracketize'
+  'bracketize',
 ]) {
   for (const alias of [
     deprecatedUglifyJsOption,
     deprecatedUglifyJsOption.replace(/_/g, ''),
-    deprecatedUglifyJsOption.replace(/_/g, '-')
+    deprecatedUglifyJsOption.replace(/_/g, '-'),
   ]) {
     if (typeof commandLineOptions[alias] !== 'undefined') {
       throw new Error(
@@ -358,14 +358,14 @@ const excludePatterns =
   commandLineOptions.exclude &&
   []
     .concat(commandLineOptions.exclude)
-    .map(excludePattern =>
+    .map((excludePattern) =>
       excludePattern.replace(/[^\x21-\x7f]/g, encodeURIComponent)
     );
 
 const reservedNames =
   commandLineOptions.reservednames &&
   _.flatten(
-    _.flatten([commandLineOptions.reservednames]).map(reservedName =>
+    _.flatten([commandLineOptions.reservednames]).map((reservedName) =>
       reservedName.split(',')
     )
   );
@@ -454,7 +454,7 @@ for (const define of commandLineOptions.define
 const splitConditions =
   commandLineOptions.splitcondition &&
   _.flatten(
-    _.flatten([commandLineOptions.splitcondition]).map(function(name) {
+    _.flatten([commandLineOptions.splitcondition]).map(function (name) {
       return name.split(',');
     })
   );
@@ -477,12 +477,12 @@ for (const condition of commandLineOptions.condition
 }
 
 if (commandLineOptions._.length > 0) {
-  inputUrls = commandLineOptions._.map(function(urlOrFsPath) {
+  inputUrls = commandLineOptions._.map(function (urlOrFsPath) {
     return urlTools.urlOrFsPathToUrl(String(urlOrFsPath), false);
   });
   if (!rootUrl) {
     rootUrl = urlTools.findCommonUrlPrefix(
-      inputUrls.filter(function(inputUrl) {
+      inputUrls.filter(function (inputUrl) {
         return /^file:/.test(inputUrl);
       })
     );
@@ -535,18 +535,18 @@ const buildProductionOptions = {
   javaScriptSerializationOptions,
   precacheServiceWorker: commandLineOptions.precacheserviceworker,
   precacheServiceWorkerConfigPath:
-    commandLineOptions.precacheserviceworkerconfig
+    commandLineOptions.precacheserviceworkerconfig,
 };
 
 (async () => {
   const assetGraph = new AssetGraph({
     root: rootUrl,
-    canonicalRoot: commandLineOptions.canonicalroot
+    canonicalRoot: commandLineOptions.canonicalroot,
   });
   await assetGraph.logEvents({
     repl: commandLineOptions.repl,
     stopOnWarning: commandLineOptions.stoponwarning,
-    suppressJavaScriptCommonJsRequireWarnings: true
+    suppressJavaScriptCommonJsRequireWarnings: true,
   });
 
   for (const plugin of plugins) {
@@ -554,14 +554,14 @@ const buildProductionOptions = {
   }
   if (commandLineOptions.sweep) {
     assetGraph
-      .on('removeAsset', asset => {
+      .on('removeAsset', (asset) => {
         setImmediate(() => {
           if (!asset.assetGraph) {
             asset.unload();
           }
         });
       })
-      .on('removeRelation', relation => {
+      .on('removeRelation', (relation) => {
         setImmediate(() => {
           if (!relation.assetGraph) {
             for (const key of Object.keys(relation)) {
@@ -581,8 +581,8 @@ const buildProductionOptions = {
   if (cdnRoot) {
     await assetGraph.writeAssetsToDisc(
       {
-        url: url => url && url.startsWith(fullCdnRoot),
-        isLoaded: true
+        url: (url) => url && url.startsWith(fullCdnRoot),
+        isLoaded: true,
       },
       `${output}static/cdn/`,
       fullCdnRoot

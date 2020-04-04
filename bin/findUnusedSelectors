@@ -28,7 +28,7 @@ const ignorePseudoClasses = [
   'read-write',
   'optional',
   'out-of-range',
-  'link'
+  'link',
 ];
 
 // Pseudo-classes intentionally not on the above list because they make sense
@@ -42,18 +42,21 @@ new AssetGraph({ root: commandLineOptions.root })
   .logEvents({
     repl: commandLineOptions.repl,
     stopOnWarning: commandLineOptions.stoponwarning,
-    suppressJavaScriptCommonJsRequireWarnings: true
+    suppressJavaScriptCommonJsRequireWarnings: true,
   })
   .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
   .populate({
-    followRelations: { type: ['HtmlStyle', 'CssImport'], to: { url: /^file:/ } }
+    followRelations: {
+      type: ['HtmlStyle', 'CssImport'],
+      to: { url: /^file:/ },
+    },
   })
-  .queue(function(assetGraph) {
+  .queue(function (assetGraph) {
     var documents = _.map(assetGraph.findAssets({ type: 'Html' }), 'parseTree');
     function isSelectorUsed(selector) {
       var giveUp = false;
       // Preprocess pseudo-classes
-      selector = selector.replace(/:([a-z-]+)(\()?/g, function(
+      selector = selector.replace(/:([a-z-]+)(\()?/g, function (
         $0,
         pseudoClassName,
         leadingParen
@@ -72,7 +75,7 @@ new AssetGraph({ root: commandLineOptions.root })
         return true;
       }
 
-      return documents.some(function(document) {
+      return documents.some(function (document) {
         try {
           return document.querySelectorAll(selector).length > 0;
         } catch (e) {
@@ -81,14 +84,14 @@ new AssetGraph({ root: commandLineOptions.root })
         }
       });
     }
-    assetGraph.findAssets({ type: 'Css' }).forEach(function(cssAsset) {
-      cssAsset.constructor.eachRuleInParseTree(cssAsset.parseTree, function(
+    assetGraph.findAssets({ type: 'Css' }).forEach(function (cssAsset) {
+      cssAsset.constructor.eachRuleInParseTree(cssAsset.parseTree, function (
         cssRule
       ) {
         if (cssRule.type === 'rule') {
           // STYLE_RULE
           var selectors = cssRule.selectors;
-          var unusedSelectors = cssRule.selectors.filter(function(selector) {
+          var unusedSelectors = cssRule.selectors.filter(function (selector) {
             return !isSelectorUsed(selector);
           });
           if (unusedSelectors.length > 0) {

@@ -10,16 +10,16 @@ new AssetGraph({ root: commandLineOptions.root })
   .logEvents({
     repl: commandLineOptions.repl,
     stopOnWarning: commandLineOptions.stoponwarning,
-    suppressJavaScriptCommonJsRequireWarnings: true
+    suppressJavaScriptCommonJsRequireWarnings: true,
   })
   .loadAssets(commandLineOptions._.map(urlTools.fsFilePathToFileUrl))
-  .queue(function() {
+  .queue(function () {
     console.warn('BEFORE:');
   })
   .writeStatsToStderr()
   .processImages({ isImage: true }, { autoLossless: true })
   .writeAssetsToDisc({ protocol: 'file:', isImage: true, isDirty: true })
-  .queue(function() {
+  .queue(function () {
     console.warn('\nAFTER:');
   })
   .writeStatsToStderr()
