@@ -29,12 +29,12 @@ describe('processImages', function () {
       [
         urlTools.resolveUrl(
           assetGraph.root,
-          'purplealpha24bit.pngquant-speed11.png'
+          'purplealpha24bit.pngquant-ncolors11.png'
         ),
         urlTools.resolveUrl(assetGraph.root, 'redalpha24bit.png?irrelevant'),
         urlTools.resolveUrl(
           assetGraph.root,
-          'redalpha24bit.pngquant-speed5.png'
+          'redalpha24bit.pngquant-ncolors5.png'
         ),
       ]
     );
@@ -343,7 +343,7 @@ it('should handle a test case with a couple of pngs', async function () {
   );
 
   const redAlpha24BitPngquanted = assetGraph.findAssets({
-    fileName: 'redalpha24bit.pngquant-speed5.png',
+    fileName: 'redalpha24bit.pngquant-ncolors5.png',
   })[0];
   expect(_.toArray(redAlpha24BitPngquanted.rawSrc.slice(0, 4)), 'to equal', [
     0x89,
