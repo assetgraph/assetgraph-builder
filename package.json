@@ -47,8 +47,10 @@
     "esanimate": "^1.1.0",
     "estraverse": "^5.0.0",
     "extend": "^3.0.0",
+    "gm-papandreou": "^1.23.0-patch1",
     "histogram": "^3.0.1",
     "impro": "~0.7.0",
+    "inkscape": "^2.0.0",
     "jpegtran": "^1.0.6",
     "lodash": "^4.14.1",
     "memoizesync": "^1.1.1",
@@ -58,6 +60,7 @@
     "passerror": "^1.1.1",
     "pngcrush": "^2.0.1",
     "pngquant": "^3.0.0",
+    "sharp": "^0.23.4",
     "urltools": "^0.4.1"
   },
   "devDependencies": {
