@@ -4,6 +4,8 @@ node_js:
   - 11
   - 12
   - 13
+cache:
+  npm: false
 
 matrix:
   include:
