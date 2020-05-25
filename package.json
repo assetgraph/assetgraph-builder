@@ -50,6 +50,7 @@
     "gm-papandreou": "^1.23.0-patch1",
     "histogram": "^3.0.1",
     "impro": "~0.7.0",
+    "inkscape": "^2.0.0",
     "jpegtran": "^1.0.6",
     "lodash": "^4.14.1",
     "memoizesync": "^1.1.1",
