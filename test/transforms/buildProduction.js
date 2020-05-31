@@ -1,6 +1,6 @@
 const expect = require('../unexpected-with-plugins');
 const Stream = require('stream');
-const gm = require('gm');
+const gm = require('gm-papandreou');
 const vm = require('vm');
 const passError = require('passerror');
 const sinon = require('sinon');
