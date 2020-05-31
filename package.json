@@ -59,7 +59,6 @@
     "passerror": "^1.1.1",
     "pngcrush": "^2.0.1",
     "pngquant": "^3.0.0",
-    "sharp": "^0.23.4",
     "urltools": "^0.4.1"
   },
   "devDependencies": {
@@ -87,6 +86,7 @@
     "requirejs": "^2.3.3",
     "rimraf": "^3.0.0",
     "sinon": "^9.0.0",
+    "sharp": "^0.23.4",
     "source-map": "^0.7.2",
     "svgfilter": "^3.0.0",
     "svgo": "^1.0.5",
