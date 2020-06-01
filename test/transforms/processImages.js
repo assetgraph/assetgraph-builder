@@ -279,6 +279,28 @@ it('should handle filters in order: pngquant, pngcrush, optipng', async function
   expect(purpleAlpha24BitPngcrushed.rawSrc.length, 'to be less than', 8285);
 });
 
+it('should skip pngquant if the image cannot be losslessly converted', async function () {
+  const assetGraph = new AssetGraph({
+    root: __dirname + '/../../testdata/transforms/processImages/pngs/',
+  });
+
+  await assetGraph.loadAssets({
+    type: 'Css',
+    text: `.a { background-image: url(photo.png) }`,
+  });
+
+  await assetGraph.populate();
+  await assetGraph.processImages({ type: 'Png' }, { pngquant: true });
+
+  const pngAsset = assetGraph.findAssets({
+    fileName: 'photo.png',
+  })[0];
+
+  await expect(pngAsset.rawSrc, 'to have metadata satisfying', {
+    Type: 'true color', // Would be 'palette' if it had been quanted to a PNG8
+  });
+});
+
 it('should handle filters in order: pngcrush, pngquant, optipng', async function () {
   const assetGraph = new AssetGraph({
     root: __dirname + '/../../testdata/transforms/processImages/pngs/',
