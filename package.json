@@ -48,7 +48,6 @@
     "estraverse": "^5.0.0",
     "extend": "^3.0.0",
     "gm-papandreou": "^1.23.0-patch1",
-    "histogram": "^3.0.1",
     "impro": "~0.7.0",
     "inkscape": "^2.0.0",
     "jpegtran": "^1.0.6",
@@ -95,6 +94,7 @@
     "unexpected": "^11.0.0",
     "unexpected-color": "^3.0.0",
     "unexpected-dom": "^4.9.3",
+    "unexpected-image": "^3.1.0",
     "unexpected-sinon": "^10.11.1",
     "webpack": "^4.8.3"
   },
