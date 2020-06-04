@@ -1,3 +1,27 @@
+### v8.0.1 (2020-06-04)
+
+#### Pull requests
+
+- [#731](https://github.com/assetgraph/assetgraph-builder/pull/731) Use pngquant --quality 100-100 to skip conversion to PNG8 if not lossless ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [#728](https://github.com/assetgraph/assetgraph-builder/pull/728) Upgrade assetgraph to version 6.0.7 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#729](https://github.com/assetgraph/assetgraph-builder/pull/729) Fix the build ([Andreas Lind](mailto:andreas.lind@peakon.com))
+- [#724](https://github.com/assetgraph/assetgraph-builder/pull/724) Upgrade eslint-plugin-mocha to version 7.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#723](https://github.com/assetgraph/assetgraph-builder/pull/723) Upgrade eslint to version 7.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#721](https://github.com/assetgraph/assetgraph-builder/pull/721) Switch to using the legacy query string parser exposed by impro. ([Alex J Burke](mailto:alex@alexjeffburke.com))
+- [#720](https://github.com/assetgraph/assetgraph-builder/pull/720) Upgrade chalk to version 4.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#718](https://github.com/assetgraph/assetgraph-builder/pull/718) Upgrade html-webpack-plugin to version 4.0.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#717](https://github.com/assetgraph/assetgraph-builder/pull/717) Upgrade estraverse to version 5.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#715](https://github.com/assetgraph/assetgraph-builder/pull/715) Upgrade p-map to version 4.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+
+#### Commits to master
+
+- [Update assetgraph-sprite to ^3.2.0](https://github.com/assetgraph/assetgraph-builder/commit/71bb13be6925ef53a5d17ce62a13233afce04378) ([Andreas Lind](mailto:andreas.lind@peakon.com))
+- [Disable npm cache on Travis](https://github.com/assetgraph/assetgraph-builder/commit/9b8b2d7d3eab36fd8c3750fb0a3d89332997109f) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Don't build with node.js 14 just yet, it's missing canvas prebuilts](https://github.com/assetgraph/assetgraph-builder/commit/29b087238e71c26ad94c0725b5cc5a2c29ad3f88) ([Andreas Lind](mailto:andreas.lind@peakon.com))
+- [prettier --write 'bin\/\*'](https://github.com/assetgraph/assetgraph-builder/commit/ee5316d6a432f56c8a7fa6f034f7c44ddfa6bcfd) ([Andreas Lind](mailto:andreas.lind@peakon.com))
+- [prettier --write '\*\*\/\*.{md,js}'](https://github.com/assetgraph/assetgraph-builder/commit/500ad3081c86811631ab79a50f2de403c4be2a53) ([Andreas Lind](mailto:andreas.lind@peakon.com))
+- [+1 more](https://github.com/assetgraph/assetgraph-builder/compare/v8.0.0...v8.0.1)
+
 ### v8.0.0 (2020-03-07)
 
 #### Pull requests
