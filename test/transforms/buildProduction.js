@@ -57,7 +57,7 @@ describe('buildProduction', function () {
         .findAssets({ fileName: 'index.html' })[0]
         .text.replace(/bundle\.[0-9a-f]{10}\./, 'bundle.xxxxxxxxxx.'),
       'to equal',
-      '<!DOCTYPE html><html data-version="The version number" manifest=index.appcache><head><title>The fancy title</title><style>body{color:tan}</style><style>body{color:teal;color:maroon}body div{width:100px}</style></head><body><script src=http://cdn.example.com/foo/bundle.xxxxxxxxxx.js async defer crossorigin=anonymous></script><script>alert(\'script3\')</script></body></html>'
+      '<!DOCTYPE html><html data-version="The version number" manifest=index.appcache><head><title>The fancy title</title><style>body{color:tan}</style><style>body{color:teal;color:maroon}body div{width:100px}</style></head><body><script src=static/bundle.xxxxxxxxxx.js async defer></script><script>alert(\'script3\')</script></body></html>'
     );
 
     // someTextFile.txt should be found at /static/someTextFile.c7429a1035.txt (not on the CDN)
@@ -82,8 +82,7 @@ describe('buildProduction', function () {
         'CACHE MANIFEST',
         '# ' + htmlCacheManifestRelations[0].from.fileName,
         'static/someTextFile.c7429a1035.txt',
-        assetGraph.findRelations({ type: 'HtmlScript', from: htmlAsset })[0].to
-          .url,
+        'static/bundle.5efa7b53b4.js',
         'NETWORK:',
         '*',
         '',
@@ -298,7 +297,7 @@ describe('buildProduction', function () {
     );
   });
 
-  it('should handle a test case with a JavaScriptStaticUrl relation pointing at an image, without the cdnRoot option', async function () {
+  it('should handle a test case with a JavaScriptStaticUrl relation pointing at an image, with the cdnRoot option', async function () {
     const assetGraph = new AssetGraph({
       root:
         __dirname +
@@ -313,7 +312,7 @@ describe('buildProduction', function () {
     expect(
       assetGraph.findAssets({ url: /\/index\.html$/ })[0].text,
       'to equal',
-      "<!DOCTYPE html><html><head></head><body><script>var imgUrl='http://cdn.example.com/foo/test.d65dd5318f.png'</script></body></html>"
+      "<!DOCTYPE html><html><head></head><body><script>var imgUrl='static/test.d65dd5318f.png'</script></body></html>"
     );
   });
 
@@ -397,26 +396,6 @@ describe('buildProduction', function () {
     ).and('to have items satisfying', {
       node: { attributes: { crossorigin: 'anonymous' } },
     });
-  });
-
-  it('should handle a test case with a JavaScriptStaticUrl relation pointing at a flash file, then running the buildProduction transform with the cdnRoot and cdnFlash options', async function () {
-    const assetGraph = new AssetGraph({
-      root:
-        __dirname +
-        '/../../testdata/transforms/buildProduction/GetStaticUrlFlash/',
-    });
-    await assetGraph.loadAssets('index.html');
-    await assetGraph.buildProduction({
-      version: false,
-      cdnRoot: 'http://cdn.example.com/foo/',
-      cdnFlash: true,
-    });
-
-    expect(
-      assetGraph.findAssets({ url: /\/index\.html$/ })[0].text,
-      'to equal',
-      "<!DOCTYPE html><html><head></head><body><script>var swfUrl='http://cdn.example.com/foo/foo.d41d8cd98f.swf'</script></body></html>"
-    );
   });
 
   it('should handle a test case with an @import rule in a stylesheet pulled in via require.js, then running the buildProduction transform', async function () {
@@ -2301,31 +2280,6 @@ describe('buildProduction', function () {
     );
   });
 
-  it('should issue an absolute url for a JavaScriptStaticUrl relation pointing at the CDN', async function () {
-    const assetGraph = new AssetGraph({
-      root:
-        __dirname +
-        '/../../testdata/transforms/buildProduction/staticUrlMovedToHttpsCdn/',
-    });
-    await assetGraph.loadAssets('index.html');
-    await assetGraph.buildProduction({
-      localeIds: ['en_us', 'da'],
-      cdnRoot: 'https://example.com/cdn/',
-      inlineByRelationType: {},
-    });
-
-    expect(assetGraph, 'to contain asset', {
-      url: 'https://example.com/cdn/heart.ed30c45242.svg',
-    }).and('to contain asset', {
-      url: 'https://example.com/cdn/script.6b8882d2e8.js',
-    });
-    expect(
-      assetGraph.findAssets({ type: 'JavaScript' })[0].text,
-      'to contain',
-      "'https://example.com/cdn/heart.ed30c45242.svg'"
-    );
-  });
-
   it('should issue the correct MD5 hashes for the moved files', async function () {
     const assetGraph = new AssetGraph({
       root: __dirname + '/../../testdata/transforms/buildProduction/md5Hashes/',
@@ -2427,8 +2381,8 @@ describe('buildProduction', function () {
         'to contain',
         '/static/bar.c9e9c0fad6.txt'
       )
-        .and('to contain', 'https://example.com/cdn/bundle.e01f897076.js')
-        .and('to contain', 'e01f8970765fda371bb397754c36e114')
+        .and('to contain', '/static/bundle.3b54033df0.js')
+        .and('to contain', '3b54033df05ba9f128d70aaccdf27f31')
         .and('not to contain', ".toString('url')");
     });
   });
@@ -2440,15 +2394,15 @@ describe('buildProduction', function () {
         __dirname + '/../../testdata/transforms/buildProduction/fontWithIeFix/',
     });
     await assetGraph.loadAssets('index.html');
+    console.log(assetGraph.findAssets().map((a) => a.url));
     await assetGraph.buildProduction();
 
     expect(assetGraph, 'to contain assets', 4);
+    console.log(assetGraph.findAssets().map((a) => a.url));
     expect(assetGraph, 'to contain asset', {
-      path: '/static/',
-      fileName: 'font.0c064252fc.eot',
+      url: `${assetGraph.root}static/font.0c064252fc.eot`,
     }).and('to contain asset', {
-      path: '/static/',
-      fileName: 'font.0c064252fc.eot',
+      url: `${assetGraph.root}static/font.0c064252fc.eot?`,
     });
   });
 
