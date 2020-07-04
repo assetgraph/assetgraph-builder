@@ -1,3 +1,14 @@
+### v8.1.0 (2020-07-04)
+
+#### Pull requests
+
+- [#735](https://github.com/assetgraph/assetgraph-builder/pull/735) Switch to assetgraph-hashfiles ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [#734](https://github.com/assetgraph/assetgraph-builder/pull/734) Upgrade assetgraph to version 6.0.8 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+
+#### Commits to master
+
+- [Avoid failing on timeout when running mocha in the vscode debugger](https://github.com/assetgraph/assetgraph-builder/commit/ca6920dab8c155b3f119592e25ae67eb170bd294) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+
 ### v8.0.1 (2020-06-04)
 
 #### Pull requests
