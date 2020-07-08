@@ -81,7 +81,7 @@
     "html-webpack-plugin": "^4.0.1",
     "jsdom": "^16.2.0",
     "less": "^2.7.1",
-    "mocha": "^7.0.0",
+    "mocha": "^8.0.1",
     "nyc": "^15.0.0",
     "offline-github-changelog": "^1.6.1",
     "prettier": "~2.0.2",
