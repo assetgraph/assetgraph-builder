@@ -60,7 +60,7 @@
     "passerror": "^1.1.1",
     "pngcrush": "^2.0.1",
     "pngquant": "^3.0.0",
-    "sharp": "^0.23.4",
+    "sharp": "^0.26.1",
     "urltools": "^0.4.1"
   },
   "devDependencies": {
