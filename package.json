@@ -83,7 +83,7 @@
     "less": "^2.7.1",
     "mocha": "^7.0.0",
     "nyc": "^15.0.0",
-    "offline-github-changelog": "^1.6.1",
+    "offline-github-changelog": "^2.0.0",
     "prettier": "~2.1.0",
     "requirejs": "^2.3.3",
     "rimraf": "^3.0.0",
