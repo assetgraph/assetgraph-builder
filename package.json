@@ -94,7 +94,7 @@
     "systemjs-builder": "^0.16.0",
     "unexpected": "^11.0.0",
     "unexpected-color": "^3.0.0",
-    "unexpected-dom": "^4.9.3",
+    "unexpected-dom": "^5.0.0",
     "unexpected-image": "^3.1.0",
     "unexpected-sinon": "^10.11.1",
     "webpack": "^4.8.3"
