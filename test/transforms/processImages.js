@@ -1,3 +1,4 @@
+const pathModule = require('path');
 const expect = require('../unexpected-with-plugins');
 const sinon = require('sinon');
 const _ = require('lodash');
@@ -10,7 +11,15 @@ const { PassThrough } = require('stream');
 describe('processImages', function () {
   it('should handle a Css test case', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/processImages/css/',
+      root: pathModule.join(
+        __dirname,
+        '..',
+        '..',
+        'testdata',
+        'transforms',
+        'processImages',
+        'css'
+      ),
     });
     await assetGraph.loadAssets('style.css');
     await assetGraph.populate();
@@ -80,7 +89,15 @@ describe('processImages', function () {
 
 it('should handle an Html test case', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/html/',
+    root: pathModule.join(
+      __dirname,
+      '..',
+      '..',
+      'testdata',
+      'transforms',
+      'processImages',
+      'html'
+    ),
   });
   await assetGraph.loadAssets('index.html');
   await assetGraph.populate();
@@ -124,7 +141,15 @@ it('should handle an Html test case', async function () {
 
 it('should handle a Css test case with a setFormat instruction in the query string of a background-image url', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/setFormat/',
+    root: pathModule.join(
+      __dirname,
+      '..',
+      '..',
+      'testdata',
+      'transforms',
+      'processImages',
+      'setFormat'
+    ),
   });
   await assetGraph.loadAssets('index.css');
   await assetGraph.populate();
@@ -146,7 +171,15 @@ it('should handle a Css test case with a setFormat instruction in the query stri
 
 it('should handle a test case with a Jpeg', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/jpeg/',
+    root: pathModule.join(
+      __dirname,
+      '..',
+      '..',
+      'testdata',
+      'transforms',
+      'processImages',
+      'jpeg'
+    ),
   });
   await assetGraph.loadAssets('style.css');
   await assetGraph.populate();
@@ -168,7 +201,15 @@ it('should handle a test case with a Jpeg', async function () {
 describe('filters ordering', async function () {
   it('should handle filters default autolossless order', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/processImages/pngs/',
+      root: pathModule.join(
+        __dirname,
+        '..',
+        '..',
+        'testdata',
+        'transforms',
+        'processImages',
+        'pngs'
+      ),
     });
 
     await assetGraph.loadAssets({
@@ -191,7 +232,15 @@ describe('filters ordering', async function () {
 
 it('should handle a single filter with autolossless: pngquant', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/pngs/',
+    root: pathModule.join(
+      __dirname,
+      '..',
+      '..',
+      'testdata',
+      'transforms',
+      'processImages',
+      'pngs'
+    ),
   });
 
   await assetGraph.loadAssets({
@@ -213,7 +262,15 @@ it('should handle a single filter with autolossless: pngquant', async function (
 
 it('should handle a single filter with autolossless: pngcrush', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/pngs/',
+    root: pathModule.join(
+      __dirname,
+      '..',
+      '..',
+      'testdata',
+      'transforms',
+      'processImages',
+      'pngs'
+    ),
   });
 
   await assetGraph.loadAssets({
@@ -235,7 +292,15 @@ it('should handle a single filter with autolossless: pngcrush', async function (
 
 it('should handle a single filter with autolossless: optipng', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/pngs/',
+    root: pathModule.join(
+      __dirname,
+      '..',
+      '..',
+      'testdata',
+      'transforms',
+      'processImages',
+      'pngs'
+    ),
   });
 
   await assetGraph.loadAssets({
@@ -258,7 +323,15 @@ it('should handle a single filter with autolossless: optipng', async function ()
 
 it('should handle filters in order: pngquant, pngcrush, optipng', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/pngs/',
+    root: pathModule.join(
+      __dirname,
+      '..',
+      '..',
+      'testdata',
+      'transforms',
+      'processImages',
+      'pngs'
+    ),
   });
 
   await assetGraph.loadAssets({
@@ -281,7 +354,15 @@ it('should handle filters in order: pngquant, pngcrush, optipng', async function
 
 it('should skip pngquant if the image cannot be losslessly converted', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/pngs/',
+    root: pathModule.join(
+      __dirname,
+      '..',
+      '..',
+      'testdata',
+      'transforms',
+      'processImages',
+      'pngs'
+    ),
   });
 
   await assetGraph.loadAssets({
@@ -303,7 +384,15 @@ it('should skip pngquant if the image cannot be losslessly converted', async fun
 
 it('should handle filters in order: pngcrush, pngquant, optipng', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/pngs/',
+    root: pathModule.join(
+      __dirname,
+      '..',
+      '..',
+      'testdata',
+      'transforms',
+      'processImages',
+      'pngs'
+    ),
   });
 
   await assetGraph.loadAssets({
@@ -326,7 +415,15 @@ it('should handle filters in order: pngcrush, pngquant, optipng', async function
 
 it('should handle filters in order: optipng, pngquant, pngcrush', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/pngs/',
+    root: pathModule.join(
+      __dirname,
+      '..',
+      '..',
+      'testdata',
+      'transforms',
+      'processImages',
+      'pngs'
+    ),
   });
 
   await assetGraph.loadAssets({
@@ -349,7 +446,15 @@ it('should handle filters in order: optipng, pngquant, pngcrush', async function
 
 it('should handle a test case with a couple of pngs', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/pngs/',
+    root: pathModule.join(
+      __dirname,
+      '..',
+      '..',
+      'testdata',
+      'transforms',
+      'processImages',
+      'pngs'
+    ),
   });
   await assetGraph.loadAssets('style.css');
   await assetGraph.populate();
@@ -389,7 +494,15 @@ it('should handle a test case with a couple of pngs', async function () {
 
 it('should handle a test case with a Svg', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/svg/',
+    root: pathModule.join(
+      __dirname,
+      '..',
+      '..',
+      'testdata',
+      'transforms',
+      'processImages',
+      'svg'
+    ),
   });
   await assetGraph.loadAssets('index.html');
   await assetGraph.populate();
@@ -408,7 +521,15 @@ it('should handle a test case with a Svg', async function () {
 
 it('should handle dots in urls (regression test for a regexp issue)', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/dot.in.path/',
+    root: pathModule.join(
+      __dirname,
+      '..',
+      '..',
+      'testdata',
+      'transforms',
+      'processImages',
+      'dot.in.path'
+    ),
   });
   await assetGraph.loadAssets('style.css');
   await assetGraph.populate();
@@ -432,8 +553,15 @@ it('should handle dots in urls (regression test for a regexp issue)', async func
 
 it('should apply device pixel ratio to images', async function () {
   const assetGraph = new AssetGraph({
-    root:
-      __dirname + '/../../testdata/transforms/processImages/devicePixelRatio/',
+    root: pathModule.join(
+      __dirname,
+      '..',
+      '..',
+      'testdata',
+      'transforms',
+      'processImages',
+      'devicePixelRatio'
+    ),
   });
   await assetGraph.loadAssets('style.css');
   await assetGraph.populate();
@@ -497,7 +625,15 @@ it('should apply device pixel ratio to images', async function () {
 
 it('should not touch images that have auto=false', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/autoFalse/',
+    root: pathModule.join(
+      __dirname,
+      '..',
+      '..',
+      'testdata',
+      'transforms',
+      'processImages',
+      'autoFalse'
+    ),
   });
   await assetGraph.loadAssets('index.html');
   await assetGraph.populate();
@@ -516,7 +652,15 @@ it('should not touch images that have auto=false', async function () {
 
 it('should support a standalone svgfilter', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/svgFilter/',
+    root: pathModule.join(
+      __dirname,
+      '..',
+      '..',
+      'testdata',
+      'transforms',
+      'processImages',
+      'svgFilter'
+    ),
   });
   await assetGraph.loadAssets('index.html');
   await assetGraph.populate();
@@ -544,7 +688,15 @@ it('should support a standalone svgfilter', async function () {
 
 it('should handle multiple gifsicle-powered operations on a gif', async function () {
   const assetGraph = new AssetGraph({
-    root: __dirname + '/../../testdata/transforms/processImages/gifsicle/',
+    root: pathModule.join(
+      __dirname,
+      '..',
+      '..',
+      'testdata',
+      'transforms',
+      'processImages',
+      'gifsicle'
+    ),
   });
   await assetGraph.loadAssets('index.html');
   await assetGraph.populate();
@@ -582,7 +734,15 @@ describe('when graphicsmagick is unavailable', async function () {
 
   it('should warn if graphicsmagick is required for the processing instructions', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/processImages/gm/',
+      root: pathModule.join(
+        __dirname,
+        '..',
+        '..',
+        'testdata',
+        'transforms',
+        'processImages',
+        'gm'
+      ),
     });
 
     await assetGraph.loadAssets('index.html');
@@ -601,7 +761,15 @@ describe('when graphicsmagick is unavailable', async function () {
 
   it('should not warn if graphicsmagick is not required', async function () {
     const assetGraph = new AssetGraph({
-      root: __dirname + '/../../testdata/transforms/processImages/gm/',
+      root: pathModule.join(
+        __dirname,
+        '..',
+        '..',
+        'testdata',
+        'transforms',
+        'processImages',
+        'gm'
+      ),
     });
 
     await assetGraph.loadAssets('index.html');
