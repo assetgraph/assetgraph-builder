@@ -107,7 +107,7 @@
     "bin": "./bin"
   },
   "scripts": {
-    "lint": "eslint . bin/* && prettier --check '**/*.{js,md}' 'bin/*'",
+    "lint": "eslint . bin/* && prettier --check '**/*.{js,json,md}' 'bin/*'",
     "test": "mocha",
     "test:ci": "npm run coverage",
     "coverage": "nyc --reporter=lcov --reporter=text --all -- mocha --reporter dot && echo google-chrome coverage/lcov-report/index.html",
