@@ -51,7 +51,7 @@
     "gm-papandreou": "^1.23.0-patch1",
     "impro": "~0.8.0",
     "inkscape": "^3.0.0",
-    "jpegtran": "^1.0.6",
+    "jpegtran": "^2.0.0",
     "lodash": "^4.14.1",
     "memoizesync": "^1.1.1",
     "optimist": "^0.6.1",
