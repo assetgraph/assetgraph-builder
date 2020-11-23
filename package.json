@@ -58,7 +58,7 @@
     "optipng": "^2.0.0",
     "p-map": "^4.0.0",
     "passerror": "^1.1.1",
-    "pngcrush": "^2.0.1",
+    "pngcrush": "^3.0.0",
     "pngquant": "^3.0.0",
     "sharp": "^0.26.2",
     "urltools": "^0.4.1"
