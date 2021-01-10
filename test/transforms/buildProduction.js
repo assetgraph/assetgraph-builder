@@ -3026,11 +3026,9 @@ describe('buildProduction', function () {
       ),
     });
     await assetGraph.loadAssets('index.html');
-    console.log(assetGraph.findAssets().map((a) => a.url));
     await assetGraph.buildProduction();
 
     expect(assetGraph, 'to contain assets', 4);
-    console.log(assetGraph.findAssets().map((a) => a.url));
     expect(assetGraph, 'to contain asset', {
       url: `${assetGraph.root}static/font.0c064252fc.eot`,
     }).and('to contain asset', {
