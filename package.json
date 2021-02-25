@@ -90,7 +90,7 @@
     "sinon": "^9.0.0",
     "source-map": "^0.7.2",
     "svgfilter": "^4.0.0",
-    "svgo": "^1.0.5",
+    "svgo": "^2.1.0",
     "systemjs-builder": "^0.16.0",
     "unexpected": "^12.0.0",
     "unexpected-color": "^4.0.0",
