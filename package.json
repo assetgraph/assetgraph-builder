@@ -56,7 +56,7 @@
     "memoizesync": "^1.1.1",
     "optimist": "^0.6.1",
     "optipng": "^3.0.0",
-    "p-map": "^4.0.0",
+    "p-map": "^5.0.0",
     "passerror": "^1.1.1",
     "pngcrush": "^3.0.0",
     "pngquant": "^4.0.0",
