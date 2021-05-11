@@ -2239,8 +2239,7 @@ describe('buildProduction', function () {
       await assetGraph.loadAssets({
         type: 'Html',
         url: 'http://example.com/foo.html',
-        text:
-          '<!DOCTYPE html><html><body><div data-bind="click: function () {console.log(\'click\')}"></div></body></html>',
+        text: '<!DOCTYPE html><html><body><div data-bind="click: function () {console.log(\'click\')}"></div></body></html>',
       });
       await assetGraph.buildProduction({
         localeIds: ['en_us'],

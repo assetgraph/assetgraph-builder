@@ -64,18 +64,16 @@ describe('processImages', function () {
       });
 
     // Should look like PNGs:
-    expect(_.toArray(rawSrcs[0].slice(0, 4)), 'to equal', [
-      0x89,
-      0x50,
-      0x4e,
-      0x47,
-    ]);
-    expect(_.toArray(rawSrcs[1].slice(0, 4)), 'to equal', [
-      0x89,
-      0x50,
-      0x4e,
-      0x47,
-    ]);
+    expect(
+      _.toArray(rawSrcs[0].slice(0, 4)),
+      'to equal',
+      [0x89, 0x50, 0x4e, 0x47]
+    );
+    expect(
+      _.toArray(rawSrcs[1].slice(0, 4)),
+      'to equal',
+      [0x89, 0x50, 0x4e, 0x47]
+    );
     expect(rawSrcs[1].length, 'to be less than', rawSrcs[0].length);
 
     cssBackgroundImages = assetGraph.findRelations({ type: 'CssImage' });
@@ -472,23 +470,21 @@ it('should handle a test case with a couple of pngs', async function () {
   const redAlpha24BitPngquanted = assetGraph.findAssets({
     fileName: 'redalpha24bit.pngquant-ncolors5.png',
   })[0];
-  expect(_.toArray(redAlpha24BitPngquanted.rawSrc.slice(0, 4)), 'to equal', [
-    0x89,
-    0x50,
-    0x4e,
-    0x47,
-  ]);
+  expect(
+    _.toArray(redAlpha24BitPngquanted.rawSrc.slice(0, 4)),
+    'to equal',
+    [0x89, 0x50, 0x4e, 0x47]
+  );
   expect(redAlpha24BitPngquanted.rawSrc.length, 'to be less than', 6037);
 
   const purpleAlpha24BitPngcrushed = assetGraph.findAssets({
     fileName: 'purplealpha24bit.pngcrush.png',
   })[0];
-  expect(_.toArray(purpleAlpha24BitPngcrushed.rawSrc.slice(0, 4)), 'to equal', [
-    0x89,
-    0x50,
-    0x4e,
-    0x47,
-  ]);
+  expect(
+    _.toArray(purpleAlpha24BitPngcrushed.rawSrc.slice(0, 4)),
+    'to equal',
+    [0x89, 0x50, 0x4e, 0x47]
+  );
   expect(purpleAlpha24BitPngcrushed.rawSrc.length, 'to be less than', 8285);
 });
 
