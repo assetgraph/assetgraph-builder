@@ -54,14 +54,14 @@
     "jpegtran": "^2.0.0",
     "lodash": "^4.14.1",
     "memoizesync": "^1.1.1",
-    "optimist": "^0.6.1",
     "optipng": "^3.0.0",
     "p-map": "^4.0.0",
     "passerror": "^1.1.1",
     "pngcrush": "^3.0.0",
     "pngquant": "^4.0.0",
     "sharp": "^0.28.0",
-    "urltools": "^0.4.1"
+    "urltools": "^0.4.1",
+    "yargs": "^17.1.1"
   },
   "devDependencies": {
     "autoprefixer": "^9.0.0",

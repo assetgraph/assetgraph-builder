@@ -3,7 +3,7 @@
 const AssetGraph = require('../lib/AssetGraph');
 const _ = require('lodash');
 const urlTools = require('urltools');
-const commandLineOptions = require('optimist')
+const commandLineOptions = require('yargs')
   .usage('$0 [--root <inputRootDirectory>] <htmlFile>...')
   .demand(1).argv;
 
