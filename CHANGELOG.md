@@ -1,3 +1,29 @@
+### v8.2.0 (2021-08-17)
+
+#### Pull requests
+
+- [#895](https://github.com/assetgraph/assetgraph-builder/pull/895) Upgrade assetgraph to version 7.2.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#886](https://github.com/assetgraph/assetgraph-builder/pull/886) Upgrade p-map to version 5.1.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#883](https://github.com/assetgraph/assetgraph-builder/pull/883) Upgrade assetgraph to version 7.1.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#869](https://github.com/assetgraph/assetgraph-builder/pull/869) Upgrade eslint-plugin-mocha to version 9.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#867](https://github.com/assetgraph/assetgraph-builder/pull/867) Upgrade sinon to version 11.1.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#865](https://github.com/assetgraph/assetgraph-builder/pull/865) Upgrade impro to version 0.10.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#864](https://github.com/assetgraph/assetgraph-builder/pull/864) Upgrade assetgraph to version 7.0.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#847](https://github.com/assetgraph/assetgraph-builder/pull/847) Upgrade sharp to version 0.28.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#844](https://github.com/assetgraph/assetgraph-builder/pull/844) Upgrade sinon to version 10.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#821](https://github.com/assetgraph/assetgraph-builder/pull/821) Upgrade eslint-plugin-markdown to version 2.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#820](https://github.com/assetgraph/assetgraph-builder/pull/820) Upgrade pngquant to version 4.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#816](https://github.com/assetgraph/assetgraph-builder/pull/816) Upgrade assetgraph to version 6.6.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+
+#### Commits to master
+
+- [Fix test after the sw-precache =&gt; workbox transition](https://github.com/assetgraph/assetgraph-builder/commit/ceef7bb674029178419fa76fd3b5b84bfd730de8) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Replace optimist with yargs, fixes \#892](https://github.com/assetgraph/assetgraph-builder/commit/d85570be650d03d06c3c0a2d7bee12fb7f31508f) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Revert "Update p-map to version 5.1.0"](https://github.com/assetgraph/assetgraph-builder/commit/e050c918b669d4b609a46c808297cfd06644fcc6) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [prettier --write '\*\*\/\*.{js,json,md}'](https://github.com/assetgraph/assetgraph-builder/commit/2bca9115fac1df4b8c33c67bfda7cb7f634dcc2f) ([Andreas Lind](mailto:andreas.lind@workday.com))
+- [Update prettier to version 2.3.0](https://github.com/assetgraph/assetgraph-builder/commit/bc8db9296c326ea65dfb543500fa1bc29e25af74) ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [+2 more](https://github.com/assetgraph/assetgraph-builder/compare/v8.1.1...v8.2.0)
+
 ### v8.1.1 (2021-02-07)
 
 #### Pull requests
