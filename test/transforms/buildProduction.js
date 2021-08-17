@@ -3006,7 +3006,6 @@ describe('buildProduction', function () {
         '/static/bar.c9e9c0fad6.txt'
       )
         .and('to contain', '/static/bundle.3b54033df0.js')
-        .and('to contain', '3b54033df05ba9f128d70aaccdf27f31')
         .and('not to contain', ".toString('url')");
     });
   });
