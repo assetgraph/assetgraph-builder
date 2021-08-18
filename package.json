@@ -59,7 +59,7 @@
     "passerror": "^1.1.1",
     "pngcrush": "^3.0.0",
     "pngquant": "^4.0.0",
-    "sharp": "^0.28.0",
+    "sharp": "^0.29.0",
     "urltools": "^0.4.1",
     "yargs": "^17.1.1"
   },
