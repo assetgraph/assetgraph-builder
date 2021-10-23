@@ -1,3 +1,18 @@
+### v9.0.0 (2021-10-23)
+
+#### Pull requests
+
+- [#919](https://github.com/assetgraph/assetgraph-builder/pull/919) Upgrade jsdom to version 18.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#928](https://github.com/assetgraph/assetgraph-builder/pull/928) Upgrade impro to version 0.11.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#927](https://github.com/assetgraph/assetgraph-builder/pull/927) Upgrade prettier to version 2.4.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#926](https://github.com/assetgraph/assetgraph-builder/pull/926) Upgrade sharp to version 0.29.2 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#925](https://github.com/assetgraph/assetgraph-builder/pull/925) Upgrade eslint-plugin-promise to version 5.1.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#923](https://github.com/assetgraph/assetgraph-builder/pull/923) Replace Travis with Github Actions ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+
+#### Commits to master
+
+- [Drop node.js 10 support \(for the changelog\)](https://github.com/assetgraph/assetgraph-builder/commit/a1a823ab44c69c3023f236e195ae73355b0a0edf) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+
 ### v8.2.0 (2021-08-17)
 
 #### Pull requests
