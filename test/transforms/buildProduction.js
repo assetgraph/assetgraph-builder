@@ -2055,17 +2055,14 @@ describe('buildProduction', function () {
           });
 
           expect(
-            assetGraph.findAssets({ type: 'ContentSecurityPolicy' }),
-            'to satisfy',
-            [
-              {
-                parseTree: expect.it('to equal', {
-                  styleSrc: ["'self'", 'my.cdn.com/styles.399c62e85c.css'],
-                  scriptSrc: ["'self'", 'my.cdn.com/script.af5c77b360.js'],
-                  imgSrc: ['my.cdn.com'],
-                }),
-              },
-            ]
+            assetGraph.findAssets({ type: 'ContentSecurityPolicy' })[0]
+              .parseTree,
+            'to exhaustively satisfy',
+            {
+              styleSrc: ["'self'", /^my.cdn.com\/styles\.[a-f0-9]{10}\.css$/],
+              scriptSrc: ["'self'", /^my\.cdn\.com\/script\.[a-f0-9]{10}\.js$/],
+              imgSrc: ['my.cdn.com'],
+            }
           );
         });
       });
@@ -2384,18 +2381,18 @@ describe('buildProduction', function () {
         expect(
           assetGraph.findAssets({ fileName: 'index.da.html' })[0].text,
           'to contain',
-          '<style>body{color:#fff;background-color:red}</style>'
+          '<style>body{background-color:red;color:#fff}</style>'
         ).and(
           'not to contain',
-          '<style>body{color:#fff;background-color:#00f}</style>'
+          '<style>body{background-color:#00f;color:#fff}</style>'
         );
         expect(
           assetGraph.findAssets({ fileName: 'index.en_us.html' })[0].text,
           'to contain',
-          '<style>body{color:#fff;background-color:#00f}</style>'
+          '<style>body{background-color:blue;color:#fff}</style>'
         ).and(
           'not to contain',
-          '<style>body{color:#fff;background-color:red}</style>'
+          '<style>body{background-color:red;color:#fff}</style>'
         );
       });
     });
