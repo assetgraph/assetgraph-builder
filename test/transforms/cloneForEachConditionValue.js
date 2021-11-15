@@ -1,12 +1,19 @@
+const pathModule = require('path');
 const expect = require('../unexpected-with-plugins');
 const AssetGraph = require('../../lib/AssetGraph');
 
 describe('cloneForEachConditionValue', function () {
   it('should fan out based on a single condition', function () {
     return new AssetGraph({
-      root:
-        __dirname +
-        '/../../testdata/transforms/cloneForEachConditionValue/singleCondition/',
+      root: pathModule.join(
+        __dirname,
+        '..',
+        '..',
+        'testdata',
+        'transforms',
+        'cloneForEachConditionValue',
+        'singleCondition'
+      ),
     })
       .loadAssets('index.html')
       .populate()
@@ -41,9 +48,15 @@ describe('cloneForEachConditionValue', function () {
 
   it('should fan out based on two independent conditions', function () {
     return new AssetGraph({
-      root:
-        __dirname +
-        '/../../testdata/transforms/cloneForEachConditionValue/twoIndependentConditions/',
+      root: pathModule.join(
+        __dirname,
+        '..',
+        '..',
+        'testdata',
+        'transforms',
+        'cloneForEachConditionValue',
+        'twoIndependentConditions'
+      ),
     })
       .loadAssets('index.html')
       .populate()
@@ -120,9 +133,15 @@ describe('cloneForEachConditionValue', function () {
   describe('when no explicit condition values are provided', function () {
     it('should not fan out when there are no relevant data-assetgraph-conditions attributes in the HTML', function () {
       return new AssetGraph({
-        root:
-          __dirname +
-          '/../../testdata/transforms/cloneForEachConditionValue/noConditions/',
+        root: pathModule.join(
+          __dirname,
+          '..',
+          '..',
+          'testdata',
+          'transforms',
+          'cloneForEachConditionValue',
+          'noConditions'
+        ),
       })
         .loadAssets('index.html')
         .populate()
@@ -139,9 +158,15 @@ describe('cloneForEachConditionValue', function () {
   describe('when explicit condition values are given', function () {
     it('should fan out even when there are no relevant data-assetgraph-conditions attributes in the HTML', function () {
       return new AssetGraph({
-        root:
-          __dirname +
-          '/../../testdata/transforms/cloneForEachConditionValue/noConditions/',
+        root: pathModule.join(
+          __dirname,
+          '..',
+          '..',
+          'testdata',
+          'transforms',
+          'cloneForEachConditionValue',
+          'noConditions'
+        ),
       })
         .loadAssets('index.html')
         .populate()
@@ -165,9 +190,15 @@ describe('cloneForEachConditionValue', function () {
 
     it('should support a string being passed as a condition value (rather than an array)', function () {
       return new AssetGraph({
-        root:
-          __dirname +
-          '/../../testdata/transforms/cloneForEachConditionValue/noConditions/',
+        root: pathModule.join(
+          __dirname,
+          '..',
+          '..',
+          'testdata',
+          'transforms',
+          'cloneForEachConditionValue',
+          'noConditions'
+        ),
       })
         .loadAssets('index.html')
         .populate()

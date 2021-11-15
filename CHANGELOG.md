@@ -1,3 +1,124 @@
+### v9.0.0 (2021-10-23)
+
+#### Pull requests
+
+- [#919](https://github.com/assetgraph/assetgraph-builder/pull/919) Upgrade jsdom to version 18.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#928](https://github.com/assetgraph/assetgraph-builder/pull/928) Upgrade impro to version 0.11.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#927](https://github.com/assetgraph/assetgraph-builder/pull/927) Upgrade prettier to version 2.4.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#926](https://github.com/assetgraph/assetgraph-builder/pull/926) Upgrade sharp to version 0.29.2 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#925](https://github.com/assetgraph/assetgraph-builder/pull/925) Upgrade eslint-plugin-promise to version 5.1.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#923](https://github.com/assetgraph/assetgraph-builder/pull/923) Replace Travis with Github Actions ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+
+#### Commits to master
+
+- [Drop node.js 10 support \(for the changelog\)](https://github.com/assetgraph/assetgraph-builder/commit/a1a823ab44c69c3023f236e195ae73355b0a0edf) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+
+### v8.2.0 (2021-08-17)
+
+#### Pull requests
+
+- [#895](https://github.com/assetgraph/assetgraph-builder/pull/895) Upgrade assetgraph to version 7.2.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#886](https://github.com/assetgraph/assetgraph-builder/pull/886) Upgrade p-map to version 5.1.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#883](https://github.com/assetgraph/assetgraph-builder/pull/883) Upgrade assetgraph to version 7.1.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#869](https://github.com/assetgraph/assetgraph-builder/pull/869) Upgrade eslint-plugin-mocha to version 9.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#867](https://github.com/assetgraph/assetgraph-builder/pull/867) Upgrade sinon to version 11.1.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#865](https://github.com/assetgraph/assetgraph-builder/pull/865) Upgrade impro to version 0.10.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#864](https://github.com/assetgraph/assetgraph-builder/pull/864) Upgrade assetgraph to version 7.0.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#847](https://github.com/assetgraph/assetgraph-builder/pull/847) Upgrade sharp to version 0.28.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#844](https://github.com/assetgraph/assetgraph-builder/pull/844) Upgrade sinon to version 10.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#821](https://github.com/assetgraph/assetgraph-builder/pull/821) Upgrade eslint-plugin-markdown to version 2.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#820](https://github.com/assetgraph/assetgraph-builder/pull/820) Upgrade pngquant to version 4.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#816](https://github.com/assetgraph/assetgraph-builder/pull/816) Upgrade assetgraph to version 6.6.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+
+#### Commits to master
+
+- [Fix test after the sw-precache =&gt; workbox transition](https://github.com/assetgraph/assetgraph-builder/commit/ceef7bb674029178419fa76fd3b5b84bfd730de8) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Replace optimist with yargs, fixes \#892](https://github.com/assetgraph/assetgraph-builder/commit/d85570be650d03d06c3c0a2d7bee12fb7f31508f) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Revert "Update p-map to version 5.1.0"](https://github.com/assetgraph/assetgraph-builder/commit/e050c918b669d4b609a46c808297cfd06644fcc6) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [prettier --write '\*\*\/\*.{js,json,md}'](https://github.com/assetgraph/assetgraph-builder/commit/2bca9115fac1df4b8c33c67bfda7cb7f634dcc2f) ([Andreas Lind](mailto:andreas.lind@workday.com))
+- [Update prettier to version 2.3.0](https://github.com/assetgraph/assetgraph-builder/commit/bc8db9296c326ea65dfb543500fa1bc29e25af74) ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [+2 more](https://github.com/assetgraph/assetgraph-builder/compare/v8.1.1...v8.2.0)
+
+### v8.1.1 (2021-02-07)
+
+#### Pull requests
+
+- [#817](https://github.com/assetgraph/assetgraph-builder/pull/817) Use Node.js v14 for Docker image, not the latest one \(v15\) ([Jeppe Fihl-Pearson](mailto:jeppe@tenzer.dk))
+- [#808](https://github.com/assetgraph/assetgraph-builder/pull/808) Upgrade assetgraph to version 6.5.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#805](https://github.com/assetgraph/assetgraph-builder/pull/805) Upgrade impro to version 0.9.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#806](https://github.com/assetgraph/assetgraph-builder/pull/806) Upgrade assetgraph to version 6.4.5 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#802](https://github.com/assetgraph/assetgraph-builder/pull/802) Upgrade assetgraph to version 6.4.4 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#801](https://github.com/assetgraph/assetgraph-builder/pull/801) Upgrade assetgraph to version 6.4.2 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#791](https://github.com/assetgraph/assetgraph-builder/pull/791) Upgrade sharp to version 0.27.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#792](https://github.com/assetgraph/assetgraph-builder/pull/792) Upgrade assetgraph to version 6.4.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#786](https://github.com/assetgraph/assetgraph-builder/pull/786) Upgrade eslint-config-prettier to version 7.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#781](https://github.com/assetgraph/assetgraph-builder/pull/781) Upgrade eslint-plugin-standard to version 5.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#774](https://github.com/assetgraph/assetgraph-builder/pull/774) Upgrade unexpected-color to version 4.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#777](https://github.com/assetgraph/assetgraph-builder/pull/777) Upgrade optipng to version 3.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#778](https://github.com/assetgraph/assetgraph-builder/pull/778) Upgrade pngcrush to version 3.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#779](https://github.com/assetgraph/assetgraph-builder/pull/779) Upgrade jpegtran to version 2.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#780](https://github.com/assetgraph/assetgraph-builder/pull/780) Upgrade svgfilter to version 4.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#776](https://github.com/assetgraph/assetgraph-builder/pull/776) Upgrade esanimate to version 2.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#775](https://github.com/assetgraph/assetgraph-builder/pull/775) Upgrade unexpected-image to version 4.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#770](https://github.com/assetgraph/assetgraph-builder/pull/770) Upgrade unexpected to version 12.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#772](https://github.com/assetgraph/assetgraph-builder/pull/772) Upgrade unexpected-sinon to version 11.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#771](https://github.com/assetgraph/assetgraph-builder/pull/771) Upgrade unexpected-dom to version 5.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#766](https://github.com/assetgraph/assetgraph-builder/pull/766) Upgrade assetgraph to version 6.3.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#764](https://github.com/assetgraph/assetgraph-builder/pull/764) Upgrade offline-github-changelog to version 2.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#763](https://github.com/assetgraph/assetgraph-builder/pull/763) Upgrade assetgraph to version 6.2.2 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#752](https://github.com/assetgraph/assetgraph-builder/pull/752) Upgrade sharp to version 0.26.2 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#749](https://github.com/assetgraph/assetgraph-builder/pull/749) Upgrade assetgraph to version 6.2.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#745](https://github.com/assetgraph/assetgraph-builder/pull/745) Upgrade impro to version 0.8.0 ([Andreas Lind](mailto:andreaslindpetersen@gmail.com), [depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#743](https://github.com/assetgraph/assetgraph-builder/pull/743) Upgrade prettier to version 2.1.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#740](https://github.com/assetgraph/assetgraph-builder/pull/740) Upgrade assetgraph to version 6.2.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#739](https://github.com/assetgraph/assetgraph-builder/pull/739) Upgrade eslint-plugin-mocha to version 8.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#738](https://github.com/assetgraph/assetgraph-builder/pull/738) Upgrade assetgraph to version 6.1.3 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#736](https://github.com/assetgraph/assetgraph-builder/pull/736) Upgrade assetgraph to version 6.1.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+
+#### Commits to master
+
+- [Remove accidental console.log statements in test](https://github.com/assetgraph/assetgraph-builder/commit/c834fdd64165f58606befc694034cb367084f2cc) ([Andreas Lind](mailto:andreas.lind@peakon.com))
+- [prettier --write 'bin\/\*'](https://github.com/assetgraph/assetgraph-builder/commit/4b14a80cc93a3285a691c8388331a80b6a67762e) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Fix lint](https://github.com/assetgraph/assetgraph-builder/commit/36fe4d6e80225297eb3e08164fd3a7f52c358464) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Lint with node.js 14](https://github.com/assetgraph/assetgraph-builder/commit/22c9fff756eaacb2e1dbd7eb8e58869890e67d23) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [eslint --fix .](https://github.com/assetgraph/assetgraph-builder/commit/e80ce8f6286d03fbb6c6b21a0585f2f25d3be835) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [+6 more](https://github.com/assetgraph/assetgraph-builder/compare/v8.1.0...v8.1.1)
+
+### v8.1.0 (2020-07-04)
+
+#### Pull requests
+
+- [#735](https://github.com/assetgraph/assetgraph-builder/pull/735) Switch to assetgraph-hashfiles ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [#734](https://github.com/assetgraph/assetgraph-builder/pull/734) Upgrade assetgraph to version 6.0.8 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+
+#### Commits to master
+
+- [Avoid failing on timeout when running mocha in the vscode debugger](https://github.com/assetgraph/assetgraph-builder/commit/ca6920dab8c155b3f119592e25ae67eb170bd294) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+
+### v8.0.1 (2020-06-04)
+
+#### Pull requests
+
+- [#731](https://github.com/assetgraph/assetgraph-builder/pull/731) Use pngquant --quality 100-100 to skip conversion to PNG8 if not lossless ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [#728](https://github.com/assetgraph/assetgraph-builder/pull/728) Upgrade assetgraph to version 6.0.7 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#729](https://github.com/assetgraph/assetgraph-builder/pull/729) Fix the build ([Andreas Lind](mailto:andreas.lind@peakon.com))
+- [#724](https://github.com/assetgraph/assetgraph-builder/pull/724) Upgrade eslint-plugin-mocha to version 7.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#723](https://github.com/assetgraph/assetgraph-builder/pull/723) Upgrade eslint to version 7.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#721](https://github.com/assetgraph/assetgraph-builder/pull/721) Switch to using the legacy query string parser exposed by impro. ([Alex J Burke](mailto:alex@alexjeffburke.com))
+- [#720](https://github.com/assetgraph/assetgraph-builder/pull/720) Upgrade chalk to version 4.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#718](https://github.com/assetgraph/assetgraph-builder/pull/718) Upgrade html-webpack-plugin to version 4.0.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#717](https://github.com/assetgraph/assetgraph-builder/pull/717) Upgrade estraverse to version 5.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#715](https://github.com/assetgraph/assetgraph-builder/pull/715) Upgrade p-map to version 4.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+
+#### Commits to master
+
+- [Update assetgraph-sprite to ^3.2.0](https://github.com/assetgraph/assetgraph-builder/commit/71bb13be6925ef53a5d17ce62a13233afce04378) ([Andreas Lind](mailto:andreas.lind@peakon.com))
+- [Disable npm cache on Travis](https://github.com/assetgraph/assetgraph-builder/commit/9b8b2d7d3eab36fd8c3750fb0a3d89332997109f) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Don't build with node.js 14 just yet, it's missing canvas prebuilts](https://github.com/assetgraph/assetgraph-builder/commit/29b087238e71c26ad94c0725b5cc5a2c29ad3f88) ([Andreas Lind](mailto:andreas.lind@peakon.com))
+- [prettier --write 'bin\/\*'](https://github.com/assetgraph/assetgraph-builder/commit/ee5316d6a432f56c8a7fa6f034f7c44ddfa6bcfd) ([Andreas Lind](mailto:andreas.lind@peakon.com))
+- [prettier --write '\*\*\/\*.{md,js}'](https://github.com/assetgraph/assetgraph-builder/commit/500ad3081c86811631ab79a50f2de403c4be2a53) ([Andreas Lind](mailto:andreas.lind@peakon.com))
+- [+1 more](https://github.com/assetgraph/assetgraph-builder/compare/v8.0.0...v8.0.1)
+
 ### v8.0.0 (2020-03-07)
 
 #### Pull requests
@@ -1040,6 +1161,7 @@
 - [+2 more](https://github.com/assetgraph/assetgraph-builder/compare/v3.6.0...v3.7.0)
 
 ### v3.6.0
+
 - [Added buildProduction test with an inline SVG island.](https://github.com/assetgraph/assetgraph-builder/commit/b244e2fede224008cdbd8df777f8143f895c2ada) ([Andreas Lind](mailto:andreas@one.com))
 - [Update assetgraph to 1.19.0.](https://github.com/assetgraph/assetgraph-builder/commit/e7e7707c82a3d7187daa89160bdc0785ff9e8f77) ([Andreas Lind](mailto:andreas@one.com))
 
@@ -1273,6 +1395,7 @@
 - [+3 more](https://github.com/assetgraph/assetgraph-builder/compare/v2.8.0...v2.9.0)
 
 ### v2.8.0
+
 - [Added the coverage dir to .jshintignore.](https://github.com/assetgraph/assetgraph-builder/commit/41c817bcc00f8f29b961569c0d199a4434ebe2c8) ([Andreas Lind](mailto:andreas@one.com))
 - [Alias --nocompress as --no-compress for consistency with --no-recursive, --no-semicolons, etc.](https://github.com/assetgraph/assetgraph-builder/commit/6a1b7651fff44d954dfa2c71be0d11d390e98ad5) ([Andreas Lind](mailto:andreas@one.com))
 - [buildProduction: Run the removeDeadIfsInJavaScript transform if --removedeadifs is specified.](https://github.com/assetgraph/assetgraph-builder/commit/245f6ce2b0fad466eca516bc4cf04bb6092c988b) ([Andreas Lind](mailto:andreas@one.com))
@@ -1679,6 +1802,7 @@
 - [Update pngquant to 0.1.4.](https://github.com/assetgraph/assetgraph-builder/commit/251c704a9d69c80183e65f1d6a3ac9eb427baf77) ([Peter Müller](mailto:munter@fumle.dk))
 
 ### v1.8.27
+
 - [buildProduction: Run the minifyAssetsWithSvgo transform.](https://github.com/assetgraph/assetgraph-builder/commit/d70f2bfda91ef361c5e27d123a506d2112557650) ([Peter Müller](mailto:munter@fumle.dk))
 - [Update assetgraph to 1.6.17](https://github.com/assetgraph/assetgraph-builder/commit/2a03f1fd5ceabfaecf34dfdc04652709a4a67fb1) ([Peter Müller](mailto:munter@fumle.dk))
 
@@ -1692,6 +1816,7 @@
 - [+2 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.8.25...v1.8.26)
 
 ### v1.8.25
+
 - [Update express-processimage to 0.1.14 and pngquant to 0.1.1.](https://github.com/assetgraph/assetgraph-builder/commit/fd84123ca6db8c45615012dbd571d3d60418a0ab) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.8.24 (2014-03-21)
@@ -1819,11 +1944,13 @@
 - [+2 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.8.2...v1.8.4)
 
 ### v1.8.2
+
 - [Release v1.8.2.](https://github.com/assetgraph/assetgraph-builder/commit/aac1be1c09a0fc7156b19b5aa767023ad95e8458) ([Peter Müller](mailto:munter@fumle.dk))
 - [Update assetgraph to 1.6.0.](https://github.com/assetgraph/assetgraph-builder/commit/71d4557e2ea07f375e41c9aada17ba02d157378a) ([Peter Müller](mailto:munter@fumle.dk))
 - [Replace RequireJS with Almond if data-almond attribute is used to declare the path to almond](https://github.com/assetgraph/assetgraph-builder/commit/92d356b780cda6ddaee73777897a930aef1cd917) ([Peter Müller](mailto:munter@fumle.dk))
 
 ### v1.8.1
+
 - [Release 1.8.1.](https://github.com/assetgraph/assetgraph-builder/commit/9dc386629af7e89cbfffa36d83a3e684f8c0d6d1) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Never put .jar files on CDN. Seems like it's causing certain browsers to complain.](https://github.com/assetgraph/assetgraph-builder/commit/b4fdaa36c1996eb1a52577ea68826299892cbda9) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Travis: Also install libjpeg-turbo-progs and inkscape.](https://github.com/assetgraph/assetgraph-builder/commit/70a111a04668df1dcbbe6dd43f1d6c9e7fb60c7d) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -1832,6 +1959,7 @@
 - [+6 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.8.0...v1.8.1)
 
 ### v1.8.0
+
 #### Pull requests
 
 - [#101](https://github.com/assetgraph/assetgraph-builder/pull/101) Simplify command line arguments ([Peter Müller](mailto:munter@fumle.dk))
@@ -1870,41 +1998,50 @@
 - [Update assetgraph to 1.5.12.](https://github.com/assetgraph/assetgraph-builder/commit/b6afe89b7a13535a9f153e8115491d2f2721ee66) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.7.14
+
 - [Release 1.7.14.](https://github.com/assetgraph/assetgraph-builder/commit/7a7622ceeeeb20f21cec7e2b4d8132133c2b2666) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.5.10.](https://github.com/assetgraph/assetgraph-builder/commit/99b19accf5af817909b099f5ff4d066e4dbcd4e9) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.7.13
+
 - [Release 1.7.13.](https://github.com/assetgraph/assetgraph-builder/commit/461938105da9e8f9e427977c5f01742a8dd268ee) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Added buildProduction --cdncrossoriginanonymous](https://github.com/assetgraph/assetgraph-builder/commit/fd9ee28f79bb6bf33be5cc7802b43f6bf6548c97) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.7.12
+
 - [Release 1.7.12.](https://github.com/assetgraph/assetgraph-builder/commit/543ad9f641c91fadd4beb89d6d33e0cb3cb936c0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Sort the keys case insensitively in the output babel files.](https://github.com/assetgraph/assetgraph-builder/commit/34f302e7b99a24f6a9667f3ba0a8eb8cb2f7f7da) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json: Specify a 'tag' of 'v1.7' so the 'latest' tag isn't updated when a new v1.7-series release is published.](https://github.com/assetgraph/assetgraph-builder/commit/6a247b0e15245b772e052835fdaff0fc6e54bf8a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.7.11
+
 - [Release 1.7.11.](https://github.com/assetgraph/assetgraph-builder/commit/da986dd330b5f99112d00d65cb66e2897a6b68ba) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Reenabled the nocompress command line option. Closes \#59](https://github.com/assetgraph/assetgraph-builder/commit/63dc2090a7fab615c4abd3d2dc426d3f70a02da1) ([Peter Müller](mailto:munter@fumle.dk))
 
 ### v1.7.10
+
 - [Release 1.7.10.](https://github.com/assetgraph/assetgraph-builder/commit/00b452d7d2a64dd6b220bbea3ee1b0818b23ae49) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Added test for \#58.](https://github.com/assetgraph/assetgraph-builder/commit/c52a287b3593afd3e20c28db7e29b66bebb2c0fb) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.5.9.](https://github.com/assetgraph/assetgraph-builder/commit/247bcb6abb2da411a9f94f1ed8860a11b0dde4ab) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.7.9
+
 - [Release 1.7.9.](https://github.com/assetgraph/assetgraph-builder/commit/75ea269aaeb7811a30e65842af952ba3c97c0ecd) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Don't attempt to inline relations to unloaded assets. Relates to \#58.](https://github.com/assetgraph/assetgraph-builder/commit/e10f77ad27c1832f3fde81e19f08a1a73cf7e7d9) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.7.8
+
 - [Release 1.7.8.](https://github.com/assetgraph/assetgraph-builder/commit/51e09cee17610e99d6534c85b531ab8b74399baa) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.5.8.](https://github.com/assetgraph/assetgraph-builder/commit/27e5b1812e1caa4384632f96aee7525781ebd5bf) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Don't attempt to run the mergeIdenticalAssets transform on images that haven't been loaded.](https://github.com/assetgraph/assetgraph-builder/commit/f7dea48f51192f38b1a2b615d0f36819698c494a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.7.7
+
 - [Release 1.7.7.](https://github.com/assetgraph/assetgraph-builder/commit/38102da405aa25d45145a03364cbbbe4b44b76e7) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.5.7.](https://github.com/assetgraph/assetgraph-builder/commit/eae49f04622b324afc293d71aea110d05c857b06) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.7.6
+
 - [Release 1.7.6.](https://github.com/assetgraph/assetgraph-builder/commit/07750ee5093ecf2cc4970613fd71bfade92a9174) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.5.6.](https://github.com/assetgraph/assetgraph-builder/commit/0b95c9732d71767b80048a7b66888b7088c6e62d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildDevelopment: Don't break when some assets couldn't be loaded.](https://github.com/assetgraph/assetgraph-builder/commit/c8663167640813ea5d8a6c0360eace6f27368800) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -1913,33 +2050,39 @@
 - [+1 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.7.5...v1.7.6)
 
 ### v1.7.5
+
 - [Release 1.7.5.](https://github.com/assetgraph/assetgraph-builder/commit/5275b0dc3b105d0f7da528d71892e073f2b79501) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Added test for issue \#54.](https://github.com/assetgraph/assetgraph-builder/commit/2e90fe2470b883d8e22dca4333c8d5f1376dac90) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.5.4.](https://github.com/assetgraph/assetgraph-builder/commit/50d980016800c80dbbae62a9a9da715b72ab923c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.7.4
+
 - [Release 1.7.4.](https://github.com/assetgraph/assetgraph-builder/commit/2588e30db56cd4f535863f2a407166f40900f85b) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [bin\/\*: Apply the require.js config hack from 752463f to all command line tools that currently worry about require.js.](https://github.com/assetgraph/assetgraph-builder/commit/7e9dfef4c9cb6f368366ffa7e0b8006c414bc5b9) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Only follow HtmlScript relations to file:\/\/... when looking for the require.js config.](https://github.com/assetgraph/assetgraph-builder/commit/06d9a2baf1e4db46299b96d7b8454e958e8c4d75) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Move the require.js configuration hack introduced in 752463f into a separate transform.](https://github.com/assetgraph/assetgraph-builder/commit/c8cd0c472810cfbc19cfe5f705597b6dc14e35a4) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.7.3
+
 - [Release 1.7.3.](https://github.com/assetgraph/assetgraph-builder/commit/af04aa9d5fb5e94dded6c2fc938cf8bb257039fb) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.5.3.](https://github.com/assetgraph/assetgraph-builder/commit/909a2095a5d6ce7ce2e57d60c158f9094b412f49) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Look for the require.js config in all top-level scripts before starting to resolve JavaScriptAmd\(Define|Require\) relations. Might help out with \#54.](https://github.com/assetgraph/assetgraph-builder/commit/752463f7ce2774ab11cdf2d70499bc17389953ea) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.7.2
+
 - [Release 1.7.2.](https://github.com/assetgraph/assetgraph-builder/commit/54dd6c8f34dd34d73fcb3324039ccdc06e74e6e2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Added buildProduction tests with GETSTATICURL wildcards that match a single file. With AssetGraph 1.5.1 and below these tests broke because the GETSTATICURL calls were incorrecly reserialized.](https://github.com/assetgraph/assetgraph-builder/commit/d922fd415ba3b1fcd6e86034100c70da9897d139) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.5.2.](https://github.com/assetgraph/assetgraph-builder/commit/4f18b93d93184458ec4c3fa63bc1bdd52e0d844c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [README: --locale =&gt; --locales](https://github.com/assetgraph/assetgraph-builder/commit/3ad5c301b1709b04e5c43240bf1a5372dc5ba527) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.7.1
+
 - [Release 1.7.1.](https://github.com/assetgraph/assetgraph-builder/commit/959fe416e07420fa336089b60326bf7dad053176) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.5.1.](https://github.com/assetgraph/assetgraph-builder/commit/9b06f7307bf047c554d7778aa9f311b01fda4dd6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Switched back to the official histogram package, version 0.1.4.](https://github.com/assetgraph/assetgraph-builder/commit/b031fa815223f45781bc58c68172fb7897b6246a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.7.0
+
 - [Release 1.7.0.](https://github.com/assetgraph/assetgraph-builder/commit/8ced9571edbe56871dcaaf9de859f0d08aae9db5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.5.0.](https://github.com/assetgraph/assetgraph-builder/commit/416c8562d36ffddaea91aa98ec6b70cba5ed165a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph-sprite to 0.5.2.](https://github.com/assetgraph/assetgraph-builder/commit/b073fa5800a79187325a94fe7724889c44b9a0e0) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -1948,6 +2091,7 @@
 - [+2 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.6.3...v1.7.0)
 
 ### v1.6.3
+
 - [Release 1.6.3.](https://github.com/assetgraph/assetgraph-builder/commit/836bf02c52d21680d2031ae80de3ec56be0c86ab) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.4.2.](https://github.com/assetgraph/assetgraph-builder/commit/f74e3347807658d6dda1d607fc98335455a1498c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Added buildProduction test that uses the less! plugin.](https://github.com/assetgraph/assetgraph-builder/commit/fae3c8c4c5e44e8ce8c1d6d65f63d2d160b0b99d) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -1956,18 +2100,22 @@
 - [+2 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.6.2...v1.6.3)
 
 ### v1.6.2
+
 - [Release 1.6.2.](https://github.com/assetgraph/assetgraph-builder/commit/f98a7c60c1f209dfa99844f03efc111649108c28) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.4.1.](https://github.com/assetgraph/assetgraph-builder/commit/4e985471827081c16587ff76c6e48d57639d7006) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.6.1
+
 - [Release 1.6.1.](https://github.com/assetgraph/assetgraph-builder/commit/1afc376b6974fa3ef971d6f5769adc5b31d737a0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [addContentVersionMetaElement: Don't break when metaTag.getAttribute\('http-equiv'\) returns null. Probably a difference btw. jsdom 0.2 and 0.5.](https://github.com/assetgraph/assetgraph-builder/commit/e9a336592cc4662e3c95e394ac65db8f56627c75) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.6.0
+
 - [Release 1.6.0.](https://github.com/assetgraph/assetgraph-builder/commit/d3eb1b88462c0e4ff09b91f4757a1947665bbfe6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.4.0.](https://github.com/assetgraph/assetgraph-builder/commit/3753c34585aa6d6f2258c898fefa4e14cdeac3f2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.5.8
+
 #### Pull requests
 
 - [#50](https://github.com/assetgraph/assetgraph-builder/pull/50) Added cdnflash command line switch ([Peter Müller](mailto:munter@fumle.dk))
@@ -1979,44 +2127,53 @@
 - [buildDevelopment: Don't attempt to remove assets that haven't been loaded, preventing an exception when 'jquery' is required in a project that uses require-jquery.js](https://github.com/assetgraph/assetgraph-builder/commit/cd25f7d1a31eac72dd8a1a103f0378f43e831ab9) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.5.7
+
 - [Release 1.5.7.](https://github.com/assetgraph/assetgraph-builder/commit/175b7989085eda8c483262cd2e46872c207250ef) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Convert @import rules to &lt;link rel="stylesheet" href="..."&gt; after bundling the require.js relations. Prevents @imports in stylesheets pulled in via require.js from sticking around in the production build.](https://github.com/assetgraph/assetgraph-builder/commit/535530e13cf52f2d4d89014d42d9f44eadd0c0d5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.3.11.](https://github.com/assetgraph/assetgraph-builder/commit/06e122113e29aaa4b347d58fbe1593e29a833d20) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.5.6
+
 - [Release 1.5.6.](https://github.com/assetgraph/assetgraph-builder/commit/68fe61c95537fa26c95ec70777d8320a01a54f27) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.3.10.](https://github.com/assetgraph/assetgraph-builder/commit/7db21bd5d66c5e5ffd6be30b6cdf9bb1a4f090c6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.5.5
+
 - [Release 1.5.5.](https://github.com/assetgraph/assetgraph-builder/commit/853115513e19765237b5d535d15704183de7022c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Added quick-and-dirty tool for checking language keys.](https://github.com/assetgraph/assetgraph-builder/commit/01be9b253dba61838724264111cab1d503afd2b0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Removed 'npm install' from prepublish. Due to a strange \(but apparently intentional\) change in npm, the prepublish hook is now triggered when 'npm install' and 'npm link' are invoked.](https://github.com/assetgraph/assetgraph-builder/commit/f91a4f1f9fb46375482b3ecd52f201f984c89e04) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.5.4
+
 - [Release 1.5.4.](https://github.com/assetgraph/assetgraph-builder/commit/36071b2bdcd9c644d866cd0471654acbbb37abd8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [cloneForEachLocale: Do dive into the RHS of assign nodes when replacing LOCALEID etc. Fixes bug introduced in a554609 \(1.5.1+\).](https://github.com/assetgraph/assetgraph-builder/commit/5ecdb9c356f5dd1f9d21a486f4604bfaf7349e36) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.5.3
+
 - [Release 1.5.3.](https://github.com/assetgraph/assetgraph-builder/commit/391bb8d5f104341c3ea39b57c0707ba7801fcf22) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [addContentVersionMetaElement: Don't appendChild the Content-Version element to head after inserting it in exactly the right place \(d'oh!\).](https://github.com/assetgraph/assetgraph-builder/commit/b4bb131dc406ac73d66ced1e73f385cca62aae27) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.5.2
+
 - [Release 1.5.2.](https://github.com/assetgraph/assetgraph-builder/commit/f73b56d10d7c465684605f67db043970b5df1025) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Fixed typo that broke buildProduction --prettyprint](https://github.com/assetgraph/assetgraph-builder/commit/8d0d5c05bf2d3f6aa627927abb08030014da4cb8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.5.1
+
 - [Release 1.5.1.](https://github.com/assetgraph/assetgraph-builder/commit/6ee199205d5ec2eecc9ce86c072dccceeef9c069) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.3.9.](https://github.com/assetgraph/assetgraph-builder/commit/727969d19eefe2337a615c50e05dd181a27adb91) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [cloneForEachLocale: Added poor man's optimization of if statements that helps out with huge inter builds.](https://github.com/assetgraph/assetgraph-builder/commit/a554609185dbe1d7c5ed2f3ab3bb284fa0673e41) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.3.8.](https://github.com/assetgraph/assetgraph-builder/commit/44684690cc55d766da694b79ba51c706a48ad9db) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.5.0
+
 - [Release 1.5.0.](https://github.com/assetgraph/assetgraph-builder/commit/bcca054c3522ca3a3c6ff16c3b6a190291bc1a9c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Changed --nocompress to --prettyprint and run UglifyJS when it's specified.](https://github.com/assetgraph/assetgraph-builder/commit/3c930105cb241f503d5cc5ee86fcf54a120cd685) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Convert &lt;script data-main=...&gt; to &lt;script src=...&gt; before bundling.](https://github.com/assetgraph/assetgraph-builder/commit/5b7d250b34c631c9578110e800ed71c26b943482) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.3.7.](https://github.com/assetgraph/assetgraph-builder/commit/dbe95ce9b2b09e90fd690ac729c95819393d090b) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.4.4
+
 - [Release 1.4.4.](https://github.com/assetgraph/assetgraph-builder/commit/f9c6ce7935ac37778ae8333ebbc5856e923db8fe) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.3.5.](https://github.com/assetgraph/assetgraph-builder/commit/a018e4eae701478d262686e1c0fad83d4e9f2b4f) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update README.md](https://github.com/assetgraph/assetgraph-builder/commit/db00ce0a854408ad97d4aeaec74b8ab072eccbf4) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2024,17 +2181,20 @@
 - [bootstrapper, GETSTATICURL: Support {a,b} and {0..1} wildcards.](https://github.com/assetgraph/assetgraph-builder/commit/938e2620b6e32688a4f13ab73cfa19894ae6153a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.4.3
+
 - [Release 1.4.3.](https://github.com/assetgraph/assetgraph-builder/commit/4baa1e016c1bfeba74e7810e5fe8ccdc02376876) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [README: Added docs for GETSTATICURL.](https://github.com/assetgraph/assetgraph-builder/commit/0876cb7801c49df4fda2a153fe366d0c97461068) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Added test with an Html fragment asset without incoming relations \(see \#48\).](https://github.com/assetgraph/assetgraph-builder/commit/c75b7466be14605207dabb06a85a3a4a00085e33) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.3.4.](https://github.com/assetgraph/assetgraph-builder/commit/255b95c8a3e198f8eecdf03c3738728320314189) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.4.2
+
 - [Release 1.4.2.](https://github.com/assetgraph/assetgraph-builder/commit/b23b09f574bc86151291161fc6a5432f8dffbf76) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.3.3.](https://github.com/assetgraph/assetgraph-builder/commit/643df602f264b904629b53a0298cbcf3c5594848) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Added failing test case with a data-main script that has an INCLUDE.](https://github.com/assetgraph/assetgraph-builder/commit/a78f7269f9ea120ae3827b0364bea8625b0d1a16) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.4.1
+
 - [Release 1.4.1.](https://github.com/assetgraph/assetgraph-builder/commit/ec781852067460c7a986e67b1ab081e99c9979c9) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.3.2.](https://github.com/assetgraph/assetgraph-builder/commit/3fdb3b004a8bca3ba8173690900951d4ef55d783) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Fixed buildDevelopment test so it doesn't expect the keys in window.I18NKEYS to be sorted alphabetically.](https://github.com/assetgraph/assetgraph-builder/commit/ad051bad913d54c47f096a8d29a541292ffc7b54) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2043,22 +2203,26 @@
 - [+7 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.4.0...v1.4.1)
 
 ### v1.4.0
+
 - [Release 1.4.0.](https://github.com/assetgraph/assetgraph-builder/commit/105de2cd0a0ef75af2ea6aceb24893000f3f8ca0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to assetgraph 1.3.0.](https://github.com/assetgraph/assetgraph-builder/commit/c4aa867c9d23a9197370cf0914ff297dcdbe76ae) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.3.7
+
 - [Release 1.3.7.](https://github.com/assetgraph/assetgraph-builder/commit/38ee450147a02c3381814b3872870952bdd90687) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction test: Expect whitespace around &lt;li&gt; to be compressed to one space rather than removed \(AssetGraph 1.2.5\).](https://github.com/assetgraph/assetgraph-builder/commit/0fd0dcf0149950e963c316709724d2382908c5f8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.2.5.](https://github.com/assetgraph/assetgraph-builder/commit/d280a1844edeb85e2350b45ae6e59615f1ad526b) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [cloneForEachLocale: Localize before the asset's outgoing relations are traversed. Relates to \#36.](https://github.com/assetgraph/assetgraph-builder/commit/4de8ccbee0afef8bdeeed65e6724ac409583979c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.3.6
+
 - [Release 1.3.6.](https://github.com/assetgraph/assetgraph-builder/commit/05bbccb0984454f53892de42138c7965c701de59) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.2.4.](https://github.com/assetgraph/assetgraph-builder/commit/38ade103916e9da0fc25b78d2f801f128f3b6b7d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [cloneForEachLocale: DTRT when the same placeholder is used multiple times. Fixes \#36.](https://github.com/assetgraph/assetgraph-builder/commit/0f20dce1489a268c1fa747d60011f4128d143106) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Use OptiPng.getBinaryName and JpegTran.getBinaryName for detecting whether there's a binary available.](https://github.com/assetgraph/assetgraph-builder/commit/f05d266eaaa10d0d2bf7bf8c747704a6b0e6db52) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.3.5
+
 - [Release 1.3.5.](https://github.com/assetgraph/assetgraph-builder/commit/5b35163e81f9c554a7cb8a63d5fbc9f8ef891095) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph-sprite to 0.5.1.](https://github.com/assetgraph/assetgraph-builder/commit/66207d98dcd58d9ee8a427fcefbe46b25b4ee8be) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update express-processimage to 0.0.6, jpegtran to 0.0.4, and optipng to 0.0.4.](https://github.com/assetgraph/assetgraph-builder/commit/8b2f4575b9fa939aef45d83e539a19ae4dec311e) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2067,6 +2231,7 @@
 - [+3 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.3.4...v1.3.5)
 
 ### v1.3.4
+
 - [Release 1.3.4.](https://github.com/assetgraph/assetgraph-builder/commit/7d7a2aaa573b0fceac8c0af2cde9d2c053a57304) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Added test case for localization of Angular.js templates.](https://github.com/assetgraph/assetgraph-builder/commit/aac633aa2c96cc090da43f6e3a8f2183a0c14bc2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [cloneForEachLocale: Follow all non-HtmlAnchor relations instead of keeping a whitelist.](https://github.com/assetgraph/assetgraph-builder/commit/8e9a7ce7755a16310a05c6ada975e25d49cdfe4a) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2074,6 +2239,7 @@
 - [Update assetgraph-sprite to 0.5.0.](https://github.com/assetgraph/assetgraph-builder/commit/3cffe9d5dba7821eb8f7ce7dc7929044e0d76b85) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.3.3
+
 - [Release 1.3.3.](https://github.com/assetgraph/assetgraph-builder/commit/5536d82b78e3ddba410e6fbc50cc4b7275c925d8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Avoid lingering Angular.js templates after compressJavaScript\/cloneForEachLocale.](https://github.com/assetgraph/assetgraph-builder/commit/453e796c65b0c771d413457edd97116d87044d55) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.2.2.](https://github.com/assetgraph/assetgraph-builder/commit/a19aaec92982d515518b153fa204037a4b8a3607) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2082,6 +2248,7 @@
 - [+3 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.3.2...v1.3.3)
 
 ### v1.3.2
+
 - [Release 1.3.2.](https://github.com/assetgraph/assetgraph-builder/commit/a28185023d8581b0be59dff90b4654b50600c4bf) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Inline Angular.js templates.](https://github.com/assetgraph/assetgraph-builder/commit/60a69b0ebcf05b6fe1fd84de88f721b177ac6376) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.2.1.](https://github.com/assetgraph/assetgraph-builder/commit/6a4bff45fb67bb3148d267a61a6004160a46ea78) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2090,10 +2257,12 @@
 - [+3 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.3.1...v1.3.2)
 
 ### v1.3.1
+
 - [Release 1.3.1.](https://github.com/assetgraph/assetgraph-builder/commit/a7ef0d071a596a7d060c1de27faf987f0ad57416) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Fixed --defaultlocale.](https://github.com/assetgraph/assetgraph-builder/commit/ddd8b4872e66ab46f12b464d794b4083807591da) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.3.0
+
 - [Release 1.3.0.](https://github.com/assetgraph/assetgraph-builder/commit/5a6a4c7dfc0b422a90c61b6d4d3498a8d565d889) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Removed some legacy syntax from the processImages test case.](https://github.com/assetgraph/assetgraph-builder/commit/d98784955205fe87af7194e1e0fe14cc7977c2e7) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [cloneForEachLocale test: -ag-image-inline =&gt; ?inline](https://github.com/assetgraph/assetgraph-builder/commit/11ae8f8a3518b5793d69cf4a59ffa0ca22559c81) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2102,10 +2271,12 @@
 - [+10 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.2.2...v1.3.0)
 
 ### v1.2.2
+
 - [Release 1.2.2.](https://github.com/assetgraph/assetgraph-builder/commit/bf5dfd107b15d36b8c12ade8b0a929b2966a9606) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.1.3.](https://github.com/assetgraph/assetgraph-builder/commit/fe003c2157fc9ece108f0513f6d9d84eebd27de7) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.2.1
+
 - [Release 1.2.1.](https://github.com/assetgraph/assetgraph-builder/commit/64af2a63adb1fafc226267ac256a2e54cf03354b) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Fixed --defaultlocale.](https://github.com/assetgraph/assetgraph-builder/commit/8ca05044b7293adbfd61892422bdafa158903705) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [bootstrapper: Include i18nTools.createInfoObjectUpdater in the bootstrapper \(broke localization in development mode\).](https://github.com/assetgraph/assetgraph-builder/commit/d051e1f585560796c31df90b03299a2a82171e1f) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2114,6 +2285,7 @@
 - [+1 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.2.0...v1.2.1)
 
 ### v1.2.0
+
 #### Pull requests
 
 - [#31](https://github.com/assetgraph/assetgraph-builder/pull/31) Rename -one- vendor prefix to -ag- ([Peter Müller](mailto:munter@fumle.dk))
@@ -2125,48 +2297,58 @@
 - [Update assetgraph to 1.1.0.](https://github.com/assetgraph/assetgraph-builder/commit/75778acaf0961ddbd9bf393a4024231ed937f23b) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.1.22
+
 - [Release 1.1.22 \(node.js 0.10 compatible\).](https://github.com/assetgraph/assetgraph-builder/commit/c1a0d0a8381448b5c65a7571057d33bb8da21ec5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.28.](https://github.com/assetgraph/assetgraph-builder/commit/863e2cd3d88832f08fdf4d285ba5bb6f7d047ea8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update vows to 0.7.0.](https://github.com/assetgraph/assetgraph-builder/commit/9365182e3f2a4724669aa6e748cf5b2e4aaeb797) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.1.21
+
 - [Release 1.1.21.](https://github.com/assetgraph/assetgraph-builder/commit/d6b132613c37dbe576109f90c1b6110b30622723) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Fixed buildDevelopment test so it doesn't expect the keys in window.I18NKEYS to be sorted alphabetically.](https://github.com/assetgraph/assetgraph-builder/commit/9bcbe9af2655743418e5b2003cfb16faaee71048) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update uglifyast to 0.1.0.](https://github.com/assetgraph/assetgraph-builder/commit/f8b100ea12c8164251ef3f3f914f9099ec17ad7f) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json: Specify "tag": "v1.1" so new versions published from the v1.1 branch don't get the 'latest' tag.](https://github.com/assetgraph/assetgraph-builder/commit/3f71fb4e6da5bcf037b8f6a818118aa54ddb39e3) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.1.20
+
 - [Release 1.1.20.](https://github.com/assetgraph/assetgraph-builder/commit/4da3e54fb1557fa39cafd7ac0b2e203abbb57c57) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.27.](https://github.com/assetgraph/assetgraph-builder/commit/a5b6ce53f0552fb964fb89725ce587e4ccf01326) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.1.19
+
 - [Release 1.1.19.](https://github.com/assetgraph/assetgraph-builder/commit/8a0abd6650fc9f14fe54037b5dbf058f20529c19) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.26.](https://github.com/assetgraph/assetgraph-builder/commit/9f93ee1b0b5028f94096dc842129dac3dde0c797) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.1.18
+
 - [Release 1.1.18.](https://github.com/assetgraph/assetgraph-builder/commit/e1eafcaa75fdc8605761b871997f0cfe1ad709af) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Fixed --defaultlocale.](https://github.com/assetgraph/assetgraph-builder/commit/8489864188f5e0b1eee7e263c37ba0f0c0b734a2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.1.17
+
 - [Release 1.1.17.](https://github.com/assetgraph/assetgraph-builder/commit/7d57d33c7da857db56419d9aeb6e2358ddbe86d5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Bootstrapper: Fixed translation of the main document in development mode.](https://github.com/assetgraph/assetgraph-builder/commit/b2deb6a128411d728fb124ee90bd7a58b5953813) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [applyBabelJob: Support non-alphanumeric chars in square bracket suffixes in language key names.](https://github.com/assetgraph/assetgraph-builder/commit/9a478a0c2033b9d0311cfdbc54d877ec7b33a81e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.1.16
+
 - [Release 1.1.16.](https://github.com/assetgraph/assetgraph-builder/commit/51545b08bbcd3e6b1f1f8a682c8dc08a754cabb6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Unbreak --cdnroot with a protocol-relative url. Closes \#33.](https://github.com/assetgraph/assetgraph-builder/commit/56d446e5324daab1fcdce5ef8fa5b9c9b4f3548c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.1.15
+
 - [Release 1.1.15.](https://github.com/assetgraph/assetgraph-builder/commit/c5f59ce77fba66efc4d4e58483a5bb6f0d7ab1e7) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [bootstrapper: Include i18nTools.createInfoObjectUpdater in the bootstrapper \(broke localization in development mode\).](https://github.com/assetgraph/assetgraph-builder/commit/254f1222507386ea65b64bf14c5d9cecb9bad759) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [applyBabelJob: Added --i18n option that imports all language keys to one .i18n asset instead of guessing.](https://github.com/assetgraph/assetgraph-builder/commit/4494e5f205030eaf86a4015c1f5ce20a89d81ded) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [applyBabelJob: Fixed typo that caused HtmlAnchor relations to be populated.](https://github.com/assetgraph/assetgraph-builder/commit/4d20f70c05426632f21ce245e647bdf39816e7e3) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.1.14
+
 - [Release 1.1.14.](https://github.com/assetgraph/assetgraph-builder/commit/ec7a0a283610d553cc1a11fc6216fdb468ca2455) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.buildProduction: Don't put Htc assets on the CDN.](https://github.com/assetgraph/assetgraph-builder/commit/5fafdaaa746c4d57c574c5baffbbfee308346b8b) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.1.13
+
 - [Release 1.1.13.](https://github.com/assetgraph/assetgraph-builder/commit/72a4d0283078f9ef8a0873099e5b41fedbdfa84d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.25.](https://github.com/assetgraph/assetgraph-builder/commit/4a91dcc5c3b223d9e7fd0ed5cbf5631baf51f295) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Improved error reporting for invalid --define options.](https://github.com/assetgraph/assetgraph-builder/commit/9ca7a976a13fc94fe10ddb79f556fe214262098f) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2175,6 +2357,7 @@
 - [+4 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.1.12...v1.1.13)
 
 ### v1.1.12
+
 #### Pull requests
 
 - [#32](https://github.com/assetgraph/assetgraph-builder/pull/32) Add support for jpeg optimization with jpegtran ([Peter Müller](mailto:munter@fumle.dk))
@@ -2188,6 +2371,7 @@
 - [README: Addes png optimization bullet](https://github.com/assetgraph/assetgraph-builder/commit/57b5d01bc22782459c2994e65bf9a749411bf0ae) ([Peter Müller](mailto:munter@fumle.dk))
 
 ### v1.1.11
+
 - [Release 1.1.11.](https://github.com/assetgraph/assetgraph-builder/commit/44e31a45999e7a42c8827d1a6ce7fd011c2f4674) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.24.](https://github.com/assetgraph/assetgraph-builder/commit/ae5bcdf3aebe5db2c5d67fc32288846d3c1658fb) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [bootstrapper.createContext: Expose the console object on the created context.](https://github.com/assetgraph/assetgraph-builder/commit/c1bc5490019437211df9332b67aee2bc81366fa2) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2196,10 +2380,12 @@
 - [+1 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.1.10...v1.1.11)
 
 ### v1.1.10
+
 - [Release 1.1.10.](https://github.com/assetgraph/assetgraph-builder/commit/a61157cf87d41dff706e540759a6767c92db1a73) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Added tool for finding untranslated text in HTML.](https://github.com/assetgraph/assetgraph-builder/commit/c983076754780d7b15d3e282231583ae56e1ebb4) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.1.9
+
 - [Release 1.1.9.](https://github.com/assetgraph/assetgraph-builder/commit/76b943d9595c4c32e9ab1836f51dd36100633901) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [makeBabelJob test: Expect the keys in the translation job to be sorted alphabetically.](https://github.com/assetgraph/assetgraph-builder/commit/89d51b7f9fcb069eb75017282165dcbe9656bb69) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [makeBabelJob: Added --all switch that doesn't skip already translated keys.](https://github.com/assetgraph/assetgraph-builder/commit/30ebeff6bd63718e867bf155fc14c3dee94d0be6) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2208,6 +2394,7 @@
 - [+2 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.1.8...v1.1.9)
 
 ### v1.1.8
+
 - [Release v1.1.8.](https://github.com/assetgraph/assetgraph-builder/commit/078bf5d578fe62dd28dbab8250c11b3bb1043108) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.23.](https://github.com/assetgraph/assetgraph-builder/commit/e76416ca83dc9e3b11a490d56ccff417bda2ea4e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.buildProduction: No need to pass options.quiet to cloneForEachLocale anymore.](https://github.com/assetgraph/assetgraph-builder/commit/ec923d8a281cad1691c34840e8f1730fdd513799) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2216,66 +2403,80 @@
 - [+3 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.1.7...v1.1.8)
 
 ### v1.1.7
+
 - [Release 1.1.7.](https://github.com/assetgraph/assetgraph-builder/commit/196a56a7960d275581fddecd0184b897d9c8eba4) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [makeBabelJob & applyBabelJob: Follow all relations except HtmlAnchor when populating. Some newer relation types such as JavaScriptTrHtml were missing.](https://github.com/assetgraph/assetgraph-builder/commit/61461592e245e485281e3cab97b10313ee1b9550) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.22.](https://github.com/assetgraph/assetgraph-builder/commit/42f47da2fb086ba3584ba89d84be7a51c866d1ad) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.1.6
+
 - [Release 1.1.6.](https://github.com/assetgraph/assetgraph-builder/commit/4d9d59b0fec5898ebdaf06efc9030c684cbfcd71) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Updater assetgraph to 1.0.21.](https://github.com/assetgraph/assetgraph-builder/commit/fd57942d14053c4ce8210b1796bf6f9d75010502) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Simplified transforms.cloneForEachLocale.](https://github.com/assetgraph/assetgraph-builder/commit/1eb13d08d9879cf53d587bc6e85661a17a65cae1) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.1.5
+
 - [Release 1.1.5.](https://github.com/assetgraph/assetgraph-builder/commit/c3c2c1d31f8e642728de86c07913f3ed9da987b1) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.20.](https://github.com/assetgraph/assetgraph-builder/commit/fbeb534a8fff36493c71c1e88c848803e5aa674c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.1.4
+
 - [Release 1.1.4.](https://github.com/assetgraph/assetgraph-builder/commit/4b320c80b03bc4ae51fe57bfa87eb9b7a9ca1ee9) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.19.](https://github.com/assetgraph/assetgraph-builder/commit/ef3784fcb284ac66432b430ad9285e25dc466803) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.1.3
+
 - [Release 1.1.3.](https://github.com/assetgraph/assetgraph-builder/commit/2fe364c007dc777bae64a1605aa5eb8cbcf677fe) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.cloneForEachLocale test: Always set quiet:true to avoid console output.](https://github.com/assetgraph/assetgraph-builder/commit/5e30b2fa69a59a9ec8accb3e916858260e4af47a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [cloneForEachLocale: Warn about leading and trailing whitespace in language key values and default values.](https://github.com/assetgraph/assetgraph-builder/commit/fc37f4bc6b2fe2a76203d9c705a96739178d4af2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [cloneForEachLocale \(and i18nTools\) overhaul:](https://github.com/assetgraph/assetgraph-builder/commit/d642cc59eb38f19fcd02e3d7ff9f9f8746654111) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.1.2
+
 - [Release 1.1.2.](https://github.com/assetgraph/assetgraph-builder/commit/26be2d56fadd70190afb0536a47f192d159be33c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.18.](https://github.com/assetgraph/assetgraph-builder/commit/931f96ba1368ad058f058ebe0e0edf8ce088f67b) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.1.1
+
 - [Release 1.1.1.](https://github.com/assetgraph/assetgraph-builder/commit/86f557ec52473d60c0489905f973d70d47c25ed9) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Unbreak buildDevelopment --localecookiename](https://github.com/assetgraph/assetgraph-builder/commit/c91fecfe4e4c5bd9546fe31b4c1f3044017182fe) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Added support for --define symbol\[=value\] à la UglifyJs.](https://github.com/assetgraph/assetgraph-builder/commit/d621606a864946e0b09fb4978952114639b09aac) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction --less: Also remove the in-browser less compiler if it hasn't been populated \(eg. if it's included from a CDN\).](https://github.com/assetgraph/assetgraph-builder/commit/5b7330100fa8aa77cc400a2cd85f3120693e7bf8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.1.0
+
 - [Release 1.1.0.](https://github.com/assetgraph/assetgraph-builder/commit/a42092c46328e9975cec55db58cb18d0aa6fce1d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction, buildDevelopment etc.: Changed the --locale switch to --locales because it makes much more sense.](https://github.com/assetgraph/assetgraph-builder/commit/47279e0509f2a49740bd994867e69bd2d8dce4d6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.26
+
 - [Release 1.0.26.](https://github.com/assetgraph/assetgraph-builder/commit/a6cb51f214f0fc5470be5aae3561b210e687d3ca) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction --nocompress: Don't pretty-print inline JavaScript assets unless they're included by an HtmlScript relation.](https://github.com/assetgraph/assetgraph-builder/commit/8975d5f9876cc093c944c6f7659b7ade44a9bb14) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.25
+
 - [Release 1.0.25.](https://github.com/assetgraph/assetgraph-builder/commit/925daf5cbf8e66480e4b663eb7cd0fccc1765473) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.17.](https://github.com/assetgraph/assetgraph-builder/commit/81a3c2b12a1a6c51216f86356a1a00d052f4e0cc) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Remove duplicate HtmlStyles before running bundleRelations. Fixes https:\/\/github.com\/One-com\/assetgraph\/issues\/82](https://github.com/assetgraph/assetgraph-builder/commit/b5748e29fda1e774f32654c5bed1abb0f23241b8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Expanded buildProduction test.](https://github.com/assetgraph/assetgraph-builder/commit/e3467bdeac7d69ea4a6ab4405f4e60b196cbd4c0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.24
+
 - [Release 1.0.24.](https://github.com/assetgraph/assetgraph-builder/commit/98c656e7b2b9d27f88bc88601c19fbf3cd553c89) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Remove I18n assets before compressing JavaScript \(looks their incoming relations aren't picked up by JavaScript.prototype.findOutgoingRelationsInParseTree after UglifyJS has run.](https://github.com/assetgraph/assetgraph-builder/commit/8b9121e65acd4207bf20da42dd35b39a754befb9) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.23
+
 - [Release 1.0.23.](https://github.com/assetgraph/assetgraph-builder/commit/3f6372eee47546950a54c49a96ea406479390b43) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction transforms: Don't pretty-print Html, even if noCompress is specified. Seems to break things in some cases.](https://github.com/assetgraph/assetgraph-builder/commit/2162d58c2efc4ede8b5c90b5bc59c41d18236fc5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.22
+
 - [Release 1.0.22.](https://github.com/assetgraph/assetgraph-builder/commit/dfb47c437c93d9e0c945ace75fec4490b9e4b158) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildDevelopment & buildProduction: Fixed normalization of locale ids provided on the command line.](https://github.com/assetgraph/assetgraph-builder/commit/71062637ae11d352a76d94993fc92d38cce75a13) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.21
+
 - [Release 1.0.21.](https://github.com/assetgraph/assetgraph-builder/commit/9ef725407dda622342fe8406e232cfecb12c33a3) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [i18nTools: Don't rely on node.\(TEXT|ELEMENT|...\)\_NODE \(doesn't work in IE8 and below\).](https://github.com/assetgraph/assetgraph-builder/commit/81ef4d085d52c9f75542cfd9b7632d213e463fda) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Named the 'buildDevelopment' and 'buildProduction' transforms.](https://github.com/assetgraph/assetgraph-builder/commit/9e3ee5be47650de4d3988d1cc36b3e79c6a56e3e) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2284,6 +2485,7 @@
 - [+2 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.0.20...v1.0.21)
 
 ### v1.0.20
+
 - [Release 1.0.20.](https://github.com/assetgraph/assetgraph-builder/commit/dd8f606ec363806bf8c166933660506211f977b6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Move normalizeLocaleId to i18nTools and normalize the locale ids provided on the command line before processing.](https://github.com/assetgraph/assetgraph-builder/commit/c8a98f21f9a52b0943cc6300166860b6de715af5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [bootstrapper, TRHTML: Added support for nested &lt;script type='text\/html'&gt;...&lt;\/script&gt; templates.](https://github.com/assetgraph/assetgraph-builder/commit/45f4911f474cdf99442855452a8e2e668d53a9d5) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2292,19 +2494,23 @@
 - [+2 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.0.19...v1.0.20)
 
 ### v1.0.19
+
 - [Release 1.0.19.](https://github.com/assetgraph/assetgraph-builder/commit/b1b8eacbf7544354991237300a5d8f526cf97ffd) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.16.](https://github.com/assetgraph/assetgraph-builder/commit/fe6c66b9d4d2d83c0fadf211e85e2844780cab22) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [bootstrapper: No need to check for the absence of both documentElement and documentElementLang.](https://github.com/assetgraph/assetgraph-builder/commit/aaec03497aa476d5320b5adda809cb4ea03ba9aa) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.18
+
 - [Release 1.0.18.](https://github.com/assetgraph/assetgraph-builder/commit/b5c520691b7aecc3d82aa4e2a383506c52302c41) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [cloneForEachLocale: Updated TRHTML handling code to match the changes in AssetGraph 1.0.15.](https://github.com/assetgraph/assetgraph-builder/commit/788813cd2afc90fb5aa0a17bb69b609d5060d21d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.17
+
 - [Release 1.0.17.](https://github.com/assetgraph/assetgraph-builder/commit/f2516b2fba37cb79ca41c848f42df63714d09639) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [bootstrapper: Better support for translating the data-i18n attributes in 'crippled' environments such as jsdom. Allow turning off the feature by setting window.TRANSLATE to false.](https://github.com/assetgraph/assetgraph-builder/commit/269d59cfa4c79920329cd02103c6b3ac5a4a81ba) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.16
+
 - [Release 1.0.16.](https://github.com/assetgraph/assetgraph-builder/commit/4367727fae9350238ecae22089f18e8d6f10492a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.cloneForEachLocale: Translate TRHTML\(...\), remove the relation, and replace the function call with the translated HTML string.](https://github.com/assetgraph/assetgraph-builder/commit/7f5e67531409bdc80af70aa0f315a20ad39cea9e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [bootstrapper: Translate data-i18n attributes in development mode and implement TRHTML. Fixes \#26.](https://github.com/assetgraph/assetgraph-builder/commit/2d7389d4ccd5c752ef78f801ef8f40d15e954be6) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2313,41 +2519,49 @@
 - [+1 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.0.15...v1.0.16)
 
 ### v1.0.15
+
 - [Release 1.0.15.](https://github.com/assetgraph/assetgraph-builder/commit/52ceb4cb1cfa3dd5d7c46d3fa10c2acc6eae36f2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.13.](https://github.com/assetgraph/assetgraph-builder/commit/579caa04ebc15a0dd19697ffb756f9981ea3af0c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildDevelopment: Don't pretty-print the HTML. It introduces whitespace that Html.\_reformatParseTree doesn't know how to remove right now.](https://github.com/assetgraph/assetgraph-builder/commit/7f34adbfcac7bce841460c0a256cd4e77d6dac8f) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.14
+
 - [Release 1.0.14.](https://github.com/assetgraph/assetgraph-builder/commit/22a0019d5cdbf935e3901bdbf33f0f563d875dc3) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.12.](https://github.com/assetgraph/assetgraph-builder/commit/3961a75f79a8418be8c7808169e13f50a21eccd2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: inline JavaScriptGetText relations before adding cache manifest \(prevents Knockout.js templates and other things from being included in the manifest\(s\) and thus being part of the build\).](https://github.com/assetgraph/assetgraph-builder/commit/3af2bae0f2abaaae798ed62a39141208fa0f6449) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.13
+
 - [Release 1.0.13.](https://github.com/assetgraph/assetgraph-builder/commit/0eed8925898f7a794ae995a4d99561960d3636e7) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.11.](https://github.com/assetgraph/assetgraph-builder/commit/af44ca50a64397438ca8215226d9294ad426ccaf) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.12
+
 - [Release 1.0.12.](https://github.com/assetgraph/assetgraph-builder/commit/e7676c00e911676bc7539362ea676ddd7d6061cb) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.10.](https://github.com/assetgraph/assetgraph-builder/commit/e9f7ec5e14c10aa30ceb89c97b17a55f0d85fb90) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Experimental: Added support for --negotiatemanifest switch.](https://github.com/assetgraph/assetgraph-builder/commit/32ce5be095f7db5cadbe57a5761286c494650e9c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.11
+
 - [Release 1.0.11.](https://github.com/assetgraph/assetgraph-builder/commit/d2be19ae0018cc66a9a0c04de280f2bed9eb5d92) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: If --root is provided, but no input files, default to all .html files in root \(including subdirs\). If no root is provided, deduce it from the input files. Fixes \#12.](https://github.com/assetgraph/assetgraph-builder/commit/b759455d88fe0e06194a2a04601b5aa512626ffc) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.9.](https://github.com/assetgraph/assetgraph-builder/commit/e4776297961d795764975f641b2d68e282578601) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [i18nTools.\(createI18nTagReplacer|createTrReplacer\): Don't add the same locale id to localeIdsByMissingKey\[key\] multiple times.](https://github.com/assetgraph/assetgraph-builder/commit/adde845b56128fe03f35f49ad45ba6a617031ef0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.10
+
 - [Release 1.0.10.](https://github.com/assetgraph/assetgraph-builder/commit/014195ad0450ce3927b8d2817d7c6d8873b11026) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.8.](https://github.com/assetgraph/assetgraph-builder/commit/8aa3176765eb231a2096e61ee1a444fa71f50d47) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.9
+
 - [Release 1.0.9.](https://github.com/assetgraph/assetgraph-builder/commit/77fa4f41619b046a6872b197bc25ff3296ed59d4) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Minify Html before running transforms.cloneForEachLocale. Fixes \#24.](https://github.com/assetgraph/assetgraph-builder/commit/200c9817935827fbd3d45391353d4108ac46d8f5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.7.](https://github.com/assetgraph/assetgraph-builder/commit/23b548e7c49aa2c6884b09660761f20710502041) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json: Depend on the 'less' package. Fixes \#25.](https://github.com/assetgraph/assetgraph-builder/commit/810b060846b18e473caef4639bfccc924adcffb3) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.8
+
 - [Release 1.0.8.](https://github.com/assetgraph/assetgraph-builder/commit/ad6dc7eb5ab3c7e5af2f637326e2c2852129db52) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.6.](https://github.com/assetgraph/assetgraph-builder/commit/77b7771e0b313dcff97a268f28b006715c1933b3) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Release 1.0.7.](https://github.com/assetgraph/assetgraph-builder/commit/d697c0baf15b6b627be94d9d05e17cc65fe6345e) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2356,6 +2570,7 @@
 - [+1 more](https://github.com/assetgraph/assetgraph-builder/compare/v1.0.6...v1.0.8)
 
 ### v1.0.6
+
 - [Release 1.0.6.](https://github.com/assetgraph/assetgraph-builder/commit/b5eb4312d78365d17f9aad23b3d1bf0056051fde) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.cloneForEachLocale: Also translate data-i18n attributes found in &lt;script type='text\/html'&gt; templates in the cloned Html.](https://github.com/assetgraph/assetgraph-builder/commit/49c29009e5f69d7d9685b7621771bfc347801184) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.4.](https://github.com/assetgraph/assetgraph-builder/commit/f36e49a0feb3a6778a6d33492b1fb8b33973023f) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2363,25 +2578,30 @@
 - [bin\/\*: Added --stoponwarning switch \(\#23\).](https://github.com/assetgraph/assetgraph-builder/commit/0a4e2b162cfc2220ac702d64103ced7a2870d78e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.5
+
 - [Release 1.0.5.](https://github.com/assetgraph/assetgraph-builder/commit/9f5bcd54dddabf178f40853e4f39458a905393a0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.3.](https://github.com/assetgraph/assetgraph-builder/commit/d872abbd69eb60ed2920035f0b3339911ffdf9e4) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Simplified the code that handles a root-relative cdnroot now that transforms.moveAssetsInOrder does the right thing.](https://github.com/assetgraph/assetgraph-builder/commit/ed11b1519a95ff761b8e5369750661a2a66a9b57) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.2.](https://github.com/assetgraph/assetgraph-builder/commit/0d239bc14a8a75765c96ac921ebdd4bd279d154d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.4
+
 - [Release 1.0.4.](https://github.com/assetgraph/assetgraph-builder/commit/f998410f95a25b362fa3daf86a71687dd5cfe9ae) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [bootstrapper: Prevent buildDevelopment from setting the &lt;html lang=...&gt; to the default locale id, and update it to the correct value when running in the browser, so per-local CSS can work, eg.: html\[lang='en'\] .myClass {...}](https://github.com/assetgraph/assetgraph-builder/commit/6f56f226da87af70ab8058a3738830ecfc6de060) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.3
+
 - [Release 1.0.3.](https://github.com/assetgraph/assetgraph-builder/commit/5c7b7931d08a3fe42944e40117c1843978a2bd46) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [flattenOneInclude: one.include =&gt; INCLUDE](https://github.com/assetgraph/assetgraph-builder/commit/982a64954165fbcc75baa95a0d2ed8cf44f096a9) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.2
+
 - [Release 1.0.2.](https://github.com/assetgraph/assetgraph-builder/commit/7be62e34ec40058190b945dc049ab2f4e23cd9ad) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [bin\/\*: Improved error reporting and ignore warnings about JavaScriptCommonJsRequire \(too noisy in modules that work in node.js and the browser\).](https://github.com/assetgraph/assetgraph-builder/commit/aabafdea8bd7a2ad10e0a7ac5a372ffa9d7d0d5e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.1.](https://github.com/assetgraph/assetgraph-builder/commit/d138b6c4f66d5dfda42f4bb3c3dfc26090b1dae7) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.1
+
 #### Pull requests
 
 - [#23](https://github.com/assetgraph/assetgraph-builder/pull/23) Don't halt when one or more png compression tools are missing ([Björn Söderqvist](mailto:cybear@gmail.com))
@@ -2393,6 +2613,7 @@
 - [transforms.runJavaScriptConditionalBlocks: Fixed wrong parentheses causing false positives.](https://github.com/assetgraph/assetgraph-builder/commit/a1d4753a3ca678e47eb07628f52b1d3d422081ec) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v1.0.0
+
 - [Release 1.0.0.](https://github.com/assetgraph/assetgraph-builder/commit/6bc158382d3ebc182d4295ee5cf6705551de10d8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 1.0.0.](https://github.com/assetgraph/assetgraph-builder/commit/6c95c79cce1143713de5804b2870b416431ec63c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.runJavaScriptConditionalBlocks: if \(one.environment\) =&gt; if \(\[window.\]ENVIRONMENT\)](https://github.com/assetgraph/assetgraph-builder/commit/86b3b09204ae8d26d057e438ef1316fb8377e1a8) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2400,28 +2621,34 @@
 - [lib\/util\/\* =&gt; lib\/\*](https://github.com/assetgraph/assetgraph-builder/commit/83ad40e20c83036d6afcac64aa843db76ff19d13) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.4.3
+
 - [Release 0.4.3.](https://github.com/assetgraph/assetgraph-builder/commit/4d006a83d61adc0fc01499eef4092704e7f4c608) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [oneBootstrapper: Fixed references to one.supportedLocaleIds =&gt; SUPPORTEDLOCALEIDS.](https://github.com/assetgraph/assetgraph-builder/commit/622d7688f25b420c480fb3f2597eca7c97353857) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.4.2
+
 - [Release 0.4.2.](https://github.com/assetgraph/assetgraph-builder/commit/fb25597991789fda29ba22b05eb73456fa2991c8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.59.](https://github.com/assetgraph/assetgraph-builder/commit/459873728ea138091be10b2ca13673024928bdf8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.4.1
+
 - [Release 0.4.1.](https://github.com/assetgraph/assetgraph-builder/commit/6facaadee9ea3e23d491f43952cee8b8ae969a33) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Run the compressJavaScript transform after localizing. Sorry for the performance hit.](https://github.com/assetgraph/assetgraph-builder/commit/3511cd03abccc59ac368476709d81f0728371ec0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.4.0
+
 - [Release 0.4.0.](https://github.com/assetgraph/assetgraph-builder/commit/9f09e0436cc13e4d4515bba31300ec0179f0b4b6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Remove the oneBootstrapper completely from the production build. Use LOCALEID and SUPPORTEDLOCALEIDS instead of one.localeId and one.supportedLocaleIds etc. and replace them in the AST when localizing.](https://github.com/assetgraph/assetgraph-builder/commit/1ed3183325274d94d58a169bd52eb9785b344bb8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.58.](https://github.com/assetgraph/assetgraph-builder/commit/f2d57e3a93829082690fdc2ad7810cf4f0477194) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Documentation on using objects as localization values](https://github.com/assetgraph/assetgraph-builder/commit/09179f8f081e430564c5a54d443fe48a959f23a4) ([Sune Simonsen](mailto:sune@we-knowhow.dk))
 
 ### v0.3.78
+
 - [Release 0.3.78.](https://github.com/assetgraph/assetgraph-builder/commit/769ea016b4a790bb6c09824495c426dc87c56cac) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.57.](https://github.com/assetgraph/assetgraph-builder/commit/c3e478a718f56d0aa6d979645492c538bd82706c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.77
+
 - [Release 0.3.77.](https://github.com/assetgraph/assetgraph-builder/commit/4077254aed77cb4912c17ae93060ab051915e4ae) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.56.](https://github.com/assetgraph/assetgraph-builder/commit/dda94e36f03e0a719186b92657627b5535370eb8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: DTRT when the --cdnroot switch specifies a protocol-relative url. Closes \#20.](https://github.com/assetgraph/assetgraph-builder/commit/4af818dfdbe6f3829105fbfd1b111a8f3581f5b5) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2429,137 +2656,167 @@
 - [Fixed typo in README.md](https://github.com/assetgraph/assetgraph-builder/commit/80cd1df887c9430dd2eb3584a1f7920c50b58bb4) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.76
+
 - [Release 0.3.76.](https://github.com/assetgraph/assetgraph-builder/commit/f2dda08c6edb3edf2bb3c63b9552e335a290aa39) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.55.](https://github.com/assetgraph/assetgraph-builder/commit/06391394a6ccbf997e2f6df5b2f9d04e0f4be45a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Fixed typo in --optimizepngs help.](https://github.com/assetgraph/assetgraph-builder/commit/2b7eb68b3521d8dfa36026e952c40d2ba6a1a2de) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Added support for --version ... switch. Fixes \#15.](https://github.com/assetgraph/assetgraph-builder/commit/72062b57767f47a0dad84a6c07983bba015c5427) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.75
+
 - [Release 0.3.75.](https://github.com/assetgraph/assetgraph-builder/commit/b5f653f62cf764347e588bef9a38ff6383a1ec5a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.cloneForEachLocale: Also process one.tr statements in data-bind attributes in Knockout.js templates.](https://github.com/assetgraph/assetgraph-builder/commit/f575cc943d4ca35fc8b32171e05906f96c223d84) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.74
+
 - [Release 0.3.74.](https://github.com/assetgraph/assetgraph-builder/commit/d9b1d78ce150b747edc9f387a9aa92d5ae921c69) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.54.](https://github.com/assetgraph/assetgraph-builder/commit/7806137a44698457afa93bcc468a455bc1ea0d90) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms\/setAsyncOrDeferOnHtmlScripts: Fixed wrong mapping of arguments](https://github.com/assetgraph/assetgraph-builder/commit/571e50a511517751c30eadd0be885256c9d9ca0d) ([Peter Müller](mailto:munter@fumle.dk))
 
 ### v0.3.73
+
 - [Release 0.3.73.](https://github.com/assetgraph/assetgraph-builder/commit/cc7d5467e7060b863d903c085dfbb261bc2cda91) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.53.](https://github.com/assetgraph/assetgraph-builder/commit/2bd7edda936b6fd4042d33151797f4404c8cba17) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.72
+
 - [Release 0.3.72.](https://github.com/assetgraph/assetgraph-builder/commit/2e709f85da12fecc228fd3b658dbe3db12d6984e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Don't bundle HtmlStyle relations again after localizing. There's currently no use case for it, and it seems to clash with the inlineCssImagesWithLegacyFallback transform.](https://github.com/assetgraph/assetgraph-builder/commit/eb65515cf92cdafb28f0e8feaccf8b0583ffe906) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Don't remove the nobundle attribute from HtmlStyle and HtmlScript until we're done with it.](https://github.com/assetgraph/assetgraph-builder/commit/53fdd21c0208ad0e8d331e48e9c0841dfc0a01bd) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.71
+
 - [Release 0.3.71.](https://github.com/assetgraph/assetgraph-builder/commit/9c581b4143b70b8ed2b75c56c71c183e819087ab) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.52.](https://github.com/assetgraph/assetgraph-builder/commit/e62c4ad1eba3c5aaf4e2cfa041ced6e881379aa4) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.70
+
 - [Release 0.3.70.](https://github.com/assetgraph/assetgraph-builder/commit/99eab1f37c0ad5b70974f117dbdbeb58a13710bd) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.51.](https://github.com/assetgraph/assetgraph-builder/commit/6f1a3d8155865600ce596cb5ecce9c8768cb7535) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.69
+
 - [Release 0.3.69.](https://github.com/assetgraph/assetgraph-builder/commit/749243dc24b28b2ec25c727f076d5c431371ccc2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.50.](https://github.com/assetgraph/assetgraph-builder/commit/6a7e6aeebe48ab5a8379fcf69e544fa78b3b6351) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.68
+
 - [Release 0.3.68.](https://github.com/assetgraph/assetgraph-builder/commit/ccec55176711089b06d5ca129d3a2f394224e9e6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transform.cloneForEachLocale: Also localize one.tr etc. statements in data-bind attributes.](https://github.com/assetgraph/assetgraph-builder/commit/6b43021dacd96503b125e3890395dcdb44ac1285) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.49.](https://github.com/assetgraph/assetgraph-builder/commit/2abb6533e95419077bf900245d5f023ebf930eae) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.67
+
 - [Release 0.3.67.](https://github.com/assetgraph/assetgraph-builder/commit/42d6c042da717693a21177aaed0cae29056c313f) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.cloneForEachLocale: Take named parameters and report default value mismatches.](https://github.com/assetgraph/assetgraph-builder/commit/0cbd90c0e4347a7a20512a822488edf1dd9ad8d0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.cloneForEachLocale & i18nTools: More compact reporting of missing keys.](https://github.com/assetgraph/assetgraph-builder/commit/5e3cd00f937615bc3bcb225b8cc11e5ca0935dad) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.66
+
 - [Release 0.3.66.](https://github.com/assetgraph/assetgraph-builder/commit/b180c9230397aea8255af45c1d9ede7a57d64be5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph-sprite to 0.2.12.](https://github.com/assetgraph/assetgraph-builder/commit/b04b772904b88e0f15e4276a15cd45a13f55e5a8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.65
+
 - [Release 0.3.65.](https://github.com/assetgraph/assetgraph-builder/commit/dbf6f3b13404cce5f860bf8f188bec7fe2f45ebd) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.48.](https://github.com/assetgraph/assetgraph-builder/commit/28277ada602a73d4b4b473ce47762c575b342e8e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.64
+
 - [Release 0.3.64.](https://github.com/assetgraph/assetgraph-builder/commit/9ac8f781ad20c86976275fd9ff5454acd7d08c66) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.47.](https://github.com/assetgraph/assetgraph-builder/commit/7649f836a80ccb5a5d6f7de836cdb3b897ceb1fd) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.63
+
 - [Release 0.3.63.](https://github.com/assetgraph/assetgraph-builder/commit/30af9d0bb6a65fe5d7285a3134cd4576c34dcd67) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.46.](https://github.com/assetgraph/assetgraph-builder/commit/d9915f05833c79b742e620dde855b14a40672ee9) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.62
+
 - [Release 0.3.62.](https://github.com/assetgraph/assetgraph-builder/commit/e11ca5bf79234df274957b21c9166205f9bd2b8c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.45.](https://github.com/assetgraph/assetgraph-builder/commit/bdca3367dfc4ef99a0e4d1e1fc44c072bc3b9ac5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.61
+
 - [Release 0.3.61.](https://github.com/assetgraph/assetgraph-builder/commit/3939512c6c81318c3f9cfcdd4e446d0612524017) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.44.](https://github.com/assetgraph/assetgraph-builder/commit/ea4823d3c0d4d8d16076dd5f96b3c10f93d8944d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Fixed typo in command line help.](https://github.com/assetgraph/assetgraph-builder/commit/43928a4967d702f26ce4e72bb4b72d9dce5eec63) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.60
+
 - [Release 0.3.60.](https://github.com/assetgraph/assetgraph-builder/commit/51a79eb56c94f2e84f3c2671dd6cf170e6384c38) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.43.](https://github.com/assetgraph/assetgraph-builder/commit/3b5f6bf06da3d5dfd1d86c4f078ebd5d7967f9d0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [bin scripts that support --label: Only set resolvers.findParentDir as the default resolver if --parentdir is specified.](https://github.com/assetgraph/assetgraph-builder/commit/e7816523554b951ea684b0e2863a01cd54b1bc55) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update vows to &gt;=0.6.3.](https://github.com/assetgraph/assetgraph-builder/commit/e458344541645a5affbd0e8778ae6a04c4ecd68b) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.59
+
 - [Release 0.3.59.](https://github.com/assetgraph/assetgraph-builder/commit/ed500476fa743122d48e1af01164d5bda49b866e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Use fs.existsSync if available.](https://github.com/assetgraph/assetgraph-builder/commit/b75f9f6b343c984f4e69bf771a057e51dcdd36d0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.58
+
 - [Release 0.3.58.](https://github.com/assetgraph/assetgraph-builder/commit/a73ec5838ece22c130ccc81332a857f16942a030) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Updated histogram to 0.1.2.](https://github.com/assetgraph/assetgraph-builder/commit/d369563247f30fb2bccc4f88f1549540a86dc31d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.57
+
 - [Release 0.3.57.](https://github.com/assetgraph/assetgraph-builder/commit/f723b2dfc33909fa6cb2fde530289449f037e4ad) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [oneBootstrapper: Fixed stupid error in boolean logic.](https://github.com/assetgraph/assetgraph-builder/commit/05ea7aa2479877aeb9c67c3da0dedbfbaf3d2f44) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.56
+
 - [Release 0.3.56.](https://github.com/assetgraph/assetgraph-builder/commit/c5f792389f46d1b9fb892f03479ab73cadb0ebe9) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [oneBootstrapper: Safeguard against missing document.cookie.](https://github.com/assetgraph/assetgraph-builder/commit/0ffba2f322dfdb430149c1ced66ee17cd64a98b0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.55
+
 - [Release 0.3.55.](https://github.com/assetgraph/assetgraph-builder/commit/f6e3249431bb943f7ff7fd7b6a22ec077db199f3) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [oneBootstrapper: Safeguard against missing document.documentElement.](https://github.com/assetgraph/assetgraph-builder/commit/3285e6d8dd6c2725c418067f9571cba08f3503a5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.54
+
 - [Release 0.3.54.](https://github.com/assetgraph/assetgraph-builder/commit/5387dd018331d3b7415345cbff701a9272d137ab) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildDevelopment, oneBootstrapper: Added support for specifying a locale cookie, which is used to pick the language in development mode.](https://github.com/assetgraph/assetgraph-builder/commit/510eb9252104f6237993ea829d3ae4bb76287cf9) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.53
+
 - [Release 0.3.53.](https://github.com/assetgraph/assetgraph-builder/commit/4045f40c07dad1b18b995a76463b6f3ab256c32e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.42.](https://github.com/assetgraph/assetgraph-builder/commit/d8ec324bf6e97bb726f1af9d3973df15141157ca) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.52
+
 - [Release 0.3.52.](https://github.com/assetgraph/assetgraph-builder/commit/5ff59fded06b11299f84997061881568972334e2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.41.](https://github.com/assetgraph/assetgraph-builder/commit/81d549ba41414e3c4b929fb5e60b1f965d26aa13) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction & transforms.cloneForEachLocale: HtmlScripts with a "localize" attribute are now always cloned per locale and run through UglifyJS with LOCALEID defined as the locale id.](https://github.com/assetgraph/assetgraph-builder/commit/19d437161b0205267fe3047c1619a52f8a0a56ec) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [oneBootstrapper: Set window.LOCALEID to one.localeId in development mode \(so it can be used as an UglifyJS define\).](https://github.com/assetgraph/assetgraph-builder/commit/230328695616e5e4fcfc0aeec0d83d04dfbd8c19) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.51
+
 - [Release 0.3.51.](https://github.com/assetgraph/assetgraph-builder/commit/5cf614e63fa959edbf64ba35cc311751910ae62c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.40.](https://github.com/assetgraph/assetgraph-builder/commit/ad25b0b2dc24686d0195a30ded486fa6cbd4c729) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [The uglifyAst module was moved to its own package \(uglifyast\), get it from there.](https://github.com/assetgraph/assetgraph-builder/commit/707c293b130cd1855f920bb6ff911ee1b675ad04) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.50
+
 - [Release 0.3.50.](https://github.com/assetgraph/assetgraph-builder/commit/1a4d5511c4cf26c6cbabffbd45a616cb9d97bd18) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.39.](https://github.com/assetgraph/assetgraph-builder/commit/9ec23e8b58b8bc316c97e622b95d27adbb04eec8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [bin\/buildProduction: Demand at least one argument. Fixes \#13](https://github.com/assetgraph/assetgraph-builder/commit/3d08367eff231c8f8fe0672938d4ceb00349687a) ([Peter Müller](mailto:munter@fumle.dk))
 - [Added help option to buildProduction binary. Fixes \#11](https://github.com/assetgraph/assetgraph-builder/commit/b3fbdd3840a86ea34fa7e76efffe52412180d163) ([Peter Müller](mailto:munter@fumle.dk))
 
 ### v0.3.49
+
 - [Release 0.3.49.](https://github.com/assetgraph/assetgraph-builder/commit/34dfb123a8e91c4a67b3762ac66d03c149497173) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.38.](https://github.com/assetgraph/assetgraph-builder/commit/6834077cd126b1b280a69d104e322948836a2779) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.48
+
 - [Release 0.3.48.](https://github.com/assetgraph/assetgraph-builder/commit/237474becbacf9cd18a658a4f502ed5a87937a42) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Updated assetgraph to 0.4.37.](https://github.com/assetgraph/assetgraph-builder/commit/6ed76c17c2c85ed77109f22495fc3a6731d3361d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Implemented buildProduction --exclude switch for excluding specific urls from being included \(supports wildcards\).](https://github.com/assetgraph/assetgraph-builder/commit/d4a00c69d817b52e6a04eb720970da900e95233b) ([Peter Müller](mailto:munter@fumle.dk))
 
 ### v0.3.47
+
 - [Release 0.3.47.](https://github.com/assetgraph/assetgraph-builder/commit/7ca777c0d47a06359f51cf6bc0d4c2ae59987c80) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Revert "Switched to use assets.Image histogram getter in transforms.optimizePngs"](https://github.com/assetgraph/assetgraph-builder/commit/59c8a5a9dc74d3cde62b5c62b11b1f90efa180d5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.36.](https://github.com/assetgraph/assetgraph-builder/commit/b6b55fd9999077cb685267496ad83c0712e6addf) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2568,53 +2825,64 @@
 - [+8 more](https://github.com/assetgraph/assetgraph-builder/compare/v0.3.46...v0.3.47)
 
 ### v0.3.46
+
 - [Release 0.3.46.](https://github.com/assetgraph/assetgraph-builder/commit/a9e33b6b0feaa3efcba471a9cff61f9a36e51262) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.35.](https://github.com/assetgraph/assetgraph-builder/commit/41ef8811fca96fe3e9db05ebc3caadb0d73b6842) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.45
+
 - [Release 0.3.45.](https://github.com/assetgraph/assetgraph-builder/commit/b484d1075a26c580d43ab6bde8c632b137969307) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.34.](https://github.com/assetgraph/assetgraph-builder/commit/21ceba60342ea65b09fb135274d4beaffda693d2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.44
+
 - [Release 0.3.44.](https://github.com/assetgraph/assetgraph-builder/commit/0600d2e306b26cd3a84206ef5e32c8a9e513947d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.33.](https://github.com/assetgraph/assetgraph-builder/commit/0fea6ce269ebd0e975c6f449e0df497ca68d2e1e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update master](https://github.com/assetgraph/assetgraph-builder/commit/34ecac3cb9160c23c2011975294c76890bd17d0c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [README: Added CDN build example.](https://github.com/assetgraph/assetgraph-builder/commit/af181c704bfcb3abac5b60ed67e5635faf532929) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.43
+
 - [Release 0.3.43.](https://github.com/assetgraph/assetgraph-builder/commit/32f42c39b05cff40d3f93f8c8aaeaea220bddf40) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [applyBabelJob: Downgrade unused keys from an error to a warning.](https://github.com/assetgraph/assetgraph-builder/commit/d45b71fcde3cd63a97edc0843d5c00404b6ebb74) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.42
+
 - [Release 0.3.42.](https://github.com/assetgraph/assetgraph-builder/commit/c4f74eda11e7b0eb50557af11725af85bba67837) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.32.](https://github.com/assetgraph/assetgraph-builder/commit/cb9dc6a7cb6d7f2e49959dc93e451b37ab27bca3) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Make sure commandLineOptions.cdnoutroot exists before applying urlTools.fsDirToFileUrl.](https://github.com/assetgraph/assetgraph-builder/commit/9359ef4f37ed9d24b8e6721fb3a22d784710f9a0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.41
+
 - [Release 0.3.41.](https://github.com/assetgraph/assetgraph-builder/commit/f9a186237ec187443dde5fa97ec9be840dc4b70a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.31 and assetgraph-sprite to 0.2.11.](https://github.com/assetgraph/assetgraph-builder/commit/79dadfbd4cf803c317fcccd4afbbebcf2cb6deda) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.40
+
 - [Release 0.3.40.](https://github.com/assetgraph/assetgraph-builder/commit/e41363f64ff5eb284f01099ff4b340910681a51b) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.30.](https://github.com/assetgraph/assetgraph-builder/commit/23841489297b8ed908a6b7a960f85bc5c05f4bd2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Added command line switch for setting CSS background image inlining threshold](https://github.com/assetgraph/assetgraph-builder/commit/e03a62ddd4f309383af7db5e129c8419aa5812e7) ([Peter Müller](mailto:munter@fumle.dk))
 - [Improved the command line help](https://github.com/assetgraph/assetgraph-builder/commit/b7bc986337eab1efa11f7d38c5dda0c8b0fc8048) ([Peter Müller](mailto:munter@fumle.dk))
 
 ### v0.3.39
+
 - [Release 0.3.39.](https://github.com/assetgraph/assetgraph-builder/commit/ac46d4dcbd268fd1ca96d1a8057622bb7407b9ae) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.addContentVersionMetaElement: Stringify the version before calling its replace method \(might be all numbers, which optimist will deliver as a number\).](https://github.com/assetgraph/assetgraph-builder/commit/aeb61914794832f8c766595bacedf65db8544266) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Only bundle HtmlStyle relations to Css and HtmlScript relations to JavaScripts. Prevents attempts to bundle Css with Less\/Stylus and JavaScript with CoffeeScript.](https://github.com/assetgraph/assetgraph-builder/commit/3a287fa0a4e0f162e16cb364e971a3f6515001c9) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.38
+
 - [Release 0.3.38.](https://github.com/assetgraph/assetgraph-builder/commit/ab939679cf3998c34cad095be2e638f10740e55f) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.29.](https://github.com/assetgraph/assetgraph-builder/commit/f737e6701100731f99a39fbb4f9936e2ab5d100e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update master](https://github.com/assetgraph/assetgraph-builder/commit/bc653c0d5364bc0e6535a67a6f860213c5db18d8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.37
+
 - [Release 0.3.37.](https://github.com/assetgraph/assetgraph-builder/commit/0ae9ec167ed0c6644e853baf21f25a642155de90) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.28.](https://github.com/assetgraph/assetgraph-builder/commit/d2987cd8c669ecec59f7c7532c84d67e2be892eb) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.36
+
 - [Release 0.3.36.](https://github.com/assetgraph/assetgraph-builder/commit/aca7280a483c91a548566880678b911442cb6a4b) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json: Added some keywords.](https://github.com/assetgraph/assetgraph-builder/commit/844160ea41a286cafa86207b4b97b781734d05df) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.27.](https://github.com/assetgraph/assetgraph-builder/commit/1118633c3a1dcb15f7c8e2350379dbaeee6d0c1e) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2623,32 +2891,39 @@
 - [+1 more](https://github.com/assetgraph/assetgraph-builder/compare/v0.3.35...v0.3.36)
 
 ### v0.3.35
+
 - [Release 0.3.35.](https://github.com/assetgraph/assetgraph-builder/commit/ebc2f690793ac0986174870255adb078f8aaa095) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph-sprite to 0.2.9.](https://github.com/assetgraph/assetgraph-builder/commit/d5ced2c879f5a654c9bf1356734dfcb56af49204) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Made assetgraph-sprite an optionalDependency \(doesn't work on Windows due to the node-canvas dependency\). Fixes \#3.](https://github.com/assetgraph/assetgraph-builder/commit/de8e98951f403fc620fb6448bf274635d5b505b4) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.34
+
 - [Release 0.3.34.](https://github.com/assetgraph/assetgraph-builder/commit/3e3e1027b49524aa870fc4e763d078826e2e4a40) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Dropped the unnecessary complex concept of working on only the 'reachable' language keys in any given situation.](https://github.com/assetgraph/assetgraph-builder/commit/0f6146aa6064791531c3f2336080effd7fdfa9fa) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.33
+
 - [Release 0.3.33.](https://github.com/assetgraph/assetgraph-builder/commit/e70e1053130a54334b782396190836421c11abfb) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.26.](https://github.com/assetgraph/assetgraph-builder/commit/a534496eca7ef2607fbf6605734b5a8c4a76effc) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.32
+
 - [Release 0.3.32.](https://github.com/assetgraph/assetgraph-builder/commit/cd900ec54e47bec6fb63e63f407b7c769b5d5ab3) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Updated assetgraph to 0.4.25.](https://github.com/assetgraph/assetgraph-builder/commit/f18d93103ddd079de4deeb75efcaf7a414ab418a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.31
+
 - [Release 0.3.31.](https://github.com/assetgraph/assetgraph-builder/commit/43fde7ea60960253df901766ee6ba1f81a13e40e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.24.](https://github.com/assetgraph/assetgraph-builder/commit/9e8ad42d04e11132f2af7bd3b3b38e54bfc4221c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.30
+
 - [Release 0.3.30.](https://github.com/assetgraph/assetgraph-builder/commit/dabbbb2f536601051d6492fa226c6f3e7717e4b4) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Fixed indexOf blunder.](https://github.com/assetgraph/assetgraph-builder/commit/0b34cb6b972e92976db4d07860c6084e0f76506d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [findUnusedSelectors: Output the entire CSS rule when a selector doesn't match any elements, not just the selector.](https://github.com/assetgraph/assetgraph-builder/commit/8635efa0bac9b172f98fa5df06c98475b1f8afe5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.29
+
 - [Release 0.3.29.](https://github.com/assetgraph/assetgraph-builder/commit/d9954607709259b6f08e7b9cbe2dfe1008b66564) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Added tool for finding unused CSS selectors.](https://github.com/assetgraph/assetgraph-builder/commit/51a6c6b554654d531c83d7d652124ccb62ec6475) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.23.](https://github.com/assetgraph/assetgraph-builder/commit/9e0245cbd3ec1a1c67c665be9e9ed38983882e51) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2657,15 +2932,18 @@
 - [+1 more](https://github.com/assetgraph/assetgraph-builder/compare/v0.3.27...v0.3.29)
 
 ### v0.3.27
+
 - [Release 0.3.27.](https://github.com/assetgraph/assetgraph-builder/commit/78c6919acfe0233bf8b766787126c1e933b26930) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.21.](https://github.com/assetgraph/assetgraph-builder/commit/dfd6b734ba1259216526ec59e6549f95a8c5bbed) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.26
+
 - [Release 0.3.26.](https://github.com/assetgraph/assetgraph-builder/commit/f3dbc797b5f3048599e76353b999e927d5310d44) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.20.](https://github.com/assetgraph/assetgraph-builder/commit/c1904055ea736c5783b323dde20e602a1b22d938) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.optimizePngs: pngquant to 2 colors if the image has less than 2 colors \('pngquant 1 ... ' throws an error\).](https://github.com/assetgraph/assetgraph-builder/commit/bde5886b26be124145e524a3fcf456f84ba7867d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.25
+
 - [Release 0.3.25.](https://github.com/assetgraph/assetgraph-builder/commit/547b977b0d393d2a3391fc64f4e8b00b34320be2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.19.](https://github.com/assetgraph/assetgraph-builder/commit/fed5ab3a4bc3e87cd3c4f97712d2480bebb8c21c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Added optimizePngs transform.](https://github.com/assetgraph/assetgraph-builder/commit/d706bba7aec28940e17a724aeab95bf1c4f96ea2) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2673,6 +2951,7 @@
 - [Update README.md](https://github.com/assetgraph/assetgraph-builder/commit/6dba5eec483281026e6863e587942823acf1ab1a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.24
+
 - [Release 0.3.24.](https://github.com/assetgraph/assetgraph-builder/commit/3e595e24b939ffd63ac9d970b95406b3c4703e9f) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to assetgraph 0.4.17.](https://github.com/assetgraph/assetgraph-builder/commit/4be787e2b4c98e545b00fbafbc923f86b2dfb6a5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.addContentVersionMetaElement: Remove {0} from the value if there's no existing tag to update.](https://github.com/assetgraph/assetgraph-builder/commit/0bd88611fa0e52d55875b4ba8bc9161f0ee99576) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2680,120 +2959,146 @@
 - [buildProduction: Also recognize less-x.y.z.js, less-x.y.z.min.js and less.min.js as the less compiler.](https://github.com/assetgraph/assetgraph-builder/commit/316e1d3077fd1f99387c639fa8438d291c0b5271) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.23
+
 - [Release 0.3.23.](https://github.com/assetgraph/assetgraph-builder/commit/9f3a72517bd99c4152e272ec0604bb628df3b058) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.16.](https://github.com/assetgraph/assetgraph-builder/commit/6b82c26d024feccfa81c59f90e4edc4df7f617e1) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Fixed markdown syntax in README.](https://github.com/assetgraph/assetgraph-builder/commit/3bae3fa69e1b8a5096ac59d1ff9b896e4b6bcf8e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Some more README.](https://github.com/assetgraph/assetgraph-builder/commit/db9f4855094cbfa0e00d9ae11b560ce33f7358d6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.22
+
 - [Release 0.3.22.](https://github.com/assetgraph/assetgraph-builder/commit/36f476e9a27a04b66fb61e629c29b5b13fe9fd31) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.15.](https://github.com/assetgraph/assetgraph-builder/commit/c77e2c0970a97305e5479394ab04e9cf36cda64c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [i18nTools.createI18nTagReplacer: Warn about missing keys as for one.tr\/one.trPattern.](https://github.com/assetgraph/assetgraph-builder/commit/73293b218bacd819cc06b43a7f941e08c9af7c6d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.21
+
 - [Release 0.3.21.](https://github.com/assetgraph/assetgraph-builder/commit/8e184b766678b86a137d5b404c6d54b8fad49e90) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [i18nTools.eachI18nTagInHtmlDocument: Use all non-text node children as placeholders, not just ELEMENT\_NODEs.](https://github.com/assetgraph/assetgraph-builder/commit/2de4fc2dd481d6cd4f42bfd5a795aa573add0aa6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.20
+
 - [Release 0.3.20.](https://github.com/assetgraph/assetgraph-builder/commit/a1d29ece912044bdc1b3caeae8cbbbde81bdf60e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Added support for localizing HTML attributes via a Knockout.js-ish extended syntax for the data-i18n attribute.](https://github.com/assetgraph/assetgraph-builder/commit/e8b665f48f88c75841fb3171c8c403859f56c422) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.19
+
 - [Release 0.3.19.](https://github.com/assetgraph/assetgraph-builder/commit/3425482ec11b9fda8ca8d22b9b03af5f143ed412) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.14.](https://github.com/assetgraph/assetgraph-builder/commit/713bb340267a3a2a5b1b32ddda6d369a1b3c8739) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.18
+
 - [Release 0.3.18.](https://github.com/assetgraph/assetgraph-builder/commit/4af532a7740a0d457f307923021bbd57adab9561) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction\/transforms.cloneForEachLocale: Fixed bug introduced in e4b4cdc.](https://github.com/assetgraph/assetgraph-builder/commit/5c3b57fdcb258b5ade9a0b38d2a58c35762cbe01) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.17
+
 - [Release 0.3.17.](https://github.com/assetgraph/assetgraph-builder/commit/65a300d6c0f1bcb7ba93d6d69f3efee13cc1c8b5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [i18nTools.createI18nTagReplacer: Only remove the tag with the data-i18n attribute if it's a span and there are no other attributes.](https://github.com/assetgraph/assetgraph-builder/commit/ed742ca022aab8a3bd11df9a2f579be41d4c7acc) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.16
+
 - [Release 0.3.16.](https://github.com/assetgraph/assetgraph-builder/commit/101a9c2079e9165b0ac536fc0ff7fb141f86b80c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Experimental: Support localization of Html and KnockoutJsTemplate assets via a custom syntax.](https://github.com/assetgraph/assetgraph-builder/commit/85aa216879a0845ce5503240f5b41b5b114280de) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Remove JavaScriptAmd\(Define|Require\) relations immediately after running transforms.cloneForEachLocale \(revisit when adding support for lazy loading\).](https://github.com/assetgraph/assetgraph-builder/commit/e4b4cdcd7f55c6063bbe0998a54876c9ab8be203) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.15
+
 - [Release 0.3.15.](https://github.com/assetgraph/assetgraph-builder/commit/347fddd9f395f8e8309d3d54386ee50f0dee6572) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Include the CDN root as one.cdnRoot when doing a CDN build.](https://github.com/assetgraph/assetgraph-builder/commit/929fadd0591e2d0d382d54be2499532ca5fff2cf) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.14
+
 - [Release 0.3.14.](https://github.com/assetgraph/assetgraph-builder/commit/3bfd2ef3ab1817237c2881539cef5ab16e5f9b06) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.13.](https://github.com/assetgraph/assetgraph-builder/commit/791c4e2a619662eb1b2066cc5226b0b114ab88b2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.13
+
 - [Release 0.3.13.](https://github.com/assetgraph/assetgraph-builder/commit/00cd40d34a95a1766868319826fc210dee178aef) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Add \/production to the Content-Version meta tag.](https://github.com/assetgraph/assetgraph-builder/commit/da4218f122a384c3c196c6a49d38a9eb92982e46) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.12
+
 - [Release 0.3.12.](https://github.com/assetgraph/assetgraph-builder/commit/8bd7acd98a132bf978a88a53d466f847308ff7d1) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.12.](https://github.com/assetgraph/assetgraph-builder/commit/1b192a7c3d18a1407a946914b4c51c2c113ffa5a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Whoops, there's no --requirejs switch.](https://github.com/assetgraph/assetgraph-builder/commit/524e5cdccae3e64908a634d976aef4c16a5701da) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update temp to 0.4.0 \(cleans up after itself and doesn't cause the 'sys is now called util' warning under node.js &gt;= 0.6.0.](https://github.com/assetgraph/assetgraph-builder/commit/0697ec6a7b868df6853d178a12cbc5d1232c845d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.11
+
 - [Release 0.3.11.](https://github.com/assetgraph/assetgraph-builder/commit/6f9befd1ebbba172fbae82d7fdd337c172114325) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Mark all boolean switches as... 'boolean'.](https://github.com/assetgraph/assetgraph-builder/commit/1c8156a7027ccb4b77b3b91bab63eb2810f69629) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.11.](https://github.com/assetgraph/assetgraph-builder/commit/3d33884c3b3c52725fec18d809e7f6be203e0025) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.10
+
 - [Release 0.3.10.](https://github.com/assetgraph/assetgraph-builder/commit/b1c0e786168edc77df08407c422922c0a8d3760f) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.10.](https://github.com/assetgraph/assetgraph-builder/commit/818b3b771baee8e68cd1580dfc87eef81346e4e0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.9
+
 - [Release 0.3.9.](https://github.com/assetgraph/assetgraph-builder/commit/7471fad31ba82bf261e9a0033c35d2b920b0f27e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Updated assetgraph to 0.4.9.](https://github.com/assetgraph/assetgraph-builder/commit/2a7939f8683c6baf4cb53c0193fe37f0d39c267e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Preserve fragment query string and fragment identifier when moving assets.](https://github.com/assetgraph/assetgraph-builder/commit/c8f7fcf0a27767b17c8134b9133e08ad340b7388) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.8
+
 - [Release 0.3.8.](https://github.com/assetgraph/assetgraph-builder/commit/260e5f9d142d442b5a0f3720cb4fe103ba3106a5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.8.](https://github.com/assetgraph/assetgraph-builder/commit/4cee8332cea3fc0b82c660750f25ceba8133ddfe) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.7
+
 - [Release 0.3.7.](https://github.com/assetgraph/assetgraph-builder/commit/30e1d0ab5f46cd2218c4f5a72222ea690e3de28e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json: Omit space between equal sign and version number.](https://github.com/assetgraph/assetgraph-builder/commit/912258b8896bbc176ac915b0f19093baf463a297) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.7.](https://github.com/assetgraph/assetgraph-builder/commit/f02448fb4712579a4a6ab6776b902f915271d43d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.6
+
 - [Release 0.3.6.](https://github.com/assetgraph/assetgraph-builder/commit/aca061d05fc58155e28f8069afd0c37a04ee7f82) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.6.](https://github.com/assetgraph/assetgraph-builder/commit/6cce72fec10be9212a2a89baa3655c578f0d47a2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.5
+
 - [Release 0.3.5.](https://github.com/assetgraph/assetgraph-builder/commit/21c8465fd913121dec2f4107ec7b76bd59986142) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.5.](https://github.com/assetgraph/assetgraph-builder/commit/a42299d4fffecf9c6d4b67643c8357c759415f3a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Revert "transforms.addContentVersionMetaElement: Don't complain about a missing 'version' parameter until the transform is invoked."](https://github.com/assetgraph/assetgraph-builder/commit/d840670725d2289cd47d76251fabf7c982004e19) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.4
+
 - [Release 0.3.4.](https://github.com/assetgraph/assetgraph-builder/commit/da7476ea1f3bc85c9920371ce0b0b51ea183672e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to assetgraph 0.4.3.](https://github.com/assetgraph/assetgraph-builder/commit/9923d7b980ef8982432b333c03d00d33f5db06ff) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.addContentVersionMetaElement: Don't complain about a missing 'version' parameter until the transform is invoked.](https://github.com/assetgraph/assetgraph-builder/commit/dbd94293440b8aec985038993cabdbb4ffc25eb3) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Don't follow HtmlAnchor relations at all during population. I don't remember why I thought that was a good idea.](https://github.com/assetgraph/assetgraph-builder/commit/5afaaa1f0ff1d3c4bbbfaa03dbb7f70561199c9b) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.3
+
 - [Release 0.3.3.](https://github.com/assetgraph/assetgraph-builder/commit/274e44f571d03890bb45fe01d8e68c638359073d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.2.](https://github.com/assetgraph/assetgraph-builder/commit/d9dc890160e07fe508f4a60b79e96d7225d22bac) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.2
+
 - [Release 0.3.2.](https://github.com/assetgraph/assetgraph-builder/commit/2cb1155b549733181495d447b29fb14df6895af1) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Only compile Less assets if --less is specified, and require the caller to install the 'less' module.](https://github.com/assetgraph/assetgraph-builder/commit/be4ee6941b0e47f006fd8e0912b2a970561be340) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json: Update less to 1.2.2.](https://github.com/assetgraph/assetgraph-builder/commit/f5bd5e720c3fb900b6dd056c26d9bf80501f4962) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.1
+
 - [Release 0.3.1.](https://github.com/assetgraph/assetgraph-builder/commit/0a33ff38d7f94c3581c5be01547889a3ee3e0f39) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.1.](https://github.com/assetgraph/assetgraph-builder/commit/75273a9ec13f8bbf3fe7bf32183abfbf502c051b) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.3.0
+
 - [Release 0.3.0.](https://github.com/assetgraph/assetgraph-builder/commit/3408d6a88349abd98b727653de9bd49bcd7f73a7) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Switched to AssetGraph 0.4 syntax.](https://github.com/assetgraph/assetgraph-builder/commit/ebfa4a0fe43f4f38fecee5375b01041d97a730b5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.4.0.](https://github.com/assetgraph/assetgraph-builder/commit/3819e4acb18360609c268ca144a7869618961f6e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.61
+
 - [Release 0.2.61.](https://github.com/assetgraph/assetgraph-builder/commit/47ed3c6db82e336da03c70438c31b02d712d6ac8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.44.](https://github.com/assetgraph/assetgraph-builder/commit/18301d072916f0fc067432e4b76b31f80c100cd9) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.60
+
 - [Release 0.2.60.](https://github.com/assetgraph/assetgraph-builder/commit/b37303d04d5fe537f5a17d166206b0901df31847) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.43.](https://github.com/assetgraph/assetgraph-builder/commit/06299de73b9cc0c91d0705a05aa5df125002eb1d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Release 0.2.59.](https://github.com/assetgraph/assetgraph-builder/commit/08a68fa9353ef02367c8eadf64c679a7a24471d9) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2801,17 +3106,20 @@
 - [package.json: Added dependency on less@1.2.1.](https://github.com/assetgraph/assetgraph-builder/commit/2e9d01381e1f5e4abf6d55d40c896c4c0b193a33) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.58
+
 - [Release 0.2.58.](https://github.com/assetgraph/assetgraph-builder/commit/4684da21289f8b3790f4cdc14c0b3849d7db2f63) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.42.](https://github.com/assetgraph/assetgraph-builder/commit/7fa07aceedfc2c8eeef9601b080c6a89439a71d2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph-sprite to 0.2.7.](https://github.com/assetgraph/assetgraph-builder/commit/1a44bdc94286fbe864481f10cc457701b977c448) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.57
+
 - [Release 0.2.57.](https://github.com/assetgraph/assetgraph-builder/commit/2984a76e256be9b5d740392d7302c678d6d9f241) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.41.](https://github.com/assetgraph/assetgraph-builder/commit/911481227838b2efead0675dddc6254db18dacd1) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Compile Less assets to Css during the build.](https://github.com/assetgraph/assetgraph-builder/commit/ef5f500e57e58624b2e6d3d17e6e4519e1b30709) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Revert e24a4c3. No reason to minify the Knockout.js templates separately now that one.getText relations are kept around longer.](https://github.com/assetgraph/assetgraph-builder/commit/e9c8ffa5fca7c4403c3ec7433e45357d8e8d942e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.56
+
 - [Release 0.2.56.](https://github.com/assetgraph/assetgraph-builder/commit/6ccf0a1a57f35543afa69444aa3e822158a7b53e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.40.](https://github.com/assetgraph/assetgraph-builder/commit/b3feaf8796cb7c59df3501d892538e9f490ccbf3) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Don't inline the JavaScriptOneGetText relations before it's necessary, and keep them as inline relations \(so urls in templates etc. don't break when the assets are moved around\).](https://github.com/assetgraph/assetgraph-builder/commit/94167f219d8bfd0d44ae0da3590ee64dd2243ebf) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2820,10 +3128,12 @@
 - [+1 more](https://github.com/assetgraph/assetgraph-builder/compare/v0.2.55...v0.2.56)
 
 ### v0.2.55
+
 - [Release 0.2.55.](https://github.com/assetgraph/assetgraph-builder/commit/06e1cf5363108ee1dfdb5d17318fe754b16c5781) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.39.](https://github.com/assetgraph/assetgraph-builder/commit/eb29ce0b864f7ce8beac080bb8c83640e388bdc2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.54
+
 - [Release 0.2.54.](https://github.com/assetgraph/assetgraph-builder/commit/6069b1046de8242abbaa3567306bf076af1f11b2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.38.](https://github.com/assetgraph/assetgraph-builder/commit/f2804586f3a3503d0fe48dc98cb5c19d7f0cbbc2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [uglify =&gt; uglifyJs in var names.](https://github.com/assetgraph/assetgraph-builder/commit/4e3089d00cc6d4faa98b7137d4f4ac2ff89eef1a) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2832,89 +3142,106 @@
 - [+1 more](https://github.com/assetgraph/assetgraph-builder/compare/v0.2.53...v0.2.54)
 
 ### v0.2.53
+
 - [Release 0.2.53.](https://github.com/assetgraph/assetgraph-builder/commit/941f9b6b8180c4e2d7091fc58be4fdb6b61b4133) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.37.](https://github.com/assetgraph/assetgraph-builder/commit/94900a71c9d925051ed41b1b6960152e804a272c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json, prepublish hook: Run 'npm install' before the test suite.](https://github.com/assetgraph/assetgraph-builder/commit/59fec6aad19e398f919825f41c6c28a4b287eccf) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.52
+
 - [Release 0.2.52.](https://github.com/assetgraph/assetgraph-builder/commit/36c87accfe07e54bb946ff105372172dc283ea84) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Omit the one.getStaticUrl function call. Moved the definition of one.getStaticUrl into the development bootstrapper.](https://github.com/assetgraph/assetgraph-builder/commit/a9c9a239504002d7880463f4833c7050ea4e8224) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.52.](https://github.com/assetgraph/assetgraph-builder/commit/621a8a72d81684ef2164a3948c61042377666694) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.51
+
 - [Release 0.2.51.](https://github.com/assetgraph/assetgraph-builder/commit/3090bb0c1ad7bdc00f19fd305dd6128b16aeffc9) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.cloneForEachLocale: Preserve the extension of the original Html asset when cloning.](https://github.com/assetgraph/assetgraph-builder/commit/66b27870a72a9a931a9cbe400a4c620837289853) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.51.](https://github.com/assetgraph/assetgraph-builder/commit/33cf2458bd6994c9a266987cfc57a2d25a2c6fda) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.50
+
 - [Release 0.2.50.](https://github.com/assetgraph/assetgraph-builder/commit/69225b6101b24b8fc8be11a1e6cf7fd0797b4a68) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.35.](https://github.com/assetgraph/assetgraph-builder/commit/74d0a619cc1bc7599e3fc34a3c658b885f182263) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.50.](https://github.com/assetgraph/assetgraph-builder/commit/e6cf00d53d42b3438210a8b1b5eafceaa28cd93f) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.49
+
 - [Release 0.2.49.](https://github.com/assetgraph/assetgraph-builder/commit/f32a20e8efd1ee8fbcc88a40d1de4c116cdfc60b) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.34.](https://github.com/assetgraph/assetgraph-builder/commit/b9b6838e50b1cd8d0ac75587965ec8844d6ce90c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.49.](https://github.com/assetgraph/assetgraph-builder/commit/8b792a6342ec618908f496787ae363bd5a79efff) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.48
+
 - [Release 0.2.48.](https://github.com/assetgraph/assetgraph-builder/commit/7c3e6a4e0cafd32502b1e039fd757287b6e461ff) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.33.](https://github.com/assetgraph/assetgraph-builder/commit/b4c8546f477bc349de4b550ba53b4cd4c8bcd068) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Don't exclude HtmlStyle relations with a media attribute from bundling \(transforms.bundleRelations no longer messes them up\).](https://github.com/assetgraph/assetgraph-builder/commit/769bee8679eb2e7d3a67baf4754f84cb295320e6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.48.](https://github.com/assetgraph/assetgraph-builder/commit/5c7a3222fb3b8e2b3f97df4fae9210e2f32ea435) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.47
+
 - [Release 0.2.47.](https://github.com/assetgraph/assetgraph-builder/commit/1cb1ec4ed06cb2d11aa43259d02680fcd0c0f501) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.31 and adapt to the transforms.bundleAssets =&gt; transforms.bundleRelations change.](https://github.com/assetgraph/assetgraph-builder/commit/b5bd114b36f84fed7cf6efe9aa04287c39408636) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.47.](https://github.com/assetgraph/assetgraph-builder/commit/f56be0f18b7690ee4bc14d44bf23e38834fb6d57) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.46
+
 - [Release 0.2.46.](https://github.com/assetgraph/assetgraph-builder/commit/fdf4668b481aef07020a5884dd92ab7d0a81cd11) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms\/index.js: Wrap AssetGraph's built-in transforms in getters so they're not implicitly require\(\)d.](https://github.com/assetgraph/assetgraph-builder/commit/f8d7b6057b24b76f86966155cbfd886d7ac4acd4) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.46.](https://github.com/assetgraph/assetgraph-builder/commit/c0476a3df20c850d7688260db2132b48dd8e3110) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.45
+
 - [Release 0.2.45.](https://github.com/assetgraph/assetgraph-builder/commit/bd9655f206b9f1666194f4dce93dc82d90c54159) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.31.](https://github.com/assetgraph/assetgraph-builder/commit/37db43859953ce8d8c1ec3261424b0e079d6e8aa) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [oneBootstrapper: Added support for double-star wildcards in one.getStaticUrl.](https://github.com/assetgraph/assetgraph-builder/commit/bd39b1af3941d9aa2920109025f6684001d28435) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.45.](https://github.com/assetgraph/assetgraph-builder/commit/6a18eb6fdfcf4674867ad5cf59423dda6af604d2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.44
+
 - [Release 0.2.44.](https://github.com/assetgraph/assetgraph-builder/commit/5958c66839bcdc8450a6c2efe26a33b72f308c53) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.30.](https://github.com/assetgraph/assetgraph-builder/commit/5f6275203c9f0ac6e194de5cfa9019d36971148a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.44.](https://github.com/assetgraph/assetgraph-builder/commit/1998f2a26f2804ea32090bae621ea6b4c1a2eec0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.43
+
 - [Release 0.2.43.](https://github.com/assetgraph/assetgraph-builder/commit/ef5fad9a9cf2d2da3b42ccc88eea94c69eca5cfc) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.29.](https://github.com/assetgraph/assetgraph-builder/commit/0edd65b7677eb602aba3821d70787f80b134f712) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.43.](https://github.com/assetgraph/assetgraph-builder/commit/bfb798d0241fde6c188644e5b81304f7bb071157) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.42
+
 - [Release 0.2.42.](https://github.com/assetgraph/assetgraph-builder/commit/5e66aad9fe8c68c95b7e4d5b02c11d99b17878a2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Added options to set the defer and async attributes on &lt;scripts src=...&gt;.](https://github.com/assetgraph/assetgraph-builder/commit/fc049efdfe80314c16834c37fb92f1b8717513bc) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.42.](https://github.com/assetgraph/assetgraph-builder/commit/69921d69940264f739f469b1870b9b84d67a8aee) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.41
+
 - [Release 0.2.41.](https://github.com/assetgraph/assetgraph-builder/commit/9ee9436d02bf0a92e0a67fd7f283046209d45c8c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [oneBootstrapper: Added one.resolveLocaleId function and exposed one.expandLocaleIdToPrioritizedList.](https://github.com/assetgraph/assetgraph-builder/commit/998d64c3a191e38b2512da21873c4b17c8b458fd) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.41.](https://github.com/assetgraph/assetgraph-builder/commit/82a471b6799a8b12a419737611c22fd0e45f76f7) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.40
+
 - [Release 0.2.40.](https://github.com/assetgraph/assetgraph-builder/commit/f2393be5bab29bf440a5b26bf20554c7cffa7b03) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildDevelopment: Include a list of supported locale ids \(one.supportedLocaleIds\) if the --locale switch is provided.](https://github.com/assetgraph/assetgraph-builder/commit/68baa272d3b8da5a8c3e0cdb7637d5d090c92e09) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.40.](https://github.com/assetgraph/assetgraph-builder/commit/c952cd013c7bb394a89d56c571b01047c93b48b6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.39
+
 - [Release 0.2.39.](https://github.com/assetgraph/assetgraph-builder/commit/303f6fb0e1a424394dc972c9a9cde56f9c8bbc33) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json: Update assetgraph to 0.3.27.](https://github.com/assetgraph/assetgraph-builder/commit/e19844c1bd6d12451e32ffbd2b1a9ad30022dc50) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.39.](https://github.com/assetgraph/assetgraph-builder/commit/0aa40ab5a396ebe9fa029c73da3ce0a9d22d6e0c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.38
+
 - [Release 0.2.38.](https://github.com/assetgraph/assetgraph-builder/commit/1aec5155d61d94e2f11992053ee1090b419274a0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json: Update assetgraph to 0.3.26.](https://github.com/assetgraph/assetgraph-builder/commit/6d42e30c42de462c3f38cfb0d88932672c855238) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Merge identical images before running transforms.inlineCssImagesWithLegacyFallback to avoid duplicates.](https://github.com/assetgraph/assetgraph-builder/commit/3c381c5378d299bc0d0163a87e445a38a8845f07) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.38.](https://github.com/assetgraph/assetgraph-builder/commit/4d4dbe4919216043a4ef8c7da3f76d2e4d556349) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.37
+
 - [Release 0.2.37.](https://github.com/assetgraph/assetgraph-builder/commit/0b45a4004632dc919a328e331040800e02b781e0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json: Run vows in the 'prepublish' hook to avoid releasing a new version if a test fails.](https://github.com/assetgraph/assetgraph-builder/commit/e1cf721c5133df0259eccb7144ba7ab023e27ff8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildDevelopment: Removed --livecss feature. See https:\/\/github.com\/One-com\/livestyle](https://github.com/assetgraph/assetgraph-builder/commit/599c9d28567a14475447c64a4cd7c9599bbeb0a0) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2922,36 +3249,43 @@
 - [Now working on 0.2.37.](https://github.com/assetgraph/assetgraph-builder/commit/6ba74e88701e35188afdfd375b9f021e2915eb38) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.36
+
 - [Release 0.2.36.](https://github.com/assetgraph/assetgraph-builder/commit/0778c70db6f4e01e3c3a14073271d7427a8a4378) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.25.](https://github.com/assetgraph/assetgraph-builder/commit/ee8cf624fb0ab473e05ffc1683123b66b8c4e7f7) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.36.](https://github.com/assetgraph/assetgraph-builder/commit/a8f3f67df36f064382db70f27b9eeba3afdf3b86) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.35
+
 - [Release 0.2.35.](https://github.com/assetgraph/assetgraph-builder/commit/020bb1f944d97c0831aa7fa62f77bc66497a08ee) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph-sprite to 0.2.4.](https://github.com/assetgraph/assetgraph-builder/commit/93c2993497529c0afc9c2477de045f893e84ec48) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.35.](https://github.com/assetgraph/assetgraph-builder/commit/bdc6ef3e46841c68fdc9c4bfebd89933f38f3936) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.34
+
 - [Release 0.2.34.](https://github.com/assetgraph/assetgraph-builder/commit/500a1b8ea8874695e0614bc11dbdee4a66f7b84f) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.addLiveCssClientToOneBootstrapper: Just call io.connect\(\) instead of hardwiring localhost \(stupid copy\/paste bug from the socket.io examples\). Makes the live CSS feature work on other hosts as well.](https://github.com/assetgraph/assetgraph-builder/commit/c8e1d2b324526c1f7ec69f377316b0482cecddaa) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.34.](https://github.com/assetgraph/assetgraph-builder/commit/d5dd33669ce4f5cadbd1c54f885ae94a10161e8c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.33
+
 - [Release 0.2.33.](https://github.com/assetgraph/assetgraph-builder/commit/d4b709f08c9e7d19622f0902b106bfc4355a36bb) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.24.](https://github.com/assetgraph/assetgraph-builder/commit/1591f32feb553ffaac899e6f318272f3e6ff7714) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.33.](https://github.com/assetgraph/assetgraph-builder/commit/d9c7cf67379f96f9da32cdc25e6c7155908abee8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.32
+
 - [Release 0.2.32.](https://github.com/assetgraph/assetgraph-builder/commit/9fad4bf7e404b6170247c1d2eb64f42ad021127d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to assetgraph 0.3.23.](https://github.com/assetgraph/assetgraph-builder/commit/e56b9fceed059d5a38afa4fa49cda8e529fbb0c1) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.32.](https://github.com/assetgraph/assetgraph-builder/commit/f2b7696db4169c3db5fb29445a018051dfe77b59) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.31
+
 - [Release 0.2.31.](https://github.com/assetgraph/assetgraph-builder/commit/0bbd433b395b246c34caddfa5f93b81c14d2dbf1) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Don't follow JavaScriptCommonJsRequire relations \(causes some troubles with Ext.Loader\).](https://github.com/assetgraph/assetgraph-builder/commit/898a35a31dc1320616e4315f25e3bba23737fbfc) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.31.](https://github.com/assetgraph/assetgraph-builder/commit/6388eb4805889340e291054cff86419927de23c1) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.30
+
 - [Release 0.2.30.](https://github.com/assetgraph/assetgraph-builder/commit/be2a38a37628daea30634b0b6b23ae178ad53df5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json: Update assetgraph to 0.3.22.](https://github.com/assetgraph/assetgraph-builder/commit/d3ea24d31ad0c69726aad01baa66a9ef80623db4) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.addLiveCssToOneBootstrapper =&gt; transforms.addLiveCssClientToOneBootstrapper.](https://github.com/assetgraph/assetgraph-builder/commit/12127869a2bc6bed2b2d800c5b3d69c3e10602e8) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2960,16 +3294,19 @@
 - [+3 more](https://github.com/assetgraph/assetgraph-builder/compare/v0.2.29...v0.2.30)
 
 ### v0.2.29
+
 - [Release 0.2.29.](https://github.com/assetgraph/assetgraph-builder/commit/5440d58936a9026491685fa0364630d57032934a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to assetgraph 0.3.21.](https://github.com/assetgraph/assetgraph-builder/commit/95d47a146a571488ea9f0e0a3a5adc0de486d240) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.29.](https://github.com/assetgraph/assetgraph-builder/commit/11b93d636c76e7525c4e379abfa466c6478d9ca3) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.28
+
 - [Release 0.2.28.](https://github.com/assetgraph/assetgraph-builder/commit/cd7b2bce11ba95e88b0a6d5e305f67713c976c51) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to assetgraph 0.3.19.](https://github.com/assetgraph/assetgraph-builder/commit/139ac50ce99cb6979df3c465aa6b89ccc6d1d99f) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.28.](https://github.com/assetgraph/assetgraph-builder/commit/12323b61c8bda201e004345cf3b06b6333e78f8b) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.27
+
 - [Release 0.2.27.](https://github.com/assetgraph/assetgraph-builder/commit/26329b40fc5b62fed62dc62aad558b3a1ae79d41) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.postProcessCssImages: Output an intelligible error message when failing to run pngquant, pngcrush, or optipng. Closes \#2.](https://github.com/assetgraph/assetgraph-builder/commit/d2b196f1e1567e4d2ffa07885fe564eddcb82449) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Fixed test for transforms.cloneForEachLocale \(96fcf4d changed the default language to en\_US\).](https://github.com/assetgraph/assetgraph-builder/commit/16e992997459432aa58a58fec263bf7d8f45795a) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -2978,71 +3315,84 @@
 - [+1 more](https://github.com/assetgraph/assetgraph-builder/compare/v0.2.26...v0.2.27)
 
 ### v0.2.26
+
 - [Release 0.2.26.](https://github.com/assetgraph/assetgraph-builder/commit/d097be5e38d970d06194c1e56eb0a4e78e4d52a0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [oneBootstrapper: Default to en\_US and compute the list of prioritized locale ids lazily so the application has a chance to change one.localeId before the first one.tr statement.](https://github.com/assetgraph/assetgraph-builder/commit/96fcf4d686649a3ae836e74e21c4c8686846917d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.26.](https://github.com/assetgraph/assetgraph-builder/commit/af046ffa62626b695e242c8bebeb0658de2ebd0f) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.25
+
 - [Release 0.2.25.](https://github.com/assetgraph/assetgraph-builder/commit/3bd59608c80d29f38dd41ce4338d40eb1ac7b6d3) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to assetgraph 0.3.17.](https://github.com/assetgraph/assetgraph-builder/commit/c3d480b4c72105cfe1b0d132d5aaf4a6827b180f) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.25.](https://github.com/assetgraph/assetgraph-builder/commit/f5c816c3f40d9a3a2df21d8bdbb3fc9283b70bc0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.24
+
 - [Release 0.2.24.](https://github.com/assetgraph/assetgraph-builder/commit/b20ac7016c2feb1a08a8bcf76fb001d896e6ee5d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to assetgraph 0.3.16.](https://github.com/assetgraph/assetgraph-builder/commit/022b705618e1745da6932047aa550d30faabc7d1) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Added transforms.postProcessCssImages \(from the assetgraph repo\).](https://github.com/assetgraph/assetgraph-builder/commit/5444a302c6a338fbc506739aed2e0db68b01349d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.24.](https://github.com/assetgraph/assetgraph-builder/commit/42be2c49e73b300fb32d111b7e8b66eea9f68ea6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.23
+
 - [Release 0.2.23.](https://github.com/assetgraph/assetgraph-builder/commit/ca8c772544035f0a66fb86c6423212c4aae44e56) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Live CSS client: Don't break if Socket.IO is already included on the page.](https://github.com/assetgraph/assetgraph-builder/commit/97110bd1343a256437027b80dc426ebea685b7e9) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Experimental: Added 'live CSS' capability to the development setup \(buildDevelopment --livecss\). Only works if your server runs node.js.](https://github.com/assetgraph/assetgraph-builder/commit/652ac5171617b022b78f203bbdd6745ba510513c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.23.](https://github.com/assetgraph/assetgraph-builder/commit/e135e76c3bbf7d30a115ec00484a641217de5f4a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.22
+
 - [Release 0.2.22.](https://github.com/assetgraph/assetgraph-builder/commit/1fee5b7429739c7525abc85ed1d2da0667bbe8dd) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json: Update to assetgraph 0.3.14 and assetgraph-sprite 0.2.1.](https://github.com/assetgraph/assetgraph-builder/commit/1c2ace456b9e78be2bc2ef57fdb93f211dd7391f) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.22.](https://github.com/assetgraph/assetgraph-builder/commit/a15d3fc213c00e898047579bea955938fe71e71b) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.21
+
 - [Release 0.2.21.](https://github.com/assetgraph/assetgraph-builder/commit/05917136c3b3c41b007905a6aef99e7532fd756b) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json: Update assetgraph to 0.3.14.](https://github.com/assetgraph/assetgraph-builder/commit/73f15ae7761831e9ca5658f373b8f63180ca8c8e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.21.](https://github.com/assetgraph/assetgraph-builder/commit/a03a51b430c6a30c663fc334ff8803c933395211) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.20
+
 - [Release 0.2.20.](https://github.com/assetgraph/assetgraph-builder/commit/eebb76cfd5f0ddb38839135ce3a8882c5e7d5da5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Added addContentVersionMetaElement transform and buildDevelopment --version ... switch.](https://github.com/assetgraph/assetgraph-builder/commit/4acf79c9fde8ced99998f64e38f1ccfb657ec188) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.20.](https://github.com/assetgraph/assetgraph-builder/commit/2c01cd12122d504136e5b0ee4de22412c6a710d2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.19
+
 - [Release 0.2.19.](https://github.com/assetgraph/assetgraph-builder/commit/452a4cbd67ca902cbd5c0f629269660f47599a23) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to assetgraph-sprite 0.2.1.](https://github.com/assetgraph/assetgraph-builder/commit/109351794421c64260fab54e95ca29f6b2320e04) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json: Removed 'publicationConfig' section \(there's a 'publishConfig', the correct name, with identical contents\).](https://github.com/assetgraph/assetgraph-builder/commit/37ee941358b28fd2ae159e4fcfcb3e86fc081b8d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.19.](https://github.com/assetgraph/assetgraph-builder/commit/d46d4d1d82668e28d05ede84ee9debf162e35e14) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.18
+
 - [Release 0.2.18.](https://github.com/assetgraph/assetgraph-builder/commit/0d4cdc848c955a798ee5da695c4316df96eceab8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to assetgraph 0.3.13.](https://github.com/assetgraph/assetgraph-builder/commit/1ff40cd83d04543655c46a69b91d7c1d6ee77178) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Only move assets to the CDN once.](https://github.com/assetgraph/assetgraph-builder/commit/1b77215cd4cba0bfefe7b2170923f9035f255d62) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.18.](https://github.com/assetgraph/assetgraph-builder/commit/96f2bb437e15aa61ac004cf60e2833f72b5d0950) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.17
+
 - [Release 0.2.17.](https://github.com/assetgraph/assetgraph-builder/commit/eb84b23c721b01d7d4dd78a2047e44c39da5ebdc) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [makeBabelJob: Bugfixes. Only include the keys that haven't been translated into all languages.](https://github.com/assetgraph/assetgraph-builder/commit/e42e420708e3da9d3cc0e8ce4843a9072e58fa44) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.17.](https://github.com/assetgraph/assetgraph-builder/commit/cdb45c97cf9c890719a013b27af5a1b275486330) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.16
+
 - [Release 0.2.16.](https://github.com/assetgraph/assetgraph-builder/commit/fde9e4f3117ad91659ab3fa8ef734c135b07229c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.12.](https://github.com/assetgraph/assetgraph-builder/commit/e354b86fce53b0e5f1087403a74b2dbe56bbb04e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json: Updated uglify-js, underscore, optimist, seq, and memoizer to the latest versions and hardwire the version numbers.](https://github.com/assetgraph/assetgraph-builder/commit/6c34683415c7d8f520a23ac1267a93bff5f1994f) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.16.](https://github.com/assetgraph/assetgraph-builder/commit/96d33e4633584f25417bcee21582ae0085824a07) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.15
+
 - [Release 0.2.15.](https://github.com/assetgraph/assetgraph-builder/commit/5c0b8430dcb574622a46aaec66423176bc701f47) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Really don't put CacheManifest assets on the CDN.](https://github.com/assetgraph/assetgraph-builder/commit/1257991306cf2bb955287f1ea4dd7d5b9a640157) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.15.](https://github.com/assetgraph/assetgraph-builder/commit/b6496e82682b1e5fcce042462f6fbc5e9af9c6fc) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.14
+
 - [Release 0.2.14.](https://github.com/assetgraph/assetgraph-builder/commit/a755e46151f8c5ee865a8754dcfa10fc0d90cd97) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to assetgraph 0.3.11.](https://github.com/assetgraph/assetgraph-builder/commit/eb3c5a8ca1b4534769e2f8fcc4071978f6bcf6f6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.cloneForEachLocale: Also clone the unlocalized Html asset's cache manifest, if any.](https://github.com/assetgraph/assetgraph-builder/commit/93104af4a8d3cae483ffce3d5243d9468df6b7d0) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -3050,6 +3400,7 @@
 - [Now working on 0.2.14.](https://github.com/assetgraph/assetgraph-builder/commit/909735ff9dd4c177e5be857ec0b814b62bb40303) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.13
+
 - [Release 0.2.13.](https://github.com/assetgraph/assetgraph-builder/commit/e9fd9815fb00a55156123b554ea8be1e2ba86036) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.10.](https://github.com/assetgraph/assetgraph-builder/commit/a4602c45c1dc3e275857a0a771421c47c1716b10) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [i18nTools.getOrCreateI18nAssetForKey: More informational warning messages.](https://github.com/assetgraph/assetgraph-builder/commit/d74f4700e4f739af9bc2dea892eed0fda2d944d0) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -3058,6 +3409,7 @@
 - [+4 more](https://github.com/assetgraph/assetgraph-builder/compare/v0.2.12...v0.2.13)
 
 ### v0.2.12
+
 - [Release 0.2.12.](https://github.com/assetgraph/assetgraph-builder/commit/0328264a3fb688624b29d2bb352558a9be121e1f) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to assetgraph 0.3.9.](https://github.com/assetgraph/assetgraph-builder/commit/fd132770f092b325dec36f8c1649ac06c3f199ab) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Removed bin\/prepareForCDN -- it's out of date and the same task is supported by buildProduction now using the --cdnroot and --cdnoutroot switches.](https://github.com/assetgraph/assetgraph-builder/commit/152b5e5a81bde1b13c900c49a4db4a5e0f9eb696) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -3066,34 +3418,40 @@
 - [+2 more](https://github.com/assetgraph/assetgraph-builder/compare/v0.2.11...v0.2.12)
 
 ### v0.2.11
+
 - [Release 0.2.11.](https://github.com/assetgraph/assetgraph-builder/commit/95507a25cbadafd228b7f677abcce61400a0ce4f) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [flattenOneInclude: Leave the original sources unmangled \(except removal of the one.include statements\).](https://github.com/assetgraph/assetgraph-builder/commit/5e29222b1daa789a77f9684ca160885bdbf4ddc6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.11.](https://github.com/assetgraph/assetgraph-builder/commit/ec0354c6d2f677bd9c6c587bec3c9543c62ede98) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.10
+
 - [Release 0.2.10.](https://github.com/assetgraph/assetgraph-builder/commit/8fb08f45d7e1c7b369f49c6c54cd516391565826) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [flattenOneInclude: AssetGraph.detachAndRemoveRelation\(relation\) =&gt; relation.detach\(\).](https://github.com/assetgraph/assetgraph-builder/commit/39b1e341e71440ffde5d9d2d08a3ce9c313a1c25) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [flattenOneInclude: Don't use stdout for anything but the flattened script.](https://github.com/assetgraph/assetgraph-builder/commit/2f41dc0b7c06b4f4e3cce26118ca90c8267c6f3d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.10.](https://github.com/assetgraph/assetgraph-builder/commit/3eb94a96ca247c46e5fd8f3bb51b14ee054b0b40) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.9
+
 - [Release 0.2.9.](https://github.com/assetgraph/assetgraph-builder/commit/693e2da0f5bab1cfce7957243d7c82ea571daaac) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [flattenOneInclude: Removed legacy code causing the script not to work.](https://github.com/assetgraph/assetgraph-builder/commit/5cde29d46ab32745a5af8d234b2b2170a49237da) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [flattenOneInclude: Documented the --label switch.](https://github.com/assetgraph/assetgraph-builder/commit/ea2d1cb3f45ced0621c4a29f0a6c437703f59bd6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.9.](https://github.com/assetgraph/assetgraph-builder/commit/e8386afb31007cefb1f799e3e933c09b10a38078) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.8
+
 - [Release 0.2.8.](https://github.com/assetgraph/assetgraph-builder/commit/707ab37f33fbca5a367beeb0a721eb4eee5453f6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to assetgraph 0.3.8.](https://github.com/assetgraph/assetgraph-builder/commit/0487b5518c79f1d0343f2472ebbb69cf9f2cdf00) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.8.](https://github.com/assetgraph/assetgraph-builder/commit/8a32fd39a653d98a07d2c23d9ace5faca7d5ea4c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.7
+
 - [Release 0.2.7.](https://github.com/assetgraph/assetgraph-builder/commit/cadccfa990a1d0b6f1c79cff42032654290889ef) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to assetgraph 0.3.7.](https://github.com/assetgraph/assetgraph-builder/commit/735684d8dd551553bddd7e05bd20906ab5740118) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Exclude existing conditional comments from the set of Html assets transforms.inlineCssImagesWithLegacyFallback is run on.](https://github.com/assetgraph/assetgraph-builder/commit/c4ae908b8d1c407f7a6d84598ef86fa8c5f5cf32) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.7.](https://github.com/assetgraph/assetgraph-builder/commit/300ffbe64ac0c2ac60ffd4bcba3a92007b8ac5ac) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.6
+
 - [Release 0.2.6.](https://github.com/assetgraph/assetgraph-builder/commit/ee16ac7f28387c09cb4ab7d7dab701cfbf84174e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.3.6 \(fixes the failing test\).](https://github.com/assetgraph/assetgraph-builder/commit/12c87d91e7bb45b624ae75c32bc2eac004d0fa7d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Added failing cloneForEachLocale test.](https://github.com/assetgraph/assetgraph-builder/commit/0dc24ae353f08c0b9dbfc800355ccf6a466f68d0) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -3102,16 +3460,19 @@
 - [+1 more](https://github.com/assetgraph/assetgraph-builder/compare/v0.2.5...v0.2.6)
 
 ### v0.2.5
+
 - [Release 0.2.5.](https://github.com/assetgraph/assetgraph-builder/commit/e9c884d40768a8aaac54506162ad8e164dfc192a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to assetgraph 0.3.5.](https://github.com/assetgraph/assetgraph-builder/commit/c7022b16980119f03d43c31fdbde0cde188ccc7d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.5.](https://github.com/assetgraph/assetgraph-builder/commit/1bbee951dfab1aeb4fb145db0f916465a64e9fd0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.4
+
 - [Release 0.2.4.](https://github.com/assetgraph/assetgraph-builder/commit/07c4c9e659e0936740a422fc3de71843daa942d7) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to assetgraph 0.3.4.](https://github.com/assetgraph/assetgraph-builder/commit/30d9d85b1c1bc35fcebe85267da7b769fab96bfc) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.2.4.](https://github.com/assetgraph/assetgraph-builder/commit/f5de7baec42ae1754eb050a917566a9453a609b7) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.3
+
 - [Release 0.2.3.](https://github.com/assetgraph/assetgraph-builder/commit/0a7c82df24840ab58349c0c26b4b9ec90d9641c7) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to AssetGraph 0.3.3.](https://github.com/assetgraph/assetgraph-builder/commit/55fdd69ce04456183a6a5df329a7d21c2c9763bb) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Fixed bin\/prepareForCDN \(was still using transforms.renameAssetsToMd5Prefix\).](https://github.com/assetgraph/assetgraph-builder/commit/bdbe62c24448df3ec6934566192b6bc12a6efdac) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -3119,6 +3480,7 @@
 - [Now working on 0.2.3.](https://github.com/assetgraph/assetgraph-builder/commit/7b9e2e6b6ec843944f562c21acccc572ebd2260a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.2.2
+
 - [Release 0.2.2.](https://github.com/assetgraph/assetgraph-builder/commit/dd98f86b6a9df657d71412907471d849a6abadf6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to assetgraph 0.3.2.](https://github.com/assetgraph/assetgraph-builder/commit/0f4387db76ea8766cbca2ec84fca051302905b8c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [A little better test coverage of transforms.cloneForEachLocale.](https://github.com/assetgraph/assetgraph-builder/commit/050397e83cd581b34d2805642cf033e9d8540b00) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -3127,6 +3489,7 @@
 - [+1 more](https://github.com/assetgraph/assetgraph-builder/compare/v0.2.1...v0.2.2)
 
 ### v0.2.1
+
 - [Release 0.2.1.](https://github.com/assetgraph/assetgraph-builder/commit/8537dc4f6b2368cce366d8dbc83196521b27e960) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update to assetgraph 0.3.1.](https://github.com/assetgraph/assetgraph-builder/commit/b5f902ef59d229480c8702ff0b516f5e1170a514) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Remove the 'nobundle' attribute after bundling.](https://github.com/assetgraph/assetgraph-builder/commit/98a2371e4b8e4e77fee7e11d61d4c43812f0b042) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -3135,6 +3498,7 @@
 - [+1 more](https://github.com/assetgraph/assetgraph-builder/compare/v0.2.0...v0.2.1)
 
 ### v0.2.0
+
 - [Release 0.2.0.](https://github.com/assetgraph/assetgraph-builder/commit/e1dd2948bf87260c545afed8c1d74d334909f963) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json: Upgrade to assetgraph 0.3.0 and assetgraph-sprite 0.2.0.](https://github.com/assetgraph/assetgraph-builder/commit/c6712b41a928fbf3c04a14b3cf1c3740e0d4a6ae) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [i18nTools: Consistent wording in warnings.](https://github.com/assetgraph/assetgraph-builder/commit/c34b29ce9fbb6c7202cd165b0566357e685777c3) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -3143,6 +3507,7 @@
 - [+17 more](https://github.com/assetgraph/assetgraph-builder/compare/v0.1.10...v0.2.0)
 
 ### v0.1.10
+
 - [Release 0.1.10.](https://github.com/assetgraph/assetgraph-builder/commit/7a84b6eb4d535d37265a6f9437730c3ac852325c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Name the function that removes the 'nobundle' attribute.](https://github.com/assetgraph/assetgraph-builder/commit/132b4c2f9d6ad1d30e2e336c73044cea287b439c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Remove the 'nobundle' attribute after bundling.](https://github.com/assetgraph/assetgraph-builder/commit/575148b41023e038c17f0fe2fd2f2852222bd080) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -3150,21 +3515,25 @@
 - [Backported 3d1d837: oneBootstrapper.createContext: Expose the assetGraph and htmlAsset objects in the context.](https://github.com/assetgraph/assetgraph-builder/commit/2b43d53229d155252c856868ab3a3bb6795f046c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.1.9
+
 - [Release 0.1.9.](https://github.com/assetgraph/assetgraph-builder/commit/f2923b37f742d82770f732b98ff2a78bb3488aef) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Upgrade to assetgraph 0.2.9.](https://github.com/assetgraph/assetgraph-builder/commit/39ce8be7aa22a8a5a114c36bf770d5f1da59096e) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.1.9.](https://github.com/assetgraph/assetgraph-builder/commit/5d75faf5602f549981834a1a2dea6db39d076205) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.1.8
+
 - [Release 0.1.8.](https://github.com/assetgraph/assetgraph-builder/commit/2d6cde2c1a46aaff210451e913afa125d9660ac2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Upgrade to assetgraph 0.2.8.](https://github.com/assetgraph/assetgraph-builder/commit/69ce12b6880fe669bd60db06c1e36f3687263873) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.1.8.](https://github.com/assetgraph/assetgraph-builder/commit/3a3797d6c30c6b728ec9271b1a6df33d5329f482) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.1.7
+
 - [Release 0.1.7.](https://github.com/assetgraph/assetgraph-builder/commit/547482d0c5021b145c6925110d7cca060380747c) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Update assetgraph to 0.2.7.](https://github.com/assetgraph/assetgraph-builder/commit/e086f68b8558a43424373add12d303bd26f99538) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.1.7.](https://github.com/assetgraph/assetgraph-builder/commit/79f9b4047b993506253e7e3516437ae2dd420e40) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.1.6
+
 - [Release 0.1.6.](https://github.com/assetgraph/assetgraph-builder/commit/7c8c17dacbab4893258e749ae78718c6069fae49) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Upgrade to assetgraph 0.2.6.](https://github.com/assetgraph/assetgraph-builder/commit/b29ebc56c578ba58cab4cd24b6f65ec1db37d2b5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [\_.keys =&gt; Object.keys](https://github.com/assetgraph/assetgraph-builder/commit/acbcded24069a00c217e535d38d6e8b2a80af58d) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -3172,25 +3541,30 @@
 - [Now working on 0.1.6.](https://github.com/assetgraph/assetgraph-builder/commit/872b9e9fb456f4969b8fbd4636e23cf1027845f7) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.1.5
+
 - [package.json: Release 0.1.5, upgrade to assetgraph 0.2.5 and assetgraph-sprite 0.1.1.](https://github.com/assetgraph/assetgraph-builder/commit/119b49d41ab1f9bd1116f4690862eba548f3a4f3) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.1.5.](https://github.com/assetgraph/assetgraph-builder/commit/45ee9312bf8d1d47f073d6cc925ee20121d036ed) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.1.4
+
 - [Release 0.1.4.](https://github.com/assetgraph/assetgraph-builder/commit/4a8fe3236a021ad428940307136e440abc0a26d1) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json: Update assetgraph to 0.2.4.](https://github.com/assetgraph/assetgraph-builder/commit/fd36fb15d0b6b4aa03d0fab87b6bd9a2b0485b8f) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.1.4.](https://github.com/assetgraph/assetgraph-builder/commit/fe51f950b6220e888bf3a3bff269ef8b4967bc20) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.1.3
+
 - [Release 0.1.3.](https://github.com/assetgraph/assetgraph-builder/commit/30b2eb442ceb08fba17285e9c5ed88ce6376be70) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json: Upgrade to assetgraph 0.2.3.](https://github.com/assetgraph/assetgraph-builder/commit/9ff312ba022b36081c708d824c69115ee6cca0f0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.1.3.](https://github.com/assetgraph/assetgraph-builder/commit/d1d661cc13ed8094f5e48c1efdbfda986af6e308) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.1.2
+
 - [Release 0.1.2.](https://github.com/assetgraph/assetgraph-builder/commit/1ab591db5964ec626aed26a22ef550abe7cc9f98) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Upgrade to assetgraph 0.2.2.](https://github.com/assetgraph/assetgraph-builder/commit/70f1e3d97c34dfef512091d73d91b6109159ff6b) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.1.2.](https://github.com/assetgraph/assetgraph-builder/commit/a7d4138fced796e9f424e061713599d95e5f651a) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.1.1
+
 - [Release 0.1.1.](https://github.com/assetgraph/assetgraph-builder/commit/deea9782a12492b96b12c6c5583026468cf83368) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Upgrade to assetgraph 0.2.1.](https://github.com/assetgraph/assetgraph-builder/commit/e1fdf684f2adef98cad1eb85fcb762b60f7b6ee4) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Don't populate HtmlAnchor relations to https?: urls.](https://github.com/assetgraph/assetgraph-builder/commit/552085f6c6a1e8cb6a256eb2830614ada71a8883) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -3199,6 +3573,7 @@
 - [+15 more](https://github.com/assetgraph/assetgraph-builder/compare/v0.1.0...v0.1.1)
 
 ### v0.1.0
+
 - [Release 0.1.0.](https://github.com/assetgraph/assetgraph-builder/commit/ad222d73459249a9c5ce2f3988d9404487354a34) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [package.json: Added publicationConfig.](https://github.com/assetgraph/assetgraph-builder/commit/7f041de9bc89b3293152163e4618d578f58761e6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Detach the incoming relations when removing empty assets \(duh\).](https://github.com/assetgraph/assetgraph-builder/commit/1acf8d993697a2e32676e4f6c55f8138de2e7da6) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -3207,11 +3582,13 @@
 - [+7 more](https://github.com/assetgraph/assetgraph-builder/compare/v0.0.11...v0.1.0)
 
 ### v0.0.11
+
 - [Release 0.0.11.](https://github.com/assetgraph/assetgraph-builder/commit/accf8c294465acb9f022f252c0fbe28765dcf7d0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Upgrade to AssetGraph 0.1.5.](https://github.com/assetgraph/assetgraph-builder/commit/ea4b04c1bbfc3bdd5461d712513274f8c9fb1f94) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.0.11.](https://github.com/assetgraph/assetgraph-builder/commit/8f011aeaa529d54b7a998aa3004e5256017b499b) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.0.10
+
 - [Release 0.0.10.](https://github.com/assetgraph/assetgraph-builder/commit/1183acc024d2960eecb347b1238d592ae4783443) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [bin\/applyBabelJob: Bugfix.](https://github.com/assetgraph/assetgraph-builder/commit/d56d6021f32ea14324a314948e14c0e890a762fd) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [bin\/makeBabelJob: Renamed --outdir to --babeldir for consistency.](https://github.com/assetgraph/assetgraph-builder/commit/006d3a355a8ea50f4c606e4709c10c74deefed95) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -3220,6 +3597,7 @@
 - [+2 more](https://github.com/assetgraph/assetgraph-builder/compare/v0.0.9...v0.0.10)
 
 ### v0.0.9
+
 - [Release 0.0.9.](https://github.com/assetgraph/assetgraph-builder/commit/670004af8e3de7a10b70e693ca74169e292dfd70) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Added tool for applying a finished translation from babel.](https://github.com/assetgraph/assetgraph-builder/commit/605adc220aaeae214d5701d3e392cbbb76984ac5) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [bin\/makeBabelJob: Output .txt files instead of .babel](https://github.com/assetgraph/assetgraph-builder/commit/285c304bd1783ad9ad9ea83ef90e6409a83a299c) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -3228,23 +3606,27 @@
 - [+8 more](https://github.com/assetgraph/assetgraph-builder/compare/v0.0.8...v0.0.9)
 
 ### v0.0.8
+
 - [Release 0.0.8](https://github.com/assetgraph/assetgraph-builder/commit/698ddb327fa75be0a0f8ae33d79019bfe7e78dd0) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.injectOneBootstrapper: Fixed bug that caused the bootstrapper asset not to have a unique id.](https://github.com/assetgraph/assetgraph-builder/commit/fbede52f480f08a840083d45b062a1559de702f8) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.0.8.](https://github.com/assetgraph/assetgraph-builder/commit/b39f170b068e21ebb53b8dafd01f9fc569756b0d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.0.7
+
 - [Release 0.0.7.](https://github.com/assetgraph/assetgraph-builder/commit/0e8f1088485e6e931dc6f4f14a881cfc928cb010) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Upgrade to AssetGraph 0.1.4.](https://github.com/assetgraph/assetgraph-builder/commit/737362a24075a996bf4bf0c500b39458c4bd1e78) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Added support for a --nocompress switch. It disables compression of JavaScript and pretty prints HTML, CSS, and JavaScript.](https://github.com/assetgraph/assetgraph-builder/commit/067707c62804ec044033b5699f7ccafac57ff7cf) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.0.7.](https://github.com/assetgraph/assetgraph-builder/commit/92994ed3777781a31c900aeb60cbfa84f11f34ef) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.0.6
+
 - [Release 0.0.6.](https://github.com/assetgraph/assetgraph-builder/commit/c94e1bb10b901a54c21d4d2c18715f91c9cadcf6) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Require AssetGraph ~0.1.3.](https://github.com/assetgraph/assetgraph-builder/commit/da037d1c08b06cf0de47b4400c32e1a2955d9866) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [transforms.injectOneBootstrapper: Fixed stupid bug that caused one.trPattern to always lookup a key named 'key' instead of the actual key name.](https://github.com/assetgraph/assetgraph-builder/commit/773481007c1aa9be10bf4df3d507223071a9bf22) ([Peter Müller](mailto:pm@one.com))
 - [Now working on 0.0.6.](https://github.com/assetgraph/assetgraph-builder/commit/b660fcd64b2e178b6582d81ff6958755d1c6fc64) ([Andreas Lind Petersen](mailto:andreas@one.com))
 
 ### v0.0.5
+
 - [Release 0.0.5.](https://github.com/assetgraph/assetgraph-builder/commit/e424b87f4685c9b348555ae39543baffb97aae41) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: New attempt to avoid inlining HtmlStyle and HtmlScript relations occurring in conditional comments.](https://github.com/assetgraph/assetgraph-builder/commit/cf03004d940fcc8f7101899dba245542a8c62303) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [i18nTools.patternToAst: Return \['string', ''\] when there are no tokens \(when the input is the empty string\). Prevents cloneForEachLocale\/oneTrReplacer from rendering the AST invalid when one.trPattern is used with an empty-string translation.](https://github.com/assetgraph/assetgraph-builder/commit/8bd9d852512de563cef47425a15a8628436d9bee) ([Andreas Lind Petersen](mailto:andreas@one.com))
@@ -3253,10 +3635,10 @@
 - [+1 more](https://github.com/assetgraph/assetgraph-builder/compare/v0.0.4...v0.0.5)
 
 ### v0.0.4
+
 - [Release 0.0.4.](https://github.com/assetgraph/assetgraph-builder/commit/d2d1a5f2be39e83166293221aa2550ee93931dcd) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Require assetgraph-sprite 0.0.4 \(previous versions didn't work with AssetGraph &gt;= 0.1.2 due to a bug\).](https://github.com/assetgraph/assetgraph-builder/commit/caa64d26a86d5fb5d3f84c31d6c0b58cdc22aa5d) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [buildProduction: Do populate HtmlAnchor relations to non-Html.](https://github.com/assetgraph/assetgraph-builder/commit/d0c62b8cdd1f8a1910751b40b9edeac5b03eb3b2) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Now working on 0.0.4.](https://github.com/assetgraph/assetgraph-builder/commit/9f24c15186626dcffa7442fedf5de9a18b2d43fa) ([Andreas Lind Petersen](mailto:andreas@one.com))
 - [Release 0.0.3.](https://github.com/assetgraph/assetgraph-builder/commit/c4a061e34a878388d81fe36460d33b3691d5862e) ([Andreas Lind Petersen](mailto:andreas@one.com))
-- [+14 more](https://github.com/assetgraph/assetgraph-builder/compare/d2d1a5f2be39e83166293221aa2550ee93931dcd%5E...v0.0.4)
-
+- [+14 more](https://github.com/assetgraph/assetgraph-builder/compare/c4a061e34a878388d81fe36460d33b3691d5862e...v0.0.4)

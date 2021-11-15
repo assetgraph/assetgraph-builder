@@ -3,7 +3,7 @@
 /* eslint indent:0 */
 const chalk = require('chalk');
 const parseExpression = require('assetgraph/lib/parseExpression');
-const optimist = require('optimist')
+const yargs = require('yargs')
   .usage('$0 --root <inputRootDirectory> -o <dir> [options] <htmlFile(s)>')
   .wrap(72)
   .options('h', {
@@ -245,14 +245,14 @@ for (const javaScriptSerializationOptionName of javaScriptSerializationOptionNam
   const type =
     javaScriptSerializationOptionName === 'indent_level' ? 'number' : 'boolean';
   // Also accept the option without underscores, or with the underscores replaced with dashes:
-  optimist.options(javaScriptSerializationOptionName.replace(/_/g, ''), {
+  yargs.options(javaScriptSerializationOptionName.replace(/_/g, ''), {
     type,
     description:
       'UglifyJS serialization option, see http://lisperator.net/uglifyjs/codegen',
   });
 }
 
-const commandLineOptions = optimist.argv;
+const commandLineOptions = yargs.argv;
 
 const javaScriptSerializationOptions = {
   compact: commandLineOptions.compact,
@@ -302,7 +302,7 @@ if (Array.isArray(browsers)) {
 }
 
 if (commandLineOptions.h) {
-  optimist.showHelp();
+  yargs.showHelp();
   process.exit(0);
 }
 

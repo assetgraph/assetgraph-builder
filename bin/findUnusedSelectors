@@ -3,7 +3,7 @@
 const AssetGraph = require('../lib/AssetGraph');
 const _ = require('lodash');
 const urlTools = require('urltools');
-const commandLineOptions = require('optimist')
+const commandLineOptions = require('yargs')
   .usage('$0 [--root <inputRootDirectory>] <htmlFile>...')
   .demand(1).argv;
 
@@ -56,21 +56,20 @@ new AssetGraph({ root: commandLineOptions.root })
     function isSelectorUsed(selector) {
       var giveUp = false;
       // Preprocess pseudo-classes
-      selector = selector.replace(/:([a-z-]+)(\()?/g, function (
-        $0,
-        pseudoClassName,
-        leadingParen
-      ) {
-        if (leadingParen) {
-          // Give up on :not(...) etc., anything that takes parameters
-          giveUp = true;
-          return $0;
-        } else if (ignorePseudoClasses.indexOf(pseudoClassName) !== -1) {
-          return '';
-        } else {
-          return $0;
+      selector = selector.replace(
+        /:([a-z-]+)(\()?/g,
+        function ($0, pseudoClassName, leadingParen) {
+          if (leadingParen) {
+            // Give up on :not(...) etc., anything that takes parameters
+            giveUp = true;
+            return $0;
+          } else if (ignorePseudoClasses.indexOf(pseudoClassName) !== -1) {
+            return '';
+          } else {
+            return $0;
+          }
         }
-      });
+      );
       if (giveUp) {
         return true;
       }
@@ -85,31 +84,32 @@ new AssetGraph({ root: commandLineOptions.root })
       });
     }
     assetGraph.findAssets({ type: 'Css' }).forEach(function (cssAsset) {
-      cssAsset.constructor.eachRuleInParseTree(cssAsset.parseTree, function (
-        cssRule
-      ) {
-        if (cssRule.type === 'rule') {
-          // STYLE_RULE
-          var selectors = cssRule.selectors;
-          var unusedSelectors = cssRule.selectors.filter(function (selector) {
-            return !isSelectorUsed(selector);
-          });
-          if (unusedSelectors.length > 0) {
-            if (unusedSelectors.length === selectors.length) {
-              console.warn('Unused rule: ' + cssRule.toString());
-            } else {
-              console.warn(
-                'Unused selector' +
-                  (unusedSelectors.length === 1 ? '' : 's') +
-                  ' "' +
-                  unusedSelectors.join('", "') +
-                  '" in rule: ' +
-                  cssRule.toString()
-              );
+      cssAsset.constructor.eachRuleInParseTree(
+        cssAsset.parseTree,
+        function (cssRule) {
+          if (cssRule.type === 'rule') {
+            // STYLE_RULE
+            var selectors = cssRule.selectors;
+            var unusedSelectors = cssRule.selectors.filter(function (selector) {
+              return !isSelectorUsed(selector);
+            });
+            if (unusedSelectors.length > 0) {
+              if (unusedSelectors.length === selectors.length) {
+                console.warn('Unused rule: ' + cssRule.toString());
+              } else {
+                console.warn(
+                  'Unused selector' +
+                    (unusedSelectors.length === 1 ? '' : 's') +
+                    ' "' +
+                    unusedSelectors.join('", "') +
+                    '" in rule: ' +
+                    cssRule.toString()
+                );
+              }
             }
           }
         }
-      });
+      );
     });
   })
   .run();

@@ -1,6 +1,7 @@
 /node_modules/
 /testdata/
 /coverage/
+/.nyc_output/
 
 # Generated
 /CHANGELOG.md

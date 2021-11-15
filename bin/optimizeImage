@@ -2,7 +2,7 @@
 
 const AssetGraph = require('../lib/AssetGraph');
 const urlTools = require('urltools');
-const commandLineOptions = require('optimist')
+const commandLineOptions = require('yargs')
   .usage('$0 image1 image2...')
   .demand(1).argv;
 

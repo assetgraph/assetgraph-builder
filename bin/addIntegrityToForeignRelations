@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const optimist = require('optimist')
+const yargs = require('yargs')
   .usage('$0 --root <inputRootDirectory> -o <dir> [options] <htmlFile(s)>')
   .wrap(72)
   .options('h', {
@@ -29,10 +29,10 @@ const optimist = require('optimist')
     demand: false,
   });
 
-const commandLineOptions = optimist.argv;
+const commandLineOptions = yargs.argv;
 
 if (commandLineOptions.h) {
-  optimist.showHelp();
+  yargs.showHelp();
   process.exit(0);
 }
 
