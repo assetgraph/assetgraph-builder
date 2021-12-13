@@ -76,7 +76,7 @@
     "gettemporaryfilepath": "^1.0.0",
     "gifsicle-stream": "^1.0.0",
     "gm-papandreou": "^1.23.0-patch1",
-    "html-webpack-plugin": "^4.0.1",
+    "html-webpack-plugin": "^5.5.0",
     "inkscape": "^3.0.0",
     "jsdom": "^18.0.0",
     "less": "^2.7.1",
