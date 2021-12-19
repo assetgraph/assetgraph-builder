@@ -71,7 +71,7 @@
     "eslint-plugin-markdown": "^2.0.0",
     "eslint-plugin-mocha": "^10.0.1",
     "eslint-plugin-node": "^11.0.0",
-    "eslint-plugin-promise": "^5.1.1",
+    "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-standard": "^5.0.0",
     "gettemporaryfilepath": "^1.0.0",
     "gifsicle-stream": "^1.0.0",
