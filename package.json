@@ -85,7 +85,7 @@
     "prettier": "~2.6.1",
     "requirejs": "^2.3.3",
     "rimraf": "^3.0.0",
-    "sharp": "^0.29.2",
+    "sharp": "^0.30.4",
     "sinon": "^13.0.2",
     "source-map": "^0.7.2",
     "svgfilter": "^4.0.0",
