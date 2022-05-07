@@ -54,7 +54,7 @@
     "lodash": "^4.14.1",
     "memoizesync": "^1.1.1",
     "optipng": "^4.0.0",
-    "p-map": "^4.0.0",
+    "p-map": "^5.3.0",
     "passerror": "^1.1.1",
     "pngcrush": "^3.0.0",
     "pngquant": "^4.0.0",
