@@ -59,7 +59,7 @@
     "pngcrush": "^3.0.0",
     "pngquant": "^4.0.0",
     "urltools": "^0.4.1",
-    "yargs": "^17.1.1"
+    "yargs": "17.5.0"
   },
   "devDependencies": {
     "autoprefixer": "^9.0.0",
