@@ -1,3 +1,29 @@
+### v9.0.0 (2022-06-02)
+
+#### Pull requests
+
+- [#986](https://github.com/assetgraph/assetgraph-builder/pull/986) Upgrade sinon to version 14.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#985](https://github.com/assetgraph/assetgraph-builder/pull/985) Upgrade optipng to version 4.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#983](https://github.com/assetgraph/assetgraph-builder/pull/983) Upgrade unexpected to version 13.0.0 ([Andreas Lind](mailto:andreaslindpetersen@gmail.com), [depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#981](https://github.com/assetgraph/assetgraph-builder/pull/981) Upgrade sharp to version 0.30.4 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#980](https://github.com/assetgraph/assetgraph-builder/pull/980) Upgrade sinon to version 13.0.2 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#979](https://github.com/assetgraph/assetgraph-builder/pull/979) Upgrade assetgraph to version 7.6.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#978](https://github.com/assetgraph/assetgraph-builder/pull/978) Upgrade prettier to version 2.6.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#977](https://github.com/assetgraph/assetgraph-builder/pull/977) Upgrade impro to version 0.13.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#955](https://github.com/assetgraph/assetgraph-builder/pull/955) Upgrade eslint-plugin-mocha to version 10.0.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#951](https://github.com/assetgraph/assetgraph-builder/pull/951) Upgrade jsdom to version 19.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#730](https://github.com/assetgraph/assetgraph-builder/pull/730) Demote some image processing modules not used for the auto-lossless mode to dev deps ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [#948](https://github.com/assetgraph/assetgraph-builder/pull/948) Upgrade prettier to version 2.5.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#939](https://github.com/assetgraph/assetgraph-builder/pull/939) Upgrade sinon to version 12.0.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+
+#### Commits to master
+
+- [Update assetgraph to 7.7.0](https://github.com/assetgraph/assetgraph-builder/commit/690ea12c0efcffe8eaee96cb41133f08a29ebc68) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [npm i --save-dev eslint-plugin-n eslint-config-standard@latest && npm uninstall eslint-plugin-node eslint-plugin-standard](https://github.com/assetgraph/assetgraph-builder/commit/e4690041caa27d6c8732b7a81c2042b513b32d79) ([Andreas Lind](mailto:andreas.lind@workday.com))
+- [Update eslint-plugin-promise to version 6.0.0](https://github.com/assetgraph/assetgraph-builder/commit/46ae1cd0cd1d04acb0e33dc4b35ba84ea81c2873) ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [Fix tests](https://github.com/assetgraph/assetgraph-builder/commit/a5a73057cbc7292414541586743ff01cf093d41d) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Update assetgraph to version 7.3.1](https://github.com/assetgraph/assetgraph-builder/commit/479369474fa2670d0635fae9ffc163856c0afef0) ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+
 ### v9.0.0 (2021-10-23)
 
 #### Pull requests
