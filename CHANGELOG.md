@@ -1,4 +1,8 @@
-### v9.0.0 (2022-06-02)
+### v9.1.1 (2022-06-02)
+
+- [Update optipng to ^4.1.0](https://github.com/assetgraph/assetgraph-builder/commit/2e59232a18b57143c794054622eea466a08c1fab) ([Andreas Lind](mailto:andreas.lind@workday.com))
+
+### v9.1.0 (2022-06-02)
 
 #### Pull requests
 
