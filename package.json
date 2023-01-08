@@ -77,7 +77,7 @@
     "gm-papandreou": "^1.23.0-patch1",
     "html-webpack-plugin": "^4.0.1",
     "inkscape": "^3.0.0",
-    "jsdom": "^19.0.0",
+    "jsdom": "^21.0.0",
     "less": "^2.7.1",
     "mocha": "^7.0.0",
     "nyc": "^15.0.0",
