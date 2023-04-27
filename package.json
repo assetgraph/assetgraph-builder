@@ -96,7 +96,7 @@
     "unexpected-dom": "^5.1.0",
     "unexpected-image": "^4.1.0",
     "unexpected-sinon": "^11.1.0",
-    "webpack": "^4.8.3"
+    "webpack": "^5.81.0"
   },
   "engines": {
     "node": ">= 4"
