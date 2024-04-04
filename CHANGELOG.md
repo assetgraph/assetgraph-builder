@@ -1,4 +1,4 @@
-### v9.1.1 (2022-06-05)
+### v9.2.0 (2022-06-06)
 
 - [Update assetgraph to 7.8.0](https://github.com/assetgraph/assetgraph-builder/commit/bfa88cf22e14eb41f19fb0fe28cc210f30660643) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
 
@@ -20,7 +20,7 @@
 - [#977](https://github.com/assetgraph/assetgraph-builder/pull/977) Upgrade impro to version 0.13.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
 - [#955](https://github.com/assetgraph/assetgraph-builder/pull/955) Upgrade eslint-plugin-mocha to version 10.0.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
 - [#951](https://github.com/assetgraph/assetgraph-builder/pull/951) Upgrade jsdom to version 19.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
-- [#730](https://github.com/assetgraph/assetgraph-builder/pull/730) Demote some image processing modules not used for the auto-lossless mode to dev deps ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [#730](https://github.com/assetgraph/assetgraph-builder/pull/730) Demote some image processing modules not used for the auto-lossless mode to dev deps ([Andreas Lind](mailto:andreaslindpetersen@gmail.com), [Andreas Lind](mailto:andreaslindpetersen@gmail.com), [Andreas Lind](mailto:andreaslindpetersen@gmail.com), [Andreas Lind](mailto:andreaslindpetersen@gmail.com), [Andreas Lind](mailto:andreaslindpetersen@gmail.com))
 - [#948](https://github.com/assetgraph/assetgraph-builder/pull/948) Upgrade prettier to version 2.5.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
 - [#939](https://github.com/assetgraph/assetgraph-builder/pull/939) Upgrade sinon to version 12.0.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
 
@@ -102,7 +102,7 @@
 - [#763](https://github.com/assetgraph/assetgraph-builder/pull/763) Upgrade assetgraph to version 6.2.2 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
 - [#752](https://github.com/assetgraph/assetgraph-builder/pull/752) Upgrade sharp to version 0.26.2 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
 - [#749](https://github.com/assetgraph/assetgraph-builder/pull/749) Upgrade assetgraph to version 6.2.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
-- [#745](https://github.com/assetgraph/assetgraph-builder/pull/745) Upgrade impro to version 0.8.0 ([Andreas Lind](mailto:andreaslindpetersen@gmail.com), [depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#745](https://github.com/assetgraph/assetgraph-builder/pull/745) Upgrade impro to version 0.8.0 ([Andreas Lind](mailto:andreaslindpetersen@gmail.com), [Andreas Lind](mailto:andreaslindpetersen@gmail.com), [depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
 - [#743](https://github.com/assetgraph/assetgraph-builder/pull/743) Upgrade prettier to version 2.1.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
 - [#740](https://github.com/assetgraph/assetgraph-builder/pull/740) Upgrade assetgraph to version 6.2.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
 - [#739](https://github.com/assetgraph/assetgraph-builder/pull/739) Upgrade eslint-plugin-mocha to version 8.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
@@ -122,7 +122,7 @@
 
 #### Pull requests
 
-- [#735](https://github.com/assetgraph/assetgraph-builder/pull/735) Switch to assetgraph-hashfiles ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [#735](https://github.com/assetgraph/assetgraph-builder/pull/735) Switch to assetgraph-hashfiles ([Andreas Lind](mailto:andreaslindpetersen@gmail.com), [Andreas Lind](mailto:andreaslindpetersen@gmail.com), [Andreas Lind](mailto:andreaslindpetersen@gmail.com))
 - [#734](https://github.com/assetgraph/assetgraph-builder/pull/734) Upgrade assetgraph to version 6.0.8 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
 
 #### Commits to master
@@ -133,9 +133,9 @@
 
 #### Pull requests
 
-- [#731](https://github.com/assetgraph/assetgraph-builder/pull/731) Use pngquant --quality 100-100 to skip conversion to PNG8 if not lossless ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [#731](https://github.com/assetgraph/assetgraph-builder/pull/731) Use pngquant --quality 100-100 to skip conversion to PNG8 if not lossless ([Andreas Lind](mailto:andreaslindpetersen@gmail.com), [Andreas Lind](mailto:andreaslindpetersen@gmail.com))
 - [#728](https://github.com/assetgraph/assetgraph-builder/pull/728) Upgrade assetgraph to version 6.0.7 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
-- [#729](https://github.com/assetgraph/assetgraph-builder/pull/729) Fix the build ([Andreas Lind](mailto:andreas.lind@peakon.com))
+- [#729](https://github.com/assetgraph/assetgraph-builder/pull/729) Fix the build ([Andreas Lind](mailto:andreas.lind@peakon.com), [Andreas Lind](mailto:andreas.lind@peakon.com), [Andreas Lind](mailto:andreas.lind@peakon.com), [Andreas Lind](mailto:andreas.lind@peakon.com), [Andreas Lind](mailto:andreas.lind@peakon.com), [Andreas Lind](mailto:andreas.lind@peakon.com))
 - [#724](https://github.com/assetgraph/assetgraph-builder/pull/724) Upgrade eslint-plugin-mocha to version 7.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
 - [#723](https://github.com/assetgraph/assetgraph-builder/pull/723) Upgrade eslint to version 7.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
 - [#721](https://github.com/assetgraph/assetgraph-builder/pull/721) Switch to using the legacy query string parser exposed by impro. ([Alex J Burke](mailto:alex@alexjeffburke.com))
@@ -158,7 +158,7 @@
 #### Pull requests
 
 - [#714](https://github.com/assetgraph/assetgraph-builder/pull/714) Upgrade sinon to version 9.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
-- [#711](https://github.com/assetgraph/assetgraph-builder/pull/711) Impro port of processImages transform ([Alex J Burke](mailto:alex@alexjeffburke.com))
+- [#711](https://github.com/assetgraph/assetgraph-builder/pull/711) Impro port of processImages transform ([Alex J Burke](mailto:alex@alexjeffburke.com), [Alex J Burke](mailto:alex@alexjeffburke.com), [Alex J Burke](mailto:alex@alexjeffburke.com), [Alex J Burke](mailto:alex@alexjeffburke.com), [Alex J Burke](mailto:alex@alexjeffburke.com), [Alex J Burke](mailto:alex@alexjeffburke.com), [Alex J Burke](mailto:alex@alexjeffburke.com), [Alex J Burke](mailto:alex@alexjeffburke.com), [Alex J Burke](mailto:alex@alexjeffburke.com), [Alex J Burke](mailto:alex@alexjeffburke.com))
 - [#713](https://github.com/assetgraph/assetgraph-builder/pull/713) Upgrade jsdom to version 16.2.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
 - [#707](https://github.com/assetgraph/assetgraph-builder/pull/707) Upgrade mocha to version 7.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
 - [#706](https://github.com/assetgraph/assetgraph-builder/pull/706) Upgrade assetgraph to version 6.0.5 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
@@ -231,7 +231,7 @@
 - [#672](https://github.com/assetgraph/assetgraph-builder/pull/672) Upgrade nyc to version 14.0.0 ([depfu[bot]](mailto:depfu[bot]@users.noreply.github.com))
 - [#671](https://github.com/assetgraph/assetgraph-builder/pull/671) Upgrade prettier to version 1.17.0 ([depfu[bot]](mailto:depfu[bot]@users.noreply.github.com))
 - [#670](https://github.com/assetgraph/assetgraph-builder/pull/670) Upgrade assetgraph to version 5.8.4 ([depfu[bot]](mailto:depfu[bot]@users.noreply.github.com))
-- [#655](https://github.com/assetgraph/assetgraph-builder/pull/655) tests: migrate CSSO justDoIt method to minify method ([Daniel Ruf](mailto:daniel@daniel-ruf.de))
+- [#655](https://github.com/assetgraph/assetgraph-builder/pull/655) tests: migrate CSSO justDoIt method to minify method ([Daniel Ruf](mailto:daniel@daniel-ruf.de), [Daniel Ruf](mailto:daniel@daniel-ruf.de))
 - [#666](https://github.com/assetgraph/assetgraph-builder/pull/666) Upgrade jsdom to version 14.0.0 ([depfu[bot]](mailto:depfu[bot]@users.noreply.github.com))
 
 #### Commits to master
@@ -245,7 +245,7 @@
 
 ### v6.10.0 (2019-03-07)
 
-- [#633](https://github.com/assetgraph/assetgraph-builder/pull/633) Reduce external dependencies ([Andreas Lind](mailto:andreaslindpetersen@gmail.com), [Peter Müller](mailto:munter@fumle.dk))
+- [#633](https://github.com/assetgraph/assetgraph-builder/pull/633) Reduce external dependencies ([Andreas Lind](mailto:andreaslindpetersen@gmail.com), [Andreas Lind](mailto:andreaslindpetersen@gmail.com), [Andreas Lind](mailto:andreaslindpetersen@gmail.com), [Andreas Lind](mailto:andreaslindpetersen@gmail.com), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk))
 
 ### v6.9.1 (2019-03-07)
 
@@ -607,7 +607,7 @@
 
 #### Pull requests
 
-- [#541](https://github.com/assetgraph/assetgraph-builder/pull/541) Update sinon to ^3.1.0 and unexpected-sinon to ^10.8.2 ([Andreas Lind](mailto:andreas@one.com))
+- [#541](https://github.com/assetgraph/assetgraph-builder/pull/541) Update sinon to ^3.1.0 and unexpected-sinon to ^10.8.2 ([Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com))
 
 #### Commits to master
 
@@ -711,7 +711,7 @@
 - [#511](https://github.com/assetgraph/assetgraph-builder/pull/511) Update sinon to version 2.1.0 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
 - [#492](https://github.com/assetgraph/assetgraph-builder/pull/492) Update jpegtran to version 1.0.5 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
 - [#493](https://github.com/assetgraph/assetgraph-builder/pull/493) Update express-processimage to version 7.2.0 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
-- [#480](https://github.com/assetgraph/assetgraph-builder/pull/480) Revive --exclude option in a new incarnation ([Peter Müller](mailto:munter@fumle.dk))
+- [#480](https://github.com/assetgraph/assetgraph-builder/pull/480) Revive --exclude option in a new incarnation ([Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk))
 - [#491](https://github.com/assetgraph/assetgraph-builder/pull/491) Update eslint to version 3.15.0 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
 - [#490](https://github.com/assetgraph/assetgraph-builder/pull/490) Update webpack to version 2.2.1 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
 - [#471](https://github.com/assetgraph/assetgraph-builder/pull/471) Update urltools to version 0.3.1 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
@@ -737,12 +737,12 @@
 - [#461](https://github.com/assetgraph/assetgraph-builder/pull/461) Update autoprefixer to version 6.5.1 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
 - [#458](https://github.com/assetgraph/assetgraph-builder/pull/458) Update express-processimage to version 6.1.0 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
 - [#457](https://github.com/assetgraph/assetgraph-builder/pull/457) Update autoprefixer to version 6.5.0 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
-- [#454](https://github.com/assetgraph/assetgraph-builder/pull/454) Tear out everything related to i18n via TR\(\), data-i18n=... etc. ([Andreas Lind](mailto:andreas@one.com))
+- [#454](https://github.com/assetgraph/assetgraph-builder/pull/454) Tear out everything related to i18n via TR\(\), data-i18n=... etc. ([Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com))
 - [#453](https://github.com/assetgraph/assetgraph-builder/pull/453) Update browserslist to version 1.4.0 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
 - [#451](https://github.com/assetgraph/assetgraph-builder/pull/451) Feature\/html service worker registration ([Peter Müller](mailto:munter@fumle.dk))
 - [#450](https://github.com/assetgraph/assetgraph-builder/pull/450) Update node-zopfli to version 2.0.1 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
 - [#449](https://github.com/assetgraph/assetgraph-builder/pull/449) Update express-processimage to version 6.0.0 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
-- [#447](https://github.com/assetgraph/assetgraph-builder/pull/447) Support System.js conditions ([Andreas Lind](mailto:andreas@one.com))
+- [#447](https://github.com/assetgraph/assetgraph-builder/pull/447) Support System.js conditions ([Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com))
 - [#448](https://github.com/assetgraph/assetgraph-builder/pull/448) Update esprima to version 3.0.0 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
 - [#446](https://github.com/assetgraph/assetgraph-builder/pull/446) Update autoprefixer to version 6.4.1 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
 - [#442](https://github.com/assetgraph/assetgraph-builder/pull/442) Update browserslist to version 1.3.6 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
@@ -760,12 +760,12 @@
 - [#426](https://github.com/assetgraph/assetgraph-builder/pull/426) Update pngquant to version 1.1.0 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
 - [#423](https://github.com/assetgraph/assetgraph-builder/pull/423) Update async to version 2.0.0 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
 - [#422](https://github.com/assetgraph/assetgraph-builder/pull/422) Update homebrew inkscape reference ([Guy Bedford](mailto:guybedford@gmail.com))
-- [#419](https://github.com/assetgraph/assetgraph-builder/pull/419) Remove support for transpiling ([Andreas Lind](mailto:andreas@one.com))
-- [#416](https://github.com/assetgraph/assetgraph-builder/pull/416) Web worker support ([Andreas Lind](mailto:andreas@one.com))
+- [#419](https://github.com/assetgraph/assetgraph-builder/pull/419) Remove support for transpiling ([Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com))
+- [#416](https://github.com/assetgraph/assetgraph-builder/pull/416) Web worker support ([Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com))
 - [#420](https://github.com/assetgraph/assetgraph-builder/pull/420) Update autoprefixer to version 6.3.7 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
 - [#415](https://github.com/assetgraph/assetgraph-builder/pull/415) Update eslint to version 3.0.0 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
 - [#414](https://github.com/assetgraph/assetgraph-builder/pull/414) Update express-processimage to version 5.10.2 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
-- [#408](https://github.com/assetgraph/assetgraph-builder/pull/408) Adapt to feature\/reworkRequireJs in assetgraph ([Andreas Lind](mailto:andreas@one.com))
+- [#408](https://github.com/assetgraph/assetgraph-builder/pull/408) Adapt to feature\/reworkRequireJs in assetgraph ([Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com))
 
 #### Commits to master
 
@@ -897,7 +897,7 @@
 
 #### Pull requests
 
-- [#407](https://github.com/assetgraph/assetgraph-builder/pull/407) Dockerfile fixes ([Jeppe Toustrup](mailto:jeppe@cloudflare.com))
+- [#407](https://github.com/assetgraph/assetgraph-builder/pull/407) Dockerfile fixes ([Jeppe Toustrup](mailto:jeppe@cloudflare.com), [Jeppe Toustrup](mailto:jeppe@cloudflare.com), [Jeppe Toustrup](mailto:jeppe@cloudflare.com))
 
 #### Commits to master
 
@@ -975,7 +975,7 @@
 - [#373](https://github.com/assetgraph/assetgraph-builder/pull/373) Update express-processimage to version 5.3.1 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
 - [#374](https://github.com/assetgraph/assetgraph-builder/pull/374) Update lodash to version 4.11.0 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
 - [#372](https://github.com/assetgraph/assetgraph-builder/pull/372) Update urltools to version 0.2.1 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
-- [#369](https://github.com/assetgraph/assetgraph-builder/pull/369) add linting with eslint and eslint-config-onelint ([Gustav Nikolaj Olsen](mailto:gno@one.com))
+- [#369](https://github.com/assetgraph/assetgraph-builder/pull/369) add linting with eslint and eslint-config-onelint ([Gustav Nikolaj Olsen](mailto:gno@one.com), [Gustav Nikolaj Olsen](mailto:gno@one.com))
 - [#371](https://github.com/assetgraph/assetgraph-builder/pull/371) Update lodash to version 4.10.0 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
 - [#370](https://github.com/assetgraph/assetgraph-builder/pull/370) Update systemjs-builder to version 0.15.15 🚀 ([greenkeeperio-bot](mailto:support@greenkeeper.io))
 
@@ -1545,8 +1545,8 @@
 
 #### Pull requests
 
-- [#141](https://github.com/assetgraph/assetgraph-builder/pull/141) buildProduction: Add support for --browsers switch. ([Andreas Lind Petersen](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com))
-- [#140](https://github.com/assetgraph/assetgraph-builder/pull/140) buildProduction: Do not remove prefixfree anymore \(see \#117\). ([Andreas Lind](mailto:andreas@one.com))
+- [#141](https://github.com/assetgraph/assetgraph-builder/pull/141) buildProduction: Add support for --browsers switch. ([Andreas Lind Petersen](mailto:andreas@one.com), [Andreas Lind Petersen](mailto:andreas@one.com), [Andreas Lind Petersen](mailto:andreas@one.com), [Andreas Lind Petersen](mailto:andreas@one.com), [Andreas Lind Petersen](mailto:andreas@one.com), [Andreas Lind Petersen](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com))
+- [#140](https://github.com/assetgraph/assetgraph-builder/pull/140) buildProduction: Do not remove prefixfree anymore \(see \#117\). ([Andreas Lind](mailto:andreas@one.com), [Andreas Lind](mailto:andreas@one.com))
 
 #### Commits to master
 
@@ -1645,7 +1645,7 @@
 
 #### Pull requests
 
-- [#132](https://github.com/assetgraph/assetgraph-builder/pull/132) Switch to using Zopfli instead of plain gzip. ([Bram Stein](mailto:stein@adobe.com))
+- [#132](https://github.com/assetgraph/assetgraph-builder/pull/132) Switch to using Zopfli instead of plain gzip. ([Bram Stein](mailto:stein@adobe.com), [Bram Stein](mailto:stein@adobe.com), [Bram Stein](mailto:stein@adobe.com), [Bram Stein](mailto:stein@adobe.com))
 
 #### Commits to master
 
@@ -1660,7 +1660,7 @@
 
 #### Pull requests
 
-- [#130](https://github.com/assetgraph/assetgraph-builder/pull/130) Extend the Rss test to include external assets. ([Bram Stein](mailto:stein@adobe.com), [Peter Müller](mailto:munter@fumle.dk))
+- [#130](https://github.com/assetgraph/assetgraph-builder/pull/130) Extend the Rss test to include external assets. ([Bram Stein](mailto:stein@adobe.com), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk))
 
 #### Commits to master
 
@@ -1966,7 +1966,7 @@
 
 #### Pull requests
 
-- [#110](https://github.com/assetgraph/assetgraph-builder/pull/110) Replace Dart assets with JavaScript equivalent ([Peter Müller](mailto:munter@fumle.dk))
+- [#110](https://github.com/assetgraph/assetgraph-builder/pull/110) Replace Dart assets with JavaScript equivalent ([Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk))
 
 #### Commits to master
 
@@ -1996,7 +1996,7 @@
 
 #### Pull requests
 
-- [#101](https://github.com/assetgraph/assetgraph-builder/pull/101) Simplify command line arguments ([Peter Müller](mailto:munter@fumle.dk))
+- [#101](https://github.com/assetgraph/assetgraph-builder/pull/101) Simplify command line arguments ([Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk))
 - [#94](https://github.com/assetgraph/assetgraph-builder/pull/94) Use splitCssIfIeLimitIsReached transform in buildProduction ([Peter Müller](mailto:munter@fumle.dk))
 - [#67](https://github.com/assetgraph/assetgraph-builder/pull/67) transforms\/processImages: Catch MacOS error on missing binaries ([Noah Laux](mailto:noahlaux@gmail.com))
 
@@ -2152,7 +2152,7 @@
 
 #### Pull requests
 
-- [#50](https://github.com/assetgraph/assetgraph-builder/pull/50) Added cdnflash command line switch ([Peter Müller](mailto:munter@fumle.dk))
+- [#50](https://github.com/assetgraph/assetgraph-builder/pull/50) Added cdnflash command line switch ([Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk))
 
 #### Commits to master
 
@@ -2394,7 +2394,7 @@
 
 #### Pull requests
 
-- [#32](https://github.com/assetgraph/assetgraph-builder/pull/32) Add support for jpeg optimization with jpegtran ([Peter Müller](mailto:munter@fumle.dk))
+- [#32](https://github.com/assetgraph/assetgraph-builder/pull/32) Add support for jpeg optimization with jpegtran ([Peter Müller](mailto:munter@fumle.dk), [Peter Müller](mailto:munter@fumle.dk))
 
 #### Commits to master
 
