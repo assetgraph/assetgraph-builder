@@ -91,7 +91,7 @@ describe('buildProduction', function () {
         'CACHE MANIFEST',
         '# ' + htmlCacheManifestRelations[0].from.fileName,
         'static/someTextFile.c7429a1035.txt',
-        'static/bundle.5efa7b53b4.js',
+        'static/bundle.d704e0fd42.js',
         'NETWORK:',
         '*',
         '',
@@ -2939,9 +2939,9 @@ describe('buildProduction', function () {
     expect(sourceMap.parseTree, 'to satisfy', {
       version: 3,
       sources: [`${assetGraph.root}demo.coffee`],
-      names: ['alert', 'n', 'call'],
+      names: ['alert', 'n'],
       mappings:
-        'CAAA,WAEAA,KAAA,CAFS,SAACC,CAAD,CAAC,QAAMA,CAAA,CAAIA,CAAV,CAAD,CAEI,EAFJ,CAET,CAFA,C,CAEaC,I,CAAA,I',
+        'CAAA,WAEAA,KAAA,CAFS,SAACC,CAAD,CAAC,C,OAAMA,CAAA,CAAIA,CAAV,CAAD,CAEI,EAFJ,CAET,CAFA,C',
     });
   });
 
